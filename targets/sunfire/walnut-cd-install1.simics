@@ -1,0 +1,49 @@
+if `SIM_lookup_file("walnut-install.disk")` {
+    echo "The file 'walnut-install.disk' already exists."
+    echo "Move or delete this file before continuing."
+    echo ""
+    quit 1
+}
+
+$do_boot  = "no"
+$do_login = "no"
+
+$disk_perm = "rw"
+
+run-command-file "%script%/walnut-common.simics"
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    $con.wait-for-string "ok "
+    $con.input "boot cdrom\n"
+    $con.wait-for-string "Restarting"
+    $con.wait-for-string "Resetting..."
+    stop
+    # Make sure the PROM is properly configured for the reboot
+    $system.set-prom-env diag-device disk1
+    echo "First install phase ready. Do not forget to:"
+    echo ""
+    echo "* Save the persistent state E.g."
+    echo "  simics> save-persistent-state install-phase1.state"
+    echo ""
+    echo "  and then continue with the walnut-cd-install2.simics script."
+    echo ""
+}
+
+# create a new vtoc on the disk
+($scsi_disk.get-component-object sd).create-sun-vtoc-header -quiet 10940 19 80
+
+echo ""
+echo "################### OS installation phase 1"
+echo ""
+echo "Now insert a boot CD-ROM using:"
+echo ""
+echo "simics> new-file-cdrom <iso-file>"
+echo "cdrom '<iso-object>' created"
+echo "simics> cd0.insert <iso-object>"
+echo ""
+echo "Where <iso-file> is the name of the CD-ROM image, and <iso-object> is"
+echo "the CD-ROM object created by the 'new-file-cdrom' command."
+echo ""
+echo "###################"
+echo ""

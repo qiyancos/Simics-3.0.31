@@ -1,0 +1,34 @@
+if not defined enter_in_boot_menu {$enter_in_boot_menu = "yes"}
+if not defined ip_address         {$ip_address   = "10.10.0.12"}
+if not defined host_name          {$host_name    = "cosmo"}
+if not defined service_node       {}
+if not defined disk_image         {$disk_image="cosmo1-fedora5.craff"}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.disk].object_list['hd_image']
+
+@image.files = [[simenv.disk_image, "ro", 0, 20496236544, 0]]
+@if 'linux_diffs' in dir():
+    image.files += linux_diffs
+
+if $enter_in_boot_menu == "yes" {
+    script-branch {
+	local $kbd = ($sio.get-component-object kbd)
+        local $con = ($console.get-component-object con)
+        wait-for-hap Core_Step_Count 90000000
+        echo "Pressing return"
+        $con.input "\n"
+        wait-for-hap Core_Step_Count 100000000
+        $con.input "\n"
+    }
+}

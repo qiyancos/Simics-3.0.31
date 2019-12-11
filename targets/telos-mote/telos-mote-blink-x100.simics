@@ -1,0 +1,6 @@
+#
+# Start 100 motes with the Blink application
+#
+$mote_count = 100
+$mote_binary = "images/Blink/main.bin"
+run-command-file "%script%/telos-mote-multi.simics"

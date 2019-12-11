@@ -1,0 +1,102 @@
+#
+# Common file for orange machines. 
+#
+# Configure using the following variables:
+#
+@if not "cpu_class"          in dir(): cpu_class        = "ppc750"
+@if not "cpu_freq_mhz"       in dir(): cpu_freq_mhz     = 373.5
+@if not "tb_freq_mhz"        in dir(): tb_freq_mhz      = 20.75
+@if not "pmppc_boards"       in dir(): pmppc_boards     = 1
+
+# Network
+@if not "central_setup"      in dir(): central_setup    = "local"
+@if not "first_mac"          in dir(): first_mac        = "10:10:10:10:10:30"
+@if pmppc_boards > 1:
+	central_queue = "pmppc0_cpu0"
+
+# Software
+@if not "do_login"           in dir(): do_login         = 0
+@if not "start_linux"        in dir(): start_linux      = 1
+@if not "kernel_image"       in dir(): kernel_image     = "zImage.pmppc"
+@if not "kernel_offset"      in dir(): kernel_offset    = 0x0
+@if not "kernel_start"       in dir(): kernel_start     = 0x0
+
+@cpu_freq = float(cpu_freq_mhz)
+@tb_freq = float(tb_freq_mhz)
+
+#
+# Get setup going
+#
+run-python-file ../scripts/extrapath.py
+
+add-directory "%simics%/import/ppc"
+
+@import configuration
+
+#
+# Think about the MAC address of orange
+#
+@mac_num = map(lambda x: int(x, 16), string.split(first_mac, ":"))
+
+#
+# Create the PMPPC board(s)
+#
+@sys.path += ['../scripts']
+@from pmppc_conf import *
+
+@for b in range(pmppc_boards):
+        if pmppc_boards > 1:
+        	prefix = "pmppc%d_" % (b)
+        else:
+                prefix = ""
+        set_machine(prefix)
+        create_pmppc_board(ppc_model = cpu_class, 
+	   			       cpu_freq = cpu_freq, 
+                                       tb_freq = tb_freq,
+				       eth0_mac = mac_num[:])  # make a copy of the list
+	print "PMPPC board %s created (eth0 MAC = %x:%x:%x:%x:%x:%x)" % ((prefix,) + tuple(mac_num))
+	mac_num[5] += 2
+
+default-port-forward-target 10.10.0.12
+
+# Add Central for networking
+run-command-file ../central/central-include.simics
+
+
+@if "user_config" in dir(): user_config()
+@set_configuration(get_configuration())
+@post_configuration()
+
+run-python-file "../scripts/pmppc_start_linux.py"
+
+# Load the linux binary directly to memory
+@for b in range(pmppc_boards):
+        if pmppc_boards > 1:
+        	prefix = "pmppc%d_" % (b)
+        else:
+                prefix = ""
+        eval_cli_line("%sphys-mem0.load-file %s 0x%x" % (prefix, kernel_image, kernel_offset))
+        eval_cli_line("%scpu0.set-pc 0x%x" % (prefix, kernel_start))
+	# compute network address of this card
+	# Find the eth0 interface and construct a good IP for it
+	eth0 =  SIM_get_object("%seth0" % prefix)
+        mac0 = eth0.mac_address
+	# does not work: mac0 is a STRING!
+	mac0_num = map(lambda x: int(x, 16), string.split(mac0, ":"))
+        ipaddr = "10.10.0.%d" % (mac0_num[5])
+	# connect to network
+	if(central_setup != "none") :
+		eval_cli_line(prefix + "eth0.connect net0")
+	if(do_login):
+	       start_branch(branch_start_linux_no_prom_login_network_setup, 
+		   	    (prefix, 
+                             "Linux/PPC load: ", 
+			     "console=ttyS0, root=/dev/sda",
+			     ipaddr))
+	elif (start_linux):
+	        start_branch(branch_start_linux_no_prom, 
+			     (prefix, 
+			      "Linux/PPC load: ", 
+ 			      "console=ttyS0, root=/dev/sda"))
+
+

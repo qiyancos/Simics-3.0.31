@@ -1,0 +1,6 @@
+#!/bin/sh
+
+bindir="`dirname "$0"`"
+SIMICS_BASE="`cd "$bindir/.."; pwd`"
+
+exec "$bindir/fake-python" "$SIMICS_BASE/scripts/workspace_setup.py" "$@"

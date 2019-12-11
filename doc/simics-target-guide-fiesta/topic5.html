@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Installing an OS on Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(68, true);
+</script>
+<a name="label379"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Installing an OS on Simics</h2 class="jdocu">
+
+  
+<p>
+  <a name="label380"></a><h3 class="jdocu">6.1&nbsp;&nbsp;&nbsp;Installing Solaris on Simics</h3 class="jdocu">
+
+  
+<p>
+  Solaris can be installed directly on the simulated machine in Simics.
+  Solaris can be obtained from Sun's web-site at
+  <a class="jdocu" href="http://www.sun.com/software/solaris/binaries/get.html" target="_top">http://www.sun.com/software/solaris/binaries/get.html</a> in the
+  form of ISO images.
+<p>
+  To simplify the installation process, some scripts are supplied with the
+  Simics distribution for the chili machine:
+  <tt>chili-sol&lt;version&gt;-cd-install.simics</tt>,
+  where &lt;version&gt; is <tt>8</tt>, <tt>9</tt> or <tt>10</tt>.  The scripts
+  will answer all questions automatically to create a standard workstation
+  install.
+<p>
+  <a name="label381"></a><h4 class="jdocu">6.1.1&nbsp;&nbsp;&nbsp;Installation, step by step</h4 class="jdocu">
+
+  
+  This section describes how to install Solaris using the command-line
+  version Simics.
+  <ol>
+<p>
+  <li>
+  Select the install script to use, depeding on Solaris version to install,
+  either <tt>chili-sol10-cd-install.simics</tt>
+  for Solaris 10, <tt>chili-sol9-cd-install.simics</tt>
+  for Solaris 9, or <tt>chili-sol8-cd-install.simics</tt>
+  for Solaris 8. 
+  </li>
+<p>
+  <li>
+  Set the path to the CD images in the simics script. The line
+<pre class="jdocu_small" style="color: black">
+    $cdrom_path[$idx] = ("sol-10-u2-ga-sparc-v" + $idx + ".iso")
+</pre>
+  should be changed to reflect the location and name of the CD images
+  for the installlation. It can either be ISO image files, or
+  a CD-ROM device file (Linux and Solaris host only).
+  </li>
+<p>
+  <li>
+  Start the first installation script, for example:
+  <pre class="jdocu_small" style="color: black">
+  $ <b>./simics targets/fiesta/chili-sol10-cd-install.simics</b>
+  </pre>
+  and wait for it to complete. This may take several hours, depending on the
+  performance of the host machine. 
+  </li>
+<p>
+  <li>
+  When the script stops, the installation is ready. The newly
+  created disk image has the following file name:
+  <tt>chili-sol&lt;version&gt;-install.disk</tt>.
+  </li>
+<p>
+  <li>
+  To boot a machine with the newly installed Solaris OS, run the
+  <tt>chili-common.simics</tt> and make sure that the variable
+  <tt>$os</tt> is set to <tt>"solaris10"</tt>,
+  <tt>"solaris9"</tt> or <tt>"solaris8"</tt> depending on
+  the operating system version installed). Add a line like the following first
+  in that simics script:
+<pre class="jdocu_small" style="color: black">
+  $os = "solaris10"
+</pre>
+  </li>
+<p>
+  <li>
+  An optional last step is to compress the disk image with the
+  <tt>craff</tt> utility to save some disk space.
+  </li>
+<p>
+  </ol>
+  
+<p>
+  
+  <p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

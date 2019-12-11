@@ -1,0 +1,159 @@
+# -*- makefile -*-
+# @configure_input@
+
+# Use BASH per default. Set SHELL=/bin/sh in host-flags.<host> if needed.
+SHELL=@BASH@
+SET_MAKE=@SET_MAKE@
+
+CYGWRAP=@CYGWRAP@
+BASH=@BASH@
+
+COMPILER_VERSION_CC=@COMPILER_VERSION_CC@
+COMPILER_VERSION_CXX=@COMPILER_VERSION_CXX@
+
+MAKE=@MAKE@
+
+CC_PATH=@CC_PATH@
+CC_PATH_LONG=@CC_PATH_LONG@
+CC_PREFIX=@CC_PREFIX@
+CC_PREFIX_LONG=@CC_PREFIX_LONG@
+CC_TYPE=@CC_TYPE@
+
+MINGW_ROOT=@MINGW_ROOT@
+MINGW_TOOLPREFIX=@MINGW_TOOLPREFIX@
+WIN32_BUILD=@WIN32_BUILD@
+NATIVE_BUILD_DIR=@NATIVE_BUILD_DIR@
+
+# ------------------------------------------------------------
+# Location of source and build directory
+# ------------------------------------------------------------
+top_srcdir=@top_srcdir@
+SIMICS_BASE=@SIMICS_BASE@
+SIMICS_HOST=@SIMICS_HOST@
+HOST_TYPE=@HOST_TYPE@
+BUILD_DIR=@BUILD_DIR@
+
+# ------------------------------------------------------------
+# Profile driven compilation (Global switch)
+# ------------------------------------------------------------
+PROFILE_DRIVEN_CC=@PROFILE_DRIVEN_CC@
+
+# ------------------------------------------------------------
+# Misc configure-detected flags
+# ------------------------------------------------------------
+EXEEXT=@EXEEXT@
+OBJEXT=@OBJEXT@
+SO_PREFIX=@SO_PREFIX@
+SO_SFX=@SO_SFX@
+X_CFLAGS=@X_CFLAGS@
+X_LIBS=@X_LIBS@
+X_EXTRA_LIBS=@X_EXTRA_LIBS@
+X_PRE_LIBS=@X_PRE_LIBS@
+
+# ------------------------------------------------------------
+# Libraries
+# ------------------------------------------------------------
+LIBPATH=@LIBPATH@
+TOOLPATH=@TOOLPATH@
+PACKAGE_PATH=@PACKAGE_PATH@
+
+LIBS=@LIBS@
+
+LIBBZ2=@LIBBZ2@
+LIBDL=@LIBDL@
+LIBEFENCE=@LIBEFENCE@
+LIBELF=@LIBELF@
+LIBIPHLPAPI=@LIBIPHLPAPI@
+LIBNSL=@LIBNSL@
+LIBPCAP=@LIBPCAP@
+LIBPCL=@LIBPCL@
+LIBPTHREAD=@LIBPTHREAD@
+LIBREADLINE=@LIBREADLINE@
+LIBZ=@LIBZ@
+LIBUTIL=@LIBUTIL@
+LIBSOCKET=@LIBSOCKET@
+LIBGCC=@LIBGCC@
+LIBWIN32=@LIBWIN32@
+LIBST=@LIBST@
+LIBMLD=@LIBMLD@
+LIBSDL=@LIBSDL@
+LIBRT=@LIBRT@
+
+# ------------------------------------------------------------
+# Programs
+# ------------------------------------------------------------
+AR=@AR@
+AS=@AS@
+ASPELL=@ASPELL@
+AUTOCONF=@AUTOCONF@
+AUTOHEADER=@AUTOHEADER@
+AUTORECONF=@AUTORECONF@
+AWK=@AWK@
+BISON=@BISON@
+CC=@CC@
+CLEANUP=@CLEANUP@
+COLUMN=@COLUMN@
+CPP=@CPP@
+CXX=@CXX@
+ECHO=@ECHO@
+FLEX=@FLEX@
+LD=@LD@
+LN_S=@LN_S@
+MAKEINDEX=@MAKEINDEX@
+MAKEINFO=@MAKEINFO@
+MY_GCC=@MY_GCC@
+NM=@NM@
+OZENGINE=@OZENGINE@
+OZC=@OZC@
+PDFLATEX=@PDFLATEX@
+PERL=@PERL@
+PYTHON=@PYTHON@
+RANLIB=@RANLIB@
+RC=@RC@
+SIMGEN=@SIMGEN@
+STRIP=@STRIP@
+YACC=@YACC@
+
+# ------------------------------------------------------------
+# Packages  and other misc. things.
+# ------------------------------------------------------------
+
+PYTHON_PACKAGE=@PYTHON_PACKAGE@
+PYTHON_VERSION=@PYTHON_VERSION@
+# PYTHONBIN is like PYTHON, but refers to the Python-executable found in PYTHON_PACKAGE,
+# not the system-wide installed one.
+PYTHONBIN=@PYTHONBIN@
+
+LIBELF_H_NAME=@LIBELF_H_NAME@
+
+FLEXLM_PACKAGE=@FLEXLM_PACKAGE@
+FLEXLM_INCLUDE=@FLEXLM_INCLUDE@
+FLEXLM_LDFLAGS=@FLEXLM_LDFLAGS@
+
+PKGCONFIG=@PKGCONFIG@
+
+GTK_CFLAGS=@GTK_CFLAGS@
+GTK_LIBS=@GTK_LIBS@
+
+JDOCU_JAVABIN=@JDOCU_JAVABIN@
+JDOCU_JAVAC=@JDOCU_JAVAC@
+
+JAVAHOME=@JAVAHOME@
+JAVABIN=@JAVABIN@
+JAVA_PLATFORM=@JAVA_PLATFORM@
+
+ECLIPSE_ROOT=@ECLIPSE_ROOT@
+
+DISABLE_SIMICS_LICENSE=@DISABLE_SIMICS_LICENSE@
+
+SIMICS_DISTRIB=@SIMICS_DISTRIB@
+
+# ------------------------------------------------------------
+# Include static configuration files.
+# ------------------------------------------------------------
+
+ifeq ($(HOST_TYPE_CHANGE_FROM),$(HOST_TYPE))
+override HOST_TYPE=$(HOST_TYPE_CHANGE_TO)
+endif
+
+include $(SIMICS_BASE)/config/host-flags.common

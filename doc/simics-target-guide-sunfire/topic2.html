@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label22"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting SunFire machines are located in the
+<tt>[workspace]/targets/sunfire/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/sunfire/</tt>.
+<p>
+
+<p>
+<a name="label23"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Peanut</h3 class="jdocu">
+
+
+<p>
+Peanut is a Sun Enterprise 6500 server with a single UltraSPARC II processor
+running at 168 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label33">3.6</a>. The Solaris
+operating system must be installed on peanut, using the supplied scripts,
+before it can be used.
+<p>
+<a name="label24"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Peanut Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>peanut-common.simics</tt></b></dt><dd>Starts the Peanut machine with the default configuration.</dd><dt><b><tt>peanut-gcache-common.simics</tt></b></dt><dd>Default Peanut machine with a <i>g-cache</i> cache model connected.</dd><dt><b><tt>peanut-ma-common.simics</tt></b></dt><dd>Default Peanut machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>peanut-ooo-common.simics</tt></b></dt><dd>Default Peanut machine with a simple out-of-order timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>peanut-multi.simics</tt></b></dt><dd>Example script with two Peanut machines in the same session, connected
+by an Ethernet link.</dd><dt><b><tt>peanut-sol&lt;version&gt;-cd-install1.simics</tt></b></dt><dd>Script for installing Solaris on the simulated machine, phase 1.
+&lt;version&gt; is one of 8, 9 and 10.</dd><dt><b><tt>peanut-sol&lt;version&gt;-cd-install2.simics</tt></b></dt><dd>Script for installing Solaris on the simulated machine, phase 2.
+&lt;version&gt; is one of 8, 9 and 10.</dd><dt><b><tt>peanut-sol&lt;version&gt;-cd-install3.simics</tt></b></dt><dd>Script for installing Solaris on the simulated machine, phase 3.
+&lt;version&gt; is one of 8, 9 and 10.</dd></dl>
+<p>
+
+<p>
+
+<a name="label25"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Walnut</h3 class="jdocu">
+
+
+<p>
+Walnut is a Sun Enterprise 6500 server with a single UltraSPARC II processor
+running at 168 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label33">3.6</a>. An
+operating system must be installed on walnut before it can be used.
+<p>
+<a name="label26"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;Walnut Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>walnut-common.simics</tt></b></dt><dd>Starts the Walnut machine with the default configuration.</dd><dt><b><tt>walnut-cd-install1.simics</tt></b></dt><dd>Script for installing an OS on the simulated machine, phase 1.</dd><dt><b><tt>walnut-cd-install2.simics</tt></b></dt><dd>Script for installing an OS on the simulated machine, phase 2.</dd></dl>
+<p>
+
+<p>
+
+<a name="label27"></a><h3 class="jdocu">3.3&nbsp;&nbsp;&nbsp;Cashew</h3 class="jdocu">
+
+
+<p>
+Cashew is a Sun Enterprise 6500 server with a single UltraSPARC II processor
+running at 168 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label33">3.6</a>.
+<p>
+Cashew is configured for an existing Aurora Linux 2.0 disk dump, that can be
+downloaded from the Virtutech web site.
+<p>
+Additional information:
+<ul>
+<li>Aurora 2.0 Linux (Fedora Cora 3), installed directly on Simics.</li>
+<li>Linux kernel 2.6.13</li>
+<li>SimicsFS support.</li>
+<li>Login <tt>root</tt>, password "simics".</li>
+<li>Configured to get IP address using DHCP.</li>
+</ul>
+<a name="label28"></a><h4 class="jdocu">3.3.1&nbsp;&nbsp;&nbsp;Cashew Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>cashew-common.simics</tt></b></dt><dd>Starts the Cashew machine with the default configuration.</dd><dt><b><tt>cashew-fb-common.simics</tt></b></dt><dd>Similar to cashew-common.simics, but also adds a frame-buffer device
+(graphic card) and a graphical console.</dd><dt><b><tt>cashew-gcache-common.simics</tt></b></dt><dd>Default Cashew machine with a <i>g-cache</i> cache model connected.</dd><dt><b><tt>cashew-multi.simics</tt></b></dt><dd>Example script with two Cashew machines in the same session, connected
+by an Ethernet link.</dd></dl>
+<p>
+
+<p>
+
+<a name="label29"></a><h3 class="jdocu">3.4&nbsp;&nbsp;&nbsp;Bagle</h3 class="jdocu">
+
+
+<p>
+Bagle is a Sun Enterprise 6500 server with a single UltraSPARC II processor
+running at 168 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label33">3.6</a>.
+<p>
+Bagle is configured for an existing SuSE Linux 7.3 disk dump, that can be
+downloaded from the Virtutech web site.
+<p>
+Additional information:
+<ul>
+<li>SuSE 7.3 Linux, installed directly on Simics.</li>
+<li>Linux kernel 2.4.14</li>
+<li>SimicsFS support (read-only, write support experimental).</li>
+<li>Login <tt>root</tt>, no password.</li>
+<li>Configured with static IP address 10.10.0.6, gw 10.10.0.1, when DHCP not used.</li>
+</ul>
+<a name="label30"></a><h4 class="jdocu">3.4.1&nbsp;&nbsp;&nbsp;Bagle Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>bagle-common.simics</tt></b></dt><dd>Starts the Bagle machine with the default configuration.</dd><dt><b><tt>bagle-dhcp-common.simics</tt></b></dt><dd>Similar to bagle-common.simics, but gets the host name and IP address
+from the DHCP server.</dd><dt><b><tt>bagle-fb-common.simics</tt></b></dt><dd>Similar to bagle-common.simics, but also adds a frame-buffer device
+(graphic card) and a graphical console.</dd><dt><b><tt>bagle-gcache-common.simics</tt></b></dt><dd>Default Bagle machine with a <i>g-cache</i> cache model connected.</dd><dt><b><tt>bagle-ma-common.simics</tt></b></dt><dd>Default Bagle machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>bagle-ooo-common.simics</tt></b></dt><dd>Default Bagle machine with a simple out-of-order timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>bagle-multi.simics</tt></b></dt><dd>Example script with two Bagle machines in the same session, connected
+by an Ethernet link.</dd></dl>
+<p>
+
+<p>
+
+<a name="label31"></a><h3 class="jdocu">3.5&nbsp;&nbsp;&nbsp;Donut</h3 class="jdocu">
+
+
+<p>
+Donut is a Sun Enterprise 6500 server with a single UltraSPARC II processor
+running at 168 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label33">3.6</a>.
+<p>
+The Donut machine is configured for existing Solaris 8, 9 or 10 disk dumps.
+The disk dumps are only available for commercial customer with a special
+license agreement with Sun. Some common GNU utilities are installed on the disk
+images, such as <tt>bash</tt>, <tt>gcc</tt>, <tt>gmake</tt> and <tt>emacs</tt>.
+The <i>SimicsFS</i> file-system is also included.
+<p>
+Additional information:
+<ul>
+<li>Solaris 8 (7/01) and Solaris 9 (5/02) installed as "Developer System" directly on Simics.</li>
+<li>SimicsFS support.</li>
+<li>Login <tt>root</tt>, no password.</li>
+<li>Configured with static IP address 10.10.0.5, gw 10.10.0.1, when DHCP not used.</li>
+</ul>
+<p>
+<a name="label32"></a><h4 class="jdocu">3.5.1&nbsp;&nbsp;&nbsp;Donut Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>donut-common.simics</tt></b></dt><dd>Starts the Donut machine with the default configuration.</dd><dt><b><tt>donut-dhcp-common.simics</tt></b></dt><dd>Similar to donut-common.simics, but gets the host name and IP address
+from the DHCP server.</dd><dt><b><tt>donut-fb-common.simics</tt></b></dt><dd>Similar to donut-common.simics, but also adds a frame-buffer device
+(graphic card) and a graphical console.</dd><dt><b><tt>donut-gcache-common.simics</tt></b></dt><dd>Default Donut machine with a <i>g-cache</i> cache model connected.</dd><dt><b><tt>donut-ma-common.simics</tt></b></dt><dd>Default Donut machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>donut-ooo-common.simics</tt></b></dt><dd>Default Donut machine with a simple out-of-order timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>donut-multi.simics</tt></b></dt><dd>Example script with two Donut machines in the same session, connected
+by an Ethernet link.</dd></dl>
+<p>
+
+<p>
+
+<a name="label33"></a><h3 class="jdocu">3.6&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>peanut-common.simics</tt>, <tt>walnut-common.simics</tt>,
+<tt>bagle-common.simics</tt> or <tt>donut-common.simics</tt> scripts.
+Other <tt>.simics</tt> scripts may set some of the parameters
+unconditionally, and do not allow the user to override them. For example, the
+<tt>bagle-dhcp-common.simics</tt> script will always set the
+<i>$create_network</i> variable to <tt>yes</tt>.
+<p>
+<a name="label34"></a><h4 class="jdocu">3.6.1&nbsp;&nbsp;&nbsp;peanut-common, walnut-common, bagle-common and donut-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$create_network</b></dt><dd>Set to <tt>yes</tt> if the script should create an Ethernet link and
+connect the primary Ethernet adapter to it.</dd><dt><b>$disk_size</b></dt><dd>Size of the primary hard disk. This parameter must match any disk images
+that are added to the primary disk.</dd><dt><b>$do_boot</b></dt><dd>Set to <tt>no</tt> to stop at OBP prompt, without booting the OS.</dd><dt><b>$do_login</b></dt><dd>Set to <tt>no</tt> to prevent the script from logging in as root
+automatically when the operating system has reached the login prompt.</dd><dt><b>$eth_link</b></dt><dd>The Ethernet link to connect the primary Ethernet adapter to. This
+parameter should be set when a link already exist and the
+<i>$create_network</i> parameter is <tt>no</tt>.</dd><dt><b>$hostid</b></dt><dd>The <i>hostid</i> for the simulated machine.</dd><dt><b>$freq_mhz</b></dt><dd>The clock frequency in MHz for all processors.</dd><dt><b>$host_name</b></dt><dd>The host name used by the DHCP and DNS servers for this machine This
+variable will not change the host name set for the machine on the disk
+dumps.</dd><dt><b>$ip_address</b></dt><dd>The IP address used by the DHCP and DNS servers for this machine This
+variable will not change any IP address set for the machine on the disk
+dumps.</dd><dt><b>$mac_address</b></dt><dd>MAC address of the primary Ethernet adapter.</dd><dt><b>$memory_megs</b></dt><dd>The total amount of system memory, in MB.</dd><dt><b>$num_cpus</b></dt><dd>The number of processors in the machine.</dd><dt><b>$os</b></dt><dd>The operating system to boot, one of <tt>solaris10</tt>, <tt>solaris9</tt>,
+and <tt>solaris8</tt>. Requires that a matching disk dump exists. This variable
+does not exist for the bagle machine.</dd><dt><b>$rtc_time</b></dt><dd>Date and time of the real-time clock at boot.</dd><dt><b>$service_node</b></dt><dd>The <i>service node</i> to use for DHCP and DNS. This parameter should be
+set when a service noce already exist and the <i>$create_network</i>
+parameter is <tt>no</tt>.</dd></dl>
+<p>
+
+<p>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

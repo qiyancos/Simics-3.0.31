@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>scsi-bus</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1676, true);
+</script>
+<a name="label13177"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic339.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic341.html">Next</a></span></p>
+<h3 class="jdocu">scsi-bus</h3 class="jdocu">
+
+
+<a name="label13178"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2862">scsi-bus</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>scsi-bus</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The scsi-bus extension handles the interfacing between scsi devices (i.e. disks) and scsi controllers. Once a scsi-bus has been created, devices can be added to it.
+
+</dd>
+
+</dl>
+<a name="label13179"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>arbitration_delay</i></b></dt><a name="label13180"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Delay in seconds for arbitration on the bus</dd></dl>
+<dl><dt><b><i>atn</i></b></dt><a name="label13181"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The SCSI bus attention signal.</dd></dl>
+<dl><dt><b><i>initiator</i></b></dt><a name="label13182"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The current initiator during a pending SCSI transaction.</dd></dl>
+<dl><dt><b><i>phase</i></b></dt><a name="label13183"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+An integer representing the current SCSI phase.</dd></dl>
+<dl><dt><b><i>req_size</i></b></dt><a name="label13184"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Size (in bytes) of a pending data request.</dd></dl>
+<dl><dt><b><i>reselect</i></b></dt><a name="label13185"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to non-zero when the pending selection phase represents a reselection.</dd></dl>
+<dl><dt><b><i>scsi_ext_messages</i></b></dt><a name="label13186"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>String</b>.
+<p>
+Pseudo attribute returning the name of an extended message (as a string) given an integer index representing the message.</dd></dl>
+<dl><dt><b><i>scsi_messages</i></b></dt><a name="label13187"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>String</b>.
+<p>
+Pseudo attribute returning a message name (as a string) given an integer index representing the SCSI message.</dd></dl>
+<dl><dt><b><i>scsi_phases</i></b></dt><a name="label13188"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>String</b>.
+<p>
+Pseudo attribute returning the SCSI phase name (as a string) given an integer index representing the phase.</dd></dl>
+<dl><dt><b><i>target</i></b></dt><a name="label13189"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The target of a pending SCSI transaction.</dd></dl>
+<dl><dt><b><i>targets</i></b></dt><a name="label13190"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+((<i>target</i>, <i>device</i>, <i>arbiting</i>)+) where <i>target</i> is a SCSI ID, <i>device</i> is a device object, and <i>arbiting</i> is a flag set to non-zero when the device is participating in bus arbitration.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label13191"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13193">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13195">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label13192"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label13193"></a><a name="label13194"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;scsi-bus&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;scsi-bus&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label13195"></a><a name="label13196"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;scsi-bus&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;scsi-bus&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic339.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic341.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,4 @@
+set-component-prefix v1_
+run-command-file "%script%/vasa-common.simics"
+set-component-prefix v2_
+run-command-file "%script%/vasa-common.simics"

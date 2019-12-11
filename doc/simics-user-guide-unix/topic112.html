@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Switching Contexts Manually</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(252, true);
+</script>
+<a name="label565"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic111.html">Previous</a> - <a class="jdocu" href="topic111.html">Up</a> - <a class="jdocu" href="topic113.html">Next</a></span></p>
+<h4 class="jdocu">21.1&nbsp;&nbsp;&nbsp;Switching Contexts Manually</h4 class="jdocu">
+
+
+<p>
+Changing the current context of a processor is very simple. Every
+processor starts out with <b>primary-context</b> as current
+context, so for this to be interesting we will need to create another
+context first:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-context my-little-context</b>
+</pre>
+<p>
+Then, simply set the <i>current-context</i> attribute of the
+processor, either directly, or via the <b>set-context</b>
+command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>cpu0.set-context my-little-context</b>
+</pre>
+<p>
+And we are all done.
+<p>
+The tricky thing is to know when to change the context. This generally
+involves monitoring the state of the simulated machine, and looking
+for more or less subtle signs of relevant change. For example, assume
+that we are interested in the kernel. What we would like to do then is
+to change to the kernel context when the processor enters supervisor
+mode, and change back to <b>primary-context</b> when it enters
+user mode.
+<p>
+Conveniently, Simics triggers a <tt>Core_Mode_Change</tt> hap whenever
+the privilege level changes. The following Python script listens for
+that hap, and changes context accordingly.
+<p>
+<pre class="jdocu_small" style="color: black">
+def set_context(user_arg, cpu, old_mode, new_mode):
+    if new_mode == Sim_CPU_Mode_Supervisor:
+        cpu.current_context = conf.my_little_context
+    else:
+        cpu.current_context = conf.primary_context
+SIM_hap_add_callback_obj("Core_Mode_Change", conf.cpu0,
+                         0, set_context, None)
+</pre>
+<p>
+Note that, in this example, all of userspace is covered by a single
+context (<b>primary-context</b>). Distinguishing between different
+userspace processes is, as mentioned earlier, not something that
+Simics can do by itself. It needs a process tracker for that; this is
+the topic of the next section.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic111.html">Previous</a> - <a class="jdocu" href="topic111.html">Up</a> - <a class="jdocu" href="topic113.html">Next</a></span></p>
+</body>
+</html>

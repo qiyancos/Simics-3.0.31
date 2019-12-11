@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Command-line Interface: Basics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(48, true);
+</script>
+<a name="label84"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic22.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic24.html">Next</a></span></p>
+<h3 class="jdocu">5&nbsp;&nbsp;&nbsp;Command-line Interface: Basics</h3 class="jdocu">
+
+
+<p>
+The Simics command-line uses GNU Readline to provide command-line editing and a
+command history buffer.
+<p>
+Let us go through a list of handy commands for Simics common usage:
+<p>
+<dl><dt><b>Simulation</b></dt><dd>At the Simics prompt, you can run the simulation with the
+<b><a name="label85">continue</a></b> (<b><a name="label86">c</a></b>) command, followed by
+the number of steps you want to run. If no argument is provided, the simulation
+will run until <tt>control-C</tt> is pressed in the Simics console.
+<p>
+You can also use <b><a name="label87">stepi</a></b> (<b><a name="label88">si</a></b>) to make
+the simulation progress step by step. You can use the
+<b><a name="label89">step-cycle</a></b> (<b><a name="label90">sc</a></b>) command to make the
+simulation progress cycle by cycle. Note that as long as you do not use timing
+models, <b>si</b> and <b>sc</b> are equivalent. For more information,
+see chapter <a class="jdocu" href="topic82.html#label484">17</a>.</dd><dt><b>Simulation State</b></dt><dd>All processors support the <b><a name="label91">pregs</a></b> command to show the
+state of the main registers. The argument <i>-all</i> will allow you to
+inspect all the registers instead of the usual working set.
+<p>
+If the processor has floating-point registers, <b><a name="label92">pfregs</a></b> can
+be used to print them out. By default, the <b>pregs</b> command (and other
+commands dependent on the CPU) uses the current CPU scheduled by the
+simulation. You can change the current selected CPU by using the
+<b><a name="label93">pselect</a></b> command. This won't affect the simulation
+scheduling.
+<p>
+You can inspect and change the contents of a register by using the
+<b>read/<a name="label94">write-reg</a></b> <a name="label95"></a> commands. Using
+<b><a name="label96">%</a></b> is equivalent to the <b>read-reg</b> command (i.e.,
+<tt>%pc, %eax, ...</tt>). You can inspect and change the contents of the memory
+by using the commands <b><a name="label97">get</a></b>, <b><a name="label98">x</a></b> and
+<b><a name="label99">set</a></b>.
+<p>
+To get statistics concerning the current CPU, you can use the
+<b><a name="label100">ptime</a></b> and <b><a name="label101">pstats</a></b> commands.</dd><dt><b>Scripts</b></dt><a name="label102"></a><dd>Simics can execute Python commands directly at the prompt; they just need
+to be prefixed by the symbol @. You can also evaluate Python expressions in the
+middle of a command by placing them between backquotes:
+<p>
+<pre class="jdocu_small" style="color: black">
+    <i>--- this is Python's <b><i>print()</i></b></i>
+simics&gt; <b>@print conf.cpu0.name</b>
+cpu0
+    <i>--- this is CLI's <b>echo</b></i>
+simics&gt; <b>echo `conf.cpu0.name`</b>
+cpu0
+simics&gt;
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> '@' will only be recognized as starting a python command if it is the
+<em>first</em> character on the command-line. It will be treated normally
+otherwise.<hr class="jdocu_note">
+<p>
+Simics can load both Simics scripts (a file containing a list of acceptable
+commands for the Simics frontend) or Python script with the commands
+<b><a name="label103">run-command-file</a></b> and
+<b><a name="label104">run-python-file</a></b>. You can read more about Simics scripting
+in chapter <a class="jdocu" href="topic35.html#label187">8</a>.</dd><dt><b>Modules</b></dt><a name="label105"></a><dd>Simics usually handles modules automatically when loading a
+configuration. You may however want to load a specific module by yourself
+with the <b><a name="label106">load-module</a></b> command.
+<p>
+The modules currently loaded are available through the
+<b><a name="label107">list-modules</a></b> command. If a module fails to be loaded, it
+will be listed by the <b><a name="label108">list-failed-modules</a></b> command, along
+with an explanation of the problem. You can use the <i>-v</i> argument to
+get the exact error message preventing the module from loading.</dd><dt><b>Command-Line Interface</b></dt><a name="label109"></a><dd>You can ask Simics to run command every time it returns at the prompt,
+using the <b><a name="label110">display</a></b> command. For example:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>display ptime</b>
+display 1: ptime
+simics&gt; <b>si</b>
+[cpu0] v:0xfffffffff0000024 p:0x000007fff0000024  nop
+processor                 steps             cycles    time [s]
+cpu0                          1                  1         0.0
+simics&gt; <b>c 100</b>
+[cpu0] v:0x000007fff0102190 p:0x000007fff0102190  sub %o2, 8, %o2
+processor                 steps             cycles    time [s]
+cpu0                        101                101         0.0
+simics&gt; <b>undisplay 1</b>
+simics&gt;
+</pre>
+<p>
+To stop the command from being run every time, use <b><a name="label111">undisplay</a>
+<i>number</i></b> where <i>number</i> is the number that was returned
+by <b>display</b> for this specific command (in the example, 1).
+<p>
+The <b><a name="label112">print</a></b> command allows you to print out a value in
+different ways (binary, hexadecimal, etc.). You can control the way the
+command-line handles numbers with the following commands:
+<b>output-radix</b> allows you to choose a default base for printing
+numbers; <b>digit-grouping</b> can be used to group digits in a number in a
+more readable way.
+<p>
+The CLI also supports the following Unix shell-like commands:
+<b><a name="label113">cd</a></b>, <b><a name="label114">date</a></b>,
+<b><a name="label115">dirs</a></b>, <b><a name="label116">echo</a></b>,
+<b><a name="label117">ls</a></b>, <b><a name="label118">popd</a></b>,
+<b><a name="label119">pushd</a></b>, <b><a name="label120">pwd</a></b>. All of them are
+performed of the <b>host</b> machine, not on the simulated machine.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic22.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic24.html">Next</a></span></p>
+</body>
+</html>

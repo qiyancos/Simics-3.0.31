@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Accessing Host Ethernet Interfaces</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(127, true);
+</script>
+<a name="label296"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic45.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic47.html">Next</a></span></p>
+<h4 class="jdocu">10.1&nbsp;&nbsp;&nbsp;Accessing Host Ethernet Interfaces</h4 class="jdocu">
+
+
+<p>
+When connecting to a real network using other connection types than port
+forwarding, Simics needs low-level access to the simulation host's Ethernet
+interfaces to send and receive packets. However, operating systems do not
+usually allow user programs low-level access to Ethernet interfaces. You
+therefore have to configure the simulation host to allow Simics low-level
+access.
+<p>
+
+This can be done in two ways. You can give administrative privileges
+to a small helper program called <tt><a name="label297">openif</a></tt>, which
+will access the simulation host's Ethernet interface for Simics. This
+is called <em>raw</em> access in Simics. Or, you can create a virtual
+Ethernet (<a name="label298">TAP</a><a name="label299"></a>) interface that Simics
+can access with user privileges. This is called <em>TAP</em> access in
+Simics.
+<p>
+
+
+Different connection types can use different access types. Ethernet bridging
+connections can use either raw or TAP access, IP routing connections can only
+use raw access, and host connections can only use TAP access.
+<p>
+To tell Simics to use raw or TAP access when creating an Ethernet bridging
+connection, specify <i>raw</i> or <i>tap</i> as the <i>host-access</i>
+argument to <b>connect-real-network-bridge</b>.
+<p>
+<a name="label300"></a><h5 class="jdocu">10.1.1&nbsp;&nbsp;&nbsp;Raw Access</h5 class="jdocu">
+
+
+<p>
+With raw access, Simics uses a small helper program, <tt>openif</tt>, to access
+the simulation host's Ethernet interfaces. <tt>openif</tt> is launched from
+Simics and executes with administrative privileges. This way you do not need
+administrative privileges to connect Simics to the real network once
+<tt>openif</tt> has been installed. <em>Simics Installation Guide</em>
+contains instructions for installing <tt>openif</tt>.
+<p>
+If <tt>openif</tt> is not installed in its default location, you can use the
+command <b>network-helper</b> to tell Simics where to find it. This command
+needs to be issued before connecting to the real network, for example:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>network-helper /usr/local/sbin/openif</b>
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> If <tt>openif</tt> is not installed so that it will run with
+administrative privileges, the connection to the real network will fail.<hr class="jdocu_note">
+<p>
+Usually, an Ethernet interface only receives packets addressed to the host
+itself, and ignores other packets. However, when you use Ethernet bridging
+without MAC address translation and raw access, the interface also needs to
+receive packets addressed to the simulated machines. This can be achieved be
+enabling promiscuous mode on the interface. On Linux, this is done by
+specifying the <tt>promisc</tt> argument to <tt>ifconfig</tt>, which requires
+administrative privileges. For example, if you want to use the <tt>eth0</tt>
+interface:
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>ifconfig eth0 promisc</b>
+</pre>
+<p>
+Enabling promiscuous mode on an interface means that the operating system will
+have to process all incoming packets. On a network with a lot of traffic, this
+may therefore cause a performance degradation on the simulation host. To
+disable promiscuous mode when it is no longer needed, use the <tt>-promisc</tt>
+argument to <tt>ifconfig</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>ifconfig eth0 -promisc</b>
+</pre>
+<p>
+
+<a name="label301"></a><h5 class="jdocu">10.1.2&nbsp;&nbsp;&nbsp;TAP Access</h5 class="jdocu">
+
+
+<p>
+<hr class="jdocu_note"><b>Note:</b> TAP access is not supported on Solaris host.<hr class="jdocu_note">
+<p>
+With TAP access Simics will connect the simulated network to a virtual Ethernet
+(TAP) interface provided by the operating system. Accessing the TAP interface
+does not require administrative privileges, so once the TAP interface has been
+configured you can connect Simics to the real network without administrative
+privileges.
+<p>
+The TAP interface can either be bridged to a real Ethernet interface to create
+an Ethernet bridging connection, or configured with an IP address to create a
+host connection. Either way, creating a TAP interface that Simics can use is
+done in two simple steps. These commands require administrative privileges:
+<p>
+<ol>
+<p>
+    <li>Give the user running the simulation access to the
+    <tt>/dev/net/tun</tt> device.
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>chmod 666 /dev/net/tun</b>
+</pre></li>
+<p>
+   <li>Create the TAP interface. Here the name of the user that will be using
+   the TAP interface is assumed to be <tt>joe</tt> and the name of the TAP
+   interface will be <tt>sim_tap0</tt>, but you should of course replace them
+   with the correct user name and the name of the TAP interface that you want.
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b><a name="label302">tunctl</a> -u joe -t sim_tap0</b>
+Set 'sim_tap0' persistent and owned by uid 4711
+</pre></li>
+<p>
+</ol>
+<p>
+To remove a TAP interface when you are done with it, use the <tt>-d</tt>
+argument to <tt>tunctl</tt>. Again, this requires administrative privileges:
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>tunctl -d sim_tap0</b>
+Set 'sim_tap0' nonpersistent
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <tt><a name="label303">tunctl</a></tt> utility is usually not present in
+default Linux installations, so you may therefore have to install it
+yourself.  It is usually included in the User Mode Linux package. For
+convenience, a pre-built version is included in
+<tt>[simics]/</tt><em>hosttype</em><tt>/sys/bin/</tt> (replace
+<tt></tt><em>hosttype</em><tt></tt> with <tt>x86-linux</tt> or
+<tt>amd64-linux</tt> depending on your host type).<hr class="jdocu_note">
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic45.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic47.html">Next</a></span></p>
+</body>
+</html>

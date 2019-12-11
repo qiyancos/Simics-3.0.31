@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Modules, Classes, and Objects</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(45, true);
+</script>
+<a name="label94"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+<h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Modules, Classes, and Objects</h3 class="jdocu">
+
+
+<p>
+DML hides much of Simics concepts to make the development of device models
+easier. For example, DML takes care of all module initialization, so nothing
+needs to be performed when a DML module is loaded or unloaded in Simics.
+<p>
+Each DML file mentioned in the module's <tt>Makefile</tt> defines a Simics
+class automatically. The class name is provide by the <tt>device</tt> statement
+at the beginning of the DML file:
+<p>
+<pre class="jdocu_small" style="color: black">device my-device;</pre>
+<p>
+Unless they are <tt>static</tt>, all data declared in the DML file are
+automatically defined as object-scope data, which means that DML defines
+automatically the class structure from which objects will be instantiated. For
+example:
+<p>
+<pre class="jdocu_small" style="color: black">data int link_id;</pre>
+<p>
+defines a <i>link_id</i> variable in the object structure.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+</body>
+</html>

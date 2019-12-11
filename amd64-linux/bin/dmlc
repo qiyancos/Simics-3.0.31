@@ -1,0 +1,27 @@
+#!/bin/sh
+# dmlc loader script
+
+bindir=`dirname "$0"`
+
+case `uname -s` in
+    CYGWIN*)
+	bindir=`cygpath --unix "$bindir"`
+	;;
+esac
+
+libdir="$bindir/../lib"
+hostdir=`dirname "$bindir"`
+basedir=`dirname "$hostdir"`
+
+SIMICS_HOST=`basename "$hostdir"`
+export SIMICS_HOST
+
+if [ "x$DMLC_LICENSE_FILE" != "x" ]
+then
+    LICENSE="-license-file $DMLC_LICENSE_FILE"
+fi
+"$basedir/scripts/start-simics" -q $LICENSE -P modelbuilder -python "$bindir/dmlcload.py" `$CYGWRAP echo $@`
+
+status=$?
+
+exit $status

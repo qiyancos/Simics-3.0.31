@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Importing a Real Disk into Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(89, true);
+</script>
+<a name="label185"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic33.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic35.html">Next</a></span></p>
+<h4 class="jdocu">7.4&nbsp;&nbsp;&nbsp;Importing a Real Disk into Simics</h4 class="jdocu">
+
+
+<a name="label186"></a>
+<p>
+It is possible to create an image by copying data from a real disk. If the disk
+to be copied contains an operating system, you must have at least two operating
+systems on the machine, since the partition that should be copied should
+<b>not</b> be in use or mounted.
+<p>
+Before making a copy of a disk, some information about the disk should be
+gathered:
+<p>
+<ul>
+  <li>The number of disk cylinders</li>
+  <li>The number of sectors per track</li>
+  <li>The number of disk heads</li>
+  <li>The offset where the specific partition starts (optional)</li>
+  <li>The size of a specific partition (optional)</li>
+</ul>
+<p>
+
+These numbers can be obtained using the <tt>fdisk</tt> utility.
+<p>
+
+
+You can choose to make a copy of the whole disk or just a partition from the
+disk using the <tt>dd</tt> utility. Example:
+<pre class="jdocu_small" style="color: black">
+dd if=/dev/hdb of=hdb_disk.img
+</pre>
+  <p>
+
+<hr class="jdocu_note"><b>Note:</b> To save space, you may want to compress the disk image using the
+<tt>craff</tt> utility. See section <a class="jdocu" href="topic31.html#label164">7.1.7</a>.
+<hr class="jdocu_note">
+<p>
+The next step is to prepare the target configuration so it can use the new
+disk. For x86 targets, the <i>dredd</i> machine has a
+<tt>$disk_files</tt> parameter that can be set to a list of files to use in
+the image object of the boot disk, and also <tt>$disk_size</tt> that specifies
+the size of that disk.
+<pre class="jdocu_small" style="color: black">
+$disk_size = 1056964608
+$disk_files = [["hdb_disk.img", "ro", 0, 1056964608, 0]]
+</pre>
+<p>
+For other machines, that do not have these parameters, attributes in the the
+disk object and its corresponding image objects have to be set instead.
+<p>
+Make sure to set the <tt>$disk_size</tt> correctly to reflect the size of the
+disk that has been copied. If only a partition has been copied, the offset
+where the partition starts, and the size of the partition, should be set in the
+file list. If the whole disk has been copied, the offset is zero and the size
+should be the size of the whole disk. Several partitions can be combined to
+form the complete disk, as described in section
+<a class="jdocu" href="topic31.html#label161">7.1.6</a>.
+<p>
+For an x86 machine, the system component will automatically set the BIOS
+geometry for the <tt>C:</tt> disk. It can also be set manually:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.cmos-hd C 1023 16 63</b>
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic33.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic35.html">Next</a></span></p>
+</body>
+</html>

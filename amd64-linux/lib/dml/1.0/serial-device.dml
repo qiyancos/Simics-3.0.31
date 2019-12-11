@@ -1,0 +1,54 @@
+dml 1.0;
+
+header %{
+#include <simics/devs/serial-device.h>
+%}
+
+typedef struct {
+        int  (*connect_device)(conf_object_t *obj, conf_object_t *dev);
+        void (*disconnect_device)(conf_object_t *obj, conf_object_t *dev);
+        int (*send_char)(conf_object_t *obj, int id, int ch);
+        void (*receive_ready)(conf_object_t *obj, int id);
+} serial_link_interface_t;
+
+typedef struct {
+        int (*write)(conf_object_t *obj, int value);
+        void (*receive_ready)(conf_object_t *obj);
+} serial_device_interface_t;
+
+typedef struct {
+    void (*cts)(conf_object_t *obj, int status);
+    void (*dsr)(conf_object_t *obj, int status);
+
+    void (*ring)(conf_object_t *obj, int status);
+
+    void (*carrier)(conf_object_t *obj, int status);
+
+    void (*got_break)(conf_object_t *obj);
+
+    void (*got_frame_error)(conf_object_t *obj);
+} rs232_device_interface_t;
+
+typedef int stop_bits_t;
+extern stop_bits_t Stop_Bits_1;
+extern stop_bits_t Stop_Bits_1p5;
+extern stop_bits_t Stop_Bits_2;
+
+typedef int parity_mode_t;
+extern parity_mode_t Parity_None;
+extern parity_mode_t Parity_Even;
+extern parity_mode_t Parity_Odd;
+
+typedef struct {
+    void (*set_baudrate)(conf_object_t *obj, int rate, int commit);
+    void (*set_data_bits)(conf_object_t *obj, int bits, int commit);
+    void (*set_stop_bits)(conf_object_t *obj, stop_bits_t stop_bits,
+                          int commit);
+    void (*set_parity_mode)(conf_object_t *obj, parity_mode_t parity_mode,
+                            int commit);
+
+    void (*set_dtr)(conf_object_t *obj, int status);
+    void (*set_rts)(conf_object_t *obj, int status);
+
+    void (*set_break)(conf_object_t *obj, int status);
+} rs232_console_interface_t;

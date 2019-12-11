@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_remaining_stall_time()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(78, true);
+</script>
+<a name="label388"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic48.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic50.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_remaining_stall_time()</h4 class="jdocu">
+
+<a name="label389"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label390"></a><b>SIM_instruction_remaining_stall_time</b> &#8212; get stalling time</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">cycles_t
+SIM_instruction_remaining_stall_time(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Returns the remaining time in cycles the instruction <i>ii</i> has
+   to stall.  Only applicable if <b><i>SIM_instruction_status()</i></b>
+   <tt>&amp;</tt> <tt>Sim_IS_Stalling</tt> is non-zero.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is
+   illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The stalling time in cycles.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic48.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic50.html">Next</a></span></p>
+</body>
+</html>

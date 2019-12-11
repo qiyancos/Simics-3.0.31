@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/Fiesta Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/Fiesta Overview</h2 class="jdocu">
+
+
+<p>
+<a name="label20"></a><h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics/Fiesta models the Sun Blade 1500 workstation, also called Taco, with an
+UltraSPARC-IIIi processor. The other workstation based on the Fiesta
+architecture, Sun Blade 2500 (Enchilada), is not supported in Simics. Taco
+supports a single processor and up to 8GB of memory. The Fiesta system is build
+around the Tomatillo host-to-PCI bridge, and the ALi MD1535D+ south bridge with
+several on-board devices, such as IDE harddisks and an ATAPI CD-ROM.
+<p>
+Virtutech does not provide any disk images with Solaris for Fiesta, due
+to licensing issues. However, scripts are included for installing Solaris 8,
+9 or 10 on the virtual machine. Installing Solaris is described in chapter
+<a class="jdocu" href="topic5.html#label380">6.1</a>.
+
+<a name="label21"></a><h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Supported Hardware</h3 class="jdocu">
+
+
+<p>
+A Taco workstation has several on-board devices on the mother board as well
+as five empty PCI slots. Not all devices are currently supported in Simics,
+a full list can be found in chapter <a class="jdocu" href="topic6.html#label382">7</a>, Limitations.
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>On-board Devices</b></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Tomatillo Host-to-PCI bridge</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">MD1535D+ South Bridge</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Two IDE controllers</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Two serial ports</td><td class="jdocu_noborder">(NS16550)</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Supported PCI Devices</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">'ce'</td><td class="jdocu_noborder">Gb Ethernet controller</td><td class="jdocu_noborder">(Cassini+)</td></tr>
+<tr><td class="jdocu_noborder">'bge'</td><td class="jdocu_noborder">Gb Ethernet controller</td><td class="jdocu_noborder">(BCM5703C)</td></tr>
+<tr><td class="jdocu_noborder">'bge'</td><td class="jdocu_noborder">Dual Gb Ethernet controller</td><td class="jdocu_noborder">(BCM5704C)</td></tr>
+<tr><td class="jdocu_noborder">'hme'</td><td class="jdocu_noborder">Ethernet controller</td><td class="jdocu_noborder">(Cheerio)</td></tr>
+<tr><td class="jdocu_noborder">'isp'</td><td class="jdocu_noborder">SCSI controller</td><td class="jdocu_noborder">(ISP1040)</td></tr>
+<tr><td class="jdocu_noborder">'pgx64'</td><td class="jdocu_noborder">24-Bit Frame Buffer</td><td class="jdocu_noborder">(pgx64)</td></tr>
+<tr><td class="jdocu_noborder">'qlc'</td><td class="jdocu_noborder">Fibre-Channel controller</td><td class="jdocu_noborder">(ISP2200)</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder">PCI-to-PCI bridge</td><td class="jdocu_noborder">(i21152)</td></tr>
+</table>
+<p>
+A good guide to the Sun Enterprise servers and what boards and devices that are
+supported can be found in the "Sun System Handbook", available online at:
+<a class="jdocu" href="http://sunsolve.sun.com/handbook_pub/" target="_top">http://sunsolve.sun.com/handbook_pub/</a>
+<p>
+<hr class="jdocu_note"><b>Note:</b> 
+The Simics/Fiesta model does not currently support a keyboard or mouse,
+and thus the pgx64 card cannot be used to create an interactive X session.
+It can be used as a passive display by starting an X server in no mouse
+and no keyboard mode. 
+<hr class="jdocu_note">
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

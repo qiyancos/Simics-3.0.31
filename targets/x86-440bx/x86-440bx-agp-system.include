@@ -1,0 +1,80 @@
+if not defined freq_mhz      {$freq_mhz      = 20}
+if not defined cpi           {$cpi           = 1}
+if not defined disk_size     {$disk_size     = 20496236544}
+if not defined disk_image    {}
+if not defined rtc_time      {$rtc_time      = "2002-09-18 10:00:00 UTC"}
+if not defined num_cpus      {$num_cpus      = 1}
+if not defined memory_megs   {$memory_megs   = 256}
+if not defined cpu_class     {$cpu_class     = "pentium-4"}
+if not defined text_console  {$text_console  = "no"}
+if not defined use_acpi      {$use_acpi      = TRUE}
+
+###
+
+add-directory "%simics%/targets/x86-440bx/images"
+
+import-isa-components
+import-pci-components
+import-std-components
+import-x86-components
+
+if ($num_cpus > 15) {
+        $bios = "rombios-2.65.2.9-no-mp-tables"
+        echo "The system has more than 15 cpus, so a special, less-tested BIOS will be used."
+        echo "Only ACPI-aware OSes such as Linux 2.6 will boot correctly in SMP mode."
+} else {
+        $bios = "rombios-2.65.2.6"
+}
+
+$system = (create-x86-apic-system memory_megs = $memory_megs
+                                  rtc_time = $rtc_time
+                                  acpi = $use_acpi
+                                  break_on_reboot = TRUE
+                                  bios = $bios)
+
+$count = 0
+$create_command = ("create-" + $cpu_class + "-cpu")
+while $count < $num_cpus {
+    $cpu[$count] = ($create_command cpu_frequency = $freq_mhz cpi = $cpi)
+    $system.connect ("cpu" + $count) $cpu[$count]
+    $count += 1
+}
+
+$nb = (create-north-bridge-443bx-agp)
+$vga = (create-agp-voodoo3)
+$nb.connect agp-slot0 $vga
+
+$sb = (create-south-bridge-piix4)
+$sio = (create-std-super-io)
+if $disk_image {
+    if (not `SIM_lookup_file(simenv.disk_image)`) {
+        echo "Disk image file not found: " + $disk_image
+        echo
+        exit 1
+    }
+    $disk = (create-std-ide-disk size = $disk_size
+                                 file = $disk_image)
+} else {
+    $disk = (create-std-ide-disk size = $disk_size)
+}
+
+if $text_console == "no" {
+    $console = (create-std-graphics-console)
+    $console.connect mouse $sio mse-console
+} else {
+    $console = (create-std-text-graphics-console)
+}
+$console.connect keyboard $sio kbd-console
+$console.connect $vga
+
+$system.connect chipset $nb
+$system.connect interrupt $sb
+$system.connect reset $sio
+
+$nb.connect pci-slot7 $sb
+
+$sb.connect $sio
+$sb.connect ide0-master $disk
+$sb.connect ide1-master (create-std-ide-cdrom)
+
+$machine_defined = 1

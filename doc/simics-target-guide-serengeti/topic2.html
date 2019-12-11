@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label22"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting Serengeti machines are located in the
+<tt>[workspace]/targets/serengeti/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/serengeti/</tt>.
+<p>
+
+<p>
+<a name="label23"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Abisko</h3 class="jdocu">
+
+
+<p>
+Abisko is a Sun Fire 6800 server with a single UltraSPARC-III Cu processor
+running at 75 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label27">3.3</a>. An
+operating system must be installed on abisko before it can be used.
+<p>
+<a name="label24"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Abisko Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>abisko-common.simics</tt></b></dt><dd>Starts the Abisko machine with the default configuration.</dd><dt><b><tt>abisko-gcache-common.simics</tt></b></dt><dd>Default Abisko machine with a <i>g-cache</i> cache model connected.</dd><dt><b><tt>abisko-ma-common.simics</tt></b></dt><dd>Default Abisko machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>abisko-ooo-common.simics</tt></b></dt><dd>Default Abisko machine with a simple out-of-order timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>abisko-multi.simics</tt></b></dt><dd>Example script with two Abisko machines in the same session, connected
+by an Ethernet link.</dd><dt><b><tt>abisko-sol&lt;version&gt;-cd-install1.simics</tt></b></dt><dd>Script for installing Solaris on the simulated machine, phase 1.
+&lt;version&gt; is one of 8, 9 and 10.</dd><dt><b><tt>abisko-sol&lt;version&gt;-cd-install2.simics</tt></b></dt><dd>Script for installing Solaris on the simulated machine, phase 2.
+&lt;version&gt; is one of 8, 9 and 10.</dd><dt><b><tt>abisko-sol&lt;version&gt;-cd-install3.simics</tt></b></dt><dd>Script for installing Solaris on the simulated machine, phase 3.
+&lt;version&gt; is one of 8, 9 and 10.</dd></dl>
+<p>
+
+<p>
+
+<a name="label25"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Sarek</h3 class="jdocu">
+
+
+Sarek is a Sun Fire 6800 server with a single UltraSPARC-III Cu processor
+running at 75 MHz, and 256 MB of memory. It has one Ethernet adapter, one
+SCSI disk and one SCSI CD-ROM. The default configuration can be modified as
+described in section <a class="jdocu" href="#label27">3.3</a>.
+<p>
+The Sarek machine is configured for existing Solaris 8, 9 or 10 disk dumps.
+The disk dumps are only available for commercial customer with a special
+license agreement with Sun. Some common GNU utilities are installed on the disk
+images, such as <tt>bash</tt>, <tt>gcc</tt>, <tt>gmake</tt> and <tt>emacs</tt>.
+The <i>SimicsFS</i> file-system is also included.
+<p>
+Additional information:
+<ul>
+<li>Solaris 8 (7/01) and Solaris 9 (5/02) installed as "Developer System" directly on Simics.</li>
+<li>SimicsFS support.</li>
+<li>Login <tt>root</tt>, no password.</li>
+<li>Configured with static IP address 10.10.0.11, gw 10.10.0.1, when DHCP not used.</li>
+</ul>
+<p>
+<a name="label26"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;Sarek Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>sarek-common.simics</tt></b></dt><dd>Starts the Sarek machine with the default configuration.</dd><dt><b><tt>sarek-dhcp-common.simics</tt></b></dt><dd>Similar to sarek-common.simics, but gets the host name and IP address
+from the DHCP server.</dd><dt><b><tt>sarek-gcache-common.simics</tt></b></dt><dd>Default Sarek machine with a <i>g-cache</i> cache model connected.</dd><dt><b><tt>sarek-ma-common.simics</tt></b></dt><dd>Default Sarek machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>sarek-ooo-common.simics</tt></b></dt><dd>Default Sarek machine with a simple out-of-order timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>sarek-multi.simics</tt></b></dt><dd>Example script with two Sarek machines in the same session, connected
+by an Ethernet link.</dd></dl>
+<p>
+
+<p>
+
+<a name="label27"></a><h3 class="jdocu">3.3&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>abisko-common.simics</tt>, or <tt>sarek-common.simics</tt>
+scripts. Other <tt>.simics</tt> scripts may set some of the parameters
+unconditionally, and do not allow the user to override them. For example, the 
+<tt>sarek-dhcp-common.simics</tt> script will always set the
+<i>$create_network</i> variable to <tt>yes</tt>.
+<p>
+<a name="label28"></a><h4 class="jdocu">3.3.1&nbsp;&nbsp;&nbsp;abisko-common and sarek-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$create_network</b></dt><dd>Set to <tt>yes</tt> if the script should create an Ethernet link and
+connect the primary Ethernet adapter to it.</dd><dt><b>$cpu_class</b></dt><dd>The type of processor to create. Should be one of <tt>ultrasparc-iii</tt>,
+<tt>ultrasparc-iii-plus</tt>, <tt>ultrasparc-iv</tt> and
+<tt>ultrasparc-iv-plus</tt>.</dd><dt><b>$disk_size</b></dt><dd>Size of the primary hard disk. This parameter must match any disk images
+that are added to the primary disk.</dd><dt><b>$do_boot</b></dt><dd>Set to <tt>no</tt> to stop at OBP prompt, without booting the OS.</dd><dt><b>$do_login</b></dt><dd>Set to <tt>no</tt> to prevent the script from logging in as root
+automatically when the operating system has reached the login prompt.</dd><dt><b>$eth_link</b></dt><dd>The Ethernet link to connect the primary Ethernet adapter to. This
+parameter should be set when a link already exist and the
+<i>$create_network</i> parameter is <tt>no</tt>.</dd><dt><b>$hostid</b></dt><dd>The <i>hostid</i> for the simulated machine.</dd><dt><b>$freq_mhz</b></dt><dd>The clock frequency in MHz for all processors.</dd><dt><b>$host_name</b></dt><dd>The host name used by the DHCP and DNS servers for this machine This
+variable will not change the host name set for the machine on the disk
+dumps.</dd><dt><b>$ip_address</b></dt><dd>The IP address used by the DHCP and DNS servers for this machine This
+variable will not change any IP address set for the machine on the disk
+dumps.</dd><dt><b>$mac_address</b></dt><dd>MAC address of the primary Ethernet adapter.</dd><dt><b>$megs_per_cpu</b></dt><dd>The amount of system memory, in MB, for each processor.</dd><dt><b>$num_cpus</b></dt><dd>The number of processors in the machine.</dd><dt><b>$os</b></dt><dd>The operating system to boot, one of <tt>solaris10</tt>, <tt>solaris9</tt>,
+and <tt>solaris8</tt>. Requires that a matching disk dump exists.</dd><dt><b>$rtc_time</b></dt><dd>Date and time of the real-time clock at boot.</dd><dt><b>$service_node</b></dt><dd>The <i>service node</i> to use for DHCP and DNS. This parameter should be
+set when a service noce already exist and the <i>$create_network</i>
+parameter is <tt>no</tt>.</dd></dl>
+<p>
+
+<p>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

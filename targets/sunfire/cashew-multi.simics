@@ -1,0 +1,11 @@
+import-std-components
+$eth_link = (create-std-ethernet-link link)
+
+set-component-prefix b1_
+run-command-file "%script%/cashew-common.simics"
+
+$mac_address = "10:10:10:10:10:13"
+$ip_address   = "10.10.0.7"
+$host_name    = "cashew2"
+set-component-prefix b2_
+run-command-file "%script%/cashew-common.simics"

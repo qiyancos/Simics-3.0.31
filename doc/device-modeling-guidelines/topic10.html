@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Abstraction of Hardware</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(24, true);
+</script>
+<a name="label36"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Abstraction of Hardware</h2 class="jdocu">
+
+<a name="label37"></a>
+
+<p>
+   A Simics device model should be transparent to the software, so
+   that the software does not notice the difference between the model
+   and the real device.  This sets the basic level of detail for the
+   model: anything that is not visible to the software (directly or
+   indirectly) may be ignored (if not of interest for other
+   reasons). It is not necessary to model things like the current
+   status of the signals at the interface pins, hidden internal
+   hardware registers, etc., unless these can be accessed by the
+   software.  The model provides the functional behavior of the
+   device as seen by the software.
+<p>
+   <a name="label38"></a> Since Simics
+   usually controls both parties in any transactions at the hardware
+   level, hardware-hardware interfaces can usually be heavily
+   simplified.  For example, transactions on a memory bus or device
+   interconnect are usually modeled as atomic, rather than composed of
+   individual steps where buses are arbitrated, addresses written,
+   data read, etc.
+<p>
+   Another example is the standard Simics cache model: the caches hold
+   no data, they just keep track of what items are in the cache, and
+   inform the CPU model of the delay associated with each memory
+   access.  The actual data is acquired from the model of main memory,
+   regardless of what cache level the item was found in.
+<p>
+   For network interfaces, the device models can often abstract away
+   internal buffers that store data during transmission or reception:
+   each packet is sent immediately upon request, and other parts of
+   the simulation make sure it is received with the proper delay.
+<p>
+   Frequently repeated actions should be avoided in all device models.
+   In the network case, the hardware-level protocols should as far as
+   possible abstract away things like idle-traffic (packets sent to
+   ascertain that the link and/or particular devices are still there).
+   This is usually OK, since the simulator controls both the link and
+   the devices connected to it, and can check by other means that they
+   are still alive.
+<p>
+   Sometimes there are requirements on what state should be
+   inspectable in the device model, which can affect the level of
+   detail.  For example, most memory systems have a number of small
+   internal buffers that are used for temporary storage during memory
+   transactions.  If these are to be available for inspection, they
+   must be modeled somehow.  Sometimes it may be necessary to provide
+   two models with different levels of detail, allowing the user to
+   select the appropriate trade-off between accuracy and efficiency.
+<p>
+   Performance-critical transactions between devices can sometimes be
+   abstracted away by merging the devices into a single model.  As an
+   example, consider a large low-latency token ring network,
+   represented as one device model per node.  Simulating the message
+   transfer as individual hops around the ring will require a lot of
+   expensive network synchronization for the processes involved, which
+   will make the simulation run slowly.  Increasing the latency on the
+   links speeds up the simulation, but slows down the simulated
+   network instead, which could break the protocols because of
+   timeouts.  If the accuracy requirements permit, the performance of
+   such a system can be greatly improved by modeling it at a much
+   more abstract level: The ring is treated as a single device, which
+   means the forwarding of messages around the ring can be ignored,
+   allowing the model to route packages directly to the intended
+   receiver instead.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+</body>
+</html>

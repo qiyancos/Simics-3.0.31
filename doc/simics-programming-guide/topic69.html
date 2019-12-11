@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Dbuffer fundamentals</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(190, true);
+</script>
+<a name="label357"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic68.html">Previous</a> - <a class="jdocu" href="topic68.html">Up</a> - <a class="jdocu" href="topic70.html">Next</a></span></p>
+<h3 class="jdocu">14.1&nbsp;&nbsp;&nbsp;Dbuffer fundamentals</h3 class="jdocu">
+
+
+<p>
+A <em><a name="label358">dbuffer</a></em> is an opaque data structure that is
+accessed using functions that updates it or read information from it.
+Its purpose is to store blocks of data, and the dbuffer library
+doesn't try to interpret any of the data it contains.
+<p>
+The API is designed so that the implementation can be highly
+efficient, especially by making the following operations cheap:
+<p>
+<ul>
+ <li> Adding data to the beginning, end, or middle of the buffer</li>
+ <li> Removing data from the beginning, end, or middle of the buffer</li>
+ <li> Making a copy of the buffer, or parts of it</li>
+ <li> Creating new buffers, and releasing them after use</li>
+ <li> Reading the data out of the buffer</li>
+</ul>
+<p>
+All of the above mentioned operations can usually be done in constant
+time, with no copying of data already in the buffers.  For the add
+operation, it is usually necessary to copy the actual data into the
+buffer, but it is sometimes possible to reusing existing data
+pointers.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic68.html">Previous</a> - <a class="jdocu" href="topic68.html">Up</a> - <a class="jdocu" href="topic70.html">Next</a></span></p>
+</body>
+</html>

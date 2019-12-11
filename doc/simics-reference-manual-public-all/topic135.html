@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ISP1040</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(927, true);
+</script>
+<a name="label7170"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic134.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic136.html">Next</a></span></p>
+<h3 class="jdocu">ISP1040</h3 class="jdocu">
+
+
+<a name="label7171"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2670">ISP1040</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ISP1040</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The ISP1040 SCSI Controller.
+
+</dd>
+
+</dl>
+<a name="label7172"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>config_register_info</i></b></dt><a name="label7173"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[isii]*]</b>.
+<p>
+Register info for all registered configuration registers. The format for each entry is (offset, name, size, write-mask).</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label7174"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size.</dd></dl>
+<dl><dt><b><i>control_status</i></b></dt><a name="label7175"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The 'Control Status' register</dd></dl>
+<dl><dt><b><i>dma_cmd_conf</i></b></dt><a name="label7176"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+DMA Command Configuration Register</dd></dl>
+<dl><dt><b><i>dma_dat_conf</i></b></dt><a name="label7177"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+DMA Data Configuration Register</dd></dl>
+<dl><dt><b><i>expansion_rom</i></b></dt><a name="label7178"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oii]</b>.
+<p>
+ROM object, map size, and map function number for the Expansion ROM.</dd></dl>
+<dl><dt><b><i>fw_loaded</i></b></dt><a name="label7179"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if a firmware has been downloaded to the controller.</dd></dl>
+<dl><dt><b><i>fw_state</i></b></dt><a name="label7180"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Current state of the firmware</dd></dl>
+<dl><dt><b><i>host_control</i></b></dt><a name="label7181"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The 'Host Control' register</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label7182"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiii]</b>.
+<p>
+State of the interrupt pin.</dd></dl>
+<dl><dt><b><i>io_req_bios</i></b></dt><a name="label7183"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set if last io request was done using the Execute-IOCB mailbox command.</dd></dl>
+<dl><dt><b><i>io_reqs</i></b></dt><a name="label7184"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Obsolete - used for checkpoint compatibility.</dd></dl>
+<dl><dt><b><i>io_requests</i></b></dt><a name="label7185"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+List of io-requests that are handled by the controller and waiting to be sent back to the host as completed.</dd></dl>
+<dl><dt><b><i>irq_control</i></b></dt><a name="label7186"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The 'Interrupt Control' register</dd></dl>
+<dl><dt><b><i>irq_requested</i></b></dt><a name="label7187"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set when controller has a requested interrupt out-standing</dd></dl>
+<dl><dt><b><i>irq_status</i></b></dt><a name="label7188"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The 'Interrupt Status' register</dd></dl>
+<dl><dt><b><i>last_bios_address</i></b></dt><a name="label7189"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Last accessed bios address</dd></dl>
+<dl><dt><b><i>mailbox_in</i></b></dt><a name="label7190"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+List of input mailboxes</dd></dl>
+<dl><dt><b><i>mailbox_out</i></b></dt><a name="label7191"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+List of output mailboxes</dd></dl>
+<dl><dt><b><i>mappings</i></b></dt><a name="label7192"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{5:8}]|[iiiiiiiio|nii]*]</b>.
+<p>
+List of all current PCI IO and memory mappings.</dd></dl>
+<dl><dt><b><i>negotiate</i></b></dt><a name="label7193"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set if controller should do negotiation of wide/async settings with the target.</dd></dl>
+<dl><dt><b><i>next_io_request</i></b></dt><a name="label7194"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Index of the next free I/O request.</dd></dl>
+<dl><dt><b><i>nvram</i></b></dt><a name="label7195"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+NVRAM data</dd></dl>
+<dl><dt><b><i>nvram_info</i></b></dt><a name="label7196"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+State machine info for nvram control</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label7197"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>ram</i></b></dt><a name="label7198"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Contents of the RAM that holds downloaded firmware for the controller.</dd></dl>
+<dl><dt><b><i>req_queue_addr</i></b></dt><a name="label7199"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Address to start of request queue</dd></dl>
+<dl><dt><b><i>req_queue_len</i></b></dt><a name="label7200"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Length of request queue</dd></dl>
+<dl><dt><b><i>res_queue_addr</i></b></dt><a name="label7201"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Address to start of response queue</dd></dl>
+<dl><dt><b><i>res_queue_len</i></b></dt><a name="label7202"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Length of response queue</dd></dl>
+<dl><dt><b><i>scsi_bus</i></b></dt><a name="label7203"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The name of the SCSI bus that the device is connected to. This object must implement the 'scsi-bus' interface.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label7204"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The (target) id on the scsi bus for the controller itself.</dd></dl>
+<dl><dt><b><i>scsi_msg_buf</i></b></dt><a name="label7205"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The SCSI message buffer.</dd></dl>
+<dl><dt><b><i>scsi_msg_len</i></b></dt><a name="label7206"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Length of the current SCSI message.</dd></dl>
+<dl><dt><b><i>scsi_msg_pos</i></b></dt><a name="label7207"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Position in the SCSI message buffer.</dd></dl>
+<dl><dt><b><i>semaphore</i></b></dt><a name="label7208"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The 'Semaphore' register</dd></dl>
+<dl><dt><b><i>target_id</i></b></dt><a name="label7209"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The scsi id for the currently selected target.</dd></dl>
+<dl><dt><b><i>target_lun</i></b></dt><a name="label7210"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The active lun for the currently selected target.</dd></dl>
+<dl><dt><b><i>targets</i></b></dt><a name="label7211"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Per target information.</dd></dl>
+<dl><dt><b><i>write_masks</i></b></dt><a name="label7212"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Write masks for all registered configuration registers. The format for each entry is (offset, mask).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label7213"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7215">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7217">pci-header</a></b></td><td class="jdocu_noborder">print PCI device header</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7219">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label7214"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label7215"></a><a name="label7216"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ISP1040&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ISP1040&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label7217"></a><a name="label7218"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ISP1040&gt;.pci-header</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ISP1040&gt;.pci-header</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the PCI header, i.e the configuration registers.</dd>
+
+</dl>
+
+
+
+<a name="label7219"></a><a name="label7220"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ISP1040&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ISP1040&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic134.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic136.html">Next</a></span></p>
+</body>
+</html>

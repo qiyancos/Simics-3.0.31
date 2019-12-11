@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Installing Linux or another OS on Simics/ARM</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(32, true);
+</script>
+<a name="label74"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Installing Linux or another OS on Simics/ARM</h2 class="jdocu">
+
+
+<p>
+If you want to install another operating system on Simics/ARM, it must be a
+statically linked binary in either ELF format or some format that can be loaded
+straight into memory without modification.
+<p>
+If you have an ELF binary that you want to install, you use the
+<b>load-binary</b> command. It loads an ELF file into memory and performs
+the necessary relocation.  The <tt>arm-sa1110.simics</tt> script uses
+the <b>load-binary</b> command to load the Linux kernel directly into the
+memory of the simulated machine.
+<p>
+If you instead have a binary in some format that can be loaded straight into
+memory without modification, you can use the <b>load-file</b> command. The
+<tt>arm-sa1110.simics</tt> script uses the <b>load-file</b>
+command to load the RAM disk and faked bootloader information directly into the
+memory of the simulated machine.
+<p>
+If you are trying to install another Linux kernel, you must use the plain
+<tt>vmlinux</tt> file, not the <tt>Image</tt> file used to install
+Linux on a system that boots from a disk.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Standard Linux configurations for StrongARM machines will likely not
+work. Support for devices not present in <nobr>Simics/ARM</nobr> will have to
+be removed for the kernel to work. It is actually unlikely that another
+operating system than Linux will work on the arm-sa1110, especially if it
+uses or expects any particular devices to be present. <hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

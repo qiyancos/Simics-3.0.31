@@ -1,0 +1,16 @@
+dml 1.0;
+
+import "utility.dml";
+import "io-memory.dml";
+import "pci.dml";
+import "pci-common.dml";
+
+// Define the configuration registers
+bank pci_config {
+    is pci_config_type_0;
+}
+
+attribute config_registers {
+    parameter pci_config_bank = $pci_config;
+    is config_registers_attribute;
+}

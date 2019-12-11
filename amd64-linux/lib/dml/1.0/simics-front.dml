@@ -1,0 +1,118 @@
+dml 1.0;
+
+/*
+ * simics-front.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+extern int SIM_flush();
+extern int SIM_write(const void *src, int length);
+
+// int SIM_printf(const char *format, ...)
+// int SIM_printf_vararg(const char *format, va_list ap);
+
+extern int SIM_puts(const char *s);
+extern int SIM_putchar(int c);
+
+typedef void (*output_handler_t)(void *data, const char *src, size_t length);
+
+extern void SIM_add_output_handler(output_handler_t func, void *user_data);
+extern void SIM_remove_output_handler(output_handler_t func, void *user_data);
+
+extern sim_exception_t SimExc_No_Exception;
+extern sim_exception_t SimExc_General;
+extern sim_exception_t SimExc_Arithmetic;
+extern sim_exception_t SimExc_Lookup;
+extern sim_exception_t SimExc_Attribute;
+extern sim_exception_t SimExc_IOError;
+extern sim_exception_t SimExc_Index;
+extern sim_exception_t SimExc_Memory;
+extern sim_exception_t SimExc_Inquiry;
+extern sim_exception_t SimExc_InquiryOutsideMemory;
+extern sim_exception_t SimExc_InquiryUnhandled;
+extern sim_exception_t SimExc_Overflow;
+extern sim_exception_t SimExc_Syntax;
+extern sim_exception_t SimExc_Type;
+extern sim_exception_t SimExc_ZeroDivision;
+extern sim_exception_t SimExc_RuntimeError;
+extern sim_exception_t SimExc_Break;
+extern sim_exception_t SimExc_PythonTranslation;
+extern sim_exception_t SimExc_IllegalValue;
+extern sim_exception_t SimExc_ObjectNotFound;
+extern sim_exception_t SimExc_InterfacedNotFound;
+extern sim_exception_t SimExc_AttrNotFound;
+extern sim_exception_t SimExc_AttrNotReadable;
+extern sim_exception_t SimExc_AttrNotWritable;
+extern sim_exception_t SimExc_NeedInteger;
+extern sim_exception_t SimExc_NeedFloating;
+extern sim_exception_t SimExc_NeedBoolean;
+extern sim_exception_t SimExc_NeedString;
+extern sim_exception_t SimExc_NeedList;
+extern sim_exception_t SimExc_NeedDict;
+extern sim_exception_t SimExc_NeedData;
+extern sim_exception_t SimExc_NeedObject;
+typedef int sim_exception_t;
+
+extern char *SIM_native_path(const char *path);
+
+extern attr_value_t SIM_get_all_modules();
+extern attr_value_t SIM_get_all_failed_modules();
+
+extern void SIM_module_list_refresh();
+
+extern int get_compile_info(int index, int id, char *info_out);
+
+extern void SIM_frontend_exception(sim_exception_t exc_type, const char *str);
+
+extern void SIM_set_prompt(const char *prompt);
+
+extern void SIM_source_python(const char *file);
+extern void SIM_source_python_in_module(const char *file, const char *module);
+extern void SIM_run_command_file(const char *file);
+extern int  SIM_is_interactive();
+
+extern void SIM_command_has_problem();
+extern void SIM_command_clear_problem();
+extern int  SIM_command_problem_status();
+
+extern sim_exception_t SIM_clear_exception();
+extern sim_exception_t SIM_get_pending_exception();
+extern const char *SIM_last_error();
+
+extern void SIM_quit(int exit_code);
+
+extern void SIM_set_quiet(int mode);
+extern int SIM_get_quiet();
+extern void SIM_set_verbose(int mode);
+extern int SIM_get_verbose();
+extern void SIM_load_module(const char *module);
+extern void SIM_unload_module(const char *module);
+
+extern int SIM_get_batch_mode();
+
+extern const char *SIM_version();
+extern const char *SIM_version_sub();
+extern void SIM_copyright();
+extern void SIM_register_copyright(const char *str);
+extern const char *SIM_readme();
+extern void SIM_license();
+extern const char *SIM_snapshot_date();
+
+extern const char *SIM_lookup_file(const char *file);
+
+extern void SIM_add_directory(const char *directory, int prepend);
+extern void SIM_clear_directories();
+extern attr_value_t SIM_get_directories();
+
+extern const char *SIM_get_simics_home();

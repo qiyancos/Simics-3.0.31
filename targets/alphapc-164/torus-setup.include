@@ -1,0 +1,49 @@
+if not defined do_login     {$do_login = "yes"}
+if not defined do_boot      {$do_boot  = "yes"}
+if not defined ip_address   {$ip_address   = "10.10.0.10"}
+if not defined host_name    {$host_name    = "torus"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.disk].object_list['hd_image']
+
+@image.files = [["torus2-rh60.craff", 1, 0, 315463680]]
+
+if $do_boot == "yes" {
+    if $text_console == "no" {
+        echo "Note: auto-boot is not available with graphics console."
+    } else {
+        script-branch {
+            local $con = ($console.get-component-object con)
+            local $cmd = $boot_command
+            # Wait for u-boot prompt, type boot
+            $con.wait-for-string "MILO> "
+            $con.input "boot hda1:\n"
+            $con.wait-for-string "boot: "
+            $con.input "linux\n"
+        }
+    }
+}
+
+if ($do_login == "yes") and ($text_console == "yes") {
+    script-branch {
+        local $con = ($console.get-component-object con)
+    	local $ip = $ip_address
+    	# Wait for login prompt, login as root
+    	$con.wait-for-string "ogin: "
+    	$con.input "root\n"
+    	# Wait for root prompt, do ifconfig
+    	$con.wait-for-string "word: "
+    	$con.input "virtualpha\n"
+    }
+}

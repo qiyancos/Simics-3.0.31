@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Using GDB with Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(167, true);
+</script>
+<a name="label379"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic59.html">Previous</a> - <a class="jdocu" href="topic58.html">Up</a> - <a class="jdocu" href="topic61.html">Next</a></span></p>
+<h4 class="jdocu">12.2&nbsp;&nbsp;&nbsp;Using GDB with Simics</h4 class="jdocu">
+
+    
+    <a name="label380"></a>
+    <a name="label381"></a>
+    <a name="label382"></a>
+    <a name="label383"></a>
+    <a name="label384"></a>
+    <a name="label385"></a>    
+<p>
+    This chapter describes how to use <b>gdb-remote</b>, a
+    Simics module that lets you connect a GDB session running on your
+    host machine to the simulated machine using GDB's remote debugging
+    protocol, and use GDB to debug software running on the target
+    machine.
+<p>
+    If you load the <b>gdb-remote</b> module in Simics, you
+    can use the remote debugging feature of <a name="label386">GDB</a>, the GNU
+    debugger, to connect one or more GDB processes to Simics over
+    TCP/IP. In order to do this, you need a GDB compiled to support
+    the simulation's target architecture on whichever host you're
+    running. The <b><a name="label387">gdb-remote</a></b> module only
+    supports version 5.0 or later of GDB, but other versions may work
+    as well. Unfortunately GDB's remote protocol does not include any
+    version checking, so the behavior is undefined if you use other
+    versions. For information on how to obtain and compile GDB, see
+    section <a class="jdocu" href="#label393">12.2.3</a>.
+<p>
+
+    To connect a GDB session to Simics, start your Simics session and
+    run the <b>new-gdb-remote</b> command, optionally followed by
+    a TCP/IP port number, which defaults to 9123 otherwise. This will
+    automatically load the <b>gdb-remote</b> module.
+<p>
+    When a configuration is loaded, Simics will start listening to incoming
+    TCP/IP connections on the specified port. Run the simulated machine up to
+    the point where you want to connect GDB. To inspect a user process or
+    dynamically loaded parts of the kernel, the easiest solution might be to
+    insert magic instructions at carefully chosen points. For static kernel
+    debugging, a simple breakpoint on a suitable address will solve the
+    problem.
+<p>
+    <hr class="jdocu_note"><b>Note:</b> When debugging the start-up phase of an operating system, it might
+    happen that gdb gets confused by the machine state and disconnects when you
+    try to connect. In this case, execute a few instructions and try again.
+    <hr class="jdocu_note">
+<p>
+    Once Simics is in the desired state, start your GDB session, load any
+    debugging information into it, and then connect it to Simics using the
+    <b>target remote <i>host</i>:<i>port</i></b> command, where
+    <i>host</i> is the host Simics is running on, and <i>port</i> is
+    the TCP/IP port number as described above. Here is a short sample session
+    using <i>bagle</i>, a Sun UltraSPARC machine running Linux:
+<p>
+<pre class="jdocu_small" style="color: black">
+(gdb) <b>set architecture sparc:v9a</b>
+(gdb) <b>symbol-file vmlinux</b>
+Reading symbols from vmlinux...done.
+(gdb) <b>target remote localhost:9123</b>
+Remote debugging using localhost:9123
+time_init () at /usr/src/linux/include/asm/time.h:52
+(gdb)
+</pre>
+<p>
+    <hr class="jdocu_note"><b>Note:</b> For some architectures, you need to give a command to GDB
+    before connecting (the <b>set architecture</b> command in the
+    session above). These are tabulated in the reference manual's
+    section on <b>gdb-remote</b>, and will also be printed on
+    the Simics console when you run <b>new-gdb-remote</b>.<hr class="jdocu_note">
+<p>
+    From this point, you can use GDB to control the target machine by entering
+    normal GDB commands such as <b>continue</b>, <b>step</b>,
+    <b>stepi</b>, <b>info regs</b>, <b>breakpoint</b>, etc.
+<p>
+    Note that while a remote GDB session is connected to Simics, the Simics
+    prompt behaves a little differently when it comes to stopping and resuming
+    the simulation. While the GDB session is at prompt, it is impossible to
+    continue the simulation from within Simics (e.g., by using the
+    <b>continue</b> command). However, once you continue the execution from
+    GDB, you can stop it from GDB (by pressing control-C), which causes the
+    simulation to stop and makes both GDB and Simics return to their prompts,
+    or you can stop the simulation from the Simics prompt (also by pressing
+    control-C). This only makes Simics return to prompt, while GDB will still
+    think the target program is running. In this state, you should continue the
+    simulation from the Simics prompt before attempting to use GDB.
+<p>
+    You can also force GDB back to prompt using the <b>gdb0.signal 2</b>
+    command in Simics, which tells the GDB session that the simulated machine
+    got a <tt>SIGINT</tt> signal.  <b>gdb0</b> here refers to the
+    configuration object created on the fly when the GDB session connected to
+    Simics. You can connect several GDB sessions to one Simics; each connection
+    will be associated to one <b>gdb<em>nn</em></b> object.
+<p>
+    Since GDB isn't the most stable software, especially when using
+    remote debugging, it unfortunately hangs now and then. To force
+    Simics to disconnect a dead connection, you can use the
+    <b>gdb0.disconnect</b> command.
+<p>
+    Note that the <b>gdb-remote</b> module does not have any
+    high-level information about the OS being run inside Simics. This means
+    that in order to examine memory or disassemble code, the data or code you
+    want to look at has to be in the active TLB.
+<p>
+    <hr class="jdocu_note"><b>Note:</b> When using <b>gdb-remote</b> with targets supporting
+    multiple address sizes (such as x86-64 and SPARC), you must have a GDB
+    compiled for the larger address size. For SPARC, run GDB's configure script
+    with the <tt>--target=sparc64-sun-solaris2.8</tt> option.<hr class="jdocu_note">
+<p>
+
+    <a name="label388"></a><h5 class="jdocu">12.2.1&nbsp;&nbsp;&nbsp;Remote GDB and Shared Libraries</h5 class="jdocu">
+
+    
+    <a name="label389"></a>
+<p>
+    It takes some work to figure out how to load symbol tables at the
+    correct offsets for relocatable object modules in GDB. This is done
+    automatically for normal (non-remote) targets, but for the remote
+    target, you have to do it yourself. You need to find out the
+    actual address at which the shared module is mapped in the current
+    context on the simulated machine, and then calculate the offset to
+    use for GDB's <b>add-symbol-file</b> command.
+<p>
+    To find the addresses of the shared libraries mapped into a
+    process' memory space under Solaris, use the
+    <b>/usr/proc/bin/pmap <em>pid</em></b> command. The start address of
+    the text segment can be obtained from the <tt>Addr</tt> field in
+    the <tt>.text</tt> line of the output from <b>dump -h
+    <i>file</i></b>.
+<p>
+    Under Linux, the list of <a name="label390">memory mappings</a> can be found in the
+    file <tt>/proc/</tt><em>pid</em><tt>/maps</tt> (plain text format). The
+    <tt>VMA</tt> column of the <tt>.text</tt> line of the output from
+    <b>objdump -h <i>file</i></b> contains the start address of the text
+    segment.
+<p>
+    Using these two values, <i>map address</i> and <i>text address</i>, you
+    should use <i>map address</i> + <i>text address</i> as the offset to
+    <b>add-symbol-file</b> (it has to be done this way to compensate for
+    how GDB handles symbol loading).
+<p>
+    The following example uses a SPARC running Linux (<tt>sim-sh#</tt> denotes
+    the shell in the simulated computer):
+<p>
+<pre class="jdocu_small" style="color: black">
+sim-sh# <b>ps</b>
+  PID TTY          TIME CMD
+    :
+  461 ttyS0    00:00:00 bash
+sim-sh# cat /proc/461/maps
+0000000000010000-0000000000060000 r-xp 0000000000000000 08:11 90115  /bin/bash
+000000000006e000-0000000000076000 rwxp 000000000004e000 08:11 90115  /bin/bash
+    :
+0000000070040000-0000000070138000 r-xp 0000000000000000 08:11 106505 /lib/libc-2.1.3.so
+0000000070138000-0000000070140000 ---p 00000000000f8000 08:11 106505 /lib/libc-2.1.3.so
+0000000070140000-000000007014e000 rwxp 00000000000f0000 08:11 106505 /lib/libc-2.1.3.so
+    :
+sim-sh# <b>objdump -h /lib/libc-2.1.3.so</b>
+
+/lib/libc-2.1.3.so:     file format elf32-sparc
+
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+    :
+ 14 .text         000ce338  000000000001e400  000000000001e400  0001e400  2**9
+</pre>
+<p>
+    From this output, we derive that the bash process with PID 461 has
+    <tt>/lib/libc-2.1.3.so</tt> located at starting address
+    <tt>0x70040000</tt>. The <tt>.text</tt> symbols starts at address
+    <tt>0x1e400</tt>, so if we connect GDB to Simics we have to add
+    the symbols with an offset of <tt>0x70040000 + 0x1e400 =
+    0x7005e400</tt>. Before running the following commands, we stopped
+    Simics using control-C while it was executing code in the bash
+    process:
+<p>
+<pre class="jdocu_small" style="color: black">
+(gdb) <b>dir ~/glibc-2.1.2/malloc</b>
+Source directories searched: /home/joe/glibc-2.1.2/malloc:$cdir:$cwd
+(gdb) <b>add-symbol-file libc.so.6 0x7005e400</b>
+add symbol table from file "libc.so.6" at
+        .text_addr = 0x7005e400
+(y or n) <b>y</b>
+Reading symbols from libc.so.6...done.
+(gdb) <b>target remote localhost:9123</b>
+Remote debugging using localhost:9123
+__libc_malloc (bytes=0x14) at malloc.c:2691
+2691        if (victim == q)
+(gdb) <b>next</b>
+2693          q = next_bin(q);
+(gdb)
+</pre>
+<p>
+    
+    <a name="label391"></a><h5 class="jdocu">12.2.2&nbsp;&nbsp;&nbsp;Using GDB with Hindsight</h5 class="jdocu">
+
+    
+    <a name="label392"></a>
+<p>
+    <b>gdb-remote</b> supports an extension to the GDB
+    remote protocol that allows the debugger to control the Hindsight
+    functions in Simics. An unmodified GDB does not know about this
+    extension, however; if you compile GDB yourself, you will need to
+    start from patched sources, available at
+    <a class="jdocu" href="https://www.simics.net/pub/" target="_top">https://www.simics.net/pub/</a> (see section <a class="jdocu" href="#label393">12.2.3</a>). Some Simics packages come with a
+    pre-compiled GDB with Hindsight support; you can find it in
+    <tt></tt><i>host</i><tt>/sys/bin/</tt>.
+<p>
+    The patch adds a number of Hindsight commands to GDB; they all
+    have the <b>reverse-</b> prefix, and are more or less just the
+    reverse version of the standard commands:
+<p>
+    <dl><dt><b>reverse-continue</b></dt><dd>Run in reverse until a breakpoint or watchpoint is hit, or to the
+            point where Hindsight runs out of history.</dd><dt><b>reverse-next</b></dt><dd>Run in reverse and stop at the previous source code line.  Will
+            skip subfunction calls.</dd><dt><b>reverse-nexti</b></dt><dd>Run in reverse and stop at the previous instruction.  Will skip
+            subfunction calls.</dd><dt><b>reverse-step</b></dt><dd>Run in reverse and stop at the previous source code line.  Will
+            enter subfunction calls.</dd><dt><b>reverse-stepi</b></dt><dd>Run in reverse and stop at the previous instruction.  Will enter 
+            subfunction calls.</dd><dt><b>reverse-finish</b></dt><dd>Run in reverse till the point where the current function is
+            called.</dd></dl>
+<p>
+    Normal break- and watchpoints set with <b>break</b> and <b>watch</b>
+    will also be triggered when running in reverse using <b>reverse-continue</b>
+<p>
+    A small example of how to use <b>reverse-next</b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+22        for (i = 0; i &lt; 10; i++)
+(gdb) <b>p i</b>
+$2 = 0
+(gdb) <b>n</b>
+24            c = foo (i) + c;
+(gdb) <b>p i</b>
+$3 = 1
+(gdb) <b>reverse-next</b>
+22        for (i = 0; i &lt; 10; i++)
+(gdb) <b>p i</b>
+$4 = 0
+</pre>
+<p>
+    The amount of history that Hindsight keeps is limited; it is only possibly
+    to reverse back to the point where Hindsight was started.  If GDB recognizes
+    that Hindsight has ran out of history, it will report an error.  Note that
+    this is not a fatal error, and the debugging session can continue, without
+    the possibility to reverse further than to the point where GDB reported the
+    error.
+<p>
+<pre class="jdocu_small" style="color: black">
+(gdb) reverse-continue 
+Continuing.
+
+No more history to reverse further.
+_start () at start.c:17
+17      {
+</pre>
+<p>
+    
+    <a name="label393"></a><h5 class="jdocu">12.2.3&nbsp;&nbsp;&nbsp;Compiling GDB</h5 class="jdocu">
+
+
+<a name="label394"></a>
+<a name="label395"></a>
+<p>
+If you do not want to (or cannot) use one of the GDB executables in
+<tt></tt><i>host</i><tt>/sys/bin/</tt>, you will most likely have to
+compile GDB from source, even if your system already has GDB
+installed. The reason for this is that a given GDB executable is
+specialized both for the architecture of the computer you run it on
+(host), and the architecture of the computer that runs the programs
+you want to debug (target). Any GDB already installed on your computer
+will have target identical to host, but this is often not what you
+want when your target is a simulated machine.
+<p>
+The first step is to get the GDB source code. You can either get the
+unmodified GDB from <a class="jdocu" href="ftp://ftp.gnu.org/" target="_top">ftp://ftp.gnu.org/</a>, or a
+Hindsight-aware GDB from <a class="jdocu" href="https://www.simics.net/pub/" target="_top">https://www.simics.net/pub/</a>. In
+either case, the source will be packaged in a <tt>.tar.gz</tt>
+file.
+<p>
+The second step is to make sure you have all the tools necessary to
+compile GDB, such as GNU Make and a C compiler. On a Linux or Solaris
+system, you probably have them already. On Windows, you will have to
+install Cygwin; get it at <a class="jdocu" href="http://www.cygwin.com/" target="_top">http://www.cygwin.com/</a>.
+<p>
+That done, unpack and configure GDB like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+~&gt; <b>tar zxfv gdb-6.3.tar.gz</b>
+~&gt; <b>cd gdb-6.3</b>
+~/gdb-6.3&gt; <b>./configure --target=powerpc64-elf-linux</b>
+</pre>
+<p>
+(On Windows, be sure to enter these commands in the <b>bash</b>
+shell installed as part of Cygwin.)
+<p>
+The <b>--target</b> flag to <b>configure</b> specifies which
+target architecture your new GDB binary will be specialized for (in
+this example, a 64-bit PowerPC). These flags are tabulated in the
+reference manual's section on <b>gdb-remote</b>, and will also
+be printed on the Simics console when you run
+<b>new-gdb-remote</b>.
+<p>
+<pre class="jdocu_small" style="color: black">
+~/gdb-6.3&gt; <b>make</b>
+</pre>
+<p>
+The build process takes a while; when done, it will have left a gdb
+executable in the "gdb" subdirectory. You can execute it directly from
+that location:
+<p>
+<pre class="jdocu_small" style="color: black">
+~/gdb-6.3&gt; <b>./gdb/gdb</b>
+</pre>
+<p>
+
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic59.html">Previous</a> - <a class="jdocu" href="topic58.html">Up</a> - <a class="jdocu" href="topic61.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Debugging</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(43, true);
+</script>
+<a name="label78"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+<h4 class="jdocu">4.6&nbsp;&nbsp;&nbsp;Debugging</h4 class="jdocu">
+
+
+<p>
+<hr class="jdocu_note"><b>Note:</b> Some steps in this section require Hindsight.
+However, you will grasp the basic debugging commands even if Hindsight is
+not available.<hr class="jdocu_note">
+<p>
+This section demonstrates some source-level debugging facilities that
+Simics provides.
+<p>
+Your Simics distribution contains an
+example code snippet called <tt>debug_example.c</tt>.
+<p>
+Copy the source file and corresponding compiled executable into your
+workspace using the following commands.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>!cp [simics]/targets/ebony/debug_example.c .</b>
+simics&gt;  <b>!cp [simics]/targets/ebony/images/debug_example .</b>
+simics&gt;  <b>c</b>
+</pre>
+<p>
+Replace <tt>[simics]</tt> with the Simics installation directory.
+<p>
+
+We recommend opening the file <tt>debug_example.c</tt> in an
+editor of your choice to easier follow the debugging example.
+This file contains the code that we are going to debug.
+The program is supposed to print some information about
+the users on a system.
+<p>
+In the previous section we copied the executable into the simulated
+system by using <i>SimicsFS</i>.
+Now, run that program by starting it in the simulated terminal.
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>./debug_example</b>
+[...]
+Got segmentation fault!
+root@firststeps: ~#
+</pre>
+<p>
+This output indicates that our program crashed.
+Let us use Simics features to debug it.
+<p>
+Simics needs to know the mapping between addresses and line numbers,
+and this information is stored in the executable. The
+<b>symtable</b>
+module in Simics contains commands related to symbolic debugging.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>[press control-C]</b>
+simics&gt;  <b>new-symtable file = debug_example</b>
+Created symbol table 'debug_example'
+ABI for debug_example is ppc-elf-32
+debug_example set for context primary_context
+simics&gt; </pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Remember to write <tt><b>file =</b></tt>, otherwise you will
+create an empty <b>symtable</b> named <tt>debug_example</tt>.
+You can add files to an existing <b>symtable</b> with the
+<b>&lt;symtable&gt;.load-symbols</b> command.<hr class="jdocu_note">
+<p>
+Since the <tt>debug_example</tt> was not compiled on your machine, Simics will 
+not be able to find the source code without a little help:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>debug_example.source-path "/tmp&gt;."</b>
+</pre>
+The command above basically says: whenever the path <tt>/tmp</tt> is found in
+the debug information of the binary, replace it with the path to source file 
+(in this case the current working directory, the "."). 
+You can get more information on the <b>&lt;symtable&gt;.source-path</b> 
+command using <b>help</b>:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>help symtable.source-path</b>
+</pre>
+<p>
+To help debugging your programs, we have introduced
+<i><a name="label79">magic instruction</a>s</i>. These are instructions
+that have no side-effects on a real machine, but can be programmed
+to do things when run inside Simics, for example stop the simulation.
+<p>
+The debug example code contains such an instruction in the
+beginning of the <tt>main</tt> function. Enable break on magic
+instruction by the command <b>magic-break-enable</b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>magic-break-enable</b>
+simics&gt;  <b>c</b>
+</pre>
+<p>
+Now rerun <tt>debug_example</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>./debug_example</b>
+</pre>
+<p>
+Simics will stop at the magic instruction and show the corresponding
+source code line and assembly opcode.
+<pre class="jdocu_small" style="color: black">
+[cpu0] v:0x10000634 p:0x00737b634  magic instruction (or r0,r0,r0)
+main (argc=1, argv=0x7ffffe34) at /tmp/debug_example.c:73
+73              MAGIC_BREAKPOINT;
+simics&gt; 
+</pre>
+<p>
+As you can see, this magic instruction is effectively a no-operation,
+which means that the simulation will run as usual on real hardware, or when
+magic breakpoints are disabled in Simics.
+<p>
+Now let us find the cause of the segmentation fault. Place a breakpoint
+in the <b><i>sigsegv_handler()</i></b> function.
+The <b><i>sigsegv_handler()</i></b> function is
+called when the program receives the segmentation fault and will allow the
+program to gracefully exit.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>break (sym sigsegv_handler)</b>
+Breakpoint 1 set on address 0x10000520 with access mode 'x'
+1
+simics&gt; 
+</pre>
+<p>
+Resume the simulation. It will stop at the signal handler, and by giving
+the <b>stack-trace</b> command,
+you can also see the chain of function calls leading up to this point.
+This list gives you useful hints about where the crash occurred.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>c</b>
+Code breakpoint 1 reached.
+[cpu0] v:0x10000520 p:0x00737b520  stwu r1,-32(r1)
+sigsegv_handler (sig=0) at /tmp/debug_example.c:35
+35      {
+simics&gt;  <b>stack-trace</b>
+#0 0x10000520 in sigsegv_handler (sig=0) at /tmp/debug_example.c:35
+#1 0x7ffff3d8 in ?? ()
+#2 0xff06a44 in ?? ()
+#3 0xff0ff60 in ?? ()
+#4 0x100006ac in main (argc=1, argv=0x7ffffe34) at /tmp/debug_example.c:82
+#5 0xfed5fdc in ?? ()
+#6 0x0 in ?? ()
+simics&gt; 
+</pre>
+<p>
+Simics prints question marks when no symbol could be found at the
+address. This can either be a bogus address or a function inside the
+standard library, to which no symbols have been loaded.
+<p>
+A few frames down you have the <b><i>main()</i></b> function, which caused the
+crash. Now we run the simulation backward into that function.
+<b>reverse-step-line</b> will run backwards until the previous
+known source line is reached.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>reverse-step-line</b>
+
+[cpu0] v:0x100006a8 p:0x00737b6a8  bl 0x10010c54
+main (argc=1, argv=0x7ffffe34) at /tmp/debug_example.c:82
+82                      printf("Type: %s\n", user.type);
+simics&gt; 
+</pre>
+<p>
+This line cause the crash. Let us examine what <tt>user.type</tt> contains:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>psym user.type</b>
+(char *) 0xa94 (unreadable)
+simics&gt;  <b>psym user</b>
+{name = 0x7ffffdc0 "shutdown", type = (char *) 0xa94 (unreadable)}
+simics&gt; 
+</pre>
+<p>
+As you can see,
+the <tt>type</tt> member points to an unreadable
+address, which caused the crash. Where does this pointer come from?
+What we want to do is to find where the last write to this pointer
+occurred.
+<p>
+Using Hindsight, we can first set a write-access breakpoint on the
+memory of interest, and run backward (using <b>reverse</b>)
+until the breakpoint is reached.
+After some time will find the place where the write takes place.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>break -w (sym "&amp;user.type") (sym "sizeof user.type")</b>
+Breakpoint 2 set on address 0x7ffffdc8, length 4 with access mode 'w'
+2
+simics&gt;  <b>reverse</b>
+Breakpoint on write to address 0x7ffffdc8 in primary_context.
+Completing instruction @ 0xff365e0 on cpu0.
+[cpu0] v:0x0ff365e4 p:0x0075275e4  beqlr
+simics&gt; 
+</pre>
+<p>
+Now, examine the stack trace:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>stack-trace</b>
+#0 0xff365e4 in ?? ()
+#1 0x100005d8 in read_developer (p=0x7ffffdc0, f=0x10010ca0)
+    at /tmp/debug_example.c:60
+#2 0x10000674 in main (argc=1, argv=0x7ffffe34) at /tmp/debug_example.c:80
+#3 0xfed5fdc in ?? ()
+#4 0x0 in ?? ()
+simics&gt; 
+</pre>
+<p>
+In the stack trace, you will see that a call from <tt>read_developer()</tt>
+have caused the crash.
+Switch to that frame and display the code being run.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>frame 1</b>
+#1 0x100005d8 in read_developer (p=0x7ffffdc0, f=0x10010ca0)
+    at /tmp/debug_example.c:60
+simics&gt;  <b>list read_developer 15</b>
+ 48   {
+ 49           char line[100], *colon;
+ 50
+ 51           if (fgets(line, 100, f) == NULL)
+ 52                   return 0;       /* end of file */
+ 53
+ 54           /* Type is always developer */
+ 55           p-&gt;type = "developer";
+ 56
+ 57           /* Everything until the first colon is the name */
+ 58           colon = strchr(line, ':');
+ 59           *colon = '\0';
+ 60           strcpy(p-&gt;name, line);
+ 61           return 1;
+ 62   }
+simics&gt; 
+</pre>
+<p>
+On line 60 you can see that while the <i>name</i> field was filled in
+using <tt>strcpy</tt>,
+our failing pointer was accidentally overwritten (remember that the breakpoint
+was placed on the <i>type</i> member). If you write
+<tt><b>psym line</b></tt> you will see that the string
+copied is <tt>"shutdown"</tt>. A look into the declaration of
+<tt>struct person</tt> shows that the <i>name</i> field is
+only <nobr>8 bytes</nobr> big, and hence has no space for the trailing
+null byte.
+<p>
+Check the contents of <tt>p</tt> after and before the 
+actual write to verify it is overwritten.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>psym "*p"</b>
+{name = 0x7ffffdc0 "shutdown", type = (char *) 0xa94 (unreadable)}
+simics&gt;  <b>reverse-step-instruction</b>
+Completing instruction @ 0xff365e0 on cpu0.
+Breakpoint on write to address 0x7ffffdc8 in primary_context.
+[cpu0] v:0x0ff365e0 p:0x0075275e0  stb r0,4(r5)
+simics&gt;  <b>frame 1; psym "*p"</b>
+#1 0x100005d8 in read_developer (p=0x7ffffdc0, f=0x10010ca0)
+    at /tmp/debug_example.c:60
+{name = 0x7ffffdc0 "shutdown\020", type = (char *) 0x10000a94 "developer"}
+simics&gt; 
+</pre>
+<p>
+To clean up after our debug session, we must remove the breakpoints
+that we have set. They are identified with a number and can be shown
+using <b>list-breakpoints</b>.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>delete 1</b>
+simics&gt;  <b>delete 2</b>
+simics&gt;  <b>magic-break-disable</b>
+simics&gt; 
+</pre>
+<p>
+You can read more about debugging in chapter
+<a class="jdocu" href="topic58.html#label351">12</a>. Magic instructions are described in
+section <a class="jdocu" href="topic59.html#label374">12.1.7</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+</body>
+</html>

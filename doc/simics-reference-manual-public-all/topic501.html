@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ieee_802_3_phy</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2239, true);
+</script>
+<a name="label17744"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic500.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic502.html">Next</a></span></p>
+<h3 class="jdocu">ieee_802_3_phy</h3 class="jdocu">
+
+
+<a name="label17745"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic167.html#label7848">mii-transceiver</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <pre class="jdocu_small" style="color: black">#define IEEE_802_3_PHY_INTERFACE "ieee_802_3_phy"
+typedef struct {
+        
+        int (*send_frame)(conf_object_t *obj, dbuffer_t *buf, int replace_crc);
+        int (*check_tx_bandwidth)(conf_object_t *obj);
+        
+} ieee_802_3_phy_interface_t;
+</pre>
+<p>
+
+   Interface that should be implemented by 802.3 physical layers.
+<p>
+   The <b><i>send_frame</i></b> function is used by a device to send an
+   Ethernet frame. The frame should be a
+   <tt><a name="label17746">dbuffer_t</a></tt> containing a complete Ethernet frame.
+   excluding the preamble and SFD, but including the CRC.  The
+   replace_crc flag indicates whether the CRC is
+   not actually calculated yet. The passed buf should
+   not be modified by the called function.
+   If the function return 0, the frame was sent to the link; In case
+   -1 is returned, there was not enough bandwidth available right now,
+   and the frame could not be sent. The PHY should call the
+   <b><i>tx_bandwidth_available</i></b> in the <tt>ieee_802_3_mac</tt>
+   interface at the MAC, when the frame can be sent.
+<p>
+   The <b><i>check_tx_bandwidth</i></b> can also be used to check that there
+   is bandwidth available, without sending a frame. It returns 0 if there
+   is no bandwidth available, and a positive value if the frame can be
+   sent right away.
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic500.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic502.html">Next</a></span></p>
+</body>
+</html>

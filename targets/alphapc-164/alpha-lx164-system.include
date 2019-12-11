@@ -1,0 +1,46 @@
+if not defined freq_mhz      {$freq_mhz      = 5}
+if not defined disk_size     {$disk_size     = 315463680}
+if not defined rtc_time      {$rtc_time      = "1999-12-02 11:00:00 UTC"}
+if not defined memory_megs   {$memory_megs   = 48}
+if not defined text_console  {$text_console  = "yes"}
+
+###
+
+add-directory "%simics%/targets/alphapc-164/images"
+
+import-isa-components
+import-pci-components
+import-std-components
+import-alpha-components
+
+$system = (create-alpha-lx164-system cpu_frequency = $freq_mhz
+                                     memory_megs = $memory_megs
+                                     rtc_time = $rtc_time)
+
+$sb =     (create-south-bridge-saturn)
+$kbd =    (create-ps2-keyboard-mouse)
+$serial = (create-pc-dual-serial-ports)
+$vga =    (create-pci-voodoo3)
+
+$disk =   (create-std-ide-disk size = $disk_size)
+$cdrom =  (create-std-ide-cdrom)
+
+if $text_console == "no" {
+    $console = (create-std-graphics-console)
+    $console.connect mouse $kbd mse-console
+} else {
+    $console = (create-std-text-graphics-console)
+}
+$console.connect keyboard $kbd kbd-console
+$console.connect $vga
+
+$system.connect pci-slot8 $sb
+$system.connect pci-slot6 $vga
+$system.connect interrupt $sb
+$sb.connect ide0-master $disk
+$sb.connect ide1-master $cdrom
+
+$sb.connect $kbd
+$sb.connect $serial
+
+$machine_defined = 1

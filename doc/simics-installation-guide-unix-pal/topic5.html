@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics Directory Structure</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(28, true);
+</script>
+<a name="label32"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - Next</span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Simics Directory Structure</h2 class="jdocu">
+
+
+<p>
+The Virtutech Simics environment, regardless of what components are included
+(source code or not, etc), is currently intended to have the following
+structure. Note that some of these files or directories may not be included in
+your particular package.
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Directory/File</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/Version</tt></td><td class="jdocu_noborder">version and timestamp for this distribution</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/RELEASENOTES</tt></td><td class="jdocu_noborder">description of the current Simics subversion
+        changes</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/LIMITATIONS</tt></td><td class="jdocu_noborder">known problems and limitations</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/README.previous/</tt></td><td class="jdocu_noborder">README files for previous Simics version</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/LICENSE</tt></td><td class="jdocu_noborder">Simics license</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/licenses/</tt></td><td class="jdocu_noborder">FLEXlm license files goes here</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/bin/</tt></td><td class="jdocu_noborder">various utilities</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/scripts/</tt></td><td class="jdocu_noborder">various tools and scripts needed for compilation</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/</tt></td><td class="jdocu_noborder">main source code directory</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/devices/</tt></td><td class="jdocu_noborder">main device module directory</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/devices/FAS366U/</tt></td><td class="jdocu_noborder">a typical SCSI device ...</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/devices/..</tt></td><td class="jdocu_noborder">.. etc</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/extensions/</tt></td><td class="jdocu_noborder">main extension module directory</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/extensions/trace/</tt></td><td class="jdocu_noborder">generic instruction trace tool</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/extensions/..</tt></td><td class="jdocu_noborder">.. etc</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/include/</tt></td><td class="jdocu_noborder">include files for Simics API</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/src/misc/</tt></td><td class="jdocu_noborder">source code for external programs</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/config/</tt></td><td class="jdocu_noborder">generic configuration files for make</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/config/masters/</tt></td><td class="jdocu_noborder">main makefiles</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/doc/</tt></td><td class="jdocu_noborder">Simics documentation</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/doc/*-one/</tt></td><td class="jdocu_noborder">single-document HTML documentation (if any)</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/doc/</tt><em>directories</em><tt>/</tt></td><td class="jdocu_noborder">multi-document HTML documentation</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/</tt></td><td class="jdocu_noborder">directory with files for named <em>host</em> type</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/bin/</tt></td><td class="jdocu_noborder">Simics binaries files</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/lib/</tt></td><td class="jdocu_noborder">Simics loadable modules</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/lib/python/</tt></td><td class="jdocu_noborder">Simics Python files</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/lib/python-</tt><em>x.y</em><tt>/</tt></td><td class="jdocu_noborder">Standard Python files</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/sys/flexlm/bin/</tt></td><td class="jdocu_noborder">FLEXlm binaries</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/</tt><em>host</em><tt>/sys/lib/</tt></td><td class="jdocu_noborder">external libraries used by Simics</td></tr>
+<tr><td class="jdocu_noborder"><tt>simics/targets/*</tt></td><td class="jdocu_noborder">virtual machine configurations</td></tr>
+</table>
+<p>
+A Simics workspace is intended to have the following structure.
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Directory/File</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/simics</tt></td><td class="jdocu_noborder">Shortcut to start Simics in command-line mode</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/simics-eclipse</tt></td><td class="jdocu_noborder">Shortcut to start Simics with the Eclipse frontend</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/GNUmakefile</tt></td><td class="jdocu_noborder">Makefile to build all modules in this workspace</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/Workspace.mk</tt></td><td class="jdocu_noborder">Inner makefile</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/Config.mk</tt></td><td class="jdocu_noborder">Default definitions of make variables</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/Config-user.mk</tt></td><td class="jdocu_noborder">Optional file with overridden make variables</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/modules/</tt></td><td class="jdocu_noborder">Source code of user-developed modules</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/targets/*</tt></td><td class="jdocu_noborder">Example target machine configurations</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/</tt><em>host</em><tt>/</tt></td><td class="jdocu_noborder">Directory with user files for named <em>host</em> type</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/</tt><em>host</em><tt>/lib/</tt></td><td class="jdocu_noborder">Simics loadable user-developed modules</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/</tt><em>host</em><tt>/lib/python/</tt></td><td class="jdocu_noborder">User-developed Simics Python files.</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/</tt><em>host</em><tt>/obj/</tt></td><td class="jdocu_noborder">scratch compilation area</td></tr>
+<tr><td class="jdocu_noborder"><tt>workspace/.workspace-properties/</tt></td><td class="jdocu_noborder">For internal bookkeeping</td></tr>
+</table>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - Next</span></p>
+</body>
+</html>

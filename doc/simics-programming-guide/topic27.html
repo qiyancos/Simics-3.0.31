@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Objects</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(63, true);
+</script>
+<a name="label128"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+<h3 class="jdocu">6.3&nbsp;&nbsp;&nbsp;Objects</h3 class="jdocu">
+
+
+<p>
+<a name="label129"></a><h4 class="jdocu">C/C++</h4 class="jdocu">
+
+
+<p>
+In C/C++ one must manually maintain a corresponding
+<a name="label130">object</a><a name="label131"></a> structure that is used to hold
+data about individual objects for each Simics class. Simics's class system
+supports a very limited form of inheritance, where all classes must inherit the
+class <tt>conf_object_t</tt>, the basic configuration object class, either
+directly or indirectly. When declaring an object structure the first element
+must be the object structure of the class it inherits. An object structure for
+a class that directly inherits <tt>conf_object_t</tt> is declared as:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef struct my_object {
+        conf_object_t obj;
+        // Other variables...
+} my_object_t;
+</pre>
+<p>
+A Simics object contains (in the <tt>conf_object_t</tt> field) all the
+information related to its class and its attributes. When an object is created,
+the <b><i>new_instance()</i></b><a name="label132"></a> function declared
+in the class definition is called. The <b><i>new_instance()</i></b> function is
+responsible for allocating an object structure for the new object and
+initializing the all fields except the <tt>conf_object_t</tt> part. A
+typical function would look like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+static conf_object_t *
+my_new_instance(parse_object_t *parse_obj)
+{
+        my_object_t *mo = MM_ZALLOC(1, my_object_t);
+        // Initializations...
+        return &amp;mo-&gt;obj;
+}
+</pre>
+<p>
+When inheriting some other class the object structure should instead include
+the object structure of that class as its first field. The
+<b><i>new_instance()</i></b> function should also call some function that
+initializes the object structure of the inherited class. If the object inherits
+directly from <tt>conf_object_t</tt>, the <tt>conf_object_t</tt> part
+of the structure can be initialized by calling the
+<b><i><a name="label133">SIM_object_constructor</a>()</i></b> function.
+<p>
+A very common class to inherit is <tt>log_object_t</tt>, which
+automatically provides log facilities to the inheriting classes. The
+<tt>log_object_t</tt> part of the object structure can be initialized by
+calling the <b><i><a name="label134">SIM_log_constructor</a>()</i></b> function. The object
+structure and <b><i>new_instance()</i></b> function would then look like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef struct my_object {
+        log_object_t log;
+        // Other variables...
+} my_object_t;
+
+static conf_object_t *
+my_new_instance(parse_object_t *parse_obj)
+{
+        my_object_t *mo = MM_ZALLOC(1, my_object_t);
+        SIM_log_constructor(&amp;mo-&gt;log, parse_obj);
+        // Initializations...
+        return &amp;mo-&gt;log.obj;
+}
+</pre>
+<p>
+<a name="label135"></a><h4 class="jdocu">Python</h4 class="jdocu">
+
+
+<a name="label136"></a>
+<p>
+In Python, an object is an instance of a Python class, created by the
+<b><i>new_instance()</i></b> function referred to when registering the class. The
+python class is usually written as:
+<p>
+<pre class="jdocu_small" style="color: black">
+class sample_python_class:
+    def __init__(self, obj):
+        obj.object_data = self
+        self.obj = obj
+
+        # other inits
+
+    # misc methods
+</pre>
+<p>
+<a name="label137"></a><a name="label138"></a>A typical
+<b><i>new_instance()</i></b> function looks like:
+<p>
+<pre class="jdocu_small" style="color: black">
+def new_instance(parse_obj):
+    obj = VT_alloc_log_object(parse_obj)
+    sample_python_class(obj)
+    return obj
+</pre>
+<p>
+All objects must hold a log object, created with a call to
+<b><i>VT_alloc_log_object()</i></b>, and the log object must refer to the
+instance of the python class.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+</body>
+</html>

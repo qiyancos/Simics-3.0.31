@@ -1,0 +1,17 @@
+if not defined freq_mhz      {$freq_mhz = 30}
+if not defined memory_megs   {$memory_megs = 32}
+
+###
+
+add-directory "%simics%/targets/arm-sa1110/images"
+
+import-std-components
+import-arm-sa1110-components
+
+$system = (create-arm-sa1110-system cpu_frequency = $freq_mhz
+                                    memory_megs = $memory_megs)
+$console = (create-std-text-console)
+
+$system.connect $console
+
+$machine_defined = 1

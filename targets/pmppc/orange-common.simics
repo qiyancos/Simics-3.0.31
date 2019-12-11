@@ -1,0 +1,14 @@
+if not defined create_network {}
+if not defined disk_image     {$disk_image = "orange1.craff"}
+
+###
+
+run-command-file "%script%/pmppc-system.include"
+
+instantiate-components
+
+$eth_comp = $system
+$eth_cnt = eth0
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/orange-setup.include"

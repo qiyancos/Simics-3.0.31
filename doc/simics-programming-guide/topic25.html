@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Module Loading and Unloading</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(57, true);
+</script>
+<a name="label111"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+<h3 class="jdocu">6.1&nbsp;&nbsp;&nbsp;Module Loading and Unloading</h3 class="jdocu">
+
+
+<p>
+Most modules need to do some work when initially loaded into Simics.
+Typically this work includes registering the classes implemented by the
+module, and their attributes.
+<p>
+<a name="label112"></a><h4 class="jdocu">C/C++</h4 class="jdocu">
+
+
+<p>
+A module written in C/C++ must implement the functions
+<b><i><a name="label113">init_local</a>()</i></b> and <b><i><a name="label114">fini_local</a>()</i></b>.
+They must exist, even if they are empty. The functions are defined as:
+<p>
+<pre class="jdocu_small" style="color: black">
+void
+init_local(void)
+{
+}
+
+void
+fini_local(void)
+{
+}
+</pre>
+<p>
+If the module is written in C++, these functions must be declared <em>extern
+"C"</em> for C linkage. Simics does currently not support unloading of modules,
+so <b><i>fini_local()</i></b> is usually empty.
+<p>
+<a name="label115"></a><h4 class="jdocu">Python</h4 class="jdocu">
+
+
+<p>
+Before the first statement, a structured comment is required. It must be
+formatted as follows:
+<p>
+<pre class="jdocu_small" style="color: black">
+# MODULE: module-name
+# CLASS: class-name
+</pre>
+<p>
+The Python file is executed as a program at load time, so all Python statements
+in global scope will be executed. Normally there will be some statements
+that registers classes and attributes with Simics.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+</body>
+</html>

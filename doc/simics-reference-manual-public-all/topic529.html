@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>signal</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2270, true);
+</script>
+<a name="label17946"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic528.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic530.html">Next</a></span></p>
+<h3 class="jdocu">signal</h3 class="jdocu">
+
+
+<a name="label17947"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic183.html#label8304">NS16450</a>, <a class="jdocu" href="topic184.html#label8340">NS16550</a>, <a class="jdocu" href="topic82.html#label5451">eth-transceiver</a>, <a class="jdocu" href="topic109.html#label6465">i2c-bus</a>, <a class="jdocu" href="topic120.html#label6720">i8254</a>, <a class="jdocu" href="topic166.html#label7837">mii-management-bus</a>, <a class="jdocu" href="topic167.html#label7848">mii-transceiver</a>, <a class="jdocu" href="topic254.html#label9330">ppc405gp</a>, <a class="jdocu" href="topic257.html#label9508">ppc405gp-emac</a>, <a class="jdocu" href="topic259.html#label9576">ppc405gp-iic</a>, <a class="jdocu" href="topic260.html#label9605">ppc405gp-mal</a>, <a class="jdocu" href="topic263.html#label9690">ppc405gp-uic</a>, <a class="jdocu" href="topic264.html#label9716">ppc440gp</a>, <a class="jdocu" href="topic266.html#label9927">ppc440gp-dma</a>, <a class="jdocu" href="topic267.html#label9976">ppc440gp-ebc</a>, <a class="jdocu" href="topic268.html#label10026">ppc440gp-emac</a>, <a class="jdocu" href="topic270.html#label10099">ppc440gp-iic</a>, <a class="jdocu" href="topic271.html#label10131">ppc440gp-mal</a>, <a class="jdocu" href="topic274.html#label10297">ppc440gp-plb</a>, <a class="jdocu" href="topic276.html#label10323">ppc440gp-uic</a>, <a class="jdocu" href="topic278.html#label10365">ppc440gx</a>, <a class="jdocu" href="topic281.html#label10593">ppc440gx-dma</a>, <a class="jdocu" href="topic282.html#label10642">ppc440gx-ebc</a>, <a class="jdocu" href="topic283.html#label10692">ppc440gx-emac</a>, <a class="jdocu" href="topic285.html#label10766">ppc440gx-iic</a>, <a class="jdocu" href="topic287.html#label10810">ppc440gx-mal</a>, <a class="jdocu" href="topic288.html#label10854">ppc440gx-opb</a>, <a class="jdocu" href="topic290.html#label10956">ppc440gx-plb</a>, <a class="jdocu" href="topic295.html#label11058">ppc440gx-uic</a>, <a class="jdocu" href="topic297.html#label11100">ppc603e</a>, <a class="jdocu" href="topic299.html#label11254">ppc7400</a>, <a class="jdocu" href="topic300.html#label11410">ppc7447</a>, <a class="jdocu" href="topic301.html#label11589">ppc7450</a>, <a class="jdocu" href="topic302.html#label11750">ppc7457</a>, <a class="jdocu" href="topic303.html#label11936">ppc750</a>, <a class="jdocu" href="topic304.html#label12083">ppc750fx</a>, <a class="jdocu" href="topic305.html#label12247">ppc750gx</a>, <a class="jdocu" href="topic307.html#label12425">ppc970fx</a>, <a class="jdocu" href="topic365.html#label13835">signal-bus</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Interface to model a signal, such as a reset or interrupt.
+<p>
+   The signal initiator should call <b><i>signal_raise()</i></b> to raise the
+   signal level to its active level. Signals are always active high in Simics.
+   Once raised, the same initiator may not call <b><i>signal_raise()</i></b> again
+   without an intervening call to <b><i>signal_lower()</i></b>.
+<p>
+   The implementer must increment a level counter on every
+   <b><i>signal_raise()</i></b> call, and decrement it on
+   <b><i>signal_lower()</i></b>. The signal can not be treated as lowered until
+   the counter reaches zero again. This allows multiple sources of the signal.
+<p>
+   The signal target should handle the case where a signal is lowered directly
+   when after it has been raised and treat it as a valid pulse. The target
+   should also allow the signal to remain raised for some time before it is
+   lowered.
+<p>
+   An object that does lookup of the <tt>signal</tt> interface in another
+   object should have an attribute that can be set in the configuration to the
+   target object. This attribute should either be of the
+   <tt>Sim_Val_Object</tt> kind, or a list with two entries, one
+   <tt>Sim_Val_Object</tt> and one <tt>Sim_Val_String</tt>. If the object only
+   format is used in the configuration, the interface should be looked up using
+   <b><i>SIM_get_interface()</i></b>, and if the list format it used the interface
+   should be obtained with <b><i>SIM_get_port_interface()</i></b>.
+<p>
+   A class that wishes to implement several signal inputs should use named
+   interfaces.
+<p>
+   <hr class="jdocu_note"><b>Note:</b> The <tt>signal</tt> interface should be used instead of the
+   <tt>simple-interrupt</tt>, <tt>pin</tt> and <tt>reset</tt>
+   interfaces when writing new classes.<hr class="jdocu_note">
+<p>
+   <pre class="jdocu_small" style="color: black">struct signal_interface {
+        void (*signal_raise)(conf_object_t *NOTNULL obj);
+        void (*signal_lower)(conf_object_t *NOTNULL obj);
+};
+
+#define SIGNAL_INTERFACE "signal"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic528.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic530.html">Next</a></span></p>
+</body>
+</html>

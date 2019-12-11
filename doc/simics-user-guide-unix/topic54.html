@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Architecture</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(154, true);
+</script>
+<a name="label344"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic53.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic55.html">Next</a></span></p>
+<h4 class="jdocu">11.2&nbsp;&nbsp;&nbsp;Architecture</h4 class="jdocu">
+
+
+<p>
+Synchronization in Simics is implemented by the
+<b>central</b> module.  It defines two classes, the
+<b>central-server</b> class and the
+<b>central-client</b> class.
+<p>
+One Simics process is assigned the role of <em>server</em> for the
+distributed simulation.  In this process, a
+<b>central-server</b> object is added, and in every Simics
+process that takes part in the distributed simulation, a
+<b>central-client</b> object is added.
+<p>
+The client objects are connected to the server object, and then makes
+sure that the Simics processes they belong to are kept synchronized with
+each other.
+<p>
+If the Simics process that contains the server will run any
+simulation, it too needs a <b>central-client</b> object.  An
+alternative is to place the server in a completely dedicated Simics
+process without any target machine configuration.  In that case it
+does not need a client object.
+<p>
+All inter-process communication that is part of the simulation is
+handled by <em><a name="label345">link object</a>s</em>, typically
+<a name="label346">Ethernet</a> links, as described in chapter <a class="jdocu" href="topic45.html#label293">10</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic53.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic55.html">Next</a></span></p>
+</body>
+</html>

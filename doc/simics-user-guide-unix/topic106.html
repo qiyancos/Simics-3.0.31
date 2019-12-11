@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Memory and I/O Spaces</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(238, true);
+</script>
+<a name="label544"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic105.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic107.html">Next</a></span></p>
+<h4 class="jdocu">20.3&nbsp;&nbsp;&nbsp;Memory and I/O Spaces</h4 class="jdocu">
+
+
+<p>
+The PCI memory and I/O spaces are implemented as generic Simics memory-spaces
+where the spaces controlled by the base address registers of the PCI devices
+will be mapped. 
+<p>
+Let us imitate the transactions that the simulated software would issue to map
+the space controlled by the base address register 1 of the <b>dec0</b>
+object above:
+<p>
+<pre class="jdocu_small" style="color: black">
+# Issue a write to BAR1 register (offset 0x14)
+simics&gt; <b>pciconf0.set address = 0x1814 value = 0xFF000000 size = 4 -l</b>
+
+# Enable memory mappings in Command register (offset 0x4)
+simics&gt; <b>pciconf0.set address = 0x1804 value = 0x0002 size = 2 -l</b>
+
+# Print the PCI memory mappings
+simics&gt; <b>pcimem0.map</b>
+base               object               fn offs               length
+0x00000000ff000000 dec0                  0 0x0                0x80              
+- default -        pci0                  5 0x0                -                 
+            target -&gt; plb
+</pre>
+<p>
+The address space controlled by the BAR1 register is now mapped at address in
+0xFF000000 in the PCI memory.
+<p>
+PCI bridges in Simics typically create space-to-space mappings when adding a
+PCI memory space to the global memory-space in a system. This way memory
+transactions go directly between memory-spaces without having to pass the
+bridge object. There are, however, cases when the bridge is needed, for example
+for accesses where nothing is mapped. In these cases, the bridge is associated
+with the mapping (see section on memory mapping types), and the bridge will be
+called for non-mapped accesses.
+<p>
+The bridge mapping is also used to prevent memory mappings loops. A bridge
+typically doesn't forward upstream a transaction that it sent downstream
+previously. But in Simics the memory-spaces are connected directly to each
+other, and there is no bridge doing the forwarding. Since the bridge creates
+the mappings as "bridge mappings", Simics will make sure that the transaction
+isn't forwarded using the same bridge twice in a row. Circular mappings are not
+a problem in a correctly configured system, but can occur for memory accesses
+to a non-existing device.
+<p>
+In the same way as with the configuration space, a PCI-to-PCI bridge will
+create mappings in the memory and I/O spaces for upstream and downstream
+accesses. These mappings are created at run-time, since they are dynamic and
+set up by the simulated software.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic105.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic107.html">Next</a></span></p>
+</body>
+</html>

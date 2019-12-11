@@ -1,0 +1,332 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Statements</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(56, true);
+</script>
+<a name="label176"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+<h3 class="jdocu">4.11&nbsp;&nbsp;&nbsp;Statements</h3 class="jdocu">
+
+
+<a name="label177"></a>
+<p>
+All ISO C statements are available in DML, and have the same semantics
+as in C. Like ordinary C expressions, all DML expressions can also be
+used in expression-statements.
+<p>
+DML adds the following statements:
+<p>
+<a name="label178"></a><h4 class="jdocu">4.11.1&nbsp;&nbsp;&nbsp;Delete Statements</h4 class="jdocu">
+
+
+<a name="label179"></a>
+<a name="label180"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+delete <i>expr</i>;
+</pre>
+<p>
+Deallocates the memory pointed to by the result of evaluating
+<tt></tt><i>expr</i><tt></tt>. The memory must have been allocated with the
+<tt>new</tt> operator, and must not have been deallocated previously.
+Equivalent to <tt>delete</tt> in C++; however, in DML, <tt>delete</tt>
+can only be used as a statement, not as an expression.
+<p>
+
+<a name="label181"></a><h4 class="jdocu">4.11.2&nbsp;&nbsp;&nbsp;Try Statements</h4 class="jdocu">
+
+
+<a name="label182"></a>
+<a name="label183"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+try <i>protected-stmt</i> catch <i>handle-stmt</i>
+</pre>
+<p>
+Executes <tt></tt><i>protected-stmt</i><tt></tt>; if that completes normally, the
+whole <tt>try</tt>-statement completes normally. Otherwise,
+<tt></tt><i>handle-stmt</i><tt></tt> is executed. This is similar to exception
+handling in C++, but in DML 1.0 it is not possible to switch on
+different kinds of exceptions. This may change in a future version of
+DML. Note that Simics C-exceptions are not handled. See also <tt>throw</tt>.
+ <p>
+
+<a name="label184"></a><h4 class="jdocu">4.11.3&nbsp;&nbsp;&nbsp;Throw Statements</h4 class="jdocu">
+
+
+<a name="label185"></a>
+<a name="label186"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+throw;
+</pre>
+<p>
+Throws (raises) an exception, which may be caught by a
+<tt>try</tt>-statement. Exceptions are propagated over method call
+boundaries. This is similar to <tt>throw</tt> in C++, but in DML 1.0 it
+is not possible to specify a value to be thrown. This may change in a
+future version of DML. Furthermore, in DML, <tt>throw</tt> can only be
+used as a statement, not as an expression.
+<p>
+
+<a name="label187"></a><h4 class="jdocu">4.11.4&nbsp;&nbsp;&nbsp;Call Statements</h4 class="jdocu">
+
+
+<a name="label188"></a>
+<a name="label189"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+call <i>method</i>(<i>e1</i>, ... <i>eN</i>) -&gt; (<i>d1</i>, ... <i>dM</i>);
+</pre>
+<p>
+Calls a DML method with input arguments <tt></tt><i>e1</i><tt></tt>, ...
+<tt></tt><i>eN</i><tt></tt> and output destinations <tt></tt><i>d1</i><tt></tt>, ...
+<tt></tt><i>dM</i><tt></tt>. The destinations are usually variables, but they can
+be arbitrary L-values (even bit slices) as long as their types match the
+method signature.
+<p>
+If the method has no output parameters, the <tt>-&gt; ()</tt> part may be
+omitted, as in
+<pre class="jdocu_small" style="color: black">
+    call p(...);
+</pre>
+which is equivalent to <tt>call p(...) -&gt; ();</tt>.
+<p>
+If the method has no input parameters, the empty pair of parentheses may
+also be omitted, as in
+<pre class="jdocu_small" style="color: black">
+    call q -&gt; (...);
+</pre>
+which is equivalent to <tt>call q() -&gt; (...);</tt>.
+<p>
+A method with neither input nor output parameters may thus be called
+simply as
+<pre class="jdocu_small" style="color: black">
+    call me;
+</pre>
+<p>
+
+<a name="label190"></a><h4 class="jdocu">4.11.5&nbsp;&nbsp;&nbsp;Inline Statements</h4 class="jdocu">
+
+
+<a name="label191"></a>
+<a name="label192"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+inline <i>method</i>(<i>e1</i>, ... <i>eN</i>) -&gt; (<i>d1</i>, ... <i>dM</i>);
+</pre>
+<p>
+This is equivalent to <tt>call </tt><i>method</i><tt>(</tt><i>e1</i><tt>, ... </tt><i>eN</i><tt>)
+-&gt; (</tt><i>d1</i><tt>, ... </tt><i>dM</i><tt>);</tt> but the code for the called method
+is expanded at the place of the <tt>inline</tt> call, and may be partly
+specialized to the values of any input arguments that are constant at
+DML compile time.
+<p>
+Furthermore, methods that are only intended for inlining may be declared
+as a form of polymorphic hygienic macros; see Section <a class="jdocu" href="topic22.html#label123">4.6.3</a>.
+<p>
+
+<a name="label193"></a><h4 class="jdocu">4.11.6&nbsp;&nbsp;&nbsp;After Statements</h4 class="jdocu">
+
+
+<a name="label194"></a>
+<a name="label195"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+after (<i>time</i>) call <i>method</i>;
+</pre>
+<p>
+The <tt>after</tt> construct sets up an asynchronous event which will
+perform the specified method call at the given time into the future (in
+simulated time, measured in seconds) relative to the time when the
+<tt>after</tt> statement is executed. For example:
+<pre class="jdocu_small" style="color: black">
+    after (0.1) call $my_callback;
+</pre>
+<p>
+This is equivalent to creating a named <b>event</b> object with
+an event-method that performs the specified <tt>call</tt>, and posting
+that event at the given time; see Section <a class="jdocu" href="topic15.html#label100">3.11</a>.
+<p>
+
+<a name="label196"></a><h4 class="jdocu">4.11.7&nbsp;&nbsp;&nbsp;Log Statements</h4 class="jdocu">
+
+
+<a name="label197"></a>
+<a name="label198"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+log <i>log-type</i>, <i>level</i>, <i>groups</i>: <i>format-string</i>, <i>e1</i>, ..., <i>eN</i>;
+</pre>
+<p>
+Outputs a formatted string to the Simics logging facility. The string
+following the colon is a normal C <tt>printf</tt> format string,
+optionally followed by one or more arguments separated by commas. (The
+format string should not contain the name of the device, or the type of
+the message, e.g., "error:..."; these things are automatically prefixed.)
+Either both of <tt></tt><i>level</i><tt></tt> and <tt></tt><i>groups</i><tt></tt> may be
+omitted, or only the latter; i.e., if <tt></tt><i>groups</i><tt></tt> is
+specified, then <tt></tt><i>level</i><tt></tt> must also be given explicitly.
+<p>
+A Simics user can configure the logging facility to show only specific
+messages, by matching on the three main properties of each message:
+<ul> <li> The <tt></tt><i>log-type</i><tt></tt> specifies the general category
+of the message. The value must be one of the string constants
+<tt>"info"</tt>, <tt>"error"</tt>, <tt>"undefined"</tt>,
+<a name="label199"></a><tt>"spec_violation"</tt>,
+<a name="label200"></a><tt>"target_error"</tt>, or
+<tt>"unimplemented"</tt>. The most common message types are
+<tt>info</tt> and <tt>error</tt>; see the <em>Simics Reference
+Manual</em> for further details.  </li>
+<p>
+<li>
+The <tt></tt><i>level</i><tt></tt> specifies at what verbosity level the log
+messages are displayed. The value must be an integer from 1 to 4; if
+omitted, the default level is 1. The different levels have the following
+meaning:
+<ol>
+<li>Important messages (displayed at the normal verbosity level)</li>
+<li>High-level informative messages</li>
+<li>Debugging-level messages</li>
+<li>Detailed debugging-level messages, e.g., individual register accesses</li>
+</ol>
+</li>
+<p>
+<li>
+The <tt></tt><i>groups</i><tt></tt> argument is an integer whose bit
+representation is used to select which log groups the message belongs
+to. If omitted, the default value is 0. The log groups are specific for
+the device, and must be declared using the <tt>loggroup</tt>
+device-level declaration. For example, a DML source file containing the
+declarations
+<pre class="jdocu_small" style="color: black">
+    loggroup good;
+    loggroup bad;
+    loggroup ugly;
+</pre>
+could also contain a log statement such as
+<pre class="jdocu_small" style="color: black">
+    log "info", 2, (bad | ugly): "...";
+</pre>
+(note the <tt>|</tt> bitwise-or operator), which would be displayed if
+the user chooses to view messages from group <tt>bad</tt> or
+<tt>ugly</tt>, but not if only group <tt>good</tt> is shown.
+<p>
+Groups allow the user to create arbitrary classifications of log
+messages, e.g., to indicate things that occur in different states, or in
+different parts of the device, etc. The two log groups
+<tt>Register_Read</tt> and <tt>Register_Write</tt> are predefined by
+DML, and are used by several of the built-in methods.
+</li>
+</ul>
+<p>
+
+<a name="label201"></a><h4 class="jdocu">4.11.8&nbsp;&nbsp;&nbsp;Assert Statements</h4 class="jdocu">
+
+
+<a name="label202"></a>
+<a name="label203"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+assert <i>expr</i>;
+</pre>
+<p>
+Evaluates <tt></tt><i>expr</i><tt></tt>. If the result is <tt>true</tt>, the
+statement has no effect; otherwise, a runtime-error is generated.
+<tt></tt><i>expr</i><tt></tt> must have type <tt>bool</tt>.
+<p>
+
+<a name="label204"></a><h4 class="jdocu">4.11.9&nbsp;&nbsp;&nbsp;Error Statements</h4 class="jdocu">
+
+
+<a name="label205"></a>
+<a name="label206"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+error <i>string</i>;
+</pre>
+<p>
+Attempting to compile an <tt>error</tt> statement causes the compiler to
+generate an error, using the specified string as error message. The
+string may be omitted; in that case, a default error message is used.
+<p>
+
+<a name="label207"></a><h4 class="jdocu">4.11.10&nbsp;&nbsp;&nbsp;Foreach Statements</h4 class="jdocu">
+
+
+<a name="label208"></a>
+<a name="label209"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+foreach <i>identifier</i> in (<i>expr</i>) <i>statement</i>
+</pre>
+<p>
+The <tt>foreach</tt> statement repeats its body (the
+<tt></tt><i>statement</i><tt></tt> part) once for each element in the
+<em>list</em>  given by <tt></tt><i>expr</i><tt></tt>.
+The <tt></tt><i>identifier</i><tt></tt> is used to refer to the current element
+within the body. It is <em>not</em> used with a <tt>$</tt> prefix.
+<p>
+If <tt></tt><i>expr</i><tt></tt> is a list, it is always a DML compile-time
+constant, and in that case the loop is completely unrolled by the DML
+compiler. This can be combined with tests on the value of
+ <tt></tt><i>identifier</i><tt></tt> within the body, which will be evaluated at
+compile time.
+<p>
+For example:
+<pre class="jdocu_small" style="color: black">
+    foreach x in ([3,2,1]) {
+        if (x == 1) foo();
+        else if (x == 2) bar();
+        else if (x == 3) baz();
+        else error "out of range";
+    }
+</pre>
+would be equivalent to
+<pre class="jdocu_small" style="color: black">
+    baz();
+    bar();
+    foo();
+</pre>
+<p>
+Only <tt>if</tt> can be used to make such selections; <tt>switch</tt>
+statements are <em>not</em> evaluated at compile time, in DML 1.0. (Also
+note the use of <tt>error</tt> above to catch any compile-time
+mistakes.)
+<p>
+
+
+
+<a name="label210"></a><h4 class="jdocu">4.11.11&nbsp;&nbsp;&nbsp;Select Statements</h4 class="jdocu">
+
+
+<a name="label211"></a>
+<a name="label212"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+select <i>identifier</i> in (<i>expr</i>) where (<i>cond-expr</i>) <i>statement</i> else <i>default-statement</i>
+</pre>
+<p>
+The <tt>select</tt> statement is very similar to the <tt>foreach</tt>
+statement, but executes the <tt></tt><i>statement</i><tt></tt> exactly once for
+the first matching element in the <em>list</em>  given by <tt></tt><i>expr</i><tt></tt>, i.e., for the first element such that
+<tt></tt><i>cond-expr</i><tt></tt> is <tt>true</tt>; or if no element matches, it
+executes the <tt></tt><i>default-statement</i><tt></tt>.
+<p>
+If <tt></tt><i>expr</i><tt></tt> is a list, <em>and</em> the
+<tt></tt><i>cond-expr</i><tt></tt> only depends on compile-time constants, apart
+from <tt></tt><i>identifier</i><tt></tt>, then the choice will be performed by
+the DML compiler, and code will only be generated for the selected case.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+</body>
+</html>

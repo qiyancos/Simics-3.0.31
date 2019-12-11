@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(46, true);
+</script>
+<a name="label215"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Limitations</h2 class="jdocu">
+
+
+Our model of the CPC700 and the PCI interrupt routing have some
+problems disallowing any PCI card to be connected at any port.
+<p>
+The linux support for the PM/PPC is not part of the standard linux
+kernel but have to be provided by Artesyn. This makes it more
+difficult to compile a kernel for the Simics model.
+<p>
+The subchapter below contains the limitations that exist on the relevant
+PowerPC processors that can be used with PM/PPC.
+The SPRs listed do currently have no associated side-effect when
+either the register is read or written. In many cases this is not
+a problem even when code do use these registers. 
+<p>
+The unimplemented instructions will cause Simics to break execution
+if the are ever executed.
+<p>
+The instructions implemented as no-operation (NOPs) will just 
+execute without any side-effects at all.
+<p>
+<a name="label216"></a><h3 class="jdocu">6.1&nbsp;&nbsp;&nbsp;PowerPC 603e limitations</h3 class="jdocu">
+
+
+<a name="label217"></a><h4 class="jdocu">6.1.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+None
+<a name="label218"></a><h4 class="jdocu">6.1.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Floating-point estimate instructions are not bit exact.<a name="label219"></a><h4 class="jdocu">6.1.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+
+<a name="label220"></a><h3 class="jdocu">6.2&nbsp;&nbsp;&nbsp;PowerPC 750 limitations</h3 class="jdocu">
+
+
+<a name="label221"></a><h4 class="jdocu">6.2.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label222"></a><h4 class="jdocu">6.2.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label223"></a><h4 class="jdocu">6.2.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+
+<a name="label224"></a><h3 class="jdocu">6.3&nbsp;&nbsp;&nbsp;PowerPC 750fx limitations</h3 class="jdocu">
+
+
+<a name="label225"></a><h4 class="jdocu">6.3.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">HID2</td><td class="jdocu_noborder">1016</td><td class="jdocu_noborder">Hardware implementation register 2</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label226"></a><h4 class="jdocu">6.3.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label227"></a><h4 class="jdocu">6.3.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+
+<a name="label228"></a><h3 class="jdocu">6.4&nbsp;&nbsp;&nbsp;PowerPC 750gx limitations</h3 class="jdocu">
+
+
+<a name="label229"></a><h4 class="jdocu">6.4.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">HID2</td><td class="jdocu_noborder">1016</td><td class="jdocu_noborder">Hardware implementation register 2</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label230"></a><h4 class="jdocu">6.4.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label231"></a><h4 class="jdocu">6.4.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+
+<a name="label232"></a><h3 class="jdocu">6.5&nbsp;&nbsp;&nbsp;PowerPC 755 limitations</h3 class="jdocu">
+
+
+<a name="label233"></a><h4 class="jdocu">6.5.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">L2PM</td><td class="jdocu_noborder">1016</td><td class="jdocu_noborder">L2 Private Memory Control Register</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label234"></a><h4 class="jdocu">6.5.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label235"></a><h4 class="jdocu">6.5.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+
+<a name="label236"></a><h3 class="jdocu">6.6&nbsp;&nbsp;&nbsp;PowerPC 7400 limitations</h3 class="jdocu">
+
+
+<a name="label237"></a><h4 class="jdocu">6.6.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">MMCR2</td><td class="jdocu_noborder">944</td><td class="jdocu_noborder">Monitor Control 2</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label238"></a><h4 class="jdocu">6.6.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label239"></a><h4 class="jdocu">6.6.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+<a name="label240"></a><h4 class="jdocu">6.6.4&nbsp;&nbsp;&nbsp;Instructions Implemented as NOPs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dss[all]</td></tr>
+</table></span>
+
+<a name="label241"></a><h3 class="jdocu">6.7&nbsp;&nbsp;&nbsp;PowerPC 7447 limitations</h3 class="jdocu">
+
+
+<a name="label242"></a><h4 class="jdocu">6.7.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">ICTRL</td><td class="jdocu_noborder">1011</td><td class="jdocu_noborder">Instruction cache/interrupt control register</td></tr>
+<tr><td class="jdocu_noborder">LDSTCR</td><td class="jdocu_noborder">1016</td><td class="jdocu_noborder">Load/Store control register</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">MMCR2</td><td class="jdocu_noborder">944</td><td class="jdocu_noborder">Monitor Control 2</td></tr>
+<tr><td class="jdocu_noborder">MSSSR0</td><td class="jdocu_noborder">1015</td><td class="jdocu_noborder">Memory subsystem status register</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">PMC5</td><td class="jdocu_noborder">945</td><td class="jdocu_noborder">Performance Counter 5</td></tr>
+<tr><td class="jdocu_noborder">PMC6</td><td class="jdocu_noborder">946</td><td class="jdocu_noborder">Performance Counter 6</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label243"></a><h4 class="jdocu">6.7.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>MMU: 36 bit physical address <tt>HID0[XAEN]</tt> support is not implemented.<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label244"></a><h4 class="jdocu">6.7.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+<a name="label245"></a><h4 class="jdocu">6.7.4&nbsp;&nbsp;&nbsp;Instructions Implemented as NOPs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dss[all]</td></tr>
+</table></span>
+
+<a name="label246"></a><h3 class="jdocu">6.8&nbsp;&nbsp;&nbsp;PowerPC 7450 limitations</h3 class="jdocu">
+
+
+<a name="label247"></a><h4 class="jdocu">6.8.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">ICTRL</td><td class="jdocu_noborder">1011</td><td class="jdocu_noborder">Instruction cache/interrupt control register</td></tr>
+<tr><td class="jdocu_noborder">L3PM</td><td class="jdocu_noborder">983</td><td class="jdocu_noborder">L3 private memory register</td></tr>
+<tr><td class="jdocu_noborder">LDSTCR</td><td class="jdocu_noborder">1016</td><td class="jdocu_noborder">Load/Store control register</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">MMCR2</td><td class="jdocu_noborder">944</td><td class="jdocu_noborder">Monitor Control 2</td></tr>
+<tr><td class="jdocu_noborder">MSSSR0</td><td class="jdocu_noborder">1015</td><td class="jdocu_noborder">Memory subsystem status register</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">PMC5</td><td class="jdocu_noborder">945</td><td class="jdocu_noborder">Performance Counter 5</td></tr>
+<tr><td class="jdocu_noborder">PMC6</td><td class="jdocu_noborder">946</td><td class="jdocu_noborder">Performance Counter 6</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label248"></a><h4 class="jdocu">6.8.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>MMU: 36 bit physical address <tt>HID0[XAEN]</tt> support is not implemented.<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label249"></a><h4 class="jdocu">6.8.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+<a name="label250"></a><h4 class="jdocu">6.8.4&nbsp;&nbsp;&nbsp;Instructions Implemented as NOPs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dss[all]</td></tr>
+</table></span>
+
+<a name="label251"></a><h3 class="jdocu">6.9&nbsp;&nbsp;&nbsp;PowerPC 7457 limitations</h3 class="jdocu">
+
+
+<a name="label252"></a><h4 class="jdocu">6.9.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">ICTRL</td><td class="jdocu_noborder">1011</td><td class="jdocu_noborder">Instruction cache/interrupt control register</td></tr>
+<tr><td class="jdocu_noborder">L3ITCR0</td><td class="jdocu_noborder">984</td><td class="jdocu_noborder">L3 cache input timing control register 0</td></tr>
+<tr><td class="jdocu_noborder">L3ITCR1</td><td class="jdocu_noborder">1001</td><td class="jdocu_noborder">L3 cache input timing control register 1</td></tr>
+<tr><td class="jdocu_noborder">L3ITCR2</td><td class="jdocu_noborder">1002</td><td class="jdocu_noborder">L3 cache input timing control register 2</td></tr>
+<tr><td class="jdocu_noborder">L3ITCR3</td><td class="jdocu_noborder">1003</td><td class="jdocu_noborder">L3 cache input timing control register 3</td></tr>
+<tr><td class="jdocu_noborder">L3OHCR</td><td class="jdocu_noborder">1000</td><td class="jdocu_noborder">L3 cache output hold control register</td></tr>
+<tr><td class="jdocu_noborder">L3PM</td><td class="jdocu_noborder">983</td><td class="jdocu_noborder">L3 private memory register</td></tr>
+<tr><td class="jdocu_noborder">LDSTCR</td><td class="jdocu_noborder">1016</td><td class="jdocu_noborder">Load/Store control register</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">952</td><td class="jdocu_noborder">Monitor Control 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">956</td><td class="jdocu_noborder">Monitor Control 1</td></tr>
+<tr><td class="jdocu_noborder">MMCR2</td><td class="jdocu_noborder">944</td><td class="jdocu_noborder">Monitor Control 2</td></tr>
+<tr><td class="jdocu_noborder">MSSSR0</td><td class="jdocu_noborder">1015</td><td class="jdocu_noborder">Memory subsystem status register</td></tr>
+<tr><td class="jdocu_noborder">PMC1</td><td class="jdocu_noborder">953</td><td class="jdocu_noborder">Performance Counter 1</td></tr>
+<tr><td class="jdocu_noborder">PMC2</td><td class="jdocu_noborder">954</td><td class="jdocu_noborder">Performance Counter 2</td></tr>
+<tr><td class="jdocu_noborder">PMC3</td><td class="jdocu_noborder">957</td><td class="jdocu_noborder">Performance Counter 3</td></tr>
+<tr><td class="jdocu_noborder">PMC4</td><td class="jdocu_noborder">958</td><td class="jdocu_noborder">Performance Counter 4</td></tr>
+<tr><td class="jdocu_noborder">PMC5</td><td class="jdocu_noborder">945</td><td class="jdocu_noborder">Performance Counter 5</td></tr>
+<tr><td class="jdocu_noborder">PMC6</td><td class="jdocu_noborder">946</td><td class="jdocu_noborder">Performance Counter 6</td></tr>
+<tr><td class="jdocu_noborder">SIAR</td><td class="jdocu_noborder">955</td><td class="jdocu_noborder">Sampled Instruction Address</td></tr>
+</table></span>
+<a name="label253"></a><h4 class="jdocu">6.9.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>MMU: 36 bit physical address <tt>HID0[XAEN]</tt> support is not implemented.<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Setting ICTC[E] have no impact on instruction fetch cycles.<br>Floating-point estimate instructions are not bit exact.<a name="label254"></a><h4 class="jdocu">6.9.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+<a name="label255"></a><h4 class="jdocu">6.9.4&nbsp;&nbsp;&nbsp;Instructions Implemented as NOPs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dss[all]</td></tr>
+</table></span>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

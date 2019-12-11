@@ -1,0 +1,17 @@
+#
+# Start a number of motes using the same binary
+#
+if not defined mote_count   {$mote_count = 70}
+if not defined mote_binary  {$mote_binary = "images/Blink/main.bin"}
+
+$number = 1
+while $mote_count {
+	$mote_name = "mote" + $number + "_"
+	set-component-prefix $mote_name
+	run-command-file "%script%/telos-mote-common.simics"
+	echo ("Created " + $mote_name)
+#	$iop = ($system.get-component-object io_ports)
+#	$iop.log-level 2
+	$mote_count -= 1
+	$number += 1
+}

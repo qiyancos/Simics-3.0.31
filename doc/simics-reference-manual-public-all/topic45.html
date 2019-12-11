@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>CL-PD6729</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(593, true);
+</script>
+<a name="label4524"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic44.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic46.html">Next</a></span></p>
+<h3 class="jdocu">CL-PD6729</h3 class="jdocu">
+
+
+<a name="label4525"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2564">CL-PD6729</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>CL-PD6729</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a>, <a class="jdocu" href="topic530.html#label17948">simple_interrupt</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The CL-PD6729 class models a Cirrus Logic PD6729 PCI to PCMCIA bridge.
+
+</dd>
+
+</dl>
+<a name="label4526"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>config_register_info</i></b></dt><a name="label4527"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[isii]*]</b>.
+<p>
+Register info for all registered configuration registers. The format for each entry is (offset, name, size, write-mask).</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label4528"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size.</dd></dl>
+<dl><dt><b><i>expansion_rom</i></b></dt><a name="label4529"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oii]</b>.
+<p>
+ROM object, map size, and map function number for the Expansion ROM.</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label4530"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiii]</b>.
+<p>
+State of the interrupt pin.</dd></dl>
+<dl><dt><b><i>mappings</i></b></dt><a name="label4531"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{5:8}]|[iiiiiiiio|nii]*]</b>.
+<p>
+List of all current PCI IO and memory mappings.</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label4532"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>pending_interrupts</i></b></dt><a name="label4533"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[bb]</b>.
+<p>
+Pending card interrupts for slot 0 and slot 1.</dd></dl>
+<dl><dt><b><i>register_index</i></b></dt><a name="label4534"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Current register index</dd></dl>
+<dl><dt><b><i>slot0_extended_registers</i></b></dt><a name="label4535"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{60}]</b>.
+<p>
+Extended registers of slot 0</dd></dl>
+<dl><dt><b><i>slot0_io_windows</i></b></dt><a name="label4536"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i]{2}]</b>.
+<p>
+List of i/o space windows of slot 0.</dd></dl>
+<dl><dt><b><i>slot0_memory_windows</i></b></dt><a name="label4537"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]{5}]</b>.
+<p>
+List of memory/attribute space windows of slot 0.</dd></dl>
+<dl><dt><b><i>slot0_registers</i></b></dt><a name="label4538"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>.
+<p>
+Registers of slot 0</dd></dl>
+<dl><dt><b><i>slot0_spaces</i></b></dt><a name="label4539"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|[ooo]</b>.
+<p>
+Memory space objects representing the PCMCIA Attribute, Common and I/O spaces for slot 0.</dd></dl>
+<dl><dt><b><i>slot1_extended_registers</i></b></dt><a name="label4540"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{60}]</b>.
+<p>
+Extended registers of slot 1</dd></dl>
+<dl><dt><b><i>slot1_io_windows</i></b></dt><a name="label4541"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i]{2}]</b>.
+<p>
+List of i/o space windows of slot 1.</dd></dl>
+<dl><dt><b><i>slot1_memory_windows</i></b></dt><a name="label4542"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]{5}]</b>.
+<p>
+List of memory/attribute space windows of slot 1.</dd></dl>
+<dl><dt><b><i>slot1_registers</i></b></dt><a name="label4543"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>.
+<p>
+Registers of slot 1</dd></dl>
+<dl><dt><b><i>slot1_spaces</i></b></dt><a name="label4544"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|[ooo]</b>.
+<p>
+Memory space objects representing the PCMCIA Attribute, Common and I/O spaces for slot 1.</dd></dl>
+<dl><dt><b><i>write_masks</i></b></dt><a name="label4545"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Write masks for all registered configuration registers. The format for each entry is (offset, mask).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label4546"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4548">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4550">pci-header</a></b></td><td class="jdocu_noborder">print PCI device header</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4552">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label4547"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label4548"></a><a name="label4549"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;CL-PD6729&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;CL-PD6729&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label4550"></a><a name="label4551"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;CL-PD6729&gt;.pci-header</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;CL-PD6729&gt;.pci-header</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the PCI header, i.e the configuration registers.</dd>
+
+</dl>
+
+
+
+<a name="label4552"></a><a name="label4553"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;CL-PD6729&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;CL-PD6729&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic44.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic46.html">Next</a></span></p>
+</body>
+</html>

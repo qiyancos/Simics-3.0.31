@@ -1,0 +1,25 @@
+if not defined freq_mhz      {$freq_mhz    = 50}
+if not defined rtc_time      {$rtc_time    = "2002-06-02 11:00:00 UTC"}
+if not defined cpu_class     {$cpu_class   = "mips-4kc"}
+
+###
+
+add-directory "%simics%/targets/malta/images"
+
+import-malta-components
+import-isa-components
+import-pci-components
+import-std-components
+
+$system = (create-malta-system cpu_frequency = $freq_mhz
+                               cpu_class = $cpu_class
+                               rtc_time = $rtc_time)
+$sb = (create-south-bridge-piix4)
+$sio = (create-std-super-io)
+
+$system.connect pci-slot-sb $sb
+$system.connect interrupt $sb
+$sio.connect $sb
+$sio.connect com1 (create-std-text-console)
+
+$machine_defined = 1

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulation Modes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(187, true);
+</script>
+<a name="label441"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic67.html">Previous</a> - <a class="jdocu" href="topic67.html">Up</a> - <a class="jdocu" href="topic69.html">Next</a></span></p>
+<h4 class="jdocu">14.1&nbsp;&nbsp;&nbsp;Simulation Modes</h4 class="jdocu">
+
+
+<p>
+The <i>simulation mode</i> (or <i>execution mode</i>) is used to control the
+availability of certain features: instruction and data profiling, memory
+timing, and the micro-architectural interface. To allow for maximum
+performance when these features are not used, they are compiled as separate
+processor implementations. By default, Simics uses the fastest possible mode
+("normal").
+<p>
+
+To select a simulation mode, the corresponding command line flag
+(<tt>-stall</tt> or <tt>-ma</tt>) is passed to Simics. For example, to select
+"Stall mode":
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>cd [workspace]</b>
+$ <b>./simics -stall ...</b>
+</pre>
+<p>
+Simics does not support switching processor implementations at runtime. To
+change from one mode to another, use Simics's checkpoint feature to save the
+simulation state and restart Simics in the new mode from the checkpoint:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>write-configuration at-workload-start</b>
+simics&gt; <b>quit</b>
+</pre>
+<p>
+and then start from the new checkpoint in the new simulation mode:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>./simics -stall -c at-workload-start</b>
+</pre>
+<p>
+
+
+<a name="label442"></a><h5 class="jdocu">14.1.1&nbsp;&nbsp;&nbsp;Normal mode</h5 class="jdocu">
+
+
+<p>
+Normal mode is the fastest execution mode, and is optimized for
+emulation-style usage. The following features are not available in Normal
+mode:
+<p>
+<ul>
+<p>
+<li>Instruction and data profiling is not available.</li>
+<p>
+<li>Attaching timing-models and snoop devices to memory spaces is not
+supported. This means that the tracing and cache modules do not work
+correctly, and that stalling is not possible.</li>
+<p>
+<li>The micro-architectural interface is not available.</li>
+<p>
+</ul>
+<p>
+<a name="label443"></a><h5 class="jdocu">14.1.2&nbsp;&nbsp;&nbsp;Memory Timing with -stall</h5 class="jdocu">
+
+
+<a name="label444"></a>
+<a name="label445"></a>
+<p>
+<em>Stall</em> mode supports stalling and instruction/data profiling.
+<p>
+Note that not all Simics processor models implement a complete support for
+stalling and profiling. Refer to chapter <a class="jdocu" href="topic62.html#label432">13</a> (Profiling)
+and chapter <a class="jdocu" href="topic76.html#label477">16</a> (Stalling) for more information.
+<p>
+<a name="label446"></a><h5 class="jdocu">14.1.3&nbsp;&nbsp;&nbsp;Micro Architectural Simulation with -ma</h5 class="jdocu">
+
+
+<a name="label447"></a>
+<a name="label448"></a>
+<p>
+The micro-architecture mode selects in implementation with support for
+micro-architectural simulation. For performance reasons, this mode is usually
+only used for those subsets of the workload for which micro-architectural
+modeling is relevant. Typically, the system is booted in normal mode until the
+workload starts. A checkpoint is then taken, and Simics is restarted in
+micro-architecture mode from that checkpoint.
+<p>
+Changing to micro-architectural mode usually requires additional configuration
+information (like a processor timing model for example) before the simulation
+can be run. See chapter <a class="jdocu" href="topic82.html#label484">17</a> and <em>Simics
+Micro-Architectural Interface</em> document for more information.
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic67.html">Previous</a> - <a class="jdocu" href="topic67.html">Up</a> - <a class="jdocu" href="topic69.html">Next</a></span></p>
+</body>
+</html>

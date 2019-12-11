@@ -1,0 +1,101 @@
+# -*- shell-script -*-
+# This file is intended to be sourced from host-defaults.*
+
+
+# Functions for signalling warnings and errors from the host-default files.
+
+host_message() {
+	echo "$*" 1>&6
+}
+host_warning() {
+	echo "*Warning*: $*" 1>&2
+}
+host_error() {
+	echo "*Error*: $*" 1>&2
+	exit 1;
+}
+
+# Functions to check OS environment
+host_arch() {
+    case "`uname -m`" in
+	    i*86) 
+		HOST_ARCH=x86
+		;;
+	    sun4u)
+		HOST_ARCH=v9
+		;;
+	    *)	
+		HOST_ARCH=`echo $UNAME_M | sed 's/ /-/g'`
+		;;
+    esac
+
+    echo $HOST_ARCH
+}
+
+# Finds out if a command is a Cygwin application or not. If it's not, it'll
+# probably need to be wrapped.
+# - The test is: if the binary contains the string "cygwin1.dll", then it's probably
+#   a Cygwin-program. Not a perfect test, but it'll have to do for now.
+is_cygwin_cmd() {
+	cmd="$1"
+	( test x"$cmd" != x && \
+	  test x"$OSTYPE" = xcygwin && \
+	  strings "$cmd" 2>&1 ) | grep cygwin1.dll >/dev/null
+}
+
+is_native_win32_cmd() {
+	prg=$(type -p "$1")
+	prgexe=$(type -p "$1").exe
+	if test x$OSTYPE = xcygwin; then
+		if is_cygwin_cmd "$prg" || is_cygwin_cmd "$prgexe"; then
+			false
+		else	
+			true
+		fi	
+	else
+		false
+	fi
+}
+
+
+# Called to source host-defaults files.
+load_hostdefaults() {
+	filename=$1
+	path=$2
+
+	OLDIFS="$IFS"
+	IFS=":"
+	for dir in $path; do
+		if test -f "$dir/$filename"; then
+			file="$dir/$filename"
+			host_message "loading host configuration file: $file"
+			. $file
+			SOURCED_HOSTDEFAULTS="$sourced_files:$file"
+		fi
+	done
+	IFS="$OLDIFS"
+}
+
+load_hostflags() {
+        filename="$1"
+	path="$2"
+	tmpfile_mk=/tmp/mktosh-$$.mk
+	tmpfile_sh=/tmp/mktosh-$$.sh
+
+	OLDIFS="$IFS"
+	IFS=":"
+	for dir in $path; do
+		if test -f "$dir/$filename"; then
+			set -x
+			host_message "loading host flags file: $dir/$filename"
+			$MKTOSH $dir/$filename > $tmpfile_mk
+			# make sure environment overrides make-variables here, so
+			# command-line assignments and such work properly.
+			$MAKE --no-print-directory -e -f $tmpfile_mk > $tmpfile_sh
+			. $tmpfile_sh
+		fi
+	done
+	IFS="$OLDIFS"
+	
+	rm -f $tmpfile_mk $tmpfile_sh
+}

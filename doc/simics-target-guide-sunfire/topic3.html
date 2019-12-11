@@ -1,0 +1,2569 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Supported Components</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(33, true);
+</script>
+<a name="label35"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Supported Components</h2 class="jdocu">
+
+
+<p>
+The following sections list components that are supported for the SunFire
+architecture. There also exist other components in Simics, such as various
+PCI devices, that may work for SunFire but that have not been tested.
+<p>
+The default machines are constructed from components in the
+<tt>-system.include</tt> files in
+<tt>[simics]/targets/sunfire/</tt>. See the
+Configuration and Checkpointing chapter in the Simics User Guide for
+information on how to define your own machine, or make modifications
+to an existing machine.
+<p>
+
+<a name="label36"></a><h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;SunFire Components</h3 class="jdocu">
+
+
+<a name="label37"></a><h4 class="jdocu">4.1.1&nbsp;&nbsp;&nbsp;sunfire-3500-backplane</h4 class="jdocu">
+
+
+<a name="label38"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sunfire-3500-backplane" component represents the chassis, backplane and clock-board of a Sun Enterprise 3500 server, with slots for up to five boards.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label39"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz. Supported frequencies are 168, 200, 248, 296, 336, 360, 400, 464, 496, 592, 720, 800, 992.</dd></dl>
+<dl><dt><b><i>hostid</i></b></dt><a name="label40"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The hostid of the machine.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label41"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The main MAC address is the machine.</dd></dl>
+<dl><dt><b><i>master_cpu</i></b></dt><a name="label42"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|o</b>.
+<p>
+Internal attribute.</dd></dl>
+<dl><dt><b><i>obp_bugfix_done</i></b></dt><a name="label43"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Internal attribute.</dd></dl>
+<dl><dt><b><i>rtc_time</i></b></dt><a name="label44"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The date and time of the Real-Time clock.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label45"></a><a name="label46"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sunfire-3500-backplane</b> [<i>"name"</i>] <i>cpu_frequency</i> <i>hostid</i> <i>"mac_address"</i> <i>"rtc_time"</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sunfire-3500-backplane". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label47"></a><a name="label48"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.get-nvram-hostid</b></b></dt><dd class="jdocu_di">
+Reads the Sun hostid from the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label49"></a><a name="label50"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.get-nvram-mac</b></b></dt><dd class="jdocu_di">
+Reads the default MAC address from the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label51"></a><a name="label52"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.get-prom-env</b> [<i>"variable"</i>] </b></dt><dd class="jdocu_di">
+Prints an OBP variable with its value, or all variables if no argument is specified. Only variables with string, integer, boolean and enumeration types are supported.</dd>
+
+</dl>
+
+
+
+<a name="label53"></a><a name="label54"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label55"></a><a name="label56"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.key-switch</b> [<i>"position"</i>] </b></dt><dd class="jdocu_di">
+Changes the position of the key-switch on the clock-board. Possible arguments are "diag", "insecure" and "secure". If no argument is specified, the current position is reported.</dd>
+
+</dl>
+
+
+
+<a name="label57"></a><a name="label58"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.set-nvram-hostid</b> <i>hostid</i> </b></dt><dd class="jdocu_di">
+Writes the Sun hostid into the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label59"></a><a name="label60"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.set-nvram-mac</b> <i>"mac"</i> </b></dt><dd class="jdocu_di">
+Writes the default MAC address into the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label61"></a><a name="label62"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.set-prom-defaults</b></b></dt><dd class="jdocu_di">
+Restores all OBP variables to their default values.</dd>
+
+</dl>
+
+
+
+<a name="label63"></a><a name="label64"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.set-prom-env</b> <i>"variable"</i> (<i>int</i>|<i>"string"</i>) </b></dt><dd class="jdocu_di">
+Sets the value OBP variable in the NVRAM. Only variables with string, integer, boolean and enumeration types are supported.</dd>
+
+</dl>
+
+
+
+<a name="label65"></a><a name="label66"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-3500-backplane&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">central-cpu</td><td class="jdocu_noborder">sunfire-central-cpu</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">remote_console</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">slot[0-15]</td><td class="jdocu_noborder">sunfire-backplane</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ttya</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ttyb</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label67"></a><h4 class="jdocu">4.1.2&nbsp;&nbsp;&nbsp;sunfire-4500-backplane</h4 class="jdocu">
+
+
+<a name="label68"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sunfire-4500-backplane" component represents the chassis, backplane and clock-board of a Sun Enterprise 4500 server, with slots for up to eight boards.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label69"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz. Supported frequencies are 168, 200, 248, 296, 336, 360, 400, 464, 496, 592, 720, 800, 992.</dd></dl>
+<dl><dt><b><i>hostid</i></b></dt><a name="label70"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The hostid of the machine.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label71"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The main MAC address is the machine.</dd></dl>
+<dl><dt><b><i>master_cpu</i></b></dt><a name="label72"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|o</b>.
+<p>
+Internal attribute.</dd></dl>
+<dl><dt><b><i>obp_bugfix_done</i></b></dt><a name="label73"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Internal attribute.</dd></dl>
+<dl><dt><b><i>rtc_time</i></b></dt><a name="label74"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The date and time of the Real-Time clock.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label75"></a><a name="label76"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sunfire-4500-backplane</b> [<i>"name"</i>] <i>cpu_frequency</i> <i>hostid</i> <i>"mac_address"</i> <i>"rtc_time"</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sunfire-4500-backplane". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label77"></a><a name="label78"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.get-nvram-hostid</b></b></dt><dd class="jdocu_di">
+Reads the Sun hostid from the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label79"></a><a name="label80"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.get-nvram-mac</b></b></dt><dd class="jdocu_di">
+Reads the default MAC address from the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label81"></a><a name="label82"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.get-prom-env</b> [<i>"variable"</i>] </b></dt><dd class="jdocu_di">
+Prints an OBP variable with its value, or all variables if no argument is specified. Only variables with string, integer, boolean and enumeration types are supported.</dd>
+
+</dl>
+
+
+
+<a name="label83"></a><a name="label84"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label85"></a><a name="label86"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.key-switch</b> [<i>"position"</i>] </b></dt><dd class="jdocu_di">
+Changes the position of the key-switch on the clock-board. Possible arguments are "diag", "insecure" and "secure". If no argument is specified, the current position is reported.</dd>
+
+</dl>
+
+
+
+<a name="label87"></a><a name="label88"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.set-nvram-hostid</b> <i>hostid</i> </b></dt><dd class="jdocu_di">
+Writes the Sun hostid into the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label89"></a><a name="label90"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.set-nvram-mac</b> <i>"mac"</i> </b></dt><dd class="jdocu_di">
+Writes the default MAC address into the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label91"></a><a name="label92"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.set-prom-defaults</b></b></dt><dd class="jdocu_di">
+Restores all OBP variables to their default values.</dd>
+
+</dl>
+
+
+
+<a name="label93"></a><a name="label94"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.set-prom-env</b> <i>"variable"</i> (<i>int</i>|<i>"string"</i>) </b></dt><dd class="jdocu_di">
+Sets the value OBP variable in the NVRAM. Only variables with string, integer, boolean and enumeration types are supported.</dd>
+
+</dl>
+
+
+
+<a name="label95"></a><a name="label96"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-4500-backplane&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">central-cpu</td><td class="jdocu_noborder">sunfire-central-cpu</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">remote_console</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">slot[0-15]</td><td class="jdocu_noborder">sunfire-backplane</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ttya</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ttyb</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label97"></a><h4 class="jdocu">4.1.3&nbsp;&nbsp;&nbsp;sunfire-6500-backplane</h4 class="jdocu">
+
+
+<a name="label98"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sunfire-6500-backplane" component represents the chassis, backplane and clock-board of a Sun Enterprise 6500 server, with slots for up to sixteen boards.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label99"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz. Supported frequencies are 168, 200, 248, 296, 336, 360, 400, 464, 496, 592, 720, 800, 992.</dd></dl>
+<dl><dt><b><i>hostid</i></b></dt><a name="label100"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The hostid of the machine.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label101"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The main MAC address is the machine.</dd></dl>
+<dl><dt><b><i>master_cpu</i></b></dt><a name="label102"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|o</b>.
+<p>
+Internal attribute.</dd></dl>
+<dl><dt><b><i>obp_bugfix_done</i></b></dt><a name="label103"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Internal attribute.</dd></dl>
+<dl><dt><b><i>rtc_time</i></b></dt><a name="label104"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The date and time of the Real-Time clock.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label105"></a><a name="label106"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sunfire-6500-backplane</b> [<i>"name"</i>] <i>cpu_frequency</i> <i>hostid</i> <i>"mac_address"</i> <i>"rtc_time"</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sunfire-6500-backplane". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label107"></a><a name="label108"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.get-nvram-hostid</b></b></dt><dd class="jdocu_di">
+Reads the Sun hostid from the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label109"></a><a name="label110"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.get-nvram-mac</b></b></dt><dd class="jdocu_di">
+Reads the default MAC address from the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label111"></a><a name="label112"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.get-prom-env</b> [<i>"variable"</i>] </b></dt><dd class="jdocu_di">
+Prints an OBP variable with its value, or all variables if no argument is specified. Only variables with string, integer, boolean and enumeration types are supported.</dd>
+
+</dl>
+
+
+
+<a name="label113"></a><a name="label114"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label115"></a><a name="label116"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.key-switch</b> [<i>"position"</i>] </b></dt><dd class="jdocu_di">
+Changes the position of the key-switch on the clock-board. Possible arguments are "diag", "insecure" and "secure". If no argument is specified, the current position is reported.</dd>
+
+</dl>
+
+
+
+<a name="label117"></a><a name="label118"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.set-nvram-hostid</b> <i>hostid</i> </b></dt><dd class="jdocu_di">
+Writes the Sun hostid into the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label119"></a><a name="label120"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.set-nvram-mac</b> <i>"mac"</i> </b></dt><dd class="jdocu_di">
+Writes the default MAC address into the NVRAM.</dd>
+
+</dl>
+
+
+
+<a name="label121"></a><a name="label122"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.set-prom-defaults</b></b></dt><dd class="jdocu_di">
+Restores all OBP variables to their default values.</dd>
+
+</dl>
+
+
+
+<a name="label123"></a><a name="label124"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.set-prom-env</b> <i>"variable"</i> (<i>int</i>|<i>"string"</i>) </b></dt><dd class="jdocu_di">
+Sets the value OBP variable in the NVRAM. Only variables with string, integer, boolean and enumeration types are supported.</dd>
+
+</dl>
+
+
+
+<a name="label125"></a><a name="label126"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-6500-backplane&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">central-cpu</td><td class="jdocu_noborder">sunfire-central-cpu</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">remote_console</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">slot[0-15]</td><td class="jdocu_noborder">sunfire-backplane</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ttya</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ttyb</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label127"></a><h4 class="jdocu">4.1.4&nbsp;&nbsp;&nbsp;sunfire-cpu-board</h4 class="jdocu">
+
+
+<a name="label128"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sunfire-cpu-board" component represents a processor board with up to two UltraSPARC II processors and 4GB of memory, for use in Sun Enterprise 3500-6500 servers.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>memory_megs</i></b></dt><a name="label129"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The amount of RAM in megabytes on the processor board.</dd></dl>
+<dl><dt><b><i>num_cpus</i></b></dt><a name="label130"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of processors on the board (1 or 2).</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label131"></a><a name="label132"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sunfire-cpu-board</b> [<i>"name"</i>] <i>num_cpus</i> <i>memory_megs</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sunfire-cpu-board". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label133"></a><a name="label134"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-cpu-board&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label135"></a><a name="label136"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-cpu-board&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">backplane</td><td class="jdocu_noborder">sunfire-backplane</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">central-cpu</td><td class="jdocu_noborder">sunfire-central-cpu</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu[0-1]</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label137"></a><h4 class="jdocu">4.1.5&nbsp;&nbsp;&nbsp;sunfire-sbus-board</h4 class="jdocu">
+
+
+<a name="label138"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sunfire-sbus-board" component represents an I/O board with slots for up to three SBus cards, for use in Sun Enterprise 3500-6500 servers. The board has one HME ethernet controller and one FAS SCSI controller on-board. 
+<p>
+The UPA in the table is relative the first UPA on the board. (The UPA is an
+identifier for each CPU and I/O controller in the system. There are two UPAs
+per board, resulting in a total of 32.)
+<p>
+<b>SBus slot mappings:</b>
+<p>
+<table>
+<tr><td class="jdocu_border">Simics slot</td><td class="jdocu_border">UPA</td><td class="jdocu_border">SBus Slot</td><td class="jdocu_border">Bus address</td><td class="jdocu_border">Note</td></tr>
+<tr><td class="jdocu_border">0</td><td class="jdocu_border">1</td><td class="jdocu_border">0</td><td class="jdocu_border">1,0 at 0,0</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">1</td><td class="jdocu_border">0</td><td class="jdocu_border">1</td><td class="jdocu_border">0,0 at 1,0</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">2</td><td class="jdocu_border">0</td><td class="jdocu_border">2</td><td class="jdocu_border">0,0 at 2,0</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">3</td><td class="jdocu_border">1</td><td class="jdocu_border">3</td><td class="jdocu_border">1,0 at 3,0</td><td class="jdocu_border">On-board fas, hme</td></tr>
+</table>
+</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>mac_address</i></b></dt><a name="label139"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the onboard Ethernet adapter.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label140"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label141"></a><a name="label142"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sunfire-sbus-board</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>scsi_id</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sunfire-sbus-board". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label143"></a><a name="label144"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-sbus-board&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label145"></a><a name="label146"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-sbus-board&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">backplane</td><td class="jdocu_noborder">sunfire-backplane</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">slot[0-2]</td><td class="jdocu_noborder">sun-sbus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label147"></a><h4 class="jdocu">4.1.6&nbsp;&nbsp;&nbsp;sunfire-pci-board</h4 class="jdocu">
+
+
+<a name="label148"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sunfire-pci-board" component represents an I/O board with slots for up to two PCI cards, for use in Sun Enterprise 3500-6500 servers. The board has one HME ethernet controller and one ISP SCSI controller on-board. 
+<p>
+The UPA in the table is relative the first UPA on the board. (The UPA is an
+identifier for each CPU and I/O controller in the system. There are two UPAs
+per board, resulting in a total of 32.)
+<p>
+<b>PCI slot mappings:</b>
+<p>
+<table>
+<tr><td class="jdocu_border">Simics slot</td><td class="jdocu_border">UPA</td><td class="jdocu_border">PCI Bus</td><td class="jdocu_border">PCI Slot</td><td class="jdocu_border">Bus address</td><td class="jdocu_border">Note</td></tr>
+<tr><td class="jdocu_border">0</td><td class="jdocu_border">0</td><td class="jdocu_border">A</td><td class="jdocu_border">2</td><td class="jdocu_border">0,2000</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">1</td><td class="jdocu_border">0</td><td class="jdocu_border">B</td><td class="jdocu_border">1</td><td class="jdocu_border">0,4000</td><td class="jdocu_border">On-board hme</td></tr>
+<tr><td class="jdocu_border">2</td><td class="jdocu_border">1</td><td class="jdocu_border">A</td><td class="jdocu_border">2</td><td class="jdocu_border">1,2000</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">3</td><td class="jdocu_border">1</td><td class="jdocu_border">B</td><td class="jdocu_border">3</td><td class="jdocu_border">1,4000</td><td class="jdocu_border">On board isp</td></tr>
+</table>
+</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>mac_address</i></b></dt><a name="label149"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the onboard Ethernet adapter.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label150"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label151"></a><a name="label152"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sunfire-pci-board</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>scsi_id</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sunfire-pci-board". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label153"></a><a name="label154"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-pci-board&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label155"></a><a name="label156"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sunfire-pci-board&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">backplane</td><td class="jdocu_noborder">sunfire-backplane</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">pci-slot0</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">pci-slot2</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label157"></a><h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;SBus and PCI Device Components</h3 class="jdocu">
+
+
+<a name="label158"></a><h4 class="jdocu">4.2.1&nbsp;&nbsp;&nbsp;sun-sbus-fas-hme</h4 class="jdocu">
+
+
+<a name="label159"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-sbus-fas-hme" component represents an SBus card with one HME ethernet controller and one FAS SCSI controller for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>mac_address</i></b></dt><a name="label160"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label161"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label162"></a><a name="label163"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-sbus-fas-hme</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>scsi_id</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-sbus-fas-hme". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label164"></a><a name="label165"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-sbus-fas-hme&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label166"></a><a name="label167"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-sbus-fas-hme&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">sbus</td><td class="jdocu_noborder">sun-sbus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label168"></a><h4 class="jdocu">4.2.2&nbsp;&nbsp;&nbsp;sun-pci-ce</h4 class="jdocu">
+
+
+<a name="label169"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-pci-ce" component represents a PCI card with a Cassini gigabit Ethernet adapter, for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>mac_address</i></b></dt><a name="label170"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label171"></a><a name="label172"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-pci-ce</b> [<i>"name"</i>] <i>"mac_address"</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-pci-ce". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label173"></a><a name="label174"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-ce&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label175"></a><a name="label176"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-ce&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label177"></a><h4 class="jdocu">4.2.3&nbsp;&nbsp;&nbsp;sun-pci-hme</h4 class="jdocu">
+
+
+<a name="label178"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-pci-hme" component represents a PCI card with a HME Ethernet adapter, for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>mac_address</i></b></dt><a name="label179"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label180"></a><a name="label181"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-pci-hme</b> [<i>"name"</i>] <i>"mac_address"</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-pci-hme". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label182"></a><a name="label183"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-hme&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label184"></a><a name="label185"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-hme&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label186"></a><h4 class="jdocu">4.2.4&nbsp;&nbsp;&nbsp;sun-pci-hme-isp</h4 class="jdocu">
+
+
+<a name="label187"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-pci-hme-isp" component represents a PCI card with one HME Ethernet adapter and one ISP SCSI controller for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>mac_address</i></b></dt><a name="label188"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label189"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label190"></a><a name="label191"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-pci-hme-isp</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>scsi_id</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-pci-hme-isp". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label192"></a><a name="label193"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-hme-isp&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label194"></a><a name="label195"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-hme-isp&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label196"></a><h4 class="jdocu">4.2.5&nbsp;&nbsp;&nbsp;sun-pci-pgx64</h4 class="jdocu">
+
+
+<a name="label197"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-pci-pgx64" component represents a PCI card with a PGX64 (Rage XL) graphics adapter, for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label198"></a><a name="label199"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-pci-pgx64</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-pci-pgx64". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label200"></a><a name="label201"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-pgx64&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label202"></a><a name="label203"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-pgx64&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label204"></a><h4 class="jdocu">4.2.6&nbsp;&nbsp;&nbsp;sun-pci-qlc</h4 class="jdocu">
+
+
+<a name="label205"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-pci-qlc" component represents a PCI card with a QLC Fibre-Channel SCSI controller for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>loop_id</i></b></dt><a name="label206"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The FC loop ID of the QLC controller.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label207"></a><a name="label208"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-pci-qlc</b> [<i>"name"</i>] <i>loop_id</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-pci-qlc". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label209"></a><a name="label210"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-qlc&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label211"></a><a name="label212"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-qlc&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">fc-loop</td><td class="jdocu_noborder">simple-fc-loop</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label213"></a><h4 class="jdocu">4.2.7&nbsp;&nbsp;&nbsp;sun-pci-qlc-qlc</h4 class="jdocu">
+
+
+<a name="label214"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-pci-qlc-qlc" component represents a PCI card with two QLC Fibre-Channel SCSI controller for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>loop_id0</i></b></dt><a name="label215"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The FC loop ID of the first QLC controller.</dd></dl>
+<dl><dt><b><i>loop_id1</i></b></dt><a name="label216"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The FC loop ID of the second QLC controller.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label217"></a><a name="label218"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-pci-qlc-qlc</b> [<i>"name"</i>] <i>loop_id0</i> <i>loop_id1</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-pci-qlc-qlc". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label219"></a><a name="label220"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-qlc-qlc&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label221"></a><a name="label222"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-pci-qlc-qlc&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">fc-loop[0-1]</td><td class="jdocu_noborder">simple-fc-loop</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label223"></a><h4 class="jdocu">4.2.8&nbsp;&nbsp;&nbsp;pci-bcm5703c</h4 class="jdocu">
+
+
+<a name="label224"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-bcm5703c" component represents a Broadcom 5703C PCI based gigabit Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label225"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label226"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label227"></a><a name="label228"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-bcm5703c</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-bcm5703c". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label229"></a><a name="label230"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5703c&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label231"></a><a name="label232"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5703c&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label233"></a><h4 class="jdocu">4.2.9&nbsp;&nbsp;&nbsp;pci-bcm5704c</h4 class="jdocu">
+
+
+<a name="label234"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-bcm5704c" component represents a Broadcom 5704C PCI based dual-port gigabit Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label235"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address0</i></b></dt><a name="label236"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the first Ethernet adapter.</dd></dl>
+<dl><dt><b><i>mac_address1</i></b></dt><a name="label237"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the second Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label238"></a><a name="label239"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-bcm5704c</b> [<i>"name"</i>] <i>"mac_address0"</i> <i>"mac_address1"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-bcm5704c". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label240"></a><a name="label241"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5704c&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label242"></a><a name="label243"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5704c&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet[0-1]</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label244"></a><h4 class="jdocu">4.2.10&nbsp;&nbsp;&nbsp;pci-sym53c875</h4 class="jdocu">
+
+
+<a name="label245"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C875" component represents a SYM53C875PCI based SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label246"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label247"></a><a name="label248"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c875</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c875". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label249"></a><a name="label250"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c875&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label251"></a><a name="label252"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c875&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label253"></a><h4 class="jdocu">4.2.11&nbsp;&nbsp;&nbsp;pci-sym53c876</h4 class="jdocu">
+
+
+<a name="label254"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C876" component represents a SYM53C876PCI based dual-port SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label255"></a><a name="label256"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c876</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c876". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label257"></a><a name="label258"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c876&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label259"></a><a name="label260"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c876&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus[0-1]</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label261"></a><h3 class="jdocu">4.3&nbsp;&nbsp;&nbsp;Standard Components</h3 class="jdocu">
+
+
+<a name="label262"></a><h4 class="jdocu">4.3.1&nbsp;&nbsp;&nbsp;std-ethernet-link</h4 class="jdocu">
+
+
+<a name="label263"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-ethernet-link" component represents a standard Ethernet link.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>frame_echo</i></b></dt><a name="label264"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set this attribute to echo frames back to the sender. Default is not to echo frames.</dd></dl>
+<dl><dt><b><i>link_name</i></b></dt><a name="label265"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The name to use for the <b>ethernet-link</b> object. An error will be raised at instantiation time if the link cannot be given this name.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label266"></a><a name="label267"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-ethernet-link</b> [<i>"name"</i>] [<i>"link_name"</i>] [<i>frame_echo</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-ethernet-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label268"></a><a name="label269"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-ethernet-link</b> [<i>"name"</i>] [<i>"link_name"</i>] [<i>frame_echo</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-ethernet-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label270"></a><a name="label271"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ethernet-link&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label272"></a><a name="label273"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ethernet-link&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label274"></a><h4 class="jdocu">4.3.2&nbsp;&nbsp;&nbsp;std-service-node</h4 class="jdocu">
+
+
+<a name="label275"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-service-node" component represents a network service node that can be connected to Ethernet links to provide services such as DNS, DHCP/BOOTP, RARP and TFTP. A service node component does not have any connectors by default. Instead, connectors have to be added using the <b>&lt;std-service-node&gt;.add-connector</b> command.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>dynamic_connectors</i></b></dt><a name="label276"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[iss]*]</b>.
+<p>
+List of user added connectors</dd></dl>
+<dl><dt><b><i>next_connector_id</i></b></dt><a name="label277"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Next service-node device ID.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label278"></a><a name="label279"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-service-node</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-service-node". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label280"></a><a name="label281"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-service-node</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-service-node". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label282"></a><a name="label283"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.add-connector</b> <i>"ip"</i> [<i>"netmask"</i>] </b></dt><dd class="jdocu_di">
+Adds a connector to the service-node with specified IP address and netmask. A connector must be created for the service-node before an Ethernet link can be connected to it. The <i>ip</i> argument is the IP address that the service node will use on the link. The <i>netmask</i> argument is optional, and defaults to <tt>255.255.255.0</tt>.<br>The name of the new connector is returned.</dd>
+
+</dl>
+
+
+
+<a name="label284"></a><a name="label285"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label286"></a><a name="label287"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+</dl>
+
+<a name="label288"></a><h4 class="jdocu">4.3.3&nbsp;&nbsp;&nbsp;std-scsi-bus</h4 class="jdocu">
+
+
+<a name="label289"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-bus" component represents a 16 slot SCSI bus.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label290"></a><a name="label291"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-bus</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-bus". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label292"></a><a name="label293"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-bus&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label294"></a><a name="label295"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-bus&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label296"></a><h4 class="jdocu">4.3.4&nbsp;&nbsp;&nbsp;std-scsi-disk</h4 class="jdocu">
+
+
+<a name="label297"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-disk" component represents a SCSI-2 disk.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>file</i></b></dt><a name="label298"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+File with disk contents for the full disk Either a raw file or a CRAFF file.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label299"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+<dl><dt><b><i>size</i></b></dt><a name="label300"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the SCSI disk in bytes.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label301"></a><a name="label302"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-disk</b> [<i>"name"</i>] <i>scsi_id</i> <i>size</i> [<i>"file"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-disk". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label303"></a><a name="label304"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-disk&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label305"></a><a name="label306"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-disk&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label307"></a><h4 class="jdocu">4.3.5&nbsp;&nbsp;&nbsp;std-scsi-cdrom</h4 class="jdocu">
+
+
+<a name="label308"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-cdrom" component represents a SCSI-2 CD-ROM.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label309"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label310"></a><a name="label311"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-cdrom</b> [<i>"name"</i>] <i>scsi_id</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-cdrom". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label312"></a><a name="label313"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-cdrom&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label314"></a><a name="label315"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-cdrom&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label316"></a><h4 class="jdocu">4.3.6&nbsp;&nbsp;&nbsp;simple-fc-disk</h4 class="jdocu">
+
+
+<a name="label317"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "simple-fc-disk" component represents a SCSI-2 disk for use with Fibre-Channel SCSI controllers using the simplified FC protocol in Simics.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>file</i></b></dt><a name="label318"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+File with disk contents for the full disk Either a raw file or a CRAFF file.</dd></dl>
+<dl><dt><b><i>loop_id</i></b></dt><a name="label319"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The loop ID for the FC disk.</dd></dl>
+<dl><dt><b><i>node_name</i></b></dt><a name="label320"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The node name for the FC disk.</dd></dl>
+<dl><dt><b><i>port_name</i></b></dt><a name="label321"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The port name for the FC disk.</dd></dl>
+<dl><dt><b><i>size</i></b></dt><a name="label322"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the FC disk in bytes.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label323"></a><a name="label324"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-simple-fc-disk</b> [<i>"name"</i>] <i>size</i> [<i>"file"</i>] <i>loop_id</i> <i>node_name</i> <i>port_name</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "simple-fc-disk". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label325"></a><a name="label326"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;simple-fc-disk&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label327"></a><a name="label328"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;simple-fc-disk&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">fc-loop</td><td class="jdocu_noborder">simple-fc-loop</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label329"></a><h4 class="jdocu">4.3.7&nbsp;&nbsp;&nbsp;std-text-console</h4 class="jdocu">
+
+
+<a name="label330"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-console" component represents a serial text console.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bg_color</i></b></dt><a name="label331"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The background color.</dd></dl>
+<dl><dt><b><i>fg_color</i></b></dt><a name="label332"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The foreground color.</dd></dl>
+<dl><dt><b><i>height</i></b></dt><a name="label333"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The height of the console window.</dd></dl>
+<dl><dt><b><i>title</i></b></dt><a name="label334"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The Window title.</dd></dl>
+<dl><dt><b><i>width</i></b></dt><a name="label335"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The width of the console window.</dd></dl>
+<dl><dt><b><i>win32_font</i></b></dt><a name="label336"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console on Windows host.</dd></dl>
+<dl><dt><b><i>x11_font</i></b></dt><a name="label337"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console when using X11 (Linux/Solaris host).</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label338"></a><a name="label339"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label340"></a><a name="label341"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label342"></a><a name="label343"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label344"></a><a name="label345"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label346"></a><h4 class="jdocu">4.3.8&nbsp;&nbsp;&nbsp;std-server-console</h4 class="jdocu">
+
+
+<a name="label347"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-server-console" component represents a serial console accessible from the host using telnet.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>telnet_port</i></b></dt><a name="label348"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TCP/IP port to connect the telnet service of the console to.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label349"></a><a name="label350"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-server-console</b> [<i>"name"</i>] <i>telnet_port</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-server-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label351"></a><a name="label352"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-server-console</b> [<i>"name"</i>] <i>telnet_port</i> </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-server-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label353"></a><a name="label354"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-server-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label355"></a><a name="label356"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-server-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label357"></a><h4 class="jdocu">4.3.9&nbsp;&nbsp;&nbsp;std-graphics-console</h4 class="jdocu">
+
+
+<a name="label358"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-graphics-console" component represents a graphical console for displaying output from a simulated graphics adapters and getting input for mouse and keyboard devices.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>window</i></b></dt><a name="label359"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Try to open window if TRUE (default). FALSE disabled the window.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label360"></a><a name="label361"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-graphics-console</b> [<i>"name"</i>] [<i>window</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label362"></a><a name="label363"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-graphics-console</b> [<i>"name"</i>] [<i>window</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label364"></a><a name="label365"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-graphics-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label366"></a><a name="label367"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-graphics-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label368"></a><h4 class="jdocu">4.3.10&nbsp;&nbsp;&nbsp;std-text-graphics-console</h4 class="jdocu">
+
+
+<a name="label369"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-graphics-console" component represents a text console for use with VGA instead of a graphics console.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label370"></a><a name="label371"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-graphics-console</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label372"></a><a name="label373"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-graphics-console</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label374"></a><a name="label375"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-graphics-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label376"></a><a name="label377"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-graphics-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label378"></a><h3 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Other Device Components</h3 class="jdocu">
+
+
+<a name="label379"></a><h4 class="jdocu">4.4.1&nbsp;&nbsp;&nbsp;sun-type5-keyboard</h4 class="jdocu">
+
+
+<a name="label380"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-type5-keyboard" component represents a Sun Type 5 serial keyboard for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label381"></a><a name="label382"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-type5-keyboard</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-type5-keyboard". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label383"></a><a name="label384"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-sun-type5-keyboard</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "sun-type5-keyboard". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label385"></a><a name="label386"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-type5-keyboard&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label387"></a><a name="label388"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-type5-keyboard&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label389"></a><h4 class="jdocu">4.4.2&nbsp;&nbsp;&nbsp;sun-type5-mouse</h4 class="jdocu">
+
+
+<a name="label390"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "sun-type5-mouse" component represents a Sun Type 5 serial mouse for use in Sun systems.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label391"></a><a name="label392"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sun-type5-mouse</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sun-type5-mouse". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label393"></a><a name="label394"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-sun-type5-mouse</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "sun-type5-mouse". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label395"></a><a name="label396"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-type5-mouse&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label397"></a><a name="label398"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sun-type5-mouse&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label399"></a><h3 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Timing Components</h3 class="jdocu">
+
+
+<a name="label400"></a><h4 class="jdocu">4.5.1&nbsp;&nbsp;&nbsp;sample-gcache</h4 class="jdocu">
+
+
+<a name="label401"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+A pre-configured combined L1 instruction and data cache</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label402"></a><a name="label403"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sample-gcache</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sample-gcache". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label404"></a><a name="label405"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-sample-gcache</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "sample-gcache". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label406"></a><a name="label407"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sample-gcache&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label408"></a><a name="label409"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sample-gcache&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">cpu-space</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label410"></a><h4 class="jdocu">4.5.2&nbsp;&nbsp;&nbsp;sample-ma-model</h4 class="jdocu">
+
+
+<a name="label411"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+A sample SPARC MAI model with a simple cache</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label412"></a><a name="label413"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sample-ma-model</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sample-ma-model". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label414"></a><a name="label415"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-sample-ma-model</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "sample-ma-model". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label416"></a><a name="label417"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sample-ma-model&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label418"></a><a name="label419"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sample-ma-model&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">cpu-space</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label420"></a><h4 class="jdocu">4.5.3&nbsp;&nbsp;&nbsp;sample-ooo-model</h4 class="jdocu">
+
+
+<a name="label421"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<p>
+A sample SPARC MAI model based on <b>ooo_micro_arch</b>
+and a simple cache.
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label422"></a><a name="label423"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-sample-ooo-model</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "sample-ooo-model". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label424"></a><a name="label425"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-sample-ooo-model</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "sample-ooo-model". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label426"></a><a name="label427"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sample-ooo-model&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label428"></a><a name="label429"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;sample-ooo-model&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">cpu-space</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label430"></a><h3 class="jdocu">4.6&nbsp;&nbsp;&nbsp;Base Components</h3 class="jdocu">
+
+
+The base components are abstract classes that contain generic component
+attributes and commands available for all components.
+<a name="label431"></a><h4 class="jdocu">4.6.1&nbsp;&nbsp;&nbsp;component</h4 class="jdocu">
+
+
+<a name="label432"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Base component class, should not be instantiated.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>connections</i></b></dt><a name="label433"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[sos]*]</b>.
+<p>
+List of connections for the component. The format is a list of lists, each containing the name of the connector, the connected component, and the name of the connector on the other component.</dd></dl>
+<dl><dt><b><i>connectors</i></b></dt><a name="label434"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>D</b>.
+<p>
+Dictionary of dictionaries with connectors defined by this component class, indexed by name. Each connector contains the name of the connector "type", a "direction" ("up", "down" or "any"), a flag indicating if the connector can be "empty", another flag that is set if the connector is "hotplug" capable, and finally a flag that is TRUE if muliple connections to this connector is allowed.</dd></dl>
+<dl><dt><b><i>instantiated</i></b></dt><a name="label435"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE if the component has been instantiated.</dd></dl>
+<dl><dt><b><i>object_list</i></b></dt><a name="label436"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>D</b>.
+<p>
+Dictionary with objects that the component consists of.</dd></dl>
+<dl><dt><b><i>object_prefix</i></b></dt><a name="label437"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Object prefix string used by the component. The prefix is typically set by the <b>set-component-prefix</b> command before the component is created.</dd></dl>
+<dl><dt><b><i>top_component</i></b></dt><a name="label438"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The top level component. Attribute is not valid until the component has been instantiated.</dd></dl>
+<dl><dt><b><i>top_level</i></b></dt><a name="label439"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE for top-level components, i.e. the root of a hierarchy.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label440"></a><h4 class="jdocu">4.6.2&nbsp;&nbsp;&nbsp;top-component</h4 class="jdocu">
+
+
+<a name="label441"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Base top-level component class, should not be instantiated.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>components</i></b></dt><a name="label442"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of components below the the top-level component. This attribute is not valid until the object has been instantiated.</dd></dl>
+<dl><dt><b><i>cpu_list</i></b></dt><a name="label443"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of all processors below the the top-level component. This attribute is not valid until the object has been instantiated.</dd></dl>
+</dd>
+
+</dl>
+
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

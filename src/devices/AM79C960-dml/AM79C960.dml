@@ -1,0 +1,1404 @@
+/*
+  AM79C960.dml
+ 
+  Copyright 2005-2007 Virtutech AB
+
+  The contents herein are Source Code which are a subset of Licensed
+  Software pursuant to the terms of the Virtutech Simics Software
+  License Agreement (the "Agreement"), and are being distributed under
+  the Agreement.  You should have received a copy of the Agreement with
+  this Licensed Software; if not, please contact Virtutech for a copy
+  of the Agreement prior to using this Licensed Software.
+
+  By using this Source Code, you agree to be bound by all of the terms
+  of the Agreement, and use of this Source Code is subject to the terms
+  the Agreement.
+
+  This Source Code and any derivatives thereof are provided on an "as
+  is" basis.  Virtutech makes no warranties with respect to the Source
+  Code or any derivatives thereof and disclaims all implied warranties,
+  including, without limitation, warranties of merchantability and
+  fitness for a particular purpose and non-infringement.
+*/
+
+// The Linux driver for this card is called 'lance'.
+
+// This AM79C960 model has a number of known limitations:
+//
+// * The model has only been tested with Linux 2.4. It is likely to not work
+// with other operating systems.
+//
+// * All broadcast packets are received, they are not checked against the
+// Logical Address Filter.
+//
+// * Received packets larger than the buffer of the current receive descriptor
+// buffer are dropped, they are not stored to multiple chained descriptors as
+// they should be.
+//
+// * Chained transmit descriptors are not supported. The model will get stuck
+// on the first of the chained transmit descriptors.
+//
+// * Only the CSR registers that are used by Linux have been implemented. Some
+// of the state of the device that would normally be stored in the CSR
+// registers is instead stored in the attributes logical_address_filter,
+// mac_address, rcv_descr_tbl_addr, rcv_descr_tbl_length, xmt_descr_tbl_addr,
+// xmt_descr_tbl_length, curr_txd, curr_rxd.
+//
+// * The ISA bus configuration registers are not implemented.
+//
+// * Only the parts of the IEEE address PROM that are used by Linux are
+// implemented.
+//
+// * The time it takes to transmit a packet is independent of the packet
+// size. It can be set through the transmit_time attribute. The default it is 1
+// ms.
+
+dml 1.0;
+
+device AM79C960_dml;
+parameter classname = "AM79C960-dml";
+parameter documentation = "AM79C960 Ethernet controller.";
+
+// Standard imports.
+
+import "utility.dml";
+import "io-memory.dml";
+
+// We need some functions from the standard C header files.
+
+header %{
+#include <stdio.h>
+%}
+
+extern int sprintf(char *str, const char *format, ...);
+extern int sscanf(const char *str, const char *format, ...);
+
+// The current DML compiler is sensitive about declaration order in some
+// situations, so we need to declare these attributes here.
+
+attribute logical_address_filter;
+attribute mac_address;
+
+// We use the simple-interrupt interface.
+
+import "interrupt.dml";
+
+// The irq_dev and irq_level attributes tell us to what device and at what
+// level to send interrupts.
+
+connect irq_dev {
+    parameter documentation = "The device that interrupts are sent to.";
+    parameter configuration = "required";
+
+    interface simple_interrupt;
+}
+
+attribute irq_level {
+    parameter documentation = "The level at which interrupts are sent.";
+    parameter configuration = "required";
+    parameter allocate_type = "int64";
+}
+
+// Keep track of whether the irq is currently raised.
+
+attribute irq_raised {
+    parameter documentation = "Interrupt is currently raised by device";
+    parameter allocate_type = "bool";
+    parameter configuration = "optional";
+}
+
+// Used to update the irq whenever an interrupt flag or enable bit is changed.
+
+method update_irq() {
+    local int intr;
+    local bool irq;
+
+    inline $csr.csr0.INTR.read() -> (intr);
+    irq = (intr == 1 && $csr.csr0.IENA == 1);
+
+    if (!$irq_raised && irq) {
+        log "info", 3: "Raising interrupt.";
+        $irq_dev.simple_interrupt.interrupt($irq_dev, $irq_level);
+    }
+
+    if ($irq_raised && !irq) {
+        log "info", 3: "Lowering interrupt.";
+        $irq_dev.simple_interrupt.interrupt_clear($irq_dev, $irq_level);
+    }
+
+    $irq_raised = irq;
+}
+
+// We use the ethernet-link interface and implement the ethernet-device
+// interfaces, so we need to include ethernet.dml.
+
+import "ethernet.dml";
+
+// Implement the ethernet-device interface.
+
+implement ethernet_device {
+    // Called when a frame is received from the network.
+    method receive_frame(conf_object_t *link, dbuffer_t *frame) {
+        inline $receive_packet(frame);
+    }
+
+    // Link speed negotiation functions. Unimplemented, we accept any speed.
+    method auto_neg_request(phy_speed_t req_speed)->(phy_speed_t speed) {
+        log "unimplemented", 2:
+            "Link auto negotiation request (0x%llx)", cast(req_speed, uint64);
+        speed = req_speed;
+    }
+    method auto_neg_reply(phy_speed_t speed) {
+        log "unimplemented", 2:
+            "Auto negotiation reply (0x%llx)", cast(speed, uint64);
+    }
+}
+
+// Identifier for this device on the ethernet-link. We get a new identifier for
+// each Simics session, so we don't need to keep it in an attribute.
+
+data int link_id;
+
+// The ethernet-link the device is connected to. We keep the link object itself
+// in obj and the interface used to communicate with it in iface.
+
+attribute link {
+    parameter documentation = "The ethernet-link the device is connected to.";
+    parameter type = "o|n";
+    data conf_object_t *obj;
+    data ethernet_link_interface_t *iface;
+
+    // Used as temporary storage by the methods. The buffers contain two extra
+    // bytes so that we can do 64-bit stores to them.
+    data uint8 addr[8];
+    data byte_string_t addr_str;
+    data uint8 mask[8];
+    data byte_string_t mask_str;
+
+    method set(attr_value_t val) {
+        local conf_object_t *obj;
+        local ethernet_link_interface_t *iface;
+
+        /* Get the ethernet-link interface of the new link object, or NULL if
+           the attribute is set to NIL. Throw an exception if we fail to get
+           the interface. */
+        if (val.kind == Sim_Val_Object) {
+            obj = val.u.object;
+            iface = SIM_get_interface(obj, "ethernet_link");
+            if (!iface)
+                throw;
+        } else {
+            obj = NULL;
+            iface = NULL;
+        }
+
+        // Disconnect from the previous link and connect to the new, if the
+        // link object has changed.
+        if ($obj != obj) {
+            if ($obj)
+                $iface->disconnect_device($obj, $dev.obj);
+
+            $obj = obj;
+            $iface = iface;
+
+            if ($dev.obj->configured && $obj != NULL)
+                call $connect_to_link;
+        }
+    }
+
+    method get -> (attr_value_t val) {
+        val = SIM_make_attr_object($obj);
+    }
+
+    // Connect to the link object. Must be called after the AM79C960 has been
+    // initialized (after post_fini() has been called).
+    method connect_to_link {
+        local int new_connection;
+        assert $obj != NULL;
+        $link_id = $iface->connect_device($obj, $dev.obj,
+                                          &new_connection);
+        if ($link_id == -1)
+            log "error": "Failed to connect to link %s", $obj->name;
+        else
+            log "info", 2: "Connected to link %s", $obj->name;
+
+        call $update_promiscuous_mode();
+        call $register_multicast_address();
+        call $register_mac_address();
+    }
+
+    // Update the promicuous setting with the link, according to the PROM bit
+    // of CSR15.
+    method update_promiscuous_mode() {
+        if ($dev.obj->configured &&$obj != NULL)
+            $iface->promiscuous_mode($obj, $link_id, $csr.csr15.PROM);
+    }
+
+    // Register the device to receive packets to all multicast
+    // addresses. Multicast packets have bit 0 of the MAC address set, so we
+    // use an address and mask with just bit 0 set.
+    method register_multicast_address() {
+        if ($dev.obj->configured && $obj != NULL) {
+            UNALIGNED_STORE_LE64(&$addr, 1);
+            UNALIGNED_STORE_LE64(&$mask, 1);
+            $iface->add_mac_mask($obj, $link_id, $addr_str, $mask_str);
+        }
+    }
+
+    // Registers and unregisters the MAC address that the device should accept
+    // packets to. We want to match the address exactly, so we specify a mask
+    // with all ones.
+
+    method register_mac_address() {
+        if ($dev.obj->configured &&$obj != NULL) {
+            UNALIGNED_STORE_LE64(&$addr, $mac_address);
+            UNALIGNED_STORE_LE64(&$mask, 0xffffffffffff);
+            $iface->add_mac_mask($obj, $link_id, $addr_str, $mask_str);
+        }
+    }
+
+    method unregister_mac_address() {
+        if ($dev.obj->configured &&$obj != NULL) {
+            UNALIGNED_STORE_LE64(&$addr, $mac_address);
+            UNALIGNED_STORE_LE64(&$mask, 0xffffffffffff);
+            $iface->delete_mac_mask($obj, $link_id, $addr_str, $mask_str);
+        }
+    }
+}
+
+// The memory-space used to access the initialization data and descriptor
+// rings.
+
+connect memory {
+    parameter documentation = "The memory-space the device uses to access the "
+        + "initialization data and descriptor rings.";
+    parameter configuration = "required";
+    interface memory_space {
+        parameter c_type = "memory_space_interface_t";
+    }
+
+    // Read length bytes from the address addr into the buffer buf.
+    method read(physical_address_t addr,
+                uint8 *buf,
+                physical_address_t length) {
+        local exception_type_t exn;
+        exn = $memory.memory_space.access_simple($memory,
+                                                 $dev.obj,
+                                                 addr,
+                                                 cast(buf, char *),
+                                                 length,
+                                                 Sim_RW_Read,
+                                                 Sim_Endian_Target);
+        if (exn != Sim_PE_No_Exception) {
+            log "error":
+                "Unknown exception on memory read (%d).", cast (exn, int);
+        }
+    }
+
+    // Write length bytes from the buffer buf to the address addr.
+    method write(physical_address_t addr,
+                 uint8 *buf,
+                 physical_address_t length) {
+        local exception_type_t exn;
+        exn = $memory.memory_space.access_simple($memory,
+                                                 $dev.obj,
+                                                 addr,
+                                                 cast(buf, char *),
+                                                 length,
+                                                 Sim_RW_Write,
+                                                 Sim_Endian_Target);
+        if (exn != Sim_PE_No_Exception) {
+            log "error":
+                "Unknown exception on memory write (%d).", cast (exn, int);
+        }
+    }
+
+    // Read length bytes from the address addr and append the to the dbuffer
+    // dbuf.
+    method read_dbuffer_append(physical_address_t addr,
+                               dbuffer_t *dbuf,
+                               physical_address_t length) {
+        local uint8 *buf;
+        buf = dbuffer_append(dbuf, length);
+        inline $read(addr, buf, length);
+    }
+
+    // Write the contents of the dbuffer dbuf to the address addr.
+    method write_dbuffer(physical_address_t addr,
+                         dbuffer_t *dbuf) {
+        local uint8 *buf;
+        local size_t length;
+        buf = dbuffer_read_all(dbuf);
+        length = dbuffer_len(dbuf);
+        inline $write(addr, buf, length);
+    }
+}
+
+// Data structure to hold the information from a transmit descriptor, functions
+// to convert between the data structure and the byte layout of the descriptor
+// in target memory, and a function to log the contents of a descriptor.
+
+struct txd_t {
+    physical_address_t addr;
+    uint1 OWN;
+    uint1 STP;
+    uint1 ENP;
+    uint16 size;
+}
+
+method txd_from_buf(uint8* buf) -> (txd_t txd)
+{
+    txd.addr = buf[0] | buf[1] << 8 | buf[2] << 16;
+    txd.OWN = buf[3][7];
+    txd.STP = buf[3][1];
+    txd.ENP = buf[3][0];
+    txd.size = - (buf[4] | buf[5] << 8);
+}
+
+method txd_to_buf(txd_t txd, uint8* buf)
+{
+    local int neg_size = - txd.size;
+    buf[0] = txd.addr[7:0];
+    buf[1] = txd.addr[15:8];
+    buf[2] = txd.addr[23:16];
+    buf[3] = (txd.OWN << 7) | (txd.STP << 1) | (txd.ENP << 0);
+    buf[4] = neg_size[7:0];
+    buf[5] = neg_size[15:8];
+    buf[6] = 0;
+    buf[7] = 0;
+}
+
+method log_txd(int level, txd_t txd) {
+    local physical_address_t addr;
+    inline $curr_txd.addr() -> (addr);
+    log "info", level:
+        "TXD index: 0x%x", $curr_txd;
+    log "info", level:
+        "TXD address: 0x%x", addr;
+    log "info", level:
+        "TXD.address: 0x%x", txd.addr;
+    log "info", level:
+        "TXD.status:%s%s%s",
+        txd.OWN == 0 ? "" : " <OWN>",
+        txd.STP == 0 ? "" : " <STP>",
+        txd.ENP == 0 ? "" : " <ENP>";
+    log "info", level:
+        "TXD.byte_count: %d", txd.size;
+}
+
+// Data structure to hold the information from a receive descriptor, functions
+// to convert between the data structure and the byte layout of the descriptor
+// in target memory, and a function to log the contents of a descriptor.
+
+struct rxd_t {
+    physical_address_t addr;
+    uint1 OWN;
+    uint1 STP;
+    uint1 ENP;
+    uint16 size;
+    uint16 msg_size;
+}
+
+method rxd_from_buf(uint8* buf) -> (rxd_t rxd)
+{
+    rxd.addr = buf[0] | buf[1] << 8 | buf[2] << 16;
+    rxd.OWN = buf[3][7];
+    rxd.STP = buf[3][1];
+    rxd.ENP = buf[3][0];
+    rxd.size = - (buf[4] | buf[5] << 8);
+    rxd.msg_size = buf[6] | buf[7] << 8;
+}
+
+method rxd_to_buf(rxd_t rxd, uint8* buf)
+{
+    local int neg_size = - rxd.size;
+    buf[0] = rxd.addr[7:0];
+    buf[1] = rxd.addr[15:8];
+    buf[2] = rxd.addr[23:16];
+    buf[3] = (rxd.OWN << 7) | (rxd.STP << 1) | (rxd.ENP << 0);
+    buf[4] = neg_size[7:0];
+    buf[5] = neg_size[15:8];
+    buf[6] = rxd.msg_size[7:0];
+    buf[7] = rxd.msg_size[15:8];
+}
+
+method log_rxd(int level, rxd_t rxd) {
+    local physical_address_t addr;
+    inline $curr_txd.addr() -> (addr);
+    log "info", level:
+        "RXD index: 0x%x", $curr_rxd;
+    log "info", level:
+        "RXD address: 0x%x", addr;
+    log "info", level:
+        "RXD.address: 0x%x", rxd.addr;
+    log "info", level:
+        "RXD.status:%s%s%s",
+        rxd.OWN == 0 ? "" : " <OWN>",
+        rxd.STP == 0 ? "" : " <STP>",
+        rxd.ENP == 0 ? "" : " <ENP>";
+    log "info", level:
+        "RXD.byte_count: %d", rxd.size;
+}
+
+// Data structure containing an init block and a method to log the contents of
+// an init block.
+
+struct init_block_t {
+    uint8 data[24];
+}
+
+method log_init_block(int level, init_block_t * init_block) {
+    log "info", level:
+        "    %2x %2x %2x %2x %2x %2x %2x %2x",
+        init_block->data[0], init_block->data[1],
+        init_block->data[2], init_block->data[3],
+        init_block->data[4], init_block->data[5],
+        init_block->data[6], init_block->data[7];
+    log "info", level:
+        "    %2x %2x %2x %2x %2x %2x %2x %2x",
+        init_block->data[8], init_block->data[9],
+        init_block->data[10], init_block->data[11],
+        init_block->data[12], init_block->data[13],
+        init_block->data[14], init_block->data[15];
+    log "info", level:
+        "    %2x %2x %2x %2x %2x %2x %2x %2x",
+        init_block->data[16], init_block->data[17],
+        init_block->data[18], init_block->data[19],
+        init_block->data[20], init_block->data[21],
+        init_block->data[22], init_block->data[23];
+}
+
+// Constants
+
+constant TXD_SIZE = 8;         // size of transmit descriptor in bytes
+constant RXD_SIZE = 8;         // size of receive descriptor in bytes
+
+constant FRAME_MIN_SIZE = 64;    // Minimum size in bytes of Ethernet frame
+constant FRAME_CRC_SIZE = 4;     // Size of CRC in Ethernet frame
+constant FRAME_MAX_SIZE = 1518;  // Maximum size of Ethernet frame
+
+// Layouts of the register banks. The actual register implementations can be
+// found near end of this file.
+
+// I/O registers (directly accessible from the target cpu).
+bank ioreg {
+    parameter byte_order = "little-endian";
+    parameter register_size = 2;
+    parameter function = 0;
+
+    register aprom_0 size 1 @ 0x00 "Address PROM (MAC address)";
+    register aprom_1 size 1 @ 0x01 "Address PROM (MAC address)";
+    register aprom_2 size 1 @ 0x02 "Address PROM (MAC address)";
+    register aprom_3 size 1 @ 0x03 "Address PROM (MAC address)";
+    register aprom_4 size 1 @ 0x04 "Address PROM (MAC address)";
+    register aprom_5 size 1 @ 0x05 "Address PROM (MAC address)";
+
+    register aprom_e size 1 @ 0x0e "Address PROM (unknown)";
+    register aprom_f size 1 @ 0x0f "Address PROM (unknown)";
+
+    register rdp            @ 0x10 "Ethernet Controller Register Data Port";
+    register rap            @ 0x12 "Address Port (shared between RDP, IDP)";
+    register reset          @ 0x14 "Reset (read to trigger)";
+    register idp            @ 0x16 "ISA Bus Configuration Register Data Port";
+}
+
+// Ethernet Controller Registers (accessed through ioreg.rap, ioreg.rdp).
+bank csr {
+    parameter byte_order = "little-endian";
+    parameter register_size = 2;
+
+    register csr0   @ 0  * 2  "Controller Status";
+    register csr1   @ 1  * 2  "Init Block Address [15:0]";
+    register csr2   @ 2  * 2  "Init Block Address [23:16]";
+    register csr3   @ 3  * 2  "Interrupt Mask and Deferral Control";
+    register csr4   @ 4  * 2  "Misc";
+
+    register csr8   @ 8  * 2  "Logical Address Filter [15:0]";
+    register csr9   @ 9  * 2  "Logical Address Filter [31:16]";
+    register csr10  @ 10 * 2  "Logical Address Filter [47:32]";
+    register csr11  @ 11 * 2  "Logical Address Filter [63:48]";
+    register csr12  @ 12 * 2  "Physical (MAC) Address [15:0]";
+    register csr13  @ 13 * 2  "Physical (MAC) Address [31:16]";
+    register csr14  @ 14 * 2  "Physical (MAC) Address [47:32]";
+    register csr15  @ 15 * 2  "Mode";
+
+    register csr88  @ 88 * 2  "Chip ID lsw";
+    register csr89  @ 89 * 2  "Chip ID msw";
+
+    register csr112 @ 112 * 2 "Missed Frame Count";
+}
+
+// ISA Bus Configuration Registers (accessed through ioreg.rap, ioreg.idp).
+// Unimplemented.
+bank isa {
+    parameter byte_order = "little-endian";
+    parameter register_size = 2;
+
+    register msrda  @ 0 * 2 is (unimplemented) "Master Mode Read Active";
+    register mswra  @ 1 * 2 is (unimplemented) "Master Mode Write Active";
+    register mc     @ 2 * 2 is (unimplemented) "Miscellaneous Configuration";
+    register reserved @ 3 * 2 is (reserved);
+    register led0   @ 4 * 2 is (unimplemented) "LED0 Status (Link Integrity)";
+    register led1   @ 5 * 2 is (unimplemented) "LED1 Status (Default: RCV)";
+    register led2   @ 6 * 2 is (unimplemented) "LED2 Status (Default: RCVPOL)";
+    register led3   @ 7 * 2 is (unimplemented) "LED3 Status (Default: XMT)";
+}
+
+// Device state saved in attributes instead of in CSR registers.
+
+// The mac address of the device. When accessed as an attribute we handle it as
+// a string in the standard format. Internally we store it in an uint64. Byte 0
+// of the MAC address is stored in bits 0-7, byte 1 is stored in bit 8-15, and
+// so on.
+//
+// Corresponds to CSR 12-14.
+attribute mac_address {
+    parameter documentation = "The MAC address";
+    parameter type = "s";
+    parameter allocate_type = "uint64";
+    parameter configuration = "optional";
+
+    method get() -> (attr_value_t value) {
+        static char mac_str[18];
+        sprintf(mac_str, "%02x:%02x:%02x:%02x:%02x:%02x",
+                $this[7:0], $this[15:8], $this[23:16],
+                $this[31:24], $this[39:32], $this[47:40]);
+        value = SIM_make_attr_string(mac_str);
+    }
+
+    method set(attr_value_t value) {
+        local int mac_byte[6];
+        if (sscanf(value.u.string, "%x:%x:%x:%x:%x:%x",
+                   &mac_byte[0], &mac_byte[1], &mac_byte[2],
+                   &mac_byte[3], &mac_byte[4], &mac_byte[5]) == 6) {
+            call $link.unregister_mac_address();
+            $this[7:0]   = mac_byte[0];
+            $this[15:8]  = mac_byte[1];
+            $this[23:16] = mac_byte[2];
+            $this[31:24] = mac_byte[3];
+            $this[39:32] = mac_byte[4];
+            $this[47:40] = mac_byte[5];
+            call $link.register_mac_address();
+        }
+        else
+            throw;
+    }
+}
+
+// Corresponds to CSR 8-11.
+attribute logical_address_filter {
+    parameter documentation = "The logical address filter";
+    parameter allocate_type = "uint64";
+    parameter configuration = "optional";
+}
+
+// Corresponds to CSR 24-25.
+attribute rcv_descr_tbl_addr {
+    parameter documentation = "The base address of the receive descriptor ring";
+    parameter allocate_type = "uint32";
+    parameter configuration = "optional";
+}
+
+// Corresponds to CSR 76.
+attribute rcv_descr_tbl_length {
+    parameter documentation = "The length of the receive descriptor ring";
+    parameter allocate_type = "uint8";
+    parameter configuration = "optional";
+}
+
+// Corresponds to CSR 72
+attribute curr_rxd {
+    parameter documentation = "Index of the current receive descriptor";
+    parameter allocate_type = "uint8";
+    parameter configuration = "optional";
+    method addr() -> (physical_address_t address) {
+        address = $rcv_descr_tbl_addr + ($this * RXD_SIZE);
+    }
+    method next() {
+        $this = ($this + 1) % $rcv_descr_tbl_length;
+    }
+}
+
+// Corresponds to CSR 30-31.
+attribute xmt_descr_tbl_addr {
+    parameter documentation = "The base address of the transmit descriptor ring";
+    parameter allocate_type = "uint32";
+    parameter configuration = "optional";
+}
+
+// Corresponds to CSR 78.
+attribute xmt_descr_tbl_length {
+    parameter documentation = "The length of the transmit descriptor ring";
+    parameter allocate_type = "uint8";
+    parameter configuration = "optional";
+}
+
+// Corresponds to CSR 74.
+attribute curr_txd {
+    parameter documentation = "Index of the current transmit descriptor";
+    parameter allocate_type = "uint8";
+    parameter configuration = "optional";
+    method addr() -> (physical_address_t address) {
+        address = $xmt_descr_tbl_addr + ($this * TXD_SIZE);
+    }
+    method next() {
+        $this = ($this + 1) % $xmt_descr_tbl_length;
+    }
+}
+
+// The AM79C960 polls regularly for new transmit descriptors. The poll_txd
+// event is used to schedule the polls and poll_interval determines the
+// interval between polls.
+
+attribute poll_interval {
+    parameter documentation = "Interval between transmit descriptor polls";
+    parameter allocate_type = "double";
+    parameter configuration = "optional";
+}
+
+event poll_txd {
+    parameter timebase = "seconds";
+
+    method event(void *param) {
+        log "info", 3: "Periodic transmit ring poll triggered.";
+
+        // Poll for packets to transmit.
+        inline $send_packet();
+
+        // Schedule another poll.
+        inline $poll_txd.post($poll_interval, NULL);
+    }
+}
+
+// The transmit_done event is posted to raise the TINT interrupt and poll for
+// additional packets when a packet has been transmitted. The time it takes to
+// transmit a packet.is determined by transmit_time.
+
+attribute transmit_time {
+    parameter documentation = "Time it takes to transmit a packet.";
+    parameter allocate_type = "double";
+    parameter configuration = "optional";
+}
+
+event transmit_done {
+    parameter timebase = "seconds";
+
+    method event(void *param) {
+        log "info", 3: "Transmit done.";
+        call $csr.csr0.TINT.raise();
+        inline $send_packet();
+    }
+}
+
+// Log the contents of a frame.
+
+method log_packet_header(frame, message) {
+    local uint8 *buf =dbuffer_read_all(frame);
+    local size_t size = dbuffer_len(frame);
+    local strbuf_t sbuf;
+
+    sb_init(&sbuf);
+    if (size >= 12)
+        sb_addfmt(&sbuf,
+                  "%s, dst %02x:%02x:%02x:%02x:%02x:%02x, src %02x:%02x:%02x:%02x:%02x:%02x, length %lld bytes.",
+                  message,
+                  buf[0], buf[1], buf[2], buf[3], buf[4], buf[5],
+                  buf[6], buf[7], buf[8], buf[9], buf[10], buf[11],
+                  cast(size, uint64));
+    else
+        sb_addfmt(&sbuf, "%s, length %lld bytes.", message, cast(size, uint64));
+
+    log "info", 2: "%s", sb_str(&sbuf);
+    sb_free(&sbuf);
+}
+
+method log_packet(frame) {
+    local uint8 *buf =dbuffer_read_all(frame);
+    local size_t size = dbuffer_len(frame);
+    local strbuf_t sbuf;
+    local int i;
+
+    sb_init(&sbuf);
+    sb_addfmt(&sbuf, "%s", "Packet content:");
+    for(i = 0; i < size; i++)
+        sb_addfmt(&sbuf, "%s%02x", (i % 24 == 0) ? "\n" : " ", buf[i]);
+    log "info", 3: "%s", sb_str(&sbuf);
+    sb_free(&sbuf);
+}
+
+// Called when a packet is received from the link.
+
+method receive_packet(dbuffer_t *frame) {
+    local physical_address_t rxd_addr;
+    local uint8 rxd_buf[RXD_SIZE];
+    local rxd_t rxd;
+    local size_t frame_size = dbuffer_len(frame);
+    local uint64 dst_addr;
+
+    inline $log_packet_header(frame, "Packet received");
+    inline $log_packet(frame);
+
+    if ($csr.csr0.RXON == 0) {
+        log "info", 2: "Receiver disabled, packet dropped.";
+        return;
+    }
+
+    if (frame_size < FRAME_MIN_SIZE) {
+        log "info", 2: "Runt packet, packet dropped.";
+        return;
+    }
+
+    // Read the receive descriptor.
+    inline $curr_rxd.addr()->(rxd_addr);
+    inline $memory.read(rxd_addr, rxd_buf, RXD_SIZE);
+    inline $rxd_from_buf(rxd_buf) -> (rxd);
+    inline $log_rxd(3, rxd);
+
+    if (rxd.OWN == 0) {
+        log "info", 2: "Receive ring overflow, packet dropped.";
+        inline $csr.csr112.incr();
+        inline $csr.csr0.MISS.raise();
+        return;
+    }
+
+    if (rxd.size < frame_size) {
+        log "unimplemented", 1:
+            "Receive buffer smaller than packet, packet dropped.";
+        return;
+    }
+
+    // Check destination address.
+    dst_addr = UNALIGNED_LOAD_LE64(dbuffer_read(frame, 0, 8)) & 0xffffffffffff;
+    if (dst_addr == $mac_address)
+        log "info", 2: "MAC address matches, packet accepted.";
+    else if ((dst_addr & 1) != 0)
+        log "info", 2: "Broadcast address, packet accepted.";
+    else if ($csr.csr15.PROM)
+        log "info", 2: "Promiscuous mode enabled, packet accepted.";
+    else  {
+        log "info", 2: "MAC address does not match, packet dropped.";
+        return;
+    }
+
+    // Write the frame to the receive buffer.
+    inline $memory.write_dbuffer(rxd.addr, frame);
+
+    // Update and write back the receive descriptor.
+    rxd.STP = 1;
+    rxd.ENP = 1;
+    rxd.OWN = 0;
+    rxd.msg_size = frame_size;
+    inline $rxd_to_buf(rxd, rxd_buf);
+    inline $memory.write(rxd_addr, rxd_buf, RXD_SIZE);
+
+    // Step to the next receive descriptor.
+    inline $curr_rxd.next();
+
+    // Raise the receive interrupt.
+    inline $csr.csr0.RINT.raise();
+}
+
+// Called when we should poll for packets we can send, either because the TDMD
+// bit is written, a periodic poll is triggered or we have finished
+// transmitting a packet.
+
+method send_packet() {
+    local physical_address_t txd_addr;
+    local uint8 txd_buf[TXD_SIZE];
+    local txd_t txd;
+    local dbuffer_t *frame;
+    local size_t frame_size;
+    local double transmit_done_delta;
+
+    if ($csr.csr0.TXON == 0) {
+        log "info", 3: "Transmitter disabled.";
+        return;
+    }
+
+    inline $transmit_done.next(NULL) -> (transmit_done_delta);
+    if (transmit_done_delta != -1.0) {
+        log "info", 3: "Already transmitting a packet.";
+        return;
+    }
+
+    log "info", 3: "Checking for packets to send.";
+
+    // Clear TDMD.
+    $csr.csr0.TDMD = 0;
+
+    // Read the transmit descriptor.
+    inline $curr_txd.addr()->(txd_addr);
+    inline $memory.read(txd_addr, txd_buf, TXD_SIZE);
+    inline $txd_from_buf(txd_buf) -> (txd);
+    inline $log_txd(3, txd);
+
+    if (txd.OWN == 0) {
+        log "info", 3: "No packet in transmit ring, no packet sent.";
+        return;
+    }
+
+    if (txd.STP == 0) {
+        log "spec_violation", 1:
+            "STP not set in transmit descriptor, no packet sent.";
+        return;
+    }
+
+    if (txd.ENP == 0) {
+        log "unimplemented", 1: "Chained transmit descriptor, no packet sent.";
+        return;
+    }
+
+    // Check if we are connected to a link.
+    if ($link.obj != NULL) {
+        // Read the frame from the transmit buffer.
+        frame = new_dbuffer();
+        inline $memory.read_dbuffer_append(txd.addr, frame, txd.size);
+        frame_size = dbuffer_len(frame);
+
+        // Pad the frame to minimum length and add space for the CRC.
+        if (frame_size < (FRAME_MIN_SIZE - FRAME_CRC_SIZE))
+            dbuffer_append_value(frame, 0, FRAME_MIN_SIZE - frame_size);
+        else
+            dbuffer_append_value(frame, 0, FRAME_CRC_SIZE);
+
+        // Transmit the frame.
+        inline $log_packet_header(frame, "Packet sent");
+        inline $log_packet(frame);
+        $link.iface->send_frame($link.obj,
+                                $link_id, frame,
+                                0,
+                                cast($transmit_time * 1.0e9, nano_secs_t));
+
+        dbuffer_free(frame);
+    }
+    else
+        log "info", 2: "Not connected, no packet sent.";
+
+    // Update and write back the transmit descriptor.
+    txd.OWN = 0;
+    inline $txd_to_buf(txd, txd_buf);
+    inline $memory.write(txd_addr, txd_buf, TXD_SIZE);
+
+    // Step to the next transmit descriptor.
+    inline $curr_txd.next();
+
+    // Post a transmit_done event, that will raise the transmit interrupt and
+    // poll for additiona packets to send once this packet has been sent.
+    inline $transmit_done.post($transmit_time, NULL);
+}
+
+// This template is used by registers that save thier value in a separate
+// attribute. The data parameter specifies the attribute, and the msb and lsb
+// parameters specify the part of the attribute that corresponds to this
+// register.
+
+template data_accessor {
+    parameter configuration = "pseudo";
+    parameter data;
+    parameter msb;
+    parameter lsb;
+    parameter ignore_write default false;
+    parameter mac_register default false;
+
+    method get -> (value) {
+        inline $read()->(value);
+    }
+    method set(value) {
+        inline $write(value);
+    }
+    method read()->(value) {
+        value = $data[$msb:$lsb];
+    }
+    method write(value) {
+        if (!$ignore_write) {
+            if ($mac_register)
+                call $link.unregister_mac_address();
+            $data[$msb:$lsb] = value;
+            if ($mac_register)
+                call $link.register_mac_address();
+        }
+    }
+}
+
+// I/O registers (directly accessible from the target cpu).
+
+bank ioreg {
+    // Address 0-15 of the bank map the IEEE address PROM. Bytes 0-5 contain
+    // the MAC address. The function of bytes 14 and 15, but they need to
+    // contain the value 0x57. The other addresses are unimplemented.
+
+    register aprom_0 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 7;
+        parameter lsb = 0;
+        parameter ignore_write = true;
+    }
+    register aprom_1 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 15;
+        parameter lsb = 8;
+        parameter ignore_write = true;
+    }
+    register aprom_2 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 23;
+        parameter lsb = 16;
+        parameter ignore_write = true;
+    }
+    register aprom_3 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 31;
+        parameter lsb = 24;
+        parameter ignore_write = true;
+    }
+    register aprom_4 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 39;
+        parameter lsb = 32;
+        parameter ignore_write = true;
+    }
+    register aprom_5 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 47;
+        parameter lsb = 40;
+        parameter ignore_write = true;
+    }
+    register aprom_e is (constant) { parameter value = 0x57; }
+    register aprom_f is (constant) { parameter value = 0x57; }
+
+    // Accesses to the RDP register are forwarded to the Ethernet Controlles
+    // Registers bank, at the address specified by the RAP register.
+    register rdp {
+        method read_access(memop, msb1, lsb) -> (value) {
+            if (defined msb1) {
+                log "error":
+                    "Partial read from %s%s",
+                    $qname, defined $desc ? " (" + $desc + ")" : "";
+                throw;
+            } else {
+                // forward access to target bank
+                inline $csr.read(memop, $ioreg.rap * 2, 2) -> (value);
+            }
+        }
+
+        method write_access(memop, msb1, lsb, value) {
+            if (defined msb1) {
+                log "error":
+                    "Partial write to %s%s",
+                    $qname, defined $desc ? " (" + $desc + ")" : "";
+                throw;
+            } else {
+                // forward access to target bank
+                inline $csr.write(memop, $ioreg.rap * 2, 2, value);
+            }
+        }
+    }
+
+    // Specifies the address used when the RDP or IDP registers are accessed.
+    register rap is (read_write);
+
+    register reset {
+        // Triggering reset leads to a soft-reset of the whole device. The
+        // default behaviour for soft-reset is to inline hard-reset, which by
+        // default sets values to 0. Registers or fields that behave
+        // differently should override soft-reset.
+        method read() -> (value) {
+            log "info", 2: "Reset triggered.";
+            inline $dev.soft_reset();
+            call $update_irq();
+            value = 0;
+        }
+    }
+
+    // Accesses to the IDP register are forwarded to the ISA Bus Configuration
+    // Registers bank, at the address specified by the RAP register.
+    register idp {
+        method read_access(memop, msb1, lsb) -> (value) {
+            if (defined msb1) {
+                log "error":
+                    "Partial read from %s%s",
+                    $qname, defined $desc ? " (" + $desc + ")" : "";
+                throw;
+            } else {
+                // forward access to target bank
+                inline $isa.read(memop, $ioreg.rap * 2, 2) -> (value);
+            }
+        }
+
+        method write_access(memop, msb1, lsb, value) {
+            if (defined msb1) {
+                log "error":
+                    "Partial write to %s%s",
+                    $qname, defined $desc ? " (" + $desc + ")" : "";
+                throw;
+            } else {
+                // forward access to target bank
+                inline $isa.write(memop, $ioreg.rap * 2, 2, value);
+            }
+        }
+    }
+}
+
+// Template used by irq flag fields. Provides methods for raising and lowering
+// the interrupt, and implements the lower-on-set semantics.
+template irq_flag {
+    method raise() default {
+        if ($this == 0) {
+            $this = 1;
+            log "info", 3: "%s interrupt flag raised.", $name;
+            call $update_irq();
+        }
+    }
+    method lower() default {
+        if ($this == 1) {
+            $this = 0;
+            log "info", 3: "%s interrupt flag lowered.", $name;
+            call $update_irq();
+        }
+    }
+
+    method read() -> (value) {
+        value = $this;
+    }
+    method write(value) {
+        if (value == 1)
+            inline $this.lower();
+    }
+}
+
+// Ethernet Controller Registers (accessed through ioreg.rap, ioreg.rdp).
+bank csr {
+    data uint1 do_init;             // do $csr0.init() in $csr0.after_write()?
+    data uint1 do_start;            // do $csr0.start() in $csr0.after_write()?
+    data uint1 do_transmit_demand;  // do $csr0.transmit_demand() in $csr0.after_write()?
+
+    register csr0 {
+        method after_write(memop) {
+            if ($do_init == 1) {
+                $do_init = 0;
+                inline $init();
+            }
+            if ($do_start == 1) {
+                $do_start = 0;
+                inline $start();
+            }
+            if ($do_transmit_demand == 1) {
+                $do_transmit_demand = 0;
+                inline $transmit_demand();
+            }
+        }
+        field INIT [0] "Initialize"{
+            method write(value) {
+                $this = $this | value;
+                $STOP = $STOP & ~value;
+                if (value == 1) {
+                    $do_init = 1;
+                }
+            }
+        }
+        field STRT [1] "Start" {
+            method write(value) {
+                $this = $this | value;
+                if (value == 1) {
+                    $STOP = 0;
+
+                    // start happens after init if both are set
+                    $do_start = 1;
+                }
+            }
+        }
+        field STOP [2] "Stop" {
+            parameter soft_reset_value = 1;
+            method write(value) {
+                $this = $this | value;
+                if (value == 1) {
+                    // stop device
+
+                    // reset control register fields, including RXON,
+                    // TXON, irq flags
+                    inline $csr0.soft_reset_register();
+
+                    // clean pending events
+                    inline $poll_txd.remove(NULL);
+                    // frame may be sent but TINT irq canceled
+                    inline $transmit_done.remove(NULL);
+                    call $update_irq();
+
+                    log "info", 2: "Device stopped";
+                }
+            }
+        }
+        field TDMD [3] "Transmit Demand" {
+            method write(value) {
+                if (value == 1) {
+                    $this = 1;
+                    $do_transmit_demand = 1;
+                }
+                // ignore write 0; cleared by send_packet()
+            }
+        }
+        field TXON [4] is (read, ignore_write) "Transmit On";
+        field RXON [5] is (read, ignore_write) "Receive On";
+        field IENA [6] "Interrupt Enable" {
+            method read()->(value) {
+                value = $this;
+            }
+            method write(value) {
+                $this = value;
+                call $update_irq();
+            }
+        }
+        field INTR [7] is (ignore_write) "Interrupt Flag" {
+            // auto cleared
+            method read()->(value) {
+                value =
+                    ($BABL & ~$csr3.BABLM) |
+                    ($MISS & ~$csr3.MISSM) |
+                    ($MERR & ~$csr3.MERRM) |
+                    // MPCO
+                    // RCVCCO
+                    ($RINT & ~$csr3.RINTM) |
+                    ($TINT & ~$csr3.TINTM) |
+                    ($IDON & ~$csr3.IDONM);
+                    // JAB
+                    // TXSTRT
+            }
+        }
+        field IDON [8]  is (irq_flag)       "Initialization Done";
+        field TINT [9]  is (irq_flag)       "Transmit Interrupt";
+        field RINT [10] is (irq_flag)       "Receive Interrupt";
+        field MERR [11] is (irq_flag)       "Memory Error";
+        field MISS [12] is (irq_flag)       "Missed Frame";
+        field CERR [13] is (write_1_clears) "Collision Error";
+        field BABL [14] is (irq_flag)       "Babble";
+        field ERR  [15]                     "Error" {
+            method read()->(value) {
+                value = $BABL | $CERR | $MISS | $MERR;
+            }
+            method write(value) {
+                // ignored
+            }
+        }
+
+        method init() {
+            local physical_address_t addr;
+            local init_block_t * init_block;
+            local int i;
+            local uint16 mode;
+
+            log "info", 2: "Initializing.";
+
+            // read init block from address in CSR2:CSR1
+            addr = 0;
+            addr[15:0] = $csr1;
+            addr[23:16] = $csr2;
+            init_block = new init_block_t;
+            inline $memory.read (addr, cast (init_block, uint8 *), sizeoftype(init_block_t));
+            inline $log_init_block(3, init_block);
+
+            // init registers from block
+            mode = (init_block->data[0]) | ((init_block->data[1]) << 8);
+            inline $csr15.set(mode);                            // MODE
+            call $link.unregister_mac_address();
+            $mac_address[7:0] = init_block->data[2];            // PADR[7:0]
+            $mac_address[15:8] = init_block->data[3];           // PADR[15:8]
+            $mac_address[23:16] = init_block->data[4];          // PADR[23:16]
+            $mac_address[31:24] = init_block->data[5];          // PADR[31:24]
+            $mac_address[39:32] = init_block->data[6];          // PADR[39:32]
+            $mac_address[47:40] = init_block->data[7];          // PADR[47:40]
+            call $link.register_mac_address();
+            $csr8[7:0] = init_block->data[8];                   // LADRF[7:0]
+            $csr8[15:8] = init_block->data[9];                  // LADRF[15:8]
+            $csr9[7:0] = init_block->data[10];                  // LADRF[23:16]
+            $csr9[15:8] = init_block->data[11];                 // LADRF[31:24]
+            $csr10[7:0] = init_block->data[12];                 // LADRF[39:32]
+            $csr10[15:8] = init_block->data[13];                // LADRF[47:40]
+            $csr11[7:0] = init_block->data[14];                 // LADRF[55:48]
+            $csr11[15:8] = init_block->data[15];                // LADRF[63:56]
+            $rcv_descr_tbl_addr[7:0] = init_block->data[16];    // RDRA[7:0]
+            $rcv_descr_tbl_addr[15:8] = init_block->data[17];   // RDRA[15:8]
+            $rcv_descr_tbl_addr[23:16] = init_block->data[18];  // RDRA[23:16]
+            $rcv_descr_tbl_length =
+                (0x1 << (init_block->data[19])[7:5]);           // RLEN (3 bits)
+            $xmt_descr_tbl_addr[7:0] = init_block->data[20];    // TDRA[7:0]
+            $xmt_descr_tbl_addr[15:8] = init_block->data[21];   // TDRA[15:8]
+            $xmt_descr_tbl_addr[23:16] = init_block->data[22];  // TDRA[23:16]
+            $xmt_descr_tbl_length =
+                (0x1 << (init_block->data[23])[7:5]);           // TLEN (3 bits)
+
+            // reset descriptor ring indices
+            $curr_txd = 0;
+            $curr_rxd = 0;
+
+            // send IDON interrupt
+            inline $csr0.IDON.raise();
+        }
+
+        method start() {
+            log "info", 2: "Starting.";
+            if ($csr.csr15.DTX == 0) {
+                $TXON = 1;
+                $curr_txd = 0;
+                log "info", 3: "Starting transmit.";
+                inline $poll_txd.post($poll_interval, NULL);
+            } else {
+                log "info", 3: "Transmit disabled at start";
+            }
+            if ($csr.csr15.DRX == 0) {
+                $RXON = 1;
+                $curr_rxd = 0;
+                log "info", 3: "Starting receive.";
+            } else {
+                log "info", 3: "Receive disabled at start";
+            }
+        }
+
+        method transmit_demand() {
+            local double transmit_done;
+            inline $transmit_done.next(NULL) -> (transmit_done);
+            inline $send_packet();
+        }
+    }
+
+    register csr1 is (read_write) {
+        method soft_reset() {
+            // ignore
+        }
+        // should be read/write accessible only when STOP is set
+    }
+
+    register csr2 is (read_write) {
+        method soft_reset() {
+            // ignore
+        }
+        // should be read/write accessible only when STOP is set
+    }
+
+    register csr3 {
+        field RES   [2:0]   is (reserved);
+        field EMBA  [3]     is (unimplemented)  "Enable Modified Back-off Algorithm";
+        field DXMT2PD [4]   is (unimplemented)  "Disable Transmit Two Part Defferral";
+        field RES1  [7:5]   is (reserved);
+        field IDONM [8]     is (read_write)     "IDON Mask";
+        field TINTM [9]     is (read_write)     "TINT Mask";
+        field RINTM [10]    is (read_write)     "RINT Mask";
+        field MERRM [11]    is (read_write)     "MERR Mask";
+        field MISSM [12]    is (read_write)     "MISS Mask";
+        field RES2  [13]    is (reserved);
+        field BABLM [14]    is (read_write)     "BABL Mask";
+        field RES3  [15]    is (reserved);
+    }
+
+    register csr4 is (unimplemented);
+
+    register csr8 is (data_accessor) {
+        parameter data = $logical_address_filter;
+        parameter msb = 15;
+        parameter lsb = 0;
+    }
+
+    register csr9 is (data_accessor) {
+        parameter data = $logical_address_filter;
+        parameter msb = 31;
+        parameter lsb = 16;
+    }
+
+    register csr10 is (data_accessor) {
+        parameter data = $logical_address_filter;
+        parameter msb = 47;
+        parameter lsb = 32;
+    }
+
+    register csr11 is (data_accessor) {
+        parameter data = $logical_address_filter;
+        parameter msb = 63;
+        parameter lsb = 48;
+    }
+
+    register csr12 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 15;
+        parameter lsb = 0;
+        parameter mac_register = true;
+    }
+
+    register csr13 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 31;
+        parameter lsb = 16;
+        parameter mac_register = true;
+    }
+
+    register csr14 is (data_accessor) {
+        parameter data = $mac_address;
+        parameter msb = 47;
+        parameter lsb = 32;
+        parameter mac_register = true;
+    }
+
+    register csr15 {
+        field PROM [15] is (read_write) "Promiscuous Mode";
+
+        field DTX [1] is (read_write) "Disable Transmit";
+        field DRX [0] is (read_write) "Disable Receive";
+
+        method after_set() {
+            call $link.update_promiscuous_mode();
+        }
+
+        method after_write(memop) {
+            call $link.update_promiscuous_mode();
+        }
+    }
+
+    register csr88 is (constant) {
+        parameter value = 0x3003;
+    }
+    register csr89 is (constant) {
+        parameter value = 0x0000;
+    }
+
+    register csr112 {
+        method write(value) {
+            log "unimplemented", 1:
+                "Writes to %s%s are not supported",
+                $qname, defined $desc ? " (" + $desc + ")" : "";
+            // Do not change $this.
+        }
+        method incr() {
+            if ($this == 0xffff) {
+                $this = 0;
+                // should set csr4.MFCO, which raises irq, etc.
+                log "unimplemented", 1:
+                    "Overflow of %s%s",
+                    $qname, defined $desc ? " (" + $desc + ")" : "";
+            }
+            else
+                $this = $this + 1;
+        }
+    }
+
+}
+
+// Run when the object is created. Sets the default values of attributes.
+method init {
+    $link_id = -1;
+    $link.obj = NULL;
+
+    $poll_interval = 1.6e-3;
+    $transmit_time = 1.0e-3;
+
+    // Initialize temporary storage in the link attribute.
+    $link.addr_str.len = 6;
+    $link.addr_str.str = $link.addr;
+    $link.mask_str.len = 6;
+    $link.mask_str.str = $link.mask;
+}
+
+// Run after all attributes have been set when a device is created or a
+// checkpoint is loaded.
+method post_init {
+    if ($link.obj) {
+        call $link.connect_to_link;
+    }
+}

@@ -1,0 +1,103 @@
+dml 1.0;
+
+/*
+ * simics-processor.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+constant CPU_GROUP_INTERFACE = "cpu_group";
+typedef struct {
+} cpu_group_interface_t;
+
+extern conf_object_t *SIM_next_queue(conf_object_t *obj);
+extern int SIM_number_processors();
+extern void SIM_enable_processor(conf_object_t *cpu);
+extern void SIM_disable_processor(conf_object_t *cpu);
+extern void SIM_reset_processor(conf_object_t *cpu, int hard_reset); 
+extern attr_value_t SIM_get_all_processors();
+extern conf_object_t *SIM_get_processor(int proc_no);
+extern int SIM_get_processor_number(const conf_object_t *cpu);
+extern conf_object_t *SIM_current_processor();
+extern int SIM_processor_enabled(conf_object_t *cpu);
+extern int SIM_processor_privilege_level(conf_object_t *cpu);
+extern int SIM_get_register_number(conf_object_t *cpu, const char *name);
+extern const char *SIM_get_register_name(conf_object_t *cpu, int reg);
+extern uinteger_t SIM_read_register(conf_object_t *cpu, int indx);
+extern void SIM_write_register(conf_object_t *cpu, int reg, uinteger_t value);
+extern attr_value_t SIM_get_all_registers(conf_object_t *cpu);
+extern const char *SIM_get_exception_name(conf_object_t *cpu, int exc);
+extern int SIM_get_exception_number(conf_object_t *cpu, const char *name);
+extern attr_value_t SIM_get_all_exceptions(conf_object_t *cpu);
+extern logical_address_t SIM_get_program_counter(conf_object_t *cpu);
+extern void SIM_set_program_counter(conf_object_t *cpu, logical_address_t pc);
+extern tuple_int_string_t *SIM_disassemble(conf_object_t *cpu, generic_address_t addr, int type);
+
+extern disass_flags_t DA_Physical;
+extern disass_flags_t DA_Opcode;
+typedef int disass_flags_t;
+
+typedef struct {
+    logical_address_t (*get_program_counter)(conf_object_t *cpu);
+    void (*set_program_counter)(conf_object_t *cpu, logical_address_t pc);
+    int (*get_privilege_level)(conf_object_t *cpu);
+    tuple_int_string_t *(*disassemble)(conf_object_t *cpu,
+                                       generic_address_t address,
+                                       int type);
+    tuple_int_string_t (*disassemble_buf)(
+        conf_object_t *cpu, generic_address_t address,
+        byte_string_t opcode);
+    // instr_info *(*instruction_info)(conf_object_t *cpu,
+    //                                        generic_address_t address,
+    //                                        int type);
+    void (*reset)(conf_object_t *cpu, int hard_reset);
+    processor_t *(*simcore)(processor_t *cpu);
+    void (*pre_simcore)(processor_t *cpu);
+    void (*post_simcore)(processor_t *cpu);
+    processor_t *(*in_order_simcore)(processor_t *cpu);
+    processor_t *(*step_queue_simcore)(processor_t *cpu);
+    processor_t *(*mai_simcore)(processor_t *cpu);
+    int (*dump_sr_stat)(const char *filename);
+    void (*print_instruction_queue)(conf_object_t *cpu, int verbose);
+    void (*dbg_print_pistc)(conf_object_t *cpu, int table);
+    int (*stc_load)(conf_object_t *cpu, logical_address_t laddr,
+                    uint8 *value, int size);
+    int (*stc_store)(conf_object_t *cpu, logical_address_t laddr,
+                     uint8 *value, int size);
+    attr_value_t (*disassemble_range)(processor_t *cpu,
+                                      logical_address_t start,
+                                      int nlines, int back,
+                                      disass_flags_t flags);
+} processor_interface_t;
+
+constant PROCESSOR_INTERFACE = "processor";
+
+typedef struct {
+    int (*get_number)(conf_object_t *obj, const char *name);
+    const char *(*get_name)(conf_object_t *obj, int reg);
+    uinteger_t (*read)(conf_object_t *obj, int reg);
+    void (*write)(conf_object_t *obj, int reg, uinteger_t val);
+    attr_value_t (*all_registers)(conf_object_t *obj);
+    int (*register_info)(conf_object_t *obj, int reg, ireg_info_t info);
+} int_register_interface_t;
+
+constant INT_REGISTER_INTERFACE = "int_register";
+
+typedef struct {
+    int (*get_number)(conf_object_t *obj, const char *name);
+    const char *(*get_name)(conf_object_t *obj, int exc);
+    int (*get_source)(conf_object_t *obj, int exc);
+    attr_value_t (*all_exceptions)(conf_object_t *obj);
+} exception_interface_t;
+
+constant EXCEPTION_INTERFACE = "exception";

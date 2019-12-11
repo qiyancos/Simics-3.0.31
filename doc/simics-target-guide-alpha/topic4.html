@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(53, true);
+</script>
+<a name="label254"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Limitations</h2 class="jdocu">
+
+
+<a name="label255"></a><h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Limitations of the Simulated Model</h3 class="jdocu">
+
+
+<ul>
+<li>VAX floating-point formats are unsupported. This includes:
+  <ul>
+  <li>F_floating</li>
+  <li>G_floating</li>
+  <li>D_floating</li>
+  </ul>
+Note that VAX floating-point operate and memory 
+instructions are an optional subset group in the Alpha
+architecture.
+</li>
+<p>
+<li>
+The Alpha architecture provides a choice of three different
+computational models within the IEEE floating-point
+subset. Simics does not make this distinction, and
+floating-point operations within Simics can best be described
+as <i>IEEE-Compliant Arithmetic Without Inexact Exception</i>.
+</li>
+<p>
+<li>
+Some floating-point instructions may return approximative
+results, and may ignore trapping and rounding mode
+settings.
+</li>
+<p>
+<li>
+NT related features in the processor models are
+unsupported. For the Alpha 21164 this includes (but not limited to):
+  <ul>
+  <li>NT mode of the IFAULT_VA_FORM register</li>
+  <li>NT mode of the IVPTBR register</li>
+  <li>NT mode of the VA_FORM register</li>
+  <li>NT mode for superpage mapping as controlled by the IDU register</li>
+  </ul>
+</li>
+<p>
+</ul>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

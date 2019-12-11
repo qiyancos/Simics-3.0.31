@@ -1,0 +1,767 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>text-console</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2085, true);
+</script>
+<a name="label15134"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic445.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic447.html">Next</a></span></p>
+<h3 class="jdocu">text-console</h3 class="jdocu">
+
+
+<a name="label15135"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label3010">xterm-console</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <b>text-console</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic499.html#label17739">extended_serial</a>, <a class="jdocu" href="topic527.html#label17942">serial_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The <b>text-console</b> class provides a text user interface to the simulated machine's console.
+
+</dd>
+
+</dl>
+<a name="label15136"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>abort</i></b></dt><a name="label15137"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Signal keyboard abort to connected device.</dd></dl>
+<dl><dt><b><i>add_title</i></b></dt><a name="label15138"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>a</b>.
+<p>
+This attribute is obsolete.</dd></dl>
+<dl><dt><b><i>application</i></b></dt><a name="label15139"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Module xterm-console only: application that is started in the target process. Default is "xterm".</dd></dl>
+<dl><dt><b><i>application_args</i></b></dt><a name="label15140"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[s*]</b>.
+<p>
+Module xterm-console only: list of arguments to pass to the target process</dd></dl>
+<dl><dt><b><i>bg_color</i></b></dt><a name="label15141"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Default background color. Standard X11 color names may be used.</dd></dl>
+<dl><dt><b><i>break_string</i></b></dt><a name="label15142"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>s|[[s[i*]]*]</b>.
+<p>
+An output string causing Simics to trigger a Xterm_Break_String hap when the string is printed.</dd></dl>
+<dl><dt><b><i>break_string_id</i></b></dt><a name="label15143"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>string</b> indexed;  indexed type: <b>String</b>.
+<p>
+Return an id for a string that is set to break on. The id can be used as index for the Xterm_Break_String hap.</dd></dl>
+<dl><dt><b><i>char_1c_is_abort</i></b></dt><a name="label15144"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Generate abort signal when &lt;ctrl&gt;-/ is pressed.</dd></dl>
+<dl><dt><b><i>console_trace</i></b></dt><a name="label15145"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to non-zero, console output will be sent to stdout in a format that is easy to parse.</dd></dl>
+<dl><dt><b><i>device</i></b></dt><a name="label15146"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The device connected to the console, must implement one of the 'serial-device' or 'keyboard' interfaces.</dd></dl>
+<dl><dt><b><i>environment</i></b></dt><a name="label15147"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[s*]</b>.
+<p>
+Module xterm-console only: list of strings that are added to the environment of the target process before the binary is executed.</dd></dl>
+<dl><dt><b><i>fg_color</i></b></dt><a name="label15148"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Default foreground color. Standard X11 color names may be used.</dd></dl>
+<dl><dt><b><i>height</i></b></dt><a name="label15149"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Default number of rows.</dd></dl>
+<dl><dt><b><i>history</i></b></dt><a name="label15150"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Data</b>.
+<p>
+Text history of previously printed text to the window.</dd></dl>
+<dl><dt><b><i>history_length</i></b></dt><a name="label15151"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+History size in bytes.</dd></dl>
+<dl><dt><b><i>history_next</i></b></dt><a name="label15152"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Next insertion position in the history buffer.</dd></dl>
+<dl><dt><b><i>history_wrap</i></b></dt><a name="label15153"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Indicates if the history buffer ever has been wrapped, i.e. if the previous printouts have exceeded the history buffer size.</dd></dl>
+<dl><dt><b><i>input</i></b></dt><a name="label15154"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>s|[di]</b>.
+<p>
+Keyboard input queue. This attribute appends characters to input queue.</dd></dl>
+<dl><dt><b><i>input_buf</i></b></dt><a name="label15155"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|d</b>.
+<p>
+Keyboard input buffer.</dd></dl>
+<dl><dt><b><i>input_delayed</i></b></dt><a name="label15156"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>[sf]</b>.
+<p>
+(string, seconds) This attribute appends characters to the input queue, after the specified simulated time have elapsed.</dd></dl>
+<dl><dt><b><i>input_next</i></b></dt><a name="label15157"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Position in the keyboard input buffer where new input is stored.</dd></dl>
+<dl><dt><b><i>kbd_event_queue</i></b></dt><a name="label15158"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Keyboard event queue. Used when connected to a keyboard controller device, and not a serial device.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label15159"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The serial link the console is connected to.</dd></dl>
+<dl><dt><b><i>next_char</i></b></dt><a name="label15160"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cached input character.</dd></dl>
+<dl><dt><b><i>no_window</i></b></dt><a name="label15161"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+If this flag is TRUE, no window will be opened. If it is FALSE, the output is redirected according to the <tt>output_file</tt> and <tt>quiet</tt> attributes.</dd></dl>
+<dl><dt><b><i>output_file</i></b></dt><a name="label15162"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+If <tt>no-window</tt> is set, output will be directed to this file.</dd></dl>
+<dl><dt><b><i>output_timeout</i></b></dt><a name="label15163"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Maximum number of seconds the xterm-console allows an xterm to start on. Default is 10 seconds.</dd></dl>
+<dl><dt><b><i>quiet</i></b></dt><a name="label15164"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If the <tt>no-window</tt> is set, this flag controls whether or not the console output is redirected to Simics console. If set to 1, output is not redirected. If set to 0, output is redirected unless the <tt>output_file</tt> is set. If <tt>no-window</tt> is not set, this attribute has no effect.</dd></dl>
+<dl><dt><b><i>read_only</i></b></dt><a name="label15165"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Don't accept any input from the window. (For batch execution).</dd></dl>
+<dl><dt><b><i>recorded_string</i></b></dt><a name="label15166"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The characters that have been recorded when the attribute <i>recording</i> is <i>true</i>. Note that the recorded string will NOT be cleared when <i>recording</i> is reset.</dd></dl>
+<dl><dt><b><i>recording</i></b></dt><a name="label15167"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+When enabled, all characters written to the console will be recorded. The record can be read from the attribute <i>recorded-string</i>.</dd></dl>
+<dl><dt><b><i>scrollback</i></b></dt><a name="label15168"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of lines of output saved on screen.</dd></dl>
+<dl><dt><b><i>scrollbar</i></b></dt><a name="label15169"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if the window should have a scrollbar.</dd></dl>
+<dl><dt><b><i>title</i></b></dt><a name="label15170"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+xterm window title.</dd></dl>
+<dl><dt><b><i>trace_file</i></b></dt><a name="label15171"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Name of file where to send the console trace, if enabled. If an empty string is  given standard output is used. No trace is written to file unless console_trace is also enabled.</dd></dl>
+<dl><dt><b><i>unbreak_id</i></b></dt><a name="label15172"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Remove breakpoint based on breakpoint id.</dd></dl>
+<dl><dt><b><i>unbreak_string</i></b></dt><a name="label15173"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>String</b>.
+<p>
+Stop breaking on a specified string. Note that if a string is added several times, it also has to be removed the same number of times. I.e. if a hap callback is tied to a string and does  not want to be called again, it should both remove the string and unregister the hap callback, since another hap callback may want to break on the same string again.</dd></dl>
+<dl><dt><b><i>use_xterm_args</i></b></dt><a name="label15174"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Module xterm-console only: if set to non-zero, the started application is assumed to accept xterm-style arguments. If this attribute is zero, attributes which map to xterm-arguments (such as "width" and "height") will have no effect. The default value of this attribute is zero if "application" is set to something other than "xterm", and non-zero otherwise.</dd></dl>
+<dl><dt><b><i>vt102_emulation</i></b></dt><a name="label15175"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Specifies if the console should the emulate vt102 protocol or not. Default is true. By disabling vt102 emulation, the user may be allowed to change the window size interactively, with the side-effect that simulation may not be deterministic from one run to another. This could also cause problems when reversing with Hindsight.</dd></dl>
+<dl><dt><b><i>vt_contents</i></b></dt><a name="label15176"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[s*]</b>.
+<p>
+Visible contents of the emulated vt102 console.</dd></dl>
+<dl><dt><b><i>vt_demo</i></b></dt><a name="label15177"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Add a microcheckpont at each CR.</dd></dl>
+<dl><dt><b><i>vt_height</i></b></dt><a name="label15178"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Height of emulated vt102 console.</dd></dl>
+<dl><dt><b><i>vt_redraw</i></b></dt><a name="label15179"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Force a redraw of the VT console.</dd></dl>
+<dl><dt><b><i>vt_state</i></b></dt><a name="label15180"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i|s*]</b>.
+<p>
+VT100 state information.</dd></dl>
+<dl><dt><b><i>vt_width</i></b></dt><a name="label15181"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Width of emulated vt102 console.</dd></dl>
+<dl><dt><b><i>width</i></b></dt><a name="label15182"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Default number of columns.</dd></dl>
+<dl><dt><b><i>win32_font</i></b></dt><a name="label15183"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Default font used for Windows hosts, on the format: "fontname:weight:pointsize".</dd></dl>
+<dl><dt><b><i>write_delayed</i></b></dt><a name="label15184"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Flow control. Set if an attempt to send a char was blocked.</dd></dl>
+<dl><dt><b><i>x11_font</i></b></dt><a name="label15185"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Default font used for X11/Unix hosts. This is a regular X11 font specification string</dd></dl>
+<dl><dt><b><i>x11_fontbold</i></b></dt><a name="label15186"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Default bold-font used for X11/Unix hosts. This is a regular X11 font specification string</dd></dl>
+<dl><dt><b><i>xterm_args</i></b></dt><a name="label15187"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+This attribute is obsolete.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label15188"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15190">break</a></b></td><td class="jdocu_noborder">set a string to break on</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15192">capture-start</a></b></td><td class="jdocu_noborder">capture output to file</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15194">capture-stop</a></b></td><td class="jdocu_noborder">stop output capture to file</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15196">close</a></b></td><td class="jdocu_noborder">close console window</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15198">disable-quiet</a></b></td><td class="jdocu_noborder">enable output redirection</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15200">disable-window</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; hide console window</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15202">enable-quiet</a></b></td><td class="jdocu_noborder">disable output redirection</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15204">enable-window</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; show console window</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15206">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15208">input</a></b></td><td class="jdocu_noborder">send string to a console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15210">input-file</a></b></td><td class="jdocu_noborder">input a file into a console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15212">kbd-abort</a></b></td><td class="jdocu_noborder">send a keyboard abort signal</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15214">list-break-strings</a></b></td><td class="jdocu_noborder">list all strings the console will break on</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15216">no-window</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; show/hide console window</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15218">open</a></b></td><td class="jdocu_noborder">open console window</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15220">playback-start</a></b></td><td class="jdocu_noborder">start traffic generator</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15222">playback-stop</a></b></td><td class="jdocu_noborder">stop traffic generation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15224">quiet</a></b></td><td class="jdocu_noborder">toggle console output redirection</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15226">read-only</a></b></td><td class="jdocu_noborder">toggle read-only mode</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15228">record-start</a></b></td><td class="jdocu_noborder">start recording of output on the console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15230">record-stop</a></b></td><td class="jdocu_noborder">stop recoding of output on the console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15232">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15234">switch-to-serial-link</a></b></td><td class="jdocu_noborder">replace text-console with serial link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15236">switch-to-server-console</a></b></td><td class="jdocu_noborder">replace text console with server console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15238">unbreak</a></b></td><td class="jdocu_noborder">stop breaking on string</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15240">unbreak-id</a></b></td><td class="jdocu_noborder">remove a breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label15242">wait-for-string</a></b></td><td class="jdocu_noborder">wait for a string in a script branch</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label15189"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label15190"></a><a name="label15191"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.break</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.break</b> <i>"string"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set a string to break on for the console. The simulation will stop
+when this string is written on the console. If text output is intermixed
+with control sequences for colors/positioning, the break command may
+fail breaking on the string.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15238">&lt;text-console&gt;.unbreak</a>, <a class="jdocu" href="#label15214">&lt;text-console&gt;.list-break-strings</a></dd>
+
+</dl>
+
+
+
+<a name="label15192"></a><a name="label15193"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.capture-start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.capture-start</b> <i>filename</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Capture all output from the console to a file.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15194">&lt;text-console&gt;.capture-stop</a></dd>
+
+</dl>
+
+
+
+<a name="label15194"></a><a name="label15195"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.capture-stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.capture-stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop capturing all output from the console.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15192">&lt;text-console&gt;.capture-start</a></dd>
+
+</dl>
+
+
+
+<a name="label15196"></a><a name="label15197"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.close</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.close</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Close the console window. When the console window is
+                closed, any output is redirected to the main Simics window.
+                This can be suppressed with the &lt;text-console&gt;.quiet
+                command. To provide input to the target machine while the
+                console is closed, use the &lt;text-console&gt;.input command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15224">&lt;text-console&gt;.quiet</a>, <a class="jdocu" href="#label15218">&lt;text-console&gt;.open</a></dd>
+
+</dl>
+
+
+
+<a name="label15198"></a><a name="label15199"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.disable-quiet</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.disable-quiet</b><br><b>&lt;text-console&gt;.enable-quiet</b><br><b>&lt;text-console&gt;.quiet</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command toggles if text-console output is redirected to the Simics
+                console when the console window is closed. See also the
+                &lt;text-console&gt;.capture-start command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15196">&lt;text-console&gt;.close</a>, <a class="jdocu" href="#label15192">&lt;text-console&gt;.capture-start</a></dd>
+
+</dl>
+
+
+
+<a name="label15200"></a><a name="label15201"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.disable-window &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.disable-window</b><br><b>&lt;text-console&gt;.enable-window</b><br><b>&lt;text-console&gt;.no-window</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#label15196">&lt;text-console&gt;.close</a> instead.
+<p>
+Show/hide the console window.</dd>
+
+</dl>
+
+
+
+<a name="label15202"></a><a name="label15203"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.enable-quiet</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.enable-quiet</b><br><b>&lt;text-console&gt;.disable-quiet</b><br><b>&lt;text-console&gt;.quiet</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command toggles if text-console output is redirected to the Simics
+                console when the console window is closed. See also the
+                &lt;text-console&gt;.capture-start command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15196">&lt;text-console&gt;.close</a>, <a class="jdocu" href="#label15192">&lt;text-console&gt;.capture-start</a></dd>
+
+</dl>
+
+
+
+<a name="label15204"></a><a name="label15205"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.enable-window &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.enable-window</b><br><b>&lt;text-console&gt;.disable-window</b><br><b>&lt;text-console&gt;.no-window</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#label15218">&lt;text-console&gt;.open</a> instead.
+<p>
+Show/hide the console window.</dd>
+
+</dl>
+
+
+
+<a name="label15206"></a><a name="label15207"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label15208"></a><a name="label15209"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.input</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.input</b> <i>"string"</i> [<i>delay</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Send string to a text console. The text is delayed by default, to wait
+for the simulated software to be ready after a previous break on string.
+To input the string immediately, specify delay = 0</dd>
+
+</dl>
+
+
+
+<a name="label15210"></a><a name="label15211"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.input-file</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.input-file</b> <i>file</i> [-binary] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Inputs the contents of <i>file</i> into the text console.  If the <i>-binary</i>
+flag is specified, the file is treated as a binary file.</dd>
+
+</dl>
+
+
+
+<a name="label15212"></a><a name="label15213"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.kbd-abort</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.kbd-abort</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Send a serial line abort signal to the attached device.
+This is only useful when the text-console is connected
+to a serial device.</dd>
+
+</dl>
+
+
+
+<a name="label15214"></a><a name="label15215"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.list-break-strings</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.list-break-strings</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print a listing of all strings that the console will break on.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="#label15238">&lt;text-console&gt;.unbreak</a></dd>
+
+</dl>
+
+
+
+<a name="label15216"></a><a name="label15217"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.no-window &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.no-window</b><br><b>&lt;text-console&gt;.disable-window</b><br><b>&lt;text-console&gt;.enable-window</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#label15196">&lt;text-console&gt;.close</a> instead.
+<p>
+Show/hide the console window.</dd>
+
+</dl>
+
+
+
+<a name="label15218"></a><a name="label15219"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.open</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.open</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Open the console window</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15224">&lt;text-console&gt;.quiet</a>, <a class="jdocu" href="#label15196">&lt;text-console&gt;.close</a></dd>
+
+</dl>
+
+
+
+<a name="label15220"></a><a name="label15221"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.playback-start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.playback-start</b> <i>filename</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Starts generating bus traffic from a specified file. The file should consist of data and delay specifications in a "command: data" format. Examples:
+<b>Delay: 0.345</b> will delay 345 milliseconds
+<b>Hexdata: 72 6f 6f 74 0a</b> will send the string "root\n" to the connected device. Unrecognised lines are ignored.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15222">&lt;text-console&gt;.playback-stop</a></dd>
+
+</dl>
+
+
+
+<a name="label15222"></a><a name="label15223"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.playback-stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.playback-stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop bus traffic generation previously started with playback-start.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15220">&lt;text-console&gt;.playback-start</a></dd>
+
+</dl>
+
+
+
+<a name="label15224"></a><a name="label15225"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.quiet</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.quiet</b><br><b>&lt;text-console&gt;.disable-quiet</b><br><b>&lt;text-console&gt;.enable-quiet</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command toggles if text-console output is redirected to the Simics
+                console when the console window is closed. See also the
+                &lt;text-console&gt;.capture-start command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15196">&lt;text-console&gt;.close</a>, <a class="jdocu" href="#label15192">&lt;text-console&gt;.capture-start</a></dd>
+
+</dl>
+
+
+
+<a name="label15226"></a><a name="label15227"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.read-only</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.read-only</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Toggle the read-only mode in the console. Console input is only accepted if the
+                console is in read/write mode. If the console is in read-only mode, all input
+                is discarded, except input generated by the &lt;text-console&gt;.insert command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15208">&lt;text-console&gt;.input</a></dd>
+
+</dl>
+
+
+
+<a name="label15228"></a><a name="label15229"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.record-start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.record-start</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Start recording of output on the console. All previously
+recorded output will be discarded. The recorded string can
+be read with the <b>record-stop</b> command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15230">&lt;text-console&gt;.record-stop</a></dd>
+
+</dl>
+
+
+
+<a name="label15230"></a><a name="label15231"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.record-stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.record-stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop recording of output on the console, and return the recorded string.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15228">&lt;text-console&gt;.record-start</a></dd>
+
+</dl>
+
+
+
+<a name="label15232"></a><a name="label15233"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+
+<a name="label15234"></a><a name="label15235"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.switch-to-serial-link</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.switch-to-serial-link</b> <i>"linkname"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Replace the text-console with a serial link. Another serial port, possibly
+            in another Simics session can connect to the other end of the link.</dd>
+
+</dl>
+
+
+
+<a name="label15236"></a><a name="label15237"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.switch-to-server-console</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.switch-to-server-console</b> <i>port</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Replace the text console with a server console used for
+                telnet connections. The argument <i>port</i> is
+                the port number that a telnet client can connect to.</dd>
+
+</dl>
+
+
+
+<a name="label15238"></a><a name="label15239"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.unbreak</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.unbreak</b> <i>"string"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop breaking on specified string.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="#label15214">&lt;text-console&gt;.list-break-strings</a></dd>
+
+</dl>
+
+
+
+<a name="label15240"></a><a name="label15241"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.unbreak-id</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.unbreak-id</b> <i>id</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Remove the breakpoint with specified id.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="#label15214">&lt;text-console&gt;.list-break-strings</a></dd>
+
+</dl>
+
+
+
+<a name="label15242"></a><a name="label15243"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;text-console&gt;.wait-for-string</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;text-console&gt;.wait-for-string</b> <i>"string"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Wait for the output of the text <i>string</i> on the
+console. This command can only be run from a script branch
+where it suspends the branch until the string has been
+found in the output.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="topic13.html#label2330">script-branch</a>, <a class="jdocu" href="topic13.html#label2473">wait-for-variable</a>, <a class="jdocu" href="topic13.html#label2471">wait-for-hap</a>, <a class="jdocu" href="#label15242">&lt;text-console&gt;.wait-for-string</a>, <a class="jdocu" href="topic523.html#label17926">&lt;processor&gt;.wait-for-cycle</a>, <a class="jdocu" href="topic523.html#label17928">&lt;processor&gt;.wait-for-step</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic445.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic447.html">Next</a></span></p>
+</body>
+</html>

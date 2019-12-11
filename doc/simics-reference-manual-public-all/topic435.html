@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SYM53C875</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2046, true);
+</script>
+<a name="label14885"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic434.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic436.html">Next</a></span></p>
+<h3 class="jdocu">SYM53C875</h3 class="jdocu">
+
+
+<a name="label14886"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2952">SYM53C875</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>SYM53C875</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The SYM53C875 is an advanced SCSI controller with integrated DMA capabilities and dedicated script RAM to decrease bus traffic. The SYM53C875 device does not support target mode operation and can only act as initiator during SCSI transactions. The SYM53C875 instruction set implementation is not complete and foremost load/store instructions are missing. Assembly language instructions shown with debug level greater than 1 do not comply with the Symbios Logic assembler format.
+
+</dd>
+
+</dl>
+<a name="label14887"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>carry_flag</i></b></dt><a name="label14888"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+carry flag</dd></dl>
+<dl><dt><b><i>config_register_info</i></b></dt><a name="label14889"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[isii]*]</b>.
+<p>
+Register info for all registered configuration registers. The format for each entry is (offset, name, size, write-mask).</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label14890"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size.</dd></dl>
+<dl><dt><b><i>execution_delay</i></b></dt><a name="label14891"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+Time in seconds for one SCSI script instruction to execute.</dd></dl>
+<dl><dt><b><i>expansion_rom</i></b></dt><a name="label14892"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oii]</b>.
+<p>
+ROM object, map size, and map function number for the Expansion ROM.</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label14893"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiii]</b>.
+<p>
+State of the interrupt pin.</dd></dl>
+<dl><dt><b><i>mappings</i></b></dt><a name="label14894"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{5:8}]|[iiiiiiiio|nii]*]</b>.
+<p>
+List of all current PCI IO and memory mappings.</dd></dl>
+<dl><dt><b><i>miscellaneous</i></b></dt><a name="label14895"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiiii]</b>.
+<p>
+(<i>io_mode</i>, <i>data_prerequest</i>, <i>phase_valid</i>, <i>issue_next_instruction</i>, <i>waiting_valid_phase</i>) array of miscellaneous attributes.</dd></dl>
+<dl><dt><b><i>operating_registers</i></b></dt><a name="label14896"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>.
+<p>
+(<i>reg1</i> ... <i>reg96</i>) of registers.</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label14897"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>prefetched_instructions</i></b></dt><a name="label14898"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>.
+<p>
+(<i>instr1</i>, <i>instr2</i>, <i>instr3</i>) instructions.</dd></dl>
+<dl><dt><b><i>ram</i></b></dt><a name="label14899"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+4K integrated ram</dd></dl>
+<dl><dt><b><i>register_names</i></b></dt><a name="label14900"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>[s*]</b>.
+<p>
+(<i>reg1</i> ... <i>reg96</i>) of register names.</dd></dl>
+<dl><dt><b><i>scsi_bus</i></b></dt><a name="label14901"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Object must implement the 'scsi-bus' interface.</dd></dl>
+<dl><dt><b><i>write_masks</i></b></dt><a name="label14902"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Write masks for all registered configuration registers. The format for each entry is (offset, mask).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label14903"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14905">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14907">pci-header</a></b></td><td class="jdocu_noborder">print PCI device header</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14909">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label14904"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label14905"></a><a name="label14906"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;SYM53C875&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;SYM53C875&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label14907"></a><a name="label14908"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;SYM53C875&gt;.pci-header</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;SYM53C875&gt;.pci-header</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the PCI header, i.e the configuration registers.</dd>
+
+</dl>
+
+
+
+<a name="label14909"></a><a name="label14910"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;SYM53C875&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;SYM53C875&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic434.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic436.html">Next</a></span></p>
+</body>
+</html>

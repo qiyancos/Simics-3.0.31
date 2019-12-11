@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Using the Pipe Command</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(201, true);
+</script>
+<a name="label474"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic74.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic76.html">Next</a></span></p>
+<h4 class="jdocu">15.5&nbsp;&nbsp;&nbsp;Using the Pipe Command</h4 class="jdocu">
+
+   
+   <p>
+   The <b><a name="label475">pipe</a></b> command, which only is available on Unix
+   hosts, lets you send the output of a Simics command to a shell command
+   through a pipe:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; pipe "help" "grep Tracing"
+</pre>
+<p>
+   This will run <b>help</b> (which lists all Simics commands categories)
+   and send its output to the standard input of the <b>grep trace</b>
+   process. <b>grep</b> will discard all lines not containing "Tracing" and
+   forward the rest to its standard output, which will be printed on the Simics
+   terminal.
+<p>
+   The <b>pipe</b> command can be used to send all the output of a command
+   to a file:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; pipe "stepi 1000" "cat &gt; trace.txt"
+</pre>
+<p>
+   Or you can use it to view information using the shell command
+   <b>more</b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; pipe "pregs -all" more
+</pre>
+<p>
+   Note that you have to enclose both the Simics command (the first argument)
+   and the shell command (the second argument) in double quotes if they contain
+   whitespace or other non-letter characters.
+   <p>
+   A related command is <b>!<a name="label476"></a></b>, which runs a shell command
+   from the Simics prompt:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; !uname -a
+</pre>
+<p>
+   This will run the <b>uname -a</b> shell command and print its output in
+   the Simics console.
+   <p>
+   <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic74.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic76.html">Next</a></span></p>
+</body>
+</html>

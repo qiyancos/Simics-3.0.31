@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>conf-object</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(604, true);
+</script>
+<a name="label4590"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic47.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic49.html">Next</a></span></p>
+<h3 class="jdocu">conf-object</h3 class="jdocu">
+
+
+<a name="label4591"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2886">Simics Core</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<b>conf-object</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+None</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+Base class from which all other objects inherit.
+
+</dd>
+
+</dl>
+<a name="label4592"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>attributes</i></b></dt><a name="label4593"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[sis]*]</b>.
+<p>
+((<i>name</i>, <i>attr</i>, <i>doc</i>, <i>type</i>), ...). The list of attributes registered for the object. The list consists of <i>name</i> that is the name of the attribute, <i>attr</i> is its <tt>attr_attr_t</tt> value, <i>doc</i> is the documentation of the attribute, and <i>type</i> is the attribute type format.</dd></dl>
+<dl><dt><b><i>classname</i></b></dt><a name="label4594"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+Name of object class.</dd></dl>
+<dl><dt><b><i>component</i></b></dt><a name="label4595"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The component that the object is part of, or NIL.</dd></dl>
+<dl><dt><b><i>iface</i></b></dt><a name="label4596"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>.
+<p>
+(<i>name</i>, ...). The list of interfaces exported by this object.</dd></dl>
+<dl><dt><b><i>name</i></b></dt><a name="label4597"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+Unique object name.</dd></dl>
+<dl><dt><b><i>object_id</i></b></dt><a name="label4598"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Unique object identifier.</dd></dl>
+<dl><dt><b><i>queue</i></b></dt><a name="label4599"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Object used as event queue when posting events. If no value is provided, <i>queue</i> will default to the first processor defined in the configuration when the first event is posted.</dd></dl>
+</dd>
+
+</dl>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic47.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic49.html">Next</a></span></p>
+</body>
+</html>

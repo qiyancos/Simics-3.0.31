@@ -1,0 +1,17 @@
+if not defined create_network {$create_network = yes}
+if not defined mac_address    {$mac_address = "10:10:10:10:10:30"}
+
+###
+
+run-command-file "%script%/x86-440bx-agp-system.include"
+
+$eth = (create-pci-dec21143 mac_address = $mac_address)
+$nb.connect pci-slot4 $eth
+
+instantiate-components
+
+$eth_comp = $eth
+$eth_cnt = ""
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/tango-setup.include"

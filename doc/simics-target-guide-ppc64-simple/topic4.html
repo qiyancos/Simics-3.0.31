@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Miscellaneous Notes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(33, true);
+</script>
+<a name="label98"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Miscellaneous Notes</h2 class="jdocu">
+
+
+
+<a name="label99"></a><h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Changing the Processor Clock Frequency</h3 class="jdocu">
+
+
+<a name="label100"></a> 
+<a name="label101"></a>
+<a name="label102"></a>
+<p>
+The clock frequency of a simulated processor can be set arbitrarily in
+Simics.  This will not affect the actual speed of simulation, but it
+will affect the number of instructions that need to be executed for a
+certain amount of simulated time to pass.  If your execution only
+depends on executing a certain number of instructions, increasing the clock frequency will take
+the same amount of host time (but a shorter amount of target
+time). However, if there are time based delays of some kind in the simulation,
+these will take  longer to execute. 
+<p>
+At a simulated 1 MHz, one million target instructions will correspond to a
+simulated second (assuming the simple default timing of one cycle per
+instruction). At 100 MHz, on the other hand, it will take 100 million
+target instructions to complete a simulated second. So with a higher clock
+frequency, less simulated target time is going to pass for a certain
+period of host execution time.
+<p>
+If Simics is used to emulate an interactive system (especially one
+with a graphical user interface) it is a good idea to set the clock
+frequency quite low.  Keyboard and mouse inputs events are handled by
+periodic interrupts in most operating systems, using a higher clock
+frequency will result in longer delays between invocations of periodic
+interrupts.  Thus, the simulated system will feel slower in its user
+response, and update the mouse cursor position etc. less frequently.
+If this is a problem, the best technique for running experiments at a
+high clock frequency is to first complete the configuration of the
+machine using a low clock frequency.  Save all configuration changes
+to a disk diff (like when installing operating systems).  Then change
+the configuration to use a higher a clock frequency and reboot the
+target machine.
+<p>
+Note that for a lightly-loaded machine (for example, working at an
+interactive prompt on a serial console to an embedded Linux system),
+Simics will often execute quickly enough at the real target clock
+frequency that there is no need to artifically lower it.
+<p>
+
+<p>
+<a name="label103"></a><h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Manually Testing Interrupts</h3 class="jdocu">
+
+
+Interrupts from the interrupt controller comes in to the Simics PowerPC via
+the <tt>simple_interrupt</tt> interface.
+To manually trigger an interrupt it is possible issue:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.cpu0.iface.simple_interrupt.interrupt(conf.cpu0, 0)</b>
+</pre>
+The command line triggers the interrupt towards the CPU. The seconds
+parameter (zero) indicates that this is a normal interrupt. 
+Critical interrupts should use the value 1.
+The external interrupt will only be serviced (when continuing execution) if the
+MSR[EE] bit is set, enabling external interrupts. 
+To manually set this bit issue:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>%msr = %msr | 1&lt;&lt;15</b>
+</pre>
+To lower the external interrupt manually issue:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.cpu0.iface.simple_interrupt.interrupt_clear(conf.cpu0, 0)</b>
+</pre>
+<a name="label104"></a><h3 class="jdocu">5.3&nbsp;&nbsp;&nbsp;Cache Simulation</h3 class="jdocu">
+
+
+For generic information on how cache simulation is done in Simics please refer to Simics User Guide.
+<p>
+PowerPC instructions which manipulates the cache directly, such as <tt>dcbf</tt>
+can effect the cache model provided that the processor's <tt>icache</tt> and <tt>dcache</tt>
+are properly set.
+<p>
+The <tt>icache</tt> and <tt>dcache</tt> attributes should point to g-cache objects
+simulating instruction and data cache. For SMP configurations, the <tt>cpu_group</tt>
+attribute should point to a ppc-broadcast-bus object which will be informed about
+the caches the cpus uses. If the WIMG M-bit is set for a cache transaction, then
+memory coherency is required and the cache operation is sent down to the broadcast
+bus which distributes it to all known caches. For non-SMP configurations or if the
+M-bit is not set, the local cache is called directly.
+<p>
+The following operations are supported:
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>PowerPC operation</b></td><td class="jdocu_noborder"><b>Cache Operation</b></td></tr>
+<tr><td class="jdocu_noborder">dcbf (data cache block flush)</td><td class="jdocu_noborder">Cache_Control_Invalidate_Line</td></tr>
+<tr><td class="jdocu_noborder">dcbst (data cache block store)</td><td class="jdocu_noborder">Cache_Control_Copyback_Line</td></tr>
+<tr><td class="jdocu_noborder">dcbt (data cache block touch)</td><td class="jdocu_noborder">Cache_Control_Fetch_Line</td></tr>
+<tr><td class="jdocu_noborder">dcbtst (data cache block touch for store)</td><td class="jdocu_noborder">Cache_Control_Fetch_Line</td></tr>
+<tr><td class="jdocu_noborder">HID0[DCFI]</td><td class="jdocu_noborder">Cache_Control_Invalidate_Cache</td></tr>
+<tr><td class="jdocu_noborder">HID0[ICFI]</td><td class="jdocu_noborder">Cache_Control_Invalidate_Cache</td></tr>
+</table>
+Other operations, such as locking cache lines, are not currently supported.
+The cache module receives the the cache operation via the cache_control interface.
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

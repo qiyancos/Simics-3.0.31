@@ -1,0 +1,13 @@
+script-branch {
+	local $con = ($console.get-component-object con)
+	# Wait for root prompt. First wait for 'login', to avoid catching
+        # '# ' earlier in the boot output.
+	$con.wait-for-string "login:"
+	$con.wait-for-string "# "
+        # Change the prompt to something better looking
+        $con.input "hostname firststeps\n"
+        $con.input "export PS1=\"\\u@\\h: \\w\\\\$ \"\n"
+
+	# Disable UART delay, otherwise deploy doesn't work with our prompt
+	$con->device->xmit_time = 0
+}

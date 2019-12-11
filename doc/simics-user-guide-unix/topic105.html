@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Configuration Space</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(237, true);
+</script>
+<a name="label542"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic104.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic106.html">Next</a></span></p>
+<h4 class="jdocu">20.2&nbsp;&nbsp;&nbsp;Configuration Space</h4 class="jdocu">
+
+
+<p>
+The PCI configuration accesses are implemented with a generic Simics
+memory-space object. The space is populated by the <b>pci-bus</b>
+object based on the list provided by the <i>pci_devices</i> attribute. It
+does not need to be configured manually.
+<p>
+<a name="label543"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+    <img src="pciconftype1.png">
+    
+</center>
+</td></tr>
+<tr><td style="text-align: center">Figure 6. PCI Type 1 Configuration Address in Simics</td></tr>
+</table>
+
+<p>
+The configuration space in Simics uses the Type 1 addressing layout (see figure
+<a class="jdocu" href="#label543">6</a>), but with the lower bits used for byte
+addressing. No <tt>IDSEL</tt> signals are used. This is done to simplify the
+implementation, and does not impose any restriction of the PCI model.
+<p>
+In the previous example, the configuration space was configured with two
+devices as follow:
+<p>
+<pre class="jdocu_small" style="color: black">
+base               object               fn offs               length
+0x0000000000000000 pci0                 255 0x0                0x100
+0x0000000000001800 dec0                 255 0x0                0x100
+</pre>
+<p>
+The addresses are computed as explained by figure <a class="jdocu" href="#label543">6</a>,
+which gives an address of 0x0 for <b>pci0</b> (bus 0, device or slot 0,
+function 0) and an address of 0x1800 for <b>dec0</b> (bus 0, device or slot
+3, function 0).
+<p>
+In many systems, typically 32-bit ones, the configuration space is not visible
+in the global memory-space of the processor. Instead the bridge has a register
+pair that is used to access the configuration space: one register for the
+address and one for data.
+<p>
+PCI-to-PCI bridges will automatically add mappings to the configuration space
+of the primary bus for all subordinate buses. This is done at run-time, since
+both the secondary and subordinate bus is configured by the simulated software.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic104.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic106.html">Next</a></span></p>
+</body>
+</html>

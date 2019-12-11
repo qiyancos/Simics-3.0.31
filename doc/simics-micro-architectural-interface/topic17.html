@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Consistency Controller</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(46, true);
+</script>
+<a name="label225"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+<h3 class="jdocu">5.3&nbsp;&nbsp;&nbsp;Consistency Controller</h3 class="jdocu">
+
+
+<p>
+<a name="label226"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+<img src="overview.png">
+</center>
+
+</td></tr>
+<tr><td style="text-align: center">Figure 3. Consistency Controller</td></tr>
+</table>
+
+<p>
+<hr class="jdocu_note"><b>Note:</b> In previous versions of Simics, the <a name="label227">consistency
+controller</a> was responsible for keeping <a name="label228">program order
+consistency</a>. This is now performed by the <a name="label229">LSQ</a> so no
+consistency controller is needed to run one processor systems.<hr class="jdocu_note">
+<p>
+<a name="label230"></a>When simulating
+<a name="label231">multi-processors</a> systems with Simics MAI, you may want to
+apply a stronger consistency model then the one the LSQ is
+providing. The consistency controller module provides some default
+models.
+<p>
+The consistency controller can be controlled through attributes (setting the an
+attribute to 0 will imply no constraint):
+<p>
+<dl><dt><b>load-load</b></dt><dd><a name="label232"></a>if set to
+non-zero loads are issued in program order</dd><dt><b>load-store</b></dt><dd><a name="label233"></a>if set to
+non-zero program order is maintained for stores following loads</dd><dt><b>store-load</b></dt><dd><a name="label234"></a>if set to
+non-zero program order is maintained for loads following stores</dd><dt><b>store-store</b></dt><dd><a name="label235"></a>if set to
+non-zero stores are issued in program order</dd><dt><b>prefetch</b></dt><dd><a name="label236">prefetching (see explanations below)</a></dd></dl>
+<p>
+
+
+Instructions that issues both loads and stores, e.g. <a name="label237">swap
+instructions</a>, will have both the load and the store status. Thus
+setting any of the first four attributes will order all such
+instructions.
+ <p>
+The <i>prefetch</i> attribute is orthogonal to all other
+consistency controller attributes. When not enabled the consistency
+controller does not issue any memory transaction to the remainder of
+the memory hierarchy until they are guaranteed to obey the consistency
+rules. When enabled the prefetch option causes a prefetch to be issued
+to the rest of the memory hierarchy for all operations where the
+target address is ready before the consistency controller has
+guaranteed correctness. As prefetches are nonbinding, it is always
+correct for any portion of the memory system to ignore them. Note:
+prefetches are not allowed to stall and they are only sent once for
+each instruction.
+<p>
+The source code for the consistency controller is available so it is
+easy to change its behavior in detail. See
+<tt>simics/src/extensions/consistency-controller</tt>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>extended_serial</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2237, true);
+</script>
+<a name="label17739"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic498.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic500.html">Next</a></span></p>
+<h3 class="jdocu">extended_serial</h3 class="jdocu">
+
+
+<a name="label17740"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15134">text-console</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface extends the <tt>SERIAL_DEVICE_INTERFACE</tt> with
+   a <b><i>write_at()</i></b> function. It is similar to the <b><i>write()</i></b>
+   function of the mentioned interface, but accepts an on-screen character
+   position. This interface is implemented by text consoles allowing them
+   to be connected to text oriented frame buffers, such as VGA in text mode.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        void (*write_at)(conf_object_t *obj,
+                         int value, int x, int y, int fg, int bg);
+        void (*graphics_mode)(conf_object_t *obj, int in_graphics_mode);
+} extended_serial_interface_t;
+
+#define EXTENDED_SERIAL_INTERFACE "extended-serial"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic498.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic500.html">Next</a></span></p>
+</body>
+</html>

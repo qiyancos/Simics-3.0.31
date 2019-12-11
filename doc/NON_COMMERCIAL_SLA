@@ -1,0 +1,431 @@
+VIRTUTECH SIMICS SOFTWARE NON-COMMERCIAL LICENSE AGREEMENT
+
+This VIRTUTECH SIMICS SOFTWARE LICENSE AGREEMENT (the "Agreement")
+governs the use of the Virtutech Simics product and related
+documentation (collectively, the "Software"), and is a Contract by and
+between you (either a person or an entity) ("Licensee") and VIRTUTECH
+AB, a Swedish corporation with its principal offices located at
+Norrtullsgatan 15, SE-113 27 Stockholm, SWEDEN ("Virtutech").  The
+term "Software" also shall include any upgrades, modified versions or
+updates of the Virtutech Simics product provided to Licensee by
+Virtutech, and all Virtutech documentation relating to any of the
+foregoing. A software license and a license key or serial number
+issued to a designated user only by Virtutech, or its authorized
+agents, is required for use of the Software.
+
+The license granted under this Agreement is solely for "non-commercial
+purposes". This includes personal hobby use, teaching use, non-profit
+organizations, and academic research.
+
+If you do not agree to the terms of this Agreement, then do not
+install or use the Software.  By explicitly accepting this Agreement,
+or by installing, copying, downloading, accessing, or otherwise using
+the Software, you are acknowledging and agreeing to be bound by the
+following terms.
+
+IF YOU DO NOT AGREE TO ALL OF THESE TERMS, DO NOT DOWNLOAD OR INSTALL
+THE SOFTWARE ON YOUR SYSTEM. BY DOWNLOADING OR INSTALLING OR USING THE
+SOFTWARE, YOU ARE AGREEING TO BE BOUND BY THESE TERMS.
+
+1.  GRANT OF LICENSE.
+    (a) Subject to the terms and conditions of this Agreement
+        Virtutech or its authorized distributor hereby grants to
+        Licensee a non-exclusive, non-transferable, revocable, limited
+        non-commercial license to do the following:
+
+        (i) use the Software, in machine-readable object code form
+        only, for non-commercial internal purposes only, on the
+        computer hardware or at the site for which an applicable
+        granted in accordance with the terms of this Agreement;
+
+        (ii) make copies of the Software only as reasonably necessary
+        for the use authorized in this Agreement, including as needed
+        for backup and/or archival purposes, provided that Licensee
+        reproduces on each copy all copyright and other proprietary
+        rights notices set forth on or in the original Software;
+
+        (iii) print one or more paper copies of the documentation for
+        internal use if Licensee receives the documentation
+        electronically; and
+
+        (iv) develop "extensions" to the Software, where an
+        "extension" refers to program modules developed by Licensee or
+        other third party that connect to or otherwise interact with
+        the Software using documented programming interfaces or
+        communication protocols, and that are developed entirely by
+        Licensee or other third party; Virtutech disclaims any right,
+        title or interest in extensions developed in accordance with
+        this Agreement; and,
+
+        (v) create derivative works based on "components" of the
+        Software if and only if the component in question has been
+        provided in source code form by Virtutech, provided that
+        Licensee uses such derivative works only in conjunction with
+        and as a part of the Software or other licensed copies of the
+        Software, where "component" refers to a part of the Software
+        that implements features or functionality of the Software, and
+        that is included in the Software either in source code or
+        binary code forms or is otherwise provided or distributed by
+        Virtutech.
+
+    (b) Single User or "Seat" License.  Licensee may use the Software
+    only on the authorized number of designated computers by the
+    authorized and designated users.  A separate license is required
+    for each combination of user and computer on which the Software
+    will be used.  In the case of a computer with multiple processors,
+    such computer requires one license per processor.  Virtutech will
+    provide Licensee with a license code key that enables the Software
+    to be used on the designated computer or computers by the
+    designated user.
+
+2.  RESTRICTIONS.  LICENSEE AGREES THAT IT SHALL NOT, IN WHOLE OR IN
+    PART, AT ANY TIME DURING THE TERM OF OR AFTER ANY EXPIRATION OR
+    TERMINATION OF THIS AGREEMENT:
+
+    (a) SELL, ASSIGN, SUBLICENSE, LEASE, RENT, TIMESHARE, GRANT A
+    SECURITY INTEREST IN, DISTRIBUTE OR OTHERWISE TRANSFER THE
+    SOFTWARE;
+
+    (b) COPY OR REPRODUCE THE SOFTWARE EXCEPT AS EXPRESSLY SET FORTH
+    IN THIS AGREEMENT;
+
+    (c) DISCLOSE THE SOFTWARE TO ANY OTHER INDIVIDUAL OR ENTITY
+    WITHOUT THE PRIOR WRITTEN CONSENT OF VIRTUTECH EXCEPT AS EXPRESSLY
+    SET FORTH IN THIS AGREEMENT;
+
+    (d) MODIFY, TRANSLATE, ADAPT, REVERSE ENGINEER, DECOMPILE,
+    DISASSEMBLE (EXCEPT AND ONLY TO THE EXTENT APPLICABLE LAWS
+    SPECIFICALLY PROHIBIT SUCH RESTRICTION) OR OTHERWISE ATTEMPT TO
+    DISCOVER ANY SOURCE CODE FOR, OR CREATE DERIVATIVE WORKS BASED ON
+    THE SOFTWARE OR MERGE THE SOFTWARE INTO ANY OTHER SOFTWARE;
+
+    (e) ATTEMPT TO MODIFY OR TAMPER WITH THE NORMAL FUNCTION OF A
+    LICENSE MANAGER OR SIMILAR FUNCTION IN THE SOFTWARE THAT REGULATES
+    USAGE OF THE SOFTWARE;
+
+    (f) MAKE THE SOFTWARE AVAILABLE IN ANY FORM TO ANY PERSON OTHER
+    THAN LICENSEE'S EMPLOYEES AND CONTRACTORS WHOSE JOB PERFORMANCE
+    REQUIRES SUCH ACCESS, AND IN NO EVENT TO ANY OF VIRTUTECH'S
+    COMPETITORS, WHEREIN A VIRTUTECH COMPETITOR IS ANY PERSON OR
+    ENTITY THAT DEVELOPS MACHINE SIMULATORS THAT COMPETE WITH THE
+    SOFTWARE TOOLS OFFERED BY VIRTUTECH;
+
+    (g) USE THE SOFTWARE FOR DEVELOPMENT OF SIMULATORS OR EMULATORS,
+    OR OTHERWISE COMPETING PRODUCTS (AND INCLUDING WITHOUT LIMITATION
+    THE DEVELOPMENT OF TESTS TO AID IN DEVELOPMENT OF THE SAME); OR
+
+    (h) ALLOW ANY THIRD PARTY TO DO ANY OF THE ACTS DESCRIBED IN
+    SECTIONS 2(a) THROUGH 2(g) ABOVE.
+
+3.  OWNERSHIP AND PROPRIETARY RIGHTS.  The Software, its structure,
+    organization and code, and all documentation relating to the
+    Software, are the confidential and proprietary property of
+    Virtutech and/or its licensors, and all right, title and interest
+    in and to such property and any and all copies of the Software (in
+    whole or in part, and in any form) shall remain with Virtutech
+    and/or its licensors, both during the term of and after any
+    expiration or termination of this Agreement.  Licensee
+    acknowledges that Virtutech and/or its licensors have patent,
+    copyright, trade secret and other intellectual property rights in
+    the Software under Swedish, United States and other foreign
+    patent, copyright, trade secret and other intellectual property
+    laws and international treaty provisions, and that all such
+    patent, copyright, trade secret and other intellectual property
+    rights remain the exclusive property of Virtutech and/or its
+    licensors at all times.  Licensee shall not alter or remove any
+    copyright or other proprietary notices on the Software or any
+    other materials provided pursuant to this Agreement.  Licensee may
+    use trademarks relating to the Software only to the extent
+    required to comply with Section 1 of this Agreement ("Grant of
+    License"), in accordance with accepted trademark practice,
+    including identification of the trademark owner's name.  Such use
+    of any trademark does not give Licensee any rights of ownership in
+    that trademark.
+
+4.  SUPPORT.  Virtutech will provide support for the Software by
+    electronic means during Virtutech's normal business hours.
+    Virtutech will provide Licensee with bug fixes, updates, and
+    improvements to the Software at its sole discretion. Licensee may
+    be entitled to additional technical support from Virtutech in
+    accordance with separate written agreements, optionally attached
+    to this Agreement. Evaluation, Virtutech Open Source Initiative
+    and Academic Licensees of the Software are generally not entitled
+    to any support, unless otherwise agreed in writing.
+
+5.  OWNERSHIP AND SUFFICIENT RIGHTS.  Virtutech represents and
+    warrants that it owns or has sufficient right, title, and interest
+    in and to the Software to grant the licenses and other rights
+    granted by Virtutech in this Agreement.
+
+6.  INFRINGEMENT.  Virtutech agrees to defend and hold harmless
+    Licensee, its officers and employees from and against any and all
+    liabilities, losses, damages, fines, judgments, suits, actions or
+    expenses (including, but not limited to, reasonable attorneys'
+    fees and costs) arising out of claims by a third party that the
+    Software infringes a valid U.S. copyright, patent or trade secret
+    or other U.S. proprietary right of that party.  If the Software is
+    determined in a final, non-appealable judgment by a court of
+    competent jurisdiction to infringe a valid U.S. copyright, patent
+    or trade secret, then Virtutech shall, in its sole discretion,
+    elect one or more of the following (and Licensee shall have no
+    further recourse against Virtutech): (a) replace such Software,
+    (b) modify such Software to make it non-infringing, or (c)
+    terminate this Agreement, remove such Software and refund all fees
+    paid to Virtutech by Licensee for same over the preceding 12 month
+    period prior to such removal.  The remedy set forth in this
+    Section 6 is conditioned upon Licensee: (a) providing Virtutech
+    with written notice of any claim or cause of action within thirty
+    (30) days of receiving notice or other knowledge of the claim or
+    cause of action, (b) giving Virtutech sole control of the defense
+    and all related settlement negotiations relating to such claim or
+    action, (c) providing all reasonable assistance and cooperation as
+    may be requested by Virtutech to enable Virtutech to defend the
+    action or claim hereunder at Virtutech's sole expense or cost, and
+    (d) refraining from compromising or settling such action or claim
+    without the prior written consent of Virtutech.  Licensee may
+    participate in its own defense at its own expense, provided that
+    such participation does not violate Licensee's obligations under
+    the preceding sentence.  Virtutech shall have no liability with
+    respect to any infringement claim based upon the combination of
+    the Software with other products not furnished by Virtutech, any
+    addition to or modification of the Software by any person or
+    entity other than Virtutech, or the use of a superseded or altered
+    release of the Software.  THIS SECTION 6 SETS OUT VIRTUTECH'S
+    ENTIRE LIABILITY AND LICENSEE'S EXCLUSIVE REMEDY FOR INFRINGEMENT.
+
+7.  DISCLAIMER OF WARRANTIES.  EXCEPT FOR THE LIMITED WARRANTY
+    PROVIDED IN SECTION 5 ABOVE, THE SOFTWARE AND ANY OTHER MATERIALS
+    PROVIDED PURSUANT TO THIS AGREEMENT ARE PROVIDED TO LICENSEE ON AN
+    "AS IS" BASIS WITHOUT ANY WARRANTY OF ANY NATURE.  VIRTUTECH
+    SPECIFICALLY DISCLAIMS ALL WARRANTIES OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED WARRANTIES OF
+    MERCHANTABILITY, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR
+    PURPOSE, EVEN IF VIRTUTECH HAS BEEN INFORMED OF SUCH PURPOSE, AS
+    WELL AS ALL WARRANTIES ARISING FROM A COURSE OF DEALING OR CUSTOM
+    OF TRADE WITH RESPECT TO THE SOFTWARE AND ANY OTHER MATERIALS
+    PROVIDED PURSUANT TO THIS AGREEMENT.  VIRTUTECH DOES NOT WARRANT
+    THAT THE SOFTWARE OR ANY ASSOCIATED MATERIALS PROVIDED BY
+    VIRTUTECH WILL MEET LICENSEE'S REQUIREMENTS, OR THAT THE OPERATION
+    OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE.  LICENSEE
+    BEARS THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OR RESULTS
+    THAT MAY BE OBTAINED BY USING THE SOFTWARE.
+
+8.  LIMITATION OF LIABILITY.  IN NO EVENT SHALL VIRTUTECH OR ITS
+    LICENSORS OR RESELLERS BE LIABLE TO LICENSEE OR ANY OTHER PERSON
+    FOR ANY INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF
+    ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF
+    GOODWILL, WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, PERSONAL
+    INJURY, PROPERTY DAMAGE, LOST PROFITS, LOSS OF BUSINESS, REVENUE,
+    USE, DATA OR ANY OTHER COMMERCIAL DAMAGES OR LOSSES ARISING OUT OF
+    OR RESULTING FROM LICENSEE'S POSSESSION OR USE OF THE SOFTWARE,
+    EVEN IF VIRTUTECH HAS BEEN APPRISED OF THE LIKELIHOOD OF SUCH
+    DAMAGES.  EXCEPT FOR VIRTUTECH'S OBLIGATIONS UNDER SECTION 6
+    ABOVE, IN NO EVENT WILL VIRTUTECH BE LIABLE FOR ANY DAMAGES IN
+    EXCESS OF THE AGGREGATE AMOUNT VIRTUTECH RECEIVED FROM LICENSEE
+    UNDER THIS AGREEMENT, EVEN IF VIRTUTECH SHALL HAVE BEEN INFORMED
+    OF THE POSSIBILITY OF SUCH DAMAGES, OR FOR ANY CLAIM BY ANY OTHER
+    PARTY.  THIS LIMITATION OF LIABILITY WILL APPLY REGARDLESS OF THE
+    FORM OF ACTION, WHETHER IN CONTRACT OR TORT, INCLUDING NEGLIGENCE
+    AND INDEPENDENT OF ANY FAILURE OF ESSENTIAL PURPOSE OF THE LIMITED
+    WARRANTY AND REMEDIES PROVIDED HEREUNDER.
+
+9.  TERM AND TERMINATION.
+
+    (a) Term.  The term of this Agreementshall commence upon the date
+    Virtutech delivers Licensee a license code key (the "Effective
+    Date") and will expire twelve (12) months after the Effective Date.
+
+    (b) Termination.  Virtutech may terminate this Agreement effective
+    upon written notice if Licensee fails to comply with any of the
+    terms and conditions of this Agreement.
+
+    (c) Termination for Convenience. Virtutech may terminate this
+    Agreement without cause effective upon thirty (30) days prior
+    written notice to Licensee.
+
+    (d) Effect of Termination.  Upon any expiration or termination of
+    this Agreement, Licensee shall: (i) cease using the Software and
+    any other materials provided pursuant to this Agreement, (ii)
+    cause its employees and agents to destroy and to certify to the
+    destruction of all copies of the Software and any other materials
+    provided pursuant to this Agreement, in whole or in part, (iii)
+    return all original copies of the Software and any other materials
+    provided pursuant to this Agreement to Virtutech, and (iv) make no
+    further use of any of the Software and any other materials
+    provided pursuant to this Agreement for any purpose.
+    Notwithstanding the foregoing, the terms of Sections 2,3,6,7,8, 9,
+    10, 11,12, 13, and 14 shall survive any expiration or termination
+    of this Agreement.
+
+10. U.S. GOVERNMENT RESTRICTED RIGHTS.  The Software is provided with
+    RESTRICTED RIGHTS.  Use, duplication or disclosure by the
+    U.S. Government and parties acting on its behalf is subject to the
+    restrictions set forth in subparagraph (c)(1)(ii) of the Rights in
+    Technical Data and Computer Software clause at DFARS 252.227-7013
+    or in subparagraphs (c)(1) and (2) of the Commercial Computer
+    Software - Restricted Rights at 48 CFR 52.227-19, as applicable.
+
+11. EXPORT RESTRICTIONS.  Licensee agrees not to export (including
+    transferring electronically over any network, including the
+    Internet) or re-export the Software, any part thereof, or any
+    process or service that is the direct product of the Software, to
+    any country, person, or entity -- even to foreign units of
+    Licensee's own company -- in violation of U.S. and other
+    applicable export laws, including without limitation the Export
+    Administration Regulations administered by the U.S. Department of
+    Commerce and the International Traffic in Arms Regulations
+    administered by the U.S. Department of State.
+
+12. PUBLICITY.  If the Software is a significant component in the
+    development of open source software or in developing research
+    results that are then published, then the Licensee agrees to
+    clearly acknowledge the use of the Software in such a publication,
+    including adequate information to uniquely identify Virtutech and
+    the Software.
+
+13. CONFIDENTIAL INFORMATION.
+
+    (a) Definition.  For purposes of this Agreement, "Confidential
+    Information" means: (i) business and technical information and any
+    source code, binary code, and documentation which Virtutech
+    discloses to Licensee related to Software; (ii) Licensee's
+    feedback based on Software; and (iii) the terms and conditions of
+    this Agreement. Licensee may not disclose or use Confidential
+    Information except as necessary in the performance of this
+    Agreement or as otherwise expressly permitted by this Agreement or
+    by Virtutech. Licensee will protect the Confidential Information
+    with the same degree of care, but not less than a reasonable
+    degree of care, as Licensee uses to protect its own Confidential
+    Information.
+
+    (b) Applicability.  Notwithstanding any provisions contained in
+    this Agreement concerning nondisclosure and non-use of the
+    Confidential Information, the nondisclosure obligations of Section
+    13(a) will not apply to any portion of Confidential Information
+    that a Licensee can demonstrate in writing is: (i) now, or
+    hereafter through no act or failure to act on the part of Licensee
+    becomes, generally known to the public; (ii) known to Licensee at
+    the time of receiving the Confidential Information without any
+    obligation of confidentiality; (iii) hereafter rightfully
+    furnished to Licensee by a third party without restriction on
+    disclosure; or (iv) independently developed by Licensee without
+    any use of the Confidential Information.
+
+    (c) Access.  Licensee must restrict access to Confidential
+    Information on a "need-to-know" basis to its employees or
+    contractors with a need for this access to perform their
+    employment or contractual obligations and who have agreed in
+    writing to be bound by a confidentiality obligation which
+    incorporates the protections and restrictions substantially as set
+    forth in this Agreement.
+
+14. GENERAL.
+
+    (a) Entire Agreement; Amendment.  This Agreement sets forth the
+    entire understanding and agreement between Virtutech and Licensee
+    relating to Software and; (i) supersedes all prior or
+    contemporaneous verbal or written communications, proposals, and
+    representations with respect to its subject matter; (ii) prevails
+    over any conflicting or additional terms of any quote, purchase
+    order, acknowledgement, or similar communication between the
+    parties during the term of this Agreement; and, (iii) supersedes
+    and replaces any "click through" license agreement, if any,
+    contained in the Software. No modification to this Agreement will
+    be binding, unless in writing and signed by a duly authorized
+    representative of each party.
+
+    (b) Governing Law.  This Agreement shall be governed by and
+    construed under the laws of California if the Software is licensed
+    for use in the United States of America, Canada, Mexico, or South
+    America, the laws of Japan if the Software is licensed for use in
+    Japan, and the laws of Sweden if the Software is licensed for use
+    in Israel, Switzerland, Norway, the European Union or anywhere
+    else worldwide not provided for in this section.  The application
+    of the United Nations Convention on Contracts for the
+    International Sale of Goods is expressly excluded.
+
+    (c) Dispute Resolution.  In the event that this Agreement is
+    governed by the laws of Sweden or Japan as provided under Section
+    14(b) above, then all disputes, differences or questions between
+    the parties with respect to any matter arising out of or relating
+    to this Agreement shall be resolved by exclusive and binding
+    arbitration in Stockholm, Sweden, under the Rules of Conciliation
+    and Arbitration of the International Chamber of Commerce by three
+    (3) arbitrators appointed in accordance with such Rules.  The
+    arbitration award shall be final and may be entered in any court
+    having jurisdiction, or application may be made to such court for
+    a judicial acceptance of the decision and an order of enforcement,
+    as the case may be.  The official language in such arbitration
+    proceeding shall be the English language.  In the event that this
+    Agreement is governed by the laws of California as provided under
+    Section 14(b) above, the parties agree that any action shall be
+    subject to the exclusive jurisdiction of the U.S. federal and
+    State courts located in the State of California, and each of the
+    parties hereto submits itself to the exclusive jurisdiction and
+    venue of such courts for the purpose of such action.
+
+    (d) Injunctive Relief.  The Parties agree that in the event of any
+    controversy concerning the subject matter of this Agreement, the
+    terms of this Agreement shall be enforceable in a court of equity
+    by a decree of specific performance and that Virtutech shall be
+    entitled to an injunction or other appropriate orders to restrain
+    any such breach by Licensee without showing or proving any actual
+    damage sustained by Virtutech.  Such a remedy shall, however, be
+    cumulative and not exclusive, and shall be in addition to any
+    other remedy which Virtutech may have.
+
+    (e) Severability.  Whenever possible, each provision of this
+    Agreement shall be interpreted in such a manner as to be effective
+    and valid under applicable law, but if any provision of this
+    Agreement is determined by a court of applicable jurisdiction to
+    be invalid, illegal or unenforceable for any reason, such
+    provision shall be modified or deleted in such a manner so as to
+    make the Agreement as modified valid, legal and enforceable, and
+    the remainder of this Agreement shall not be affected thereby.
+
+    (f) Attorneys' Fees.  If any action or proceeding shall be
+    commenced to enforce or interpret this Agreement or any right
+    arising in connection with this Agreement, the prevailing party in
+    such action or proceeding shall be entitled to recover from the
+    other party, all reasonable attorneys' fees, costs and expenses
+    incurred by such prevailing party in connection with such action
+    or proceeding and any negotiations to avoid such action or
+    proceeding.
+
+    (g) Notices.  With the exception of email communication from
+    Virtutech to Licensee, every notice or other communication
+    required or contemplated by this Agreement shall be in writing and
+    shall be deemed received and effective (i) on the date of personal
+    delivery, (ii) on the date it is officially recorded as delivered
+    to the intended recipient when sent by postage prepaid, return
+    receipt requested, registered or certified mail (airmail if
+    available), or the equivalent of registered or certified mail
+    under the laws of the country where mailed, or in the absence of
+    such record of delivery, the effective date shall be presumed to
+    have been the fifth (5th) business day after it was deposited in
+    the mail, (iii) on the date it is officially recorded as delivered
+    to the intended recipient when sent by internationally recognized
+    overnight courier, such as Federal Express, DHL or UPS, or in the
+    absence of such record of delivery, the effective date shall be
+    presumed to have been the third (3) business day after delivery to
+    such courier, or (iv) the date transmitted by facsimile with a
+    confirmation copy sent simultaneously by one of the other methods
+    permitted under this Section 14(g), in each case addressed to the
+    addresses identified in the introduction to this Agreement.
+    Notice not given in writing shall be effective only if
+    acknowledged in writing by a duly authorized representative of the
+    party to whom it was given.  The exception to the above is that
+    Virtutech may deliver notices or other communications to Licensee
+    by email, for which the effective date will be the day immediately
+    after transmission.  In the event Licensee otherwise needs to
+    contact Virtutech, it may contact Virtutech at either of the
+    following locations:
+
+    Virtutech AB                 Virtutech, Inc
+    Norrtullsgatan 15, 1tr       1740 Technology Dr, Suite 460
+    SE-113 27 STOCKHOLM          San Jose, CA 95110
+    Sweden                       USA
+    tel +46 (0)8 6900720         tel +1 408-392-9150
+    fax +46 (0)8 6900729         fax +1 408-608-0430
+    info@virtutech.com           info@virtutech.com
+    http://www.virtutech.com     http://www.virtutech.com

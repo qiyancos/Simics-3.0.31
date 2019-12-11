@@ -1,0 +1,24 @@
+if not defined create_network {}
+
+###
+
+# set early date to avoid fsck
+if not defined rtc_time { $rtc_time = "2001-12-02 11:00:00 UTC" }
+
+run-command-file "%script%/sunfire-6500-system.include"
+
+# Linux cannot handle an empty sysio controller on the SBus I/O board,
+# and the builtin devices are all on one of the sysios. Add an SBus
+# device as a workaround. We could try to use the SOC dummy instead.
+
+$sbus_fas_hme = (create-sun-sbus-fas-hme mac_address = $mac_address)
+$sbusbrd.connect slot2 $sbus_fas_hme
+$sbus_fas_hme.connect (create-std-scsi-bus)
+
+instantiate-components
+
+$eth_comp = $sbus_fas_hme
+$eth_cnt = ""
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/bagle-setup.include"

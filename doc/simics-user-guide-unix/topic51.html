@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Troubleshooting</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(151, true);
+</script>
+<a name="label339"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+<h4 class="jdocu">10.6&nbsp;&nbsp;&nbsp;Troubleshooting</h4 class="jdocu">
+
+
+<p>
+A network monitoring tool such as <em>Ethereal</em> is invaluable when
+debugging problems with the real network connections. It is a graphical traffic
+analyzer that can analyze most common network protocols. Ethereal is available
+from <a class="jdocu" href="http://www.ethereal.com" target="_top">http://www.ethereal.com</a>.
+<p>
+There are some pitfalls one might encounter when trying to connect a simulated
+network to a real one:
+<p>
+<dl><dt><b>Trying to access the simulation host</b></dt><dd>Accessing the simulation host from the simulated network, or the other
+    way around, is only supported with port forwarding and host connection. You
+    will not be able to access the simulation host from the simulated network
+    if you set up an IP routing connection or an Ethernet bridging
+    connection.</dd><dt><b>Real host has no route</b></dt><dd>If you are using an IP routing connection and trying to communicate
+    with the simulated network from a real host that does not have a route to
+    the simulated network, the real host will drop the packets intended for the
+    simulated network or send them to the wrong router. Running Ethereal on the
+    Ethernet interface of the real host will show you if, and in that case
+    where, the packets are sent. They should be sent to the simulation host,
+    but if a route is missing they will usually be sent to the real host's
+    default gateway, which will probably ignore them.</dd><dt><b>Simulated OS has no route</b></dt><dd>If you are using a NAPT connection or an IP routing connection and the
+    operating system of the simulated machine does not have a correct route to
+    the real network, the simulated machine will drop the packets or send them
+    to the wrong address. To view the routing setup on the simulated machine,
+    use the command <tt>netstat -r</tt> on Linux and Solaris, or <tt>route
+    print</tt> on Windows. Note that these commands should be executed on the
+    <i>simulated</i> machines. The simulated OS should have a default route to
+    the service node in the case NAPT connections, or the real network router
+    in the case of IP routing connections.</dd><dt><b>Real host and simulation host not on the same subnet</b></dt><dd>If you are using an IP routing connection, all real hosts that should
+    be communicating with the simulated network need to be on the same IP
+    subnet as the simulation host. Otherwise, the real routers between the real
+    host and the simulation host will not be aware of the simulated network and
+    will drop any packets to it, or confuse it with a real subnet with the same
+    address and route the packets there.
+<p>
+    Of course, you can configure the real routers to be aware of the simulated
+    network if you really have to communicate with the simulated network from
+    other subnets.
+<p>
+    This restriction does not apply to port forwarding connections and Ethernet
+    bridging connections where the simulated machines use IP addresses from the
+    real subnet.</dd><dt><b>Simics uses the wrong host network interface</b></dt><dd>On a host with multiple network interfaces installed, Simics will only
+    use one of them for a real network connection. If the default selection is
+    incorrect, use the <i>interface</i> argument of the connect command to
+    select the desired network interface. See the <em>Selecting Host
+    Interface</em> part of section <a class="jdocu" href="topic47.html#label304">10.2</a>.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+</body>
+</html>

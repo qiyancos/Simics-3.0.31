@@ -1,0 +1,91 @@
+# -*- makefile -*-
+
+ifndef simics_hostname_short
+simics_hostname_short=$(shell uname -n | sed -e 's/\..*//')
+endif
+
+ifndef SIMICS_BASE
+$(error SIMICS_BASE not set. This is a fatal error.)
+endif
+ifndef BUILD_DIR
+$(error BUILD_DIR not set. This is a fatal error.)
+endif
+ifndef HOST_TYPE
+$(error HOST_TYPE not set. This is a fatal error.)
+endif
+ifndef USER
+$(warning USER not set. User-specific config files will not be found.)
+endif
+ifndef HOME
+$(warning HOME not set. Config files relative to HOME will not be found.)
+endif
+ifndef simics_hostname_short
+$(warning Hostname not set. Host-specific config files will not be found.)
+endif
+
+# We can't use '-include' here, since there is a .DEFAULT rule in some of
+# the top-level makefiles which will cause GNU make to (try to) rebuild
+# these makefiles if they don't exist.
+
+
+############################################################
+# simics/config/host-flags.*
+ifneq ($(wildcard $(SIMICS_BASE)/config/host-flags.user),)
+include $(SIMICS_BASE)/config/host-flags.user
+endif
+ifdef USER
+ifneq ($(wildcard $(SIMICS_BASE)/config/host-flags.user.$(USER)),)
+include $(SIMICS_BASE)/config/host-flags.user.$(USER)
+endif
+endif # USER
+
+ifdef simics_hostname_short
+ifneq ($(wildcard $(SIMICS_BASE)/config/host-flags.$(simics_hostname_short)),)
+include $(SIMICS_BASE)/config/host-flags.$(simics_hostname_short)
+endif
+endif # simics_hostname_short
+
+ifdef HOST_TYPE
+ifneq ($(wildcard $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE).user),)
+include $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE).user
+endif
+ifdef USER
+ifneq ($(wildcard $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE).user.$(USER)),)
+include $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE).user.$(USER)
+endif
+endif # USER
+endif # HOST_TYPE
+
+
+############################################################
+# $HOME/simics-host-flags.*
+ifdef HOME
+ifneq ($(wildcard $(HOME)/simics-host-flags.$(HOST_TYPE).user),)
+include $(HOME)/simics-host-flags.$(HOST_TYPE).user
+endif
+ifneq ($(wildcard $(HOME)/simics-host-flags.$(HOST_NAME).user),)
+include $(HOME)/simics-host-flags.$(HOST_NAME).user
+endif
+ifneq ($(wildcard $(HOME)/simics-host-flags.user),)
+include $(HOME)/simics-host-flags.user
+endif
+endif # HOME
+
+
+############################################################
+# $BUILD_DIR/*
+ifneq ($(wildcard $(BUILD_DIR)/host-flags.local),)
+include $(BUILD_DIR)/host-flags.local
+endif
+
+
+############################################################
+# OBSOLETE
+ifneq ($(wildcard $(HOME)/host-flags.user),)
+$(warning $(HOME)/host-flags.user is obsolete. Use $(HOME)/simics-host-flags.user instead.)
+include $(HOME)/host-flags.user
+endif
+ifneq ($(wildcard $(HOME)/host-flags.$(HOST_TYPE).user),)
+$(warning $(HOME)/host-flags.$(HOST_TYPE).user is obsolete. Use $(HOME)/simics-host-flags.$(HOST_TYPE).user instead.)
+include $(HOME)/host-flags.$(HOST_TYPE).user
+endif

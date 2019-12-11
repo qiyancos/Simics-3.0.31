@@ -1,0 +1,292 @@
+#!/bin/sh
+
+# Script which checks the host/target and then starts Simics (after displaying
+# any warnings about possible incompatibilities)
+#
+# Copyright (c) 2000-2004 Virtutech AB, All Rights Reserved
+
+case "x$1" in
+    x-h | x--help)
+	SHOWUSAGE=yes
+	shift
+	;;
+
+    x-no-nptl)
+        # workaround NPTL problem on some RH9 machines (early glibc-2.3.2)
+        # see https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=90301
+	export LD_ASSUME_KERNEL=2.4.1
+	shift
+	;;
+
+    x--default-hosttype)
+	# internal option; print the default host-type
+	SHOW_DEFAULT_HOSTTYPE=yes
+	shift
+	;;
+esac
+
+for par in $*; do
+	if [ x"$par" = x"-quiet" -o x"$par" = x"-q" ]; then
+		QUIET=yes
+	fi
+done
+
+OS=`uname -s`
+HOST_ARCH=`uname -m`
+
+OSVER=`uname -r`
+OSMAJOR=`echo "$OSVER" | cut -d. -f1`
+OSMINOR=`echo "$OSVER" | cut -d. -f2`
+
+CURRENTDIR=`pwd`
+SCRIPTSDIR=`dirname "$0"`
+
+if cd "$SCRIPTSDIR"; then
+	SCRIPTSDIR=`pwd`
+	if cd "$CURRENTDIR"; then
+		false
+	else
+		echo "start-simics: Failed cd $CURRENTDIR"
+	fi
+else
+	echo "start-simics: Failed cd $SCRIPTSDIR"
+	exit 1
+fi
+
+if cd "$SCRIPTSDIR/.."; then
+	HOSTSDIR=`pwd`
+	if cd "$CURRENTDIR"; then
+		false
+	else
+		echo "start-simics: Failed cd $CURRENTDIR"
+	fi
+else
+	echo "start-simics: Failed cd $SCRIPTSDIR/.."
+	exit 1
+fi
+
+case $OS in
+	Linux)
+		if [ $OSMAJOR != 2 ]; then
+			echo "WARNING: Simics has only been tested under Linux version 2"
+		elif [ $OSMINOR != 2 -a $OSMINOR != 4 -a $OSMINOR != 6 ]; then
+			echo "WARNING: Simics has only been tested under Linux versions "
+			echo "2.2, 2.4 and 2.6"
+		fi
+		OS_PART=linux
+		;;
+	SunOS)
+		case $OSVER in
+		5.[89])
+			;;
+		*)
+			echo "WARNING: Simics has only been tested on Solaris 8 and 9"
+			;;
+		esac
+		OS_PART=sol8
+		;;
+	OSF1)
+		OS_PART=tru64
+		;;
+	CYGWIN_NT-5.*)
+		OS_PART=win32
+		;;
+	*)
+		echo "start-simics: Unsupported OS: $OS"
+		exit 1
+		;;
+esac
+
+case $HOST_ARCH in
+	i*86)
+		ARCH=x86
+		;;
+	x86_64)
+		ARCH="amd64 x86"
+		;;
+ 	amd64)
+		ARCH="amd64 x86"
+		;;
+	sun4u|sun4v)
+		ARCH=v9
+		;;
+	*)
+		ARCH=`echo $HOST_ARCH | sed 's/ /-/g'`
+		;;
+esac
+
+case $OS in
+        CYGWIN*)
+                PATH_SEP=";"
+                ;;
+        *)
+                PATH_SEP=":"
+                ;;
+esac
+
+if [ -z "$SIMICS_HOST" ]; then
+	matching_hosts=""
+	tried_hosts=""
+	multiple_hosts=""
+	for os_part in $OS_PART; do
+		for ext in "" -32 -64; do
+			for arch in $ARCH; do
+				host=$arch-$os_part$ext
+				tried_hosts="$tried_hosts $host"
+				if [ -d "$HOSTSDIR/$host/bin" -a -x "$HOSTSDIR/$host/bin" ]; then
+					matching_hosts="$matching_hosts $host"
+					if [ -z "$multiple_hosts" ]; then
+						multiple_hosts="no";
+					else
+						multiple_hosts="yes";
+					fi
+				fi
+			done
+		done
+	done
+
+	if [ -z "$matching_hosts" ]; then
+	    if [ "$SHOW_DEFAULT_HOSTTYPE" = yes ]; then
+		echo ""
+		exit 1
+	    else
+		echo "start-simics: No matching hosts found."
+		echo "Tried the following under $HOSTSDIR:"
+		for h in $tried_hosts; do
+		    echo "    $h"
+		done
+		exit 1
+	    fi
+	fi
+else
+	[ -z "$QUIET" ] && echo "Using host from \$SIMICS_HOST: $SIMICS_HOST"
+	matching_hosts="$SIMICS_HOST"
+	if [ ! -d "$HOSTSDIR/$SIMICS_HOST/bin" -o ! -x "$HOSTSDIR/$SIMICS_HOST/bin" ]; then
+		echo "start-simics: Failed to access $HOSTSDIR/$SIMICS_HOST/bin"
+		exit 1
+	fi
+fi
+
+TARGETBIN=""
+other_hosts=""
+for host in $matching_hosts; do
+	found_on_host="no"
+	TGT="$HOSTSDIR/$host/bin/simics-common"
+	if [ -x "$TGT" ]; then
+		if [ -z "$TARGETBIN" ]; then
+			found_any="yes"
+			SIMICS_HOST="$host"
+			TARGETBIN="$TGT"
+			TARGETDIR="$HOSTSDIR/$host"
+			TARGETHOST="$host"
+		elif [ "$found_on_host" = "no" ]; then
+			other_hosts="$other_hosts $host"
+		fi
+		found_on_host="yes"
+	fi
+done
+
+if [ "$SHOW_DEFAULT_HOSTTYPE" = yes ]; then
+    	echo "$SIMICS_HOST"
+	exit 0
+fi
+
+if [ -n "$other_hosts" ]; then
+	echo "Warning: Several matching hosts were found (try 'simics -h' for help):"
+	echo "         $SIMICS_HOST        [default]"
+	for h in $other_hosts; do
+		echo "         $h"
+	done
+	echo ""
+fi
+
+if [ -n "$SIMICS_API_TRACE" ]; then
+	SIMICS_TRACE_DIR="$HOSTSDIR/$SIMICS_HOST/bin/trace:"
+else
+	SIMICS_TRACE_DIR=
+fi
+
+if [ -n "$LD_LIBRARY_PATH_64" ]; then
+	LD_LIBRARY_PATH_64="$SIMICS_TRACE_DIR$HOSTSDIR/$SIMICS_HOST/bin:$HOSTSDIR/$SIMICS_HOST/sys/lib:$LD_LIBRARY_PATH_64"
+	export LD_LIBRARY_PATH_64
+fi
+
+LD_LIBRARY_PATH="$SIMICS_TRACE_DIR$HOSTSDIR/$SIMICS_HOST/bin:$HOSTSDIR/$SIMICS_HOST/sys/lib:$LD_LIBRARY_PATH"
+
+if [ "$SIMICS_HOST" = "amd64-linux" -o "$SIMICS_HOST" = "x86-linux" ]; then
+    if [ "x`getconf GNU_LIBPTHREAD_VERSION 2> /dev/null | grep NPTL`" != x ] ; then
+        LD_LIBRARY_PATH="$HOSTSDIR/$SIMICS_HOST/sys/lib/nptl:$LD_LIBRARY_PATH"
+    fi
+fi
+
+export LD_LIBRARY_PATH
+
+if [ "$SHOWUSAGE" = "yes" ]; then
+	echo "Simics wrapper usage:"
+	echo
+	echo "    simics [<simics options>]"
+	echo
+	echo "You can set the SIMICS_HOST environment variable to force the startup script to "
+	echo "try to start a certain Simics host version (e.g., 'x86-linux' or 'v9-sol8-64')"
+	echo
+
+	if [ -z "$TARGETBIN" ]; then
+		echo "ERROR: Cannot find any simics-common binary in these locations:"
+		for host in $matching_hosts; do
+			echo "    $HOSTSDIR/$host/bin/"
+		done
+		echo
+		exit 1
+	fi
+
+	echo "Simics options:"
+	exec $TARGETBIN -q -h
+	exit 1
+fi
+
+if [ -z "$TARGETBIN" ]; then
+	echo "ERROR: Cannot find any simics-common binary in these locations:"
+	for host in $matching_hosts; do
+		echo "       $HOSTSDIR/$host/bin/"
+	done
+	echo
+	exit 1
+fi
+
+if cd "$HOSTSDIR/$TARGETHOST"; then
+	false
+else
+	echo "start-simics: ERROR: Failed cd $HOSTSDIR/$TARGETHOST"
+	exit 1
+fi
+
+#
+# if this is a user-local install, only modules in the master copy will be
+#  found. We set SIMICS_EXTRA_LIB to catch local ones too.
+#
+if [ -d "$SCRIPTSDIR/../master-install" ] ; then
+	if [ -z "$SIMICS_EXTRA_LIB" ] ; then
+		SIMICS_EXTRA_LIB="$HOSTSDIR/$SIMICS_HOST/lib"
+	else
+		SIMICS_EXTRA_LIB="$HOSTSDIR/$SIMICS_HOST/lib$PATH_SEP$SIMICS_EXTRA_LIB"
+	fi
+	export SIMICS_EXTRA_LIB
+fi
+
+if [ -n "$SIMICS_WORKSPACE" ] ; then
+        if [ -z "$SIMICS_EXTRA_LIB" ] ; then
+                SIMICS_EXTRA_LIB="$SIMICS_WORKSPACE/$SIMICS_HOST/lib"
+        else
+                SIMICS_EXTRA_LIB="$SIMICS_EXTRA_LIB$PATH_SEP$SIMICS_WORKSPACE/$SIMICS_HOST/lib"
+        fi
+        export SIMICS_EXTRA_LIB
+fi
+
+if cd "$CURRENTDIR"; then
+	false
+else
+	echo "start-simics: ERROR: Failed cd $CURRENTDIR"
+	exit 1
+fi
+
+exec "$TARGETBIN" ${1+"$@"}

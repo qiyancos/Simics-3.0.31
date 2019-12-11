@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>pci_bridge</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2255, true);
+</script>
+<a name="label17802"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic514.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic516.html">Next</a></span></p>
+<h3 class="jdocu">pci_bridge</h3 class="jdocu">
+
+
+<a name="label17803"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic100.html#label6318">GT64120-pci</a>, <a class="jdocu" href="topic55.html#label4766">cpc700-pci</a>, <a class="jdocu" href="topic87.html#label5632">fiesta-tomatillo</a>, <a class="jdocu" href="topic103.html#label6365">i21150</a>, <a class="jdocu" href="topic104.html#label6385">i21152</a>, <a class="jdocu" href="topic106.html#label6422">i21554-scnd</a>, <a class="jdocu" href="topic108.html#label6452">i21555-scnd</a>, <a class="jdocu" href="topic116.html#label6673">i82443bx</a>, <a class="jdocu" href="topic117.html#label6687">i82443bx_agp</a>, <a class="jdocu" href="topic118.html#label6703">i82461GX</a>, <a class="jdocu" href="topic262.html#label9659">ppc405gp-pci</a>, <a class="jdocu" href="topic273.html#label10204">ppc440gp-pci</a>, <a class="jdocu" href="topic289.html#label10863">ppc440gx-pci</a>, <a class="jdocu" href="topic311.html#label12601">pyxis</a>, <a class="jdocu" href="topic353.html#label13557">serengeti-schizo</a>, <a class="jdocu" href="topic430.html#label14742">sunfire-psycho</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface is implemented by all PCI bridges.
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        void (*system_error)(conf_object_t *obj);
+        void (*raise_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+        void (*lower_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+} pci_bridge_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic514.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic516.html">Next</a></span></p>
+</body>
+</html>

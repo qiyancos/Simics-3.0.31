@@ -1,0 +1,3649 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Supported Components</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(31, true);
+</script>
+<a name="label33"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Supported Components</h2 class="jdocu">
+
+
+<p>
+The following sections list components that are supported for the x86-440bx
+architecture. There also exist other components in Simics, such as various
+PCI devices, that may work for x86-440bx but that have not been tested.
+<p>
+The default machines are constructed from components in the
+<tt>-system.include</tt> files in
+<tt>[simics]/targets/x86-440bx/</tt>. See the
+Configuration and Checkpointing chapter in the Simics User Guide for
+information on how to define your own machine, or make modifications
+to an existing machine.
+<p>
+
+<a name="label34"></a><h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;x86-440BX Components</h3 class="jdocu">
+
+
+<a name="label35"></a><h4 class="jdocu">4.1.1&nbsp;&nbsp;&nbsp;x86-apic-system</h4 class="jdocu">
+
+
+<a name="label36"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "x86-apic-system" component represents a multi-processor capable x86 system with up to 255 cpus.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>acpi</i></b></dt><a name="label37"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+TRUE if the machine uses ACPI. Default is TRUE.</dd></dl>
+<dl><dt><b><i>bios</i></b></dt><a name="label38"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>break_on_reboot</i></b></dt><a name="label39"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+If true, the simulation will stop when machine is rebooted.</dd></dl>
+<dl><dt><b><i>memory_megs</i></b></dt><a name="label40"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The amount of RAM in megabytes on the processor board.</dd></dl>
+<dl><dt><b><i>rtc_time</i></b></dt><a name="label41"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The date and time of the Real-Time clock.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label42"></a><a name="label43"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-x86-apic-system</b> [<i>"name"</i>] <i>memory_megs</i> <i>"rtc_time"</i> [<i>break_on_reboot</i>] [<i>"bios"</i>] [<i>acpi</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "x86-apic-system". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label44"></a><a name="label45"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-base-mem</b> <i>kilobytes</i> </b></dt><dd class="jdocu_di">
+Sets the amount of base memory (in kB).<br>This command will update the proper location in the CMOS so that the BIOS will know how much memory is installed in the system. Operating system that use the BIOS to find out the memory size will get confused if this size is set incorrectly (especially if it is set too high). The maximum amount that can be set is 640kB.</dd>
+
+</dl>
+
+
+
+<a name="label46"></a><a name="label47"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-boot-dev</b> <i>"drive"</i> </b></dt><dd class="jdocu_di">
+Specifies boot device for the BIOS in the CMOS.<br>Parameters: A or C, or floppy or HD boot. Default is C.</dd>
+
+</dl>
+
+
+
+<a name="label48"></a><a name="label49"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-extended-mem</b> <i>megabytes</i> </b></dt><dd class="jdocu_di">
+Sets the amount of extended memory (in MB).<br>This command will update the proper location in the CMOS so that the BIOS will know how much memory is installed in the system. Operating system that use the BIOS to find out the memory size will get confused if this size is set incorrectly (especially if it is set too high). The maximum amount that can be set is 63MB.</dd>
+
+</dl>
+
+
+
+<a name="label50"></a><a name="label51"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-floppy</b> <i>"drive"</i> <i>"type"</i> </b></dt><dd class="jdocu_di">
+Sets information in the CMOS about floppy drives.<br>Drive is either A (primary drive) or B (secondary drive), and type is the maximal drive size (in kB or MB); 360, 720, 1.2, 1.44, 2.88. Setting <i>type</i> to "none" indicates to the OS/BIOS that no drive is present. Since both arguments are strings, quoting is sometimes necessary.<br></dd>
+
+</dl>
+
+
+
+<a name="label52"></a><a name="label53"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-hd</b> <i>"drive"</i> <i>cylinders</i> <i>heads</i> <i>sectors_per_track</i> </b></dt><dd class="jdocu_di">
+Sets information in the CMOS about the primary hard disk ("C") and the secondary hard disk ("D").</dd>
+
+</dl>
+
+
+
+<a name="label54"></a><a name="label55"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the CMOS information from the RTC device.</dd>
+
+</dl>
+
+
+
+<a name="label56"></a><a name="label57"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.cmos-init</b></b></dt><dd class="jdocu_di">
+Set initial CMOS values in the RTC device.<br>This is miscellaneous data that is not set by any of the other cmos-* commands. Note that the CMOS values only has to be set if not running from a saved configuration. A saved configuration will have all values stored in the NVRAM area, and the cmos-* commands need only be used if some values have to be changed.</dd>
+
+</dl>
+
+
+
+<a name="label58"></a><a name="label59"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label60"></a><a name="label61"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-apic-system&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">chipset</td><td class="jdocu_noborder">x86-chipset</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">cpu0</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">cpu[1-254]</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">interrupt</td><td class="jdocu_noborder">sb-interrupt</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">reset</td><td class="jdocu_noborder">x86-reset-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label62"></a><h4 class="jdocu">4.1.2&nbsp;&nbsp;&nbsp;pentium-cpu</h4 class="jdocu">
+
+
+<a name="label63"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-cpu" component represents an Intel Pentium processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label64"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label65"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label66"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label67"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label68"></a><a name="label69"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label70"></a><a name="label71"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label72"></a><a name="label73"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label74"></a><h4 class="jdocu">4.1.3&nbsp;&nbsp;&nbsp;pentium-mmx-cpu</h4 class="jdocu">
+
+
+<a name="label75"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-mmx-cpu" component represents an Intel Pentium MMX processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label76"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label77"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label78"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label79"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label80"></a><a name="label81"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-mmx-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-mmx-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label82"></a><a name="label83"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-mmx-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label84"></a><a name="label85"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-mmx-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label86"></a><h4 class="jdocu">4.1.4&nbsp;&nbsp;&nbsp;pentium-pro-cpu</h4 class="jdocu">
+
+
+<a name="label87"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-pro-cpu" component represents an Intel Pentium Pro (P6) processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label88"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label89"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label90"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label91"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label92"></a><a name="label93"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-pro-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-pro-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label94"></a><a name="label95"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-pro-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label96"></a><a name="label97"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-pro-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label98"></a><h4 class="jdocu">4.1.5&nbsp;&nbsp;&nbsp;pentium-ii-cpu</h4 class="jdocu">
+
+
+<a name="label99"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-ii-cpu" component represents an Intel Pentium II processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label100"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label101"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label102"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label103"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label104"></a><a name="label105"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-ii-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-ii-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label106"></a><a name="label107"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-ii-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label108"></a><a name="label109"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-ii-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label110"></a><h4 class="jdocu">4.1.6&nbsp;&nbsp;&nbsp;pentium-iii-cpu</h4 class="jdocu">
+
+
+<a name="label111"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-iii-cpu" component represents an Intel Pentium III processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label112"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label113"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label114"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label115"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label116"></a><a name="label117"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-iii-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-iii-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label118"></a><a name="label119"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-iii-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label120"></a><a name="label121"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-iii-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label122"></a><h4 class="jdocu">4.1.7&nbsp;&nbsp;&nbsp;pentium-4-cpu</h4 class="jdocu">
+
+
+<a name="label123"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-4-cpu" component represents an Intel Pentium 4 processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label124"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label125"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label126"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label127"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label128"></a><a name="label129"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-4-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-4-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label130"></a><a name="label131"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label132"></a><a name="label133"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label134"></a><h4 class="jdocu">4.1.8&nbsp;&nbsp;&nbsp;pentium-4e-cpu</h4 class="jdocu">
+
+
+<a name="label135"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-4e-cpu" component represents an Intel 64-bit Pentium 4E processor.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label136"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label137"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label138"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label139"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label140"></a><a name="label141"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-4e-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-4e-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label142"></a><a name="label143"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4e-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label144"></a><a name="label145"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4e-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label146"></a><h4 class="jdocu">4.1.9&nbsp;&nbsp;&nbsp;pentium-4e-2ht-cpu</h4 class="jdocu">
+
+
+<a name="label147"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-4e-2ht-cpu" component represents an Intel 64-bit Pentium 4E processor, with 2 hyper threads.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label148"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label149"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label150"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label151"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label152"></a><a name="label153"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-4e-2ht-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-4e-2ht-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label154"></a><a name="label155"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4e-2ht-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label156"></a><a name="label157"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4e-2ht-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu[0-1]</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label158"></a><h4 class="jdocu">4.1.10&nbsp;&nbsp;&nbsp;pentium-4e-4ht-cpu</h4 class="jdocu">
+
+
+<a name="label159"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pentium-4e-4ht-cpu" component represents an Intel 64-bit Pentium 4E processor, with 4 hyper threads.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label160"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label161"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label162"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label163"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label164"></a><a name="label165"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pentium-4e-4ht-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pentium-4e-4ht-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label166"></a><a name="label167"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4e-4ht-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label168"></a><a name="label169"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pentium-4e-4ht-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu[0-3]</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label170"></a><h4 class="jdocu">4.1.11&nbsp;&nbsp;&nbsp;x86-hammer-cpu</h4 class="jdocu">
+
+
+<a name="label171"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "x86-hammer-cpu" component represents a generic 64-bit AMD Athlon 64 or Opteron processor without on-chip devices.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>apic_frequency</i></b></dt><a name="label172"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+APIC bus frequency in MHz, default is 10 MHz.</dd></dl>
+<dl><dt><b><i>cpi</i></b></dt><a name="label173"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cycles per instruction.</dd></dl>
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label174"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+<dl><dt><b><i>cpu_threads</i></b></dt><a name="label175"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of hyper threads in the processor.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label176"></a><a name="label177"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-x86-hammer-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> [<i>cpi</i>] [<i>apic_frequency</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "x86-hammer-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label178"></a><a name="label179"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-hammer-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label180"></a><a name="label181"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;x86-hammer-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-apic-processor</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">cache-cpu</td><td class="jdocu_noborder">timing-model</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">direct-pins</td><td class="jdocu_noborder">x86-pins</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label182"></a><h4 class="jdocu">4.1.12&nbsp;&nbsp;&nbsp;north-bridge-443bx</h4 class="jdocu">
+
+
+<a name="label183"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "north-bridge-443bx" component represents an Intel 443BX North Bridge (host-to-PCI bridge) without AGP.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label184"></a><a name="label185"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-north-bridge-443bx</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "north-bridge-443bx". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label186"></a><a name="label187"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;north-bridge-443bx&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label188"></a><a name="label189"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;north-bridge-443bx&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-chipset</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">pci-slot[0-23]</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label190"></a><h4 class="jdocu">4.1.13&nbsp;&nbsp;&nbsp;north-bridge-443bx-agp</h4 class="jdocu">
+
+
+<a name="label191"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "north-bridge-443bx" component represents an Intel 443BX North Bridge (host-to-PCI bridge) with AGP.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label192"></a><a name="label193"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-north-bridge-443bx-agp</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "north-bridge-443bx-agp". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label194"></a><a name="label195"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;north-bridge-443bx-agp&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label196"></a><a name="label197"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;north-bridge-443bx-agp&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">system</td><td class="jdocu_noborder">x86-chipset</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">agp-slot0</td><td class="jdocu_noborder">agp-bus</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">pci-slot[0-23]</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label198"></a><h4 class="jdocu">4.1.14&nbsp;&nbsp;&nbsp;south-bridge-piix4</h4 class="jdocu">
+
+
+<a name="label199"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "south-bridge-piix4" component represents an Intel PIIX4 PCI south bridge with the common legacy PC devices. It includes two IDE controllers, and a real-time clock. There is also a USB controller that is not supported in Simics.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label200"></a><a name="label201"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-south-bridge-piix4</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "south-bridge-piix4". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label202"></a><a name="label203"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;south-bridge-piix4&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label204"></a><a name="label205"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;south-bridge-piix4&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">interrupt</td><td class="jdocu_noborder">sb-interrupt</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ide0-master</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide0-slave</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide1-master</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide1-slave</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">usb[0-1]</td><td class="jdocu_noborder">usb-port</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label206"></a><h4 class="jdocu">4.1.15&nbsp;&nbsp;&nbsp;south-bridge-md1535d</h4 class="jdocu">
+
+
+<a name="label207"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "south-bridge-md1535d" component represents an ALi MD1535D PCI south bridge with the common legacy PC devices. It includes two IDE controllers, a floppy controller with two drives, three serial ports, and a real-time clock. There is also a USB controller that is not supported in Simics.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label208"></a><a name="label209"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-south-bridge-md1535d</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "south-bridge-md1535d". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label210"></a><a name="label211"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;south-bridge-md1535d&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label212"></a><a name="label213"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;south-bridge-md1535d&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">interrupt</td><td class="jdocu_noborder">sb-interrupt</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">pci-bus-ide</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">pci-bus-isa</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">pci-bus-pm</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">com[1-3]</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide0-master</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide0-slave</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide1-master</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">ide1-slave</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label214"></a><h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;PCI Device Components</h3 class="jdocu">
+
+
+<a name="label215"></a><h4 class="jdocu">4.2.1&nbsp;&nbsp;&nbsp;pci-bcm5703c</h4 class="jdocu">
+
+
+<a name="label216"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-bcm5703c" component represents a Broadcom 5703C PCI based gigabit Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label217"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label218"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label219"></a><a name="label220"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-bcm5703c</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-bcm5703c". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label221"></a><a name="label222"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5703c&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label223"></a><a name="label224"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5703c&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label225"></a><h4 class="jdocu">4.2.2&nbsp;&nbsp;&nbsp;pci-bcm5704c</h4 class="jdocu">
+
+
+<a name="label226"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-bcm5704c" component represents a Broadcom 5704C PCI based dual-port gigabit Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label227"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address0</i></b></dt><a name="label228"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the first Ethernet adapter.</dd></dl>
+<dl><dt><b><i>mac_address1</i></b></dt><a name="label229"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the second Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label230"></a><a name="label231"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-bcm5704c</b> [<i>"name"</i>] <i>"mac_address0"</i> <i>"mac_address1"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-bcm5704c". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label232"></a><a name="label233"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5704c&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label234"></a><a name="label235"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-bcm5704c&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet[0-1]</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label236"></a><h4 class="jdocu">4.2.3&nbsp;&nbsp;&nbsp;pci-i82543gc</h4 class="jdocu">
+
+
+<a name="label237"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-i82543gc" component represents an Intel 82543 (Intel PRO) PCI based gigabit Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label238"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label239"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label240"></a><a name="label241"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-i82543gc</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-i82543gc". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label242"></a><a name="label243"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-i82543gc&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label244"></a><a name="label245"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-i82543gc&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label246"></a><h4 class="jdocu">4.2.4&nbsp;&nbsp;&nbsp;pci-i82546bg</h4 class="jdocu">
+
+
+<a name="label247"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-i82546bg" component represents an Intel 82546 (Intel PRO) PCI based dual-port gigabit Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label248"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label249"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the first Ethernet adapter. The last bit is toggled to get the address for the second interface.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label250"></a><a name="label251"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-i82546bg</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-i82546bg". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label252"></a><a name="label253"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-i82546bg&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label254"></a><a name="label255"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-i82546bg&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet[0-1]</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label256"></a><h4 class="jdocu">4.2.5&nbsp;&nbsp;&nbsp;pci-isp1040</h4 class="jdocu">
+
+
+<a name="label257"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-isp1040" component represents an ISP1040 PCI based SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label258"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label259"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label260"></a><a name="label261"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-isp1040</b> [<i>"name"</i>] [<i>scsi_id</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-isp1040". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label262"></a><a name="label263"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-isp1040&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label264"></a><a name="label265"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-isp1040&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label266"></a><h4 class="jdocu">4.2.6&nbsp;&nbsp;&nbsp;pci-isp2200</h4 class="jdocu">
+
+
+<a name="label267"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-isp2200" component represents an ISP2200 PCI based Fibre-Channel SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label268"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+<dl><dt><b><i>loop_id</i></b></dt><a name="label269"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The FC loop ID of the ISP2200 Fibre-Channel controller.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label270"></a><a name="label271"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-isp2200</b> [<i>"name"</i>] <i>loop_id</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-isp2200". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label272"></a><a name="label273"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-isp2200&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label274"></a><a name="label275"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-isp2200&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">fc-loop</td><td class="jdocu_noborder">simple-fc-loop</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label276"></a><h4 class="jdocu">4.2.7&nbsp;&nbsp;&nbsp;pci-sym53c810</h4 class="jdocu">
+
+
+<a name="label277"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C810" component represents a SYM53C810PCI based SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label278"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label279"></a><a name="label280"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c810</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c810". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label281"></a><a name="label282"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c810&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label283"></a><a name="label284"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c810&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label285"></a><h4 class="jdocu">4.2.8&nbsp;&nbsp;&nbsp;pci-sym53c875</h4 class="jdocu">
+
+
+<a name="label286"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C875" component represents a SYM53C875PCI based SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label287"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label288"></a><a name="label289"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c875</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c875". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label290"></a><a name="label291"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c875&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label292"></a><a name="label293"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c875&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label294"></a><h4 class="jdocu">4.2.9&nbsp;&nbsp;&nbsp;pci-sym53c876</h4 class="jdocu">
+
+
+<a name="label295"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C876" component represents a SYM53C876PCI based dual-port SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label296"></a><a name="label297"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c876</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c876". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label298"></a><a name="label299"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c876&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label300"></a><a name="label301"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c876&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus[0-1]</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label302"></a><h4 class="jdocu">4.2.10&nbsp;&nbsp;&nbsp;pci-dec21041</h4 class="jdocu">
+
+
+<a name="label303"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-dec21041" component represents a DEC21041 PCI based fast Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label304"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label305"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label306"></a><a name="label307"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-dec21041</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-dec21041". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label308"></a><a name="label309"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21041&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label310"></a><a name="label311"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21041&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label312"></a><h4 class="jdocu">4.2.11&nbsp;&nbsp;&nbsp;pci-dec21140a</h4 class="jdocu">
+
+
+<a name="label313"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-dec21140a" component represents a DEC21140A PCI based fast Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label314"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label315"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label316"></a><a name="label317"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-dec21140a</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-dec21140a". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label318"></a><a name="label319"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21140a&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label320"></a><a name="label321"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21140a&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label322"></a><h4 class="jdocu">4.2.12&nbsp;&nbsp;&nbsp;pci-dec21143</h4 class="jdocu">
+
+
+<a name="label323"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-dec21143" component represents a DEC21143 PCI based fast Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label324"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label325"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label326"></a><a name="label327"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-dec21143</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-dec21143". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label328"></a><a name="label329"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21143&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label330"></a><a name="label331"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21143&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label332"></a><h4 class="jdocu">4.2.13&nbsp;&nbsp;&nbsp;pci-pd6729</h4 class="jdocu">
+
+
+<a name="label333"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-pd6729" component represents a Cirrus Logic PD6729 PCI-to-PCMCIA (PC-Card) Controller with two slots.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label334"></a><a name="label335"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-pd6729</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-pd6729". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label336"></a><a name="label337"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-pd6729&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label338"></a><a name="label339"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-pd6729&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">pcmcia[0-1]</td><td class="jdocu_noborder">pcmcia-slot</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label340"></a><h4 class="jdocu">4.2.14&nbsp;&nbsp;&nbsp;pci-ragexl</h4 class="jdocu">
+
+
+<a name="label341"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-ragexl" component represents a Rage XL PCI based VGA compatible graphics adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label342"></a><a name="label343"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-ragexl</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-ragexl". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label344"></a><a name="label345"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-ragexl&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label346"></a><a name="label347"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-ragexl&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label348"></a><h4 class="jdocu">4.2.15&nbsp;&nbsp;&nbsp;pci-voodoo3</h4 class="jdocu">
+
+
+<a name="label349"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-voodoo3" component represents a 3dfx Voodoo3 PCI based VGA compatible graphics adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label350"></a><a name="label351"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-voodoo3</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-voodoo3". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label352"></a><a name="label353"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-voodoo3&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label354"></a><a name="label355"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-voodoo3&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label356"></a><h4 class="jdocu">4.2.16&nbsp;&nbsp;&nbsp;agp-voodoo3</h4 class="jdocu">
+
+
+<a name="label357"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-voodoo3" component represents a 3dfx Voodoo3 AGP based VGA compatible graphics adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label358"></a><a name="label359"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-agp-voodoo3</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "agp-voodoo3". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label360"></a><a name="label361"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;agp-voodoo3&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label362"></a><a name="label363"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;agp-voodoo3&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">agp-bus</td><td class="jdocu_noborder">agp-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label364"></a><h3 class="jdocu">4.3&nbsp;&nbsp;&nbsp;PC Legacy and ISA Components</h3 class="jdocu">
+
+
+<a name="label365"></a><h4 class="jdocu">4.3.1&nbsp;&nbsp;&nbsp;std-super-io</h4 class="jdocu">
+
+
+<a name="label366"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-super-io" component represents a generic Super I/O device with legacy PC devices such as two serial ports, one PS/2 keyboard and mouse controller, one floppy device and a parallel port</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>add_par_port</i></b></dt><a name="label367"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE to add a parallel port to the Super I/O device. Default is FALSE since the current implementation is a dummy device.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label368"></a><a name="label369"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-super-io</b> [<i>"name"</i>] [<i>add_par_port</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-super-io". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label370"></a><a name="label371"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-super-io&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label372"></a><a name="label373"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-super-io&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">reset</td><td class="jdocu_noborder">x86-reset-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">com[1-2]</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">kbd-console</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">mse-console</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label374"></a><h4 class="jdocu">4.3.2&nbsp;&nbsp;&nbsp;ps2-keyboard-mouse</h4 class="jdocu">
+
+
+<a name="label375"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "ps2-keyboard-mouse" component represents the PS/2 8042 keyboard controller with a connected 105 key keyboard and three button mouse.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label376"></a><a name="label377"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-ps2-keyboard-mouse</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "ps2-keyboard-mouse". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label378"></a><a name="label379"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ps2-keyboard-mouse&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label380"></a><a name="label381"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ps2-keyboard-mouse&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">reset</td><td class="jdocu_noborder">x86-reset-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">kbd-console</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">mse-console</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label382"></a><h4 class="jdocu">4.3.3&nbsp;&nbsp;&nbsp;pc-dual-serial-ports</h4 class="jdocu">
+
+
+<a name="label383"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pc-dual-serial-ports" component represents two PC compatible serial ports.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label384"></a><a name="label385"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pc-dual-serial-ports</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pc-dual-serial-ports". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label386"></a><a name="label387"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-dual-serial-ports&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label388"></a><a name="label389"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-dual-serial-ports&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">com[1-2]</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label390"></a><h4 class="jdocu">4.3.4&nbsp;&nbsp;&nbsp;pc-quad-serial-ports</h4 class="jdocu">
+
+
+<a name="label391"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pc-quad-serial-ports" component represents four PC compatible serial ports.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label392"></a><a name="label393"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pc-quad-serial-ports</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pc-quad-serial-ports". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label394"></a><a name="label395"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-quad-serial-ports&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label396"></a><a name="label397"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-quad-serial-ports&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">com[1-4]</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label398"></a><h4 class="jdocu">4.3.5&nbsp;&nbsp;&nbsp;pc-floppy-controller</h4 class="jdocu">
+
+
+<a name="label399"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pc-floppy-controller" component represents a legacy pc floppy controller with two attached drives.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label400"></a><a name="label401"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pc-floppy-controller</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pc-floppy-controller". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label402"></a><a name="label403"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-floppy-controller&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label404"></a><a name="label405"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-floppy-controller&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label406"></a><h4 class="jdocu">4.3.6&nbsp;&nbsp;&nbsp;isa-vga</h4 class="jdocu">
+
+
+<a name="label407"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "isa-vga" component represents an ISA bus based VGA compatible graphics adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label408"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The VGA BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label409"></a><a name="label410"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-isa-vga</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "isa-vga". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label411"></a><a name="label412"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;isa-vga&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label413"></a><a name="label414"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;isa-vga&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label415"></a><h4 class="jdocu">4.3.7&nbsp;&nbsp;&nbsp;isa-lance</h4 class="jdocu">
+
+
+<a name="label416"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "isa-lance" component represents an ISA bus based Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>base_port</i></b></dt><a name="label417"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The starting port number in I/O space. The default port is 0x300, and the mapping is 0x17 bytes large.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label418"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The interrupt level for the Lance device, default is 7.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label419"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label420"></a><a name="label421"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-isa-lance</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>irq_level</i>] [<i>base_port</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "isa-lance". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label422"></a><a name="label423"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;isa-lance&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label424"></a><a name="label425"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;isa-lance&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label426"></a><h3 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Standard Components</h3 class="jdocu">
+
+
+<a name="label427"></a><h4 class="jdocu">4.4.1&nbsp;&nbsp;&nbsp;ddr-memory-module</h4 class="jdocu">
+
+
+<a name="label428"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "ddr-memory-module" component represents a DDR memory module.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>banks</i></b></dt><a name="label429"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of banks.</dd></dl>
+<dl><dt><b><i>cas_latency</i></b></dt><a name="label430"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+CAS-latency; each set bit corresponds to a latency the memory can handle</dd></dl>
+<dl><dt><b><i>columns</i></b></dt><a name="label431"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of columns.</dd></dl>
+<dl><dt><b><i>ecc_width</i></b></dt><a name="label432"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The error correction width.</dd></dl>
+<dl><dt><b><i>memory_megs</i></b></dt><a name="label433"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Total about of memory in MB.</dd></dl>
+<dl><dt><b><i>module_data_width</i></b></dt><a name="label434"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The module SDRAM width.</dd></dl>
+<dl><dt><b><i>module_type</i></b></dt><a name="label435"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Type of memory.</dd></dl>
+<dl><dt><b><i>primary_width</i></b></dt><a name="label436"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Primary SDRAM width.</dd></dl>
+<dl><dt><b><i>rank_density</i></b></dt><a name="label437"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The rank density.</dd></dl>
+<dl><dt><b><i>ranks</i></b></dt><a name="label438"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of ranks (logical banks).</dd></dl>
+<dl><dt><b><i>rows</i></b></dt><a name="label439"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of rows.</dd></dl>
+<dl><dt><b><i>speed</i></b></dt><a name="label440"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+PC standard speed. Supported values are PC2700 and none.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label441"></a><a name="label442"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-ddr-memory-module</b> [<i>"name"</i>] [<i>rows</i>] [<i>columns</i>] [<i>ranks</i>] [<i>module_data_width</i>] [<i>primary_width</i>] [<i>ecc_width</i>] [<i>banks</i>] [<i>rank_density</i>] [<i>"module_type"</i>] [<i>cas_latency</i>] [<i>"speed"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "ddr-memory-module". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label443"></a><a name="label444"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-ddr-memory-module</b> [<i>"name"</i>] [<i>rows</i>] [<i>columns</i>] [<i>ranks</i>] [<i>module_data_width</i>] [<i>primary_width</i>] [<i>ecc_width</i>] [<i>banks</i>] [<i>rank_density</i>] [<i>"module_type"</i>] [<i>cas_latency</i>] [<i>"speed"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "ddr-memory-module". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label445"></a><a name="label446"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ddr-memory-module&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label447"></a><a name="label448"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ddr-memory-module&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">mem-bus</td><td class="jdocu_noborder">mem-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label449"></a><h4 class="jdocu">4.4.2&nbsp;&nbsp;&nbsp;std-ethernet-link</h4 class="jdocu">
+
+
+<a name="label450"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-ethernet-link" component represents a standard Ethernet link.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>frame_echo</i></b></dt><a name="label451"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set this attribute to echo frames back to the sender. Default is not to echo frames.</dd></dl>
+<dl><dt><b><i>link_name</i></b></dt><a name="label452"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The name to use for the <b>ethernet-link</b> object. An error will be raised at instantiation time if the link cannot be given this name.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label453"></a><a name="label454"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-ethernet-link</b> [<i>"name"</i>] [<i>"link_name"</i>] [<i>frame_echo</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-ethernet-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label455"></a><a name="label456"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-ethernet-link</b> [<i>"name"</i>] [<i>"link_name"</i>] [<i>frame_echo</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-ethernet-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label457"></a><a name="label458"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ethernet-link&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label459"></a><a name="label460"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ethernet-link&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label461"></a><h4 class="jdocu">4.4.3&nbsp;&nbsp;&nbsp;std-serial-link</h4 class="jdocu">
+
+
+<a name="label462"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-serial-link" component represents a standard Serial link.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label463"></a><a name="label464"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-serial-link</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-serial-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label465"></a><a name="label466"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-serial-link</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-serial-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label467"></a><a name="label468"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-serial-link&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label469"></a><a name="label470"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-serial-link&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial[0-1]</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label471"></a><h4 class="jdocu">4.4.4&nbsp;&nbsp;&nbsp;std-service-node</h4 class="jdocu">
+
+
+<a name="label472"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-service-node" component represents a network service node that can be connected to Ethernet links to provide services such as DNS, DHCP/BOOTP, RARP and TFTP. A service node component does not have any connectors by default. Instead, connectors have to be added using the <b>&lt;std-service-node&gt;.add-connector</b> command.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>dynamic_connectors</i></b></dt><a name="label473"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[iss]*]</b>.
+<p>
+List of user added connectors</dd></dl>
+<dl><dt><b><i>next_connector_id</i></b></dt><a name="label474"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Next service-node device ID.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label475"></a><a name="label476"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-service-node</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-service-node". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label477"></a><a name="label478"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-service-node</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-service-node". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label479"></a><a name="label480"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.add-connector</b> <i>"ip"</i> [<i>"netmask"</i>] </b></dt><dd class="jdocu_di">
+Adds a connector to the service-node with specified IP address and netmask. A connector must be created for the service-node before an Ethernet link can be connected to it. The <i>ip</i> argument is the IP address that the service node will use on the link. The <i>netmask</i> argument is optional, and defaults to <tt>255.255.255.0</tt>.<br>The name of the new connector is returned.</dd>
+
+</dl>
+
+
+
+<a name="label481"></a><a name="label482"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label483"></a><a name="label484"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+</dl>
+
+<a name="label485"></a><h4 class="jdocu">4.4.5&nbsp;&nbsp;&nbsp;std-ide-disk</h4 class="jdocu">
+
+
+<a name="label486"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-ide-disk" component represents an IDE disk.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>file</i></b></dt><a name="label487"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+File with disk contents for the full disk Either a raw file or a CRAFF file.</dd></dl>
+<dl><dt><b><i>size</i></b></dt><a name="label488"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the IDE disk in bytes.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label489"></a><a name="label490"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-ide-disk</b> [<i>"name"</i>] <i>size</i> [<i>"file"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-ide-disk". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label491"></a><a name="label492"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ide-disk&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label493"></a><a name="label494"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ide-disk&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label495"></a><h4 class="jdocu">4.4.6&nbsp;&nbsp;&nbsp;std-ide-cdrom</h4 class="jdocu">
+
+
+<a name="label496"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-ide-cdrom" component represents an IDE ATAPI CD-ROM.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label497"></a><a name="label498"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-ide-cdrom</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-ide-cdrom". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label499"></a><a name="label500"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ide-cdrom&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label501"></a><a name="label502"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ide-cdrom&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">ide-slot</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label503"></a><h4 class="jdocu">4.4.7&nbsp;&nbsp;&nbsp;std-scsi-bus</h4 class="jdocu">
+
+
+<a name="label504"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-bus" component represents a 16 slot SCSI bus.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label505"></a><a name="label506"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-bus</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-bus". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label507"></a><a name="label508"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-bus&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label509"></a><a name="label510"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-bus&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label511"></a><h4 class="jdocu">4.4.8&nbsp;&nbsp;&nbsp;std-scsi-disk</h4 class="jdocu">
+
+
+<a name="label512"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-disk" component represents a SCSI-2 disk.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>file</i></b></dt><a name="label513"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+File with disk contents for the full disk Either a raw file or a CRAFF file.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label514"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+<dl><dt><b><i>size</i></b></dt><a name="label515"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the SCSI disk in bytes.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label516"></a><a name="label517"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-disk</b> [<i>"name"</i>] <i>scsi_id</i> <i>size</i> [<i>"file"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-disk". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label518"></a><a name="label519"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-disk&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label520"></a><a name="label521"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-disk&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label522"></a><h4 class="jdocu">4.4.9&nbsp;&nbsp;&nbsp;std-scsi-cdrom</h4 class="jdocu">
+
+
+<a name="label523"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-cdrom" component represents a SCSI-2 CD-ROM.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label524"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label525"></a><a name="label526"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-cdrom</b> [<i>"name"</i>] <i>scsi_id</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-cdrom". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label527"></a><a name="label528"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-cdrom&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label529"></a><a name="label530"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-cdrom&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label531"></a><h4 class="jdocu">4.4.10&nbsp;&nbsp;&nbsp;simple-fc-disk</h4 class="jdocu">
+
+
+<a name="label532"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "simple-fc-disk" component represents a SCSI-2 disk for use with Fibre-Channel SCSI controllers using the simplified FC protocol in Simics.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>file</i></b></dt><a name="label533"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+File with disk contents for the full disk Either a raw file or a CRAFF file.</dd></dl>
+<dl><dt><b><i>loop_id</i></b></dt><a name="label534"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The loop ID for the FC disk.</dd></dl>
+<dl><dt><b><i>node_name</i></b></dt><a name="label535"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The node name for the FC disk.</dd></dl>
+<dl><dt><b><i>port_name</i></b></dt><a name="label536"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The port name for the FC disk.</dd></dl>
+<dl><dt><b><i>size</i></b></dt><a name="label537"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the FC disk in bytes.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label538"></a><a name="label539"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-simple-fc-disk</b> [<i>"name"</i>] <i>size</i> [<i>"file"</i>] <i>loop_id</i> <i>node_name</i> <i>port_name</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "simple-fc-disk". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label540"></a><a name="label541"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;simple-fc-disk&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label542"></a><a name="label543"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;simple-fc-disk&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">fc-loop</td><td class="jdocu_noborder">simple-fc-loop</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label544"></a><h4 class="jdocu">4.4.11&nbsp;&nbsp;&nbsp;std-text-console</h4 class="jdocu">
+
+
+<a name="label545"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-console" component represents a serial text console.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bg_color</i></b></dt><a name="label546"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The background color.</dd></dl>
+<dl><dt><b><i>fg_color</i></b></dt><a name="label547"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The foreground color.</dd></dl>
+<dl><dt><b><i>height</i></b></dt><a name="label548"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The height of the console window.</dd></dl>
+<dl><dt><b><i>title</i></b></dt><a name="label549"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The Window title.</dd></dl>
+<dl><dt><b><i>width</i></b></dt><a name="label550"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The width of the console window.</dd></dl>
+<dl><dt><b><i>win32_font</i></b></dt><a name="label551"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console on Windows host.</dd></dl>
+<dl><dt><b><i>x11_font</i></b></dt><a name="label552"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console when using X11 (Linux/Solaris host).</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label553"></a><a name="label554"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label555"></a><a name="label556"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label557"></a><a name="label558"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label559"></a><a name="label560"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label561"></a><h4 class="jdocu">4.4.12&nbsp;&nbsp;&nbsp;std-server-console</h4 class="jdocu">
+
+
+<a name="label562"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-server-console" component represents a serial console accessible from the host using telnet.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>telnet_port</i></b></dt><a name="label563"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TCP/IP port to connect the telnet service of the console to.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label564"></a><a name="label565"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-server-console</b> [<i>"name"</i>] <i>telnet_port</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-server-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label566"></a><a name="label567"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-server-console</b> [<i>"name"</i>] <i>telnet_port</i> </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-server-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label568"></a><a name="label569"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-server-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label570"></a><a name="label571"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-server-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label572"></a><h4 class="jdocu">4.4.13&nbsp;&nbsp;&nbsp;std-graphics-console</h4 class="jdocu">
+
+
+<a name="label573"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-graphics-console" component represents a graphical console for displaying output from a simulated graphics adapters and getting input for mouse and keyboard devices.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>window</i></b></dt><a name="label574"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Try to open window if TRUE (default). FALSE disabled the window.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label575"></a><a name="label576"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-graphics-console</b> [<i>"name"</i>] [<i>window</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label577"></a><a name="label578"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-graphics-console</b> [<i>"name"</i>] [<i>window</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label579"></a><a name="label580"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-graphics-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label581"></a><a name="label582"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-graphics-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label583"></a><h4 class="jdocu">4.4.14&nbsp;&nbsp;&nbsp;std-text-graphics-console</h4 class="jdocu">
+
+
+<a name="label584"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-graphics-console" component represents a text console for use with VGA instead of a graphics console.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label585"></a><a name="label586"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-graphics-console</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label587"></a><a name="label588"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-graphics-console</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label589"></a><a name="label590"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-graphics-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label591"></a><a name="label592"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-graphics-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label593"></a><h3 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Base Components</h3 class="jdocu">
+
+
+The base components are abstract classes that contain generic component
+attributes and commands available for all components.
+<a name="label594"></a><h4 class="jdocu">4.5.1&nbsp;&nbsp;&nbsp;component</h4 class="jdocu">
+
+
+<a name="label595"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Base component class, should not be instantiated.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>connections</i></b></dt><a name="label596"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[sos]*]</b>.
+<p>
+List of connections for the component. The format is a list of lists, each containing the name of the connector, the connected component, and the name of the connector on the other component.</dd></dl>
+<dl><dt><b><i>connectors</i></b></dt><a name="label597"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>D</b>.
+<p>
+Dictionary of dictionaries with connectors defined by this component class, indexed by name. Each connector contains the name of the connector "type", a "direction" ("up", "down" or "any"), a flag indicating if the connector can be "empty", another flag that is set if the connector is "hotplug" capable, and finally a flag that is TRUE if muliple connections to this connector is allowed.</dd></dl>
+<dl><dt><b><i>instantiated</i></b></dt><a name="label598"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE if the component has been instantiated.</dd></dl>
+<dl><dt><b><i>object_list</i></b></dt><a name="label599"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>D</b>.
+<p>
+Dictionary with objects that the component consists of.</dd></dl>
+<dl><dt><b><i>object_prefix</i></b></dt><a name="label600"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Object prefix string used by the component. The prefix is typically set by the <b>set-component-prefix</b> command before the component is created.</dd></dl>
+<dl><dt><b><i>top_component</i></b></dt><a name="label601"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The top level component. Attribute is not valid until the component has been instantiated.</dd></dl>
+<dl><dt><b><i>top_level</i></b></dt><a name="label602"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE for top-level components, i.e. the root of a hierarchy.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label603"></a><h4 class="jdocu">4.5.2&nbsp;&nbsp;&nbsp;top-component</h4 class="jdocu">
+
+
+<a name="label604"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Base top-level component class, should not be instantiated.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>components</i></b></dt><a name="label605"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of components below the the top-level component. This attribute is not valid until the object has been instantiated.</dd></dl>
+<dl><dt><b><i>cpu_list</i></b></dt><a name="label606"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of all processors below the the top-level component. This attribute is not valid until the object has been instantiated.</dd></dl>
+</dd>
+
+</dl>
+
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

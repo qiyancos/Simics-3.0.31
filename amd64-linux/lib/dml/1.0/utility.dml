@@ -1,0 +1,277 @@
+
+dml 1.0;
+
+template _reg_or_field {
+    parameter is_register  = ($objtype == "register");
+    parameter reg_or_field = ($is_register) ? "register" : "field";
+}
+
+template read {
+    // obsolete - read has default in dml-builtins.dml
+}
+
+template write {
+    // obsolete - write has default in dml-builtins.dml
+}
+
+// Value can be changed by both software and hardware
+template read_write {
+    // for info only - read/write have defaults in dml-builtins.dml
+}
+
+// Value can only be changed by software, not hardware
+template scratch {
+    // for info only - read/write
+}
+
+template ignore_write {
+    method write(value) {
+        // ignored
+    }
+}
+
+template read_zero {
+    method read -> (value) {
+        value = 0;
+    }
+}
+
+// Value can be changed by hardware, but not by software
+template read_only {
+    is _reg_or_field;
+
+    method write(value) {
+        static uint8 log_level = 1;
+        if ($allocate) {
+            if ($is_register || value != $this) {
+                log "spec_violation", log_level, Register_Write:
+                    "Write to read-only %s %s (value written = %#x, contents = %#x).",
+                    $reg_or_field, $qname, value, $this;
+                log_level = 2;
+            }
+        } else {
+            if ($is_register) {
+                log "spec_violation", log_level, Register_Write:
+                    "Write to read-only %s %s (value written = %#x).",
+                    $reg_or_field, $qname, value;
+                log_level = 2;
+            }
+        }
+    }
+}
+
+// Value can be changed by software but can't be read back
+template write_only {
+    is _reg_or_field;
+    method read() -> (value) {
+        if ($is_register) {
+            static uint8 log_level = 1;
+            log "spec_violation", log_level, Register_Read:
+                "Read from write-only register %s (returning 0).", $qname;
+            log_level = 2;
+        }
+        value = 0;
+    }
+}
+
+template write_1_clears {
+    method write(value) {
+        $this = $this & ~value;
+    }
+}
+
+template clear_on_read {
+    method read() -> (value) {
+        value = $this;
+        $this = 0;
+    }
+}
+
+template write_1_only {
+    method write(value) {
+        $this |= value;
+    }
+}
+
+template write_0_only {
+    method write(value) {
+        $this &= value;
+    }
+}
+
+template read_constant {
+    parameter allocate = false;
+    parameter value default undefined;
+    parameter _real_value = 
+            ((defined $value) ? $value : 
+             ((defined $hard_reset_value) ? $hard_reset_value :
+              ((defined $reg.hard_reset_value)
+               ? ($reg.hard_reset_value)[$msb:$lsb] : 0)));
+
+    method read() -> (value) {
+        value = $_real_value[$bitsize-1:0];
+    }    
+}
+
+template _generic_constant {
+    is read_constant;
+
+    method get -> (value) {
+        value = $_real_value[$bitsize-1:0];
+    }
+    method set(value) {
+        if (value != $_real_value[$bitsize-1:0]) {
+            if ($dev.obj->configured) {
+                log "error": "Can't set %s (attribute value = %#x, expected constant value = %#x)",
+                    $qname, value, $_real_value[$bitsize-1:0];
+                throw;
+            } else {
+                log "info", 2, 0: "Ignoring value when setting %s (attribute value = %#x, expected constant value = %#x)",
+                    $qname, value, $_real_value[$bitsize-1:0];
+            }
+        }
+    }
+}
+
+// Value can not be changed by hardware or software
+template constant {
+    is _generic_constant;
+    is _reg_or_field;
+
+    method write(value) {
+        static uint8 log_level = 1;
+        if ($is_register || value != $_real_value[$bitsize-1:0]) {
+            log "spec_violation", log_level, Register_Write:
+                "Write to constant %s %s (value written = %#x, contents = %#x).",
+                $reg_or_field, $qname, value, $_real_value[$bitsize-1:0];
+            log_level = 2;
+        }
+    }
+}
+
+template silent_constant {
+    is _generic_constant;   
+    is ignore_write;
+}
+
+template zeros {
+    is constant;
+    parameter value = 0;
+}
+
+template ones {
+    is constant;
+    parameter value = 0xffffffffffffffff;
+}
+
+// Register provided only for compatibility reasons
+template ignore {
+    parameter allocate = false;
+    method get() -> (value) {
+        value = 0;
+    }
+    method set(value) {
+        // ignored
+    }
+    method read() -> (value) {
+        value = 0;
+    }
+    method write(value) {
+    }
+}
+
+// These bits shouldn't be used but their behaviour is undefined. Warn once at
+// level 2 on write.
+template reserved {
+    is _reg_or_field;
+    method write(value) {
+        static uint8 log_level = 2;
+        if (($is_register || value != $this) && log_level == 2) {
+            log "spec_violation", log_level, Register_Write:
+                "Write to reserved %s %s (value written = %#x, contents = %#x), will not warn again.",
+                $reg_or_field, $qname, value, $this;
+            log_level = 5;
+        }
+        $this = value;
+    }
+}
+
+template unimplemented {
+    is _reg_or_field;
+
+    parameter log_level_high default 1;
+    parameter log_level_low  default 2;
+
+    method read() -> (value)  {
+        static uint8 log_level = $log_level_high;
+        if ($is_register || log_level == $log_level_high) {
+            log "unimplemented", log_level, Register_Write:
+            "Read from unimplemented %s %s (contents = %#x)%s.",
+                    $reg_or_field, $qname, $this, ($is_register) ? "" : ", will not warn again";
+            log_level = $log_level_low;
+        }
+        value = $this;
+    }
+    method write(value) {
+        static uint8 log_level = $log_level_high;
+        if ($is_register || (value != $this && log_level == $log_level_high)) {
+            log "unimplemented", log_level, Register_Write:
+            "Write to unimplemented %s %s (value written = %#x, contents = %#x)%s.",
+                $reg_or_field, $qname, value, $this, ($is_register) ? "" : ", will not warn again";
+            log_level = $log_level_low;
+        }
+        $this = value;
+    }
+}
+
+template unimplemented1 {
+    is unimplemented;
+}
+
+// For libraries, an unimplemented variant that spams at lower log levels.
+template silent_unimplemented {
+    parameter log_level_high = 3;
+    parameter log_level_low  = 4;
+    is unimplemented;
+}
+
+template undocumented {
+    is _reg_or_field;
+    method read() -> (value)  {
+        static uint8 log_level = 1;
+        log "undefined", log_level, Register_Write:
+            "Read from badly or non-documented %s %s (contents = %#x).",
+            $reg_or_field, $qname, $this;
+        log_level = 2;
+        value = $this;
+    }
+    method write(value) {
+        static uint8 log_level = 1;
+        log "undefined", log_level, Register_Write:
+            "Write to badly or non-documented %s %s (value written = %#x, contents = %#x).",
+            $reg_or_field, $qname, value, $this;
+        log_level = 2;
+        $this = value;
+    }
+}
+
+template signed {
+    parameter signed = true;
+}
+
+template noalloc {
+    parameter allocate = false;
+}
+
+// Ignore soft reset and keep the current value
+template sticky {
+    method soft_reset() {
+        // do nothing
+    }
+}
+
+// SIM API functions and stuff
+
+extern size_t strlen(const char *s);
+extern void *memcpy(void *dest, const void *src, size_t n);
+extern void *memmove(void *dest, const void *src, size_t n);

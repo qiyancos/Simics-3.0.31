@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Other PCI Features</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(242, true);
+</script>
+<a name="label548"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic109.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic111.html">Next</a></span></p>
+<h4 class="jdocu">20.7&nbsp;&nbsp;&nbsp;Other PCI Features</h4 class="jdocu">
+
+
+<p>
+<a name="label549"></a><h5 class="jdocu">20.7.1&nbsp;&nbsp;&nbsp;Master Abort</h5 class="jdocu">
+
+
+<p>
+Accesses that pass a host-to-PCI bridge, or a PCI-to-PCI bridge, but have a
+non-mapped address as target will call the master abort handling in the
+bridge. This is implemented in Simics using the bridge mapping, where the most
+recent bridge will be called signaling that the access wasn't claimed by any
+device. The bridge can then perform the appropriate master abort semantics, and
+return a <tt>Sim_PE_No_Exception</tt> pseudo exception.  If a PCI device issues
+a transaction on the local bus that is not claimed by any device, the
+memory-space access will return the pseudo exception
+<tt>Sim_PE_IO_Not_Taken</tt> directly to the device. This is the same exception
+that the bridge will get in case of a bridge mapping. It is important to use
+bridge mappings for PCI memory-spaces, since the processor should not get the
+<tt>Sim_PE_IO_Not_Taken</tt> exception on accesses, but instead get informed by
+the bridge about the error.  
+<p>
+
+<a name="label550"></a><h5 class="jdocu">20.7.2&nbsp;&nbsp;&nbsp;Target Abort</h5 class="jdocu">
+
+
+<p>
+A PCI device can signal a target abort by returning the <tt>Sim_PE_IO_Error</tt>
+pseudo exception on accesses. It should also be prepared to receive this error
+when doing memory accesses itself on the PCI bus. PCI bridges implemented in
+Simics may receive the <tt>Sim_PE_IO_Error</tt> exception from the
+<tt>PCI_BRIDGE</tt> interface if the access was done through a bridge
+mapping, for example a CPU-initiated access to a PCI device below the bridge.
+
+<a name="label551"></a><h5 class="jdocu">20.7.3&nbsp;&nbsp;&nbsp;Message Signaling Interrupt</h5 class="jdocu">
+
+
+<p>
+There is no generic support in Simics for Message Signaling Interrupts (MSI).
+This is something that can be implemented on a per device (or bridge) basis.
+<p>
+
+<a name="label552"></a><h5 class="jdocu">20.7.4&nbsp;&nbsp;&nbsp;Special Cycles</h5 class="jdocu">
+
+
+<p>
+The PCI system in Simics does support PCI Special Cycles. However, most
+PCI bridges and devices modeled do not have Special Cycles support
+implemented.
+<p>
+
+<a name="label553"></a><h5 class="jdocu">20.7.5&nbsp;&nbsp;&nbsp;System Error (SERR#)</h5 class="jdocu">
+
+
+<p>
+System Error is used in PCI to signal unrecoverable errors. A PCI device can
+assert the SERR# line on the PCI bus upon errors, and the host-to-PCI bridge
+informs the Operating System of the error. System Error is supported by the
+PCI system in Simics, but not all modeled bridges and devices implement it.
+<p>
+
+<a name="label554"></a><h5 class="jdocu">20.7.6&nbsp;&nbsp;&nbsp;Parity Error (PERR#)</h5 class="jdocu">
+
+
+<p>
+Simics currently does not support PCI Parity Error signaling. Please contact
+Virtutech if you need this modeled.
+<p>
+
+<a name="label555"></a><h5 class="jdocu">20.7.7&nbsp;&nbsp;&nbsp;Interrupt Acknowledge</h5 class="jdocu">
+
+
+<p>
+<i>Interrupt Acknowledge</i> is a rarely used feature of PCI. It is implemented
+in Simics's <b>pci-bus</b> object, but most bridges and devices do not
+support it.  
+<p>
+
+
+
+<a name="label556"></a><h5 class="jdocu">20.7.8&nbsp;&nbsp;&nbsp;VGA Palette Snooping</h5 class="jdocu">
+
+
+<p>
+Simics currently does not support VGA Palette Snooping. Please contact
+Virtutech if you need this modeled.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic109.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic111.html">Next</a></span></p>
+</body>
+</html>

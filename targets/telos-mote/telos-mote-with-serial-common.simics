@@ -1,0 +1,23 @@
+#
+# Main file that creates a telos mote with a serial console
+# attached to its 
+#
+import-std-components
+
+# Hardware setup
+run-command-file "%script%/telos-mote-system.include"
+
+# Text console to USART 1
+$link = (create-std-serial-link)
+$console = (create-std-text-console)
+$link.connect serial0 $system usart1
+$link.connect serial1 $console
+
+instantiate-components
+$mote_binary = "images/contiki_simple_test.elf"
+
+# Software setup
+run-command-file "%script%/telos-mote-contiki-setup.include"
+
+# optimization for parallel simulations
+sim->cpus_may_share_memory = 0

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Switching Contexts Automatically</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(254, true);
+</script>
+<a name="label570"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic113.html">Previous</a> - <a class="jdocu" href="topic111.html">Up</a> - <a class="jdocu" href="topic115.html">Next</a></span></p>
+<h4 class="jdocu">21.3&nbsp;&nbsp;&nbsp;Switching Contexts Automatically</h4 class="jdocu">
+
+
+<a name="label571"></a>
+<a name="label572"></a>
+<p>
+If all you want to do is let a context follow a process with a given
+PID, or follow processes that execute a given binary, you do not have
+to program elaborate scripts like the ones at the end of section <a class="jdocu" href="topic113.html#label566">21.2</a>. There is a module called
+<b>context-switcher</b> that will do these common tasks for
+you so that you do not have to talk to the tracker directly:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>switcher0.track-pid pid = 4711 context = my-little-context</b>
+Context 'my_little_context' is now tracking process 4711.
+simics&gt; <b>switcher0.track-bin binary = "emacs" context = emacs-context</b>
+Context 'emacs_context' will be tracking the first process
+that executes the binary 'emacs'.
+</pre>
+<p>
+(These commands assume the existence of a
+<b>context-switcher</b> object called <b>switcher0</b>.)
+<p>
+Of course, you might want to do more complicated things; in that case,
+feel free to write all the scripts you want, or modify
+<b>context-switcher</b> to fit your needs; it, too,
+comes with source code.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic113.html">Previous</a> - <a class="jdocu" href="topic111.html">Up</a> - <a class="jdocu" href="topic115.html">Next</a></span></p>
+</body>
+</html>

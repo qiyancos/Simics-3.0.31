@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Command Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(256, true);
+</script>
+<a name="label576"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic115.html">Previous</a> - <a class="jdocu" href="topic115.html">Up</a> - <a class="jdocu" href="topic117.html">Next</a></span></p>
+<h4 class="jdocu">22.1&nbsp;&nbsp;&nbsp;Command Overview</h4 class="jdocu">
+
+
+<p>
+Hindsight&trade; is the technology utilized by Simics to achieve reverse execution.
+<p>
+Before any reverse operations can be performed, at least one time bookmark
+must be added. Depending upon how Simics is invoked (and various user
+preferences), a time bookmark denoted "start" is sometimes added
+automatically at the beginning of the simulation. Reverse operations are
+possible in the region following the first (i.e. oldest) bookmark. Bookmarks can
+be managed through the commands
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>set-bookmark label</b>
+    simics&gt; <b>list-bookmarks</b>
+    simics&gt; <b>delete-bookmark [label | -all]</b>.
+</pre>
+<p>
+The main reverse execution commands are
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>reverse</b>
+    simics&gt; <b>reverse-to position</b>
+    simics&gt; <b>skip-to position</b>.
+</pre>
+The <b>reverse</b> and <b>reverse-to</b> commands run the simulation backwards
+until a breakpoint occurs or till the oldest time bookmark is reached. Skipping is somewhat
+similar to reversing; the main difference is that
+intermediate breakpoints are ignored. Skipping can also be much faster
+than reversing.
+<p>
+The <b>skip-to</b> and <b>reverse-to</b>
+commands take either an absolute step count or a time bookmark
+as argument.
+<p>
+Many forward executing commands used for debugging has
+a corresponding reverse variant obtained by adding a reverse prefix.
+The reverse variant of <b>step-instruction</b> is for instance
+<b>reverse-step-instruction</b>.
+<p>
+Any external input (like a human typing on a virtual serial console) is
+replayed when the simulation is being run forward after a reversal; this
+guarantees that the simulation will follow the same path as originally.
+For the same reason, all external input is ignored until the point is reached
+where the first reverse operation was initiated. It is possible to
+override this behavior with the
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>clear-recorder</b>
+</pre>
+command. This command discards all recorded input and allows an alternate
+future to take place.
+<p>
+Note that external changes to the simulation not under the control of the recorder
+can make Hindsight operate somewhat unpredictably. It is recommended that any time
+bookmarks before a non-replayable change of the simulation state is
+deleted explicitly. Examples of such external changes are the modification of
+a CPU register by hand or loading a boot image from the command line.
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic115.html">Previous</a> - <a class="jdocu" href="topic115.html">Up</a> - <a class="jdocu" href="topic117.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,60 @@
+if not defined freq_mhz      {$freq_mhz      = 75}
+if not defined disk_size     {$disk_size     = 18358824960}
+if not defined rtc_time      {$rtc_time      = "2004-03-22 10:00:00 UTC"}
+if not defined num_cpus      {$num_cpus      = 1}
+if not defined memory_megs   {$memory_megs   = 1024}
+if not defined text_console  {$text_console  = "no"}
+
+###
+
+add-directory "%simics%/targets/ia64-460gx/images"
+
+import-isa-components
+import-pci-components
+import-std-components
+import-ia64-components
+
+# TODO: get rage-xl to work again
+
+$system = (create-ia64-460gx-system memory_megs = $memory_megs
+                                    rtc_time = $rtc_time)
+$cpu_id = 0
+# see comment in vasa-setup about first_cpu
+unset first_cpu
+while $cpu_id < $num_cpus {
+    $cpu = (create-itanium-cpu cpu_frequency = $freq_mhz)
+    $system.connect ("cpu" + $cpu_id) $cpu
+    $cpu_id += 1
+    if not $first_cpu {$first_cpu = $cpu}
+}
+
+$kbd =    (create-ps2-keyboard-mouse)
+$serial = (create-pc-dual-serial-ports)
+#$vga =    (create-pci-ragexl)
+$vga =    (create-isa-vga bios = "")
+
+$pci_scsi = (create-pci-sym53c810)
+$scsi_bus = (create-std-scsi-bus)
+$scsi_disk = (create-std-scsi-disk scsi_id = 0 size = $disk_size)
+
+if $text_console == "no" {
+    $console = (create-std-graphics-console)
+    $console.connect mouse $kbd mse-console
+} else {
+    $console = (create-std-text-graphics-console)
+}
+$console.connect keyboard $kbd kbd-console
+$console.connect $vga
+
+$system.connect $kbd
+$system.connect $serial
+$system.connect $vga
+
+$system.connect pci-slot2 $pci_scsi
+#$system.connect pci-slot5 $vga
+
+$scsi_bus.connect $pci_scsi
+$scsi_bus.connect $scsi_disk
+$scsi_bus.connect (create-std-scsi-cdrom scsi_id = 6)
+
+$machine_defined = 1

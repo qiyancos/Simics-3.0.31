@@ -1,0 +1,173 @@
+
+Known Problems & Limitations
+============================
+
+ * The new Eclipse-based user interface is in Beta status. Functionalities and
+   documentation may be incorrect or missing.
+
+
+ * General
+
+     - Simics doesn't honor control-C when running with all processors disabled
+       (bug #4285).
+
+     - Running the 'x' command towards device space may cause assertions.
+       Many devices assume certain alignment and width on the accesses (bug
+       #1428).
+
+     - Complex memory mappings involving at least two byte-swapping operations
+       with different sizes may be incorrectly handled (bug #4060).
+
+ * Breakpoints
+
+     - Virtual-address execution breakpoints may not work reliably if the
+       physical memory area where the code resides is mapped at several virtual
+       addresses. If the instructions are first executed from a virtual address
+       where no breakpoint is set, the breakpoint may not be triggered later on
+       when executing from the virtual address on which the breakpoint was
+       set. (bug #1074).
+
+     - Time breakpoints can not be removed. (bug #106).
+
+     - ID numbers of deleted breakpoints may be re-used for new breakpoints.
+       This may cause confusion if a hap handler for the deleted breakpoint is
+       still active. (bug #2490)
+
+ * Device Compatibility
+
+     - The SYM53C875 device model doesn't work with the Windows XP device
+       driver. The SYM53C810 device does work, and can be used instead (bug
+       #49).
+
+ * Device Limitations
+
+     - The SCSI disk model does not support tagged queues (bug #3175).
+
+ * Distributed Simulation
+
+     - When a checkpoint is taken of several processes participating in a
+       distributed simulation, reloading those checkpoints will not always
+       restore the synchronization of the clocks in the processes. This means
+       that starting from the checkpoints may not reproduce the simulation that
+       would have happened if the simulation had continued without taking the
+       checkpoint. Running the simulation from the checkpoints is still
+       deterministic in the sense that it can be reproduced by restarting from
+       the same checkpoints. (bug #686).
+
+     - It is not possible to use Hindsight to reverse a distributed simulation.
+       (bug #5302)       
+
+ * Ethernet Link
+
+     - Speed auto-negotiation on an ethernet-link is not implemented (bug
+       #1083).
+
+     - DHCP leases with a limited lifetime are not recycled by the DHCP server
+       in the service-node. This means that the the server may run out of
+       available leases in cases when it shouldn't. (bug #2017).
+
+     - When a network device changes its MAC address, it may for a short time
+       still receive and accept packets for the old MAC address. (bug #2164).
+
+     - Changing the processor frequency during simulation is not
+       recommended. In particular, it would break packet delivery timing during
+       network simulation (bug #4738).
+
+ * Hindsight:
+
+     - Script branches are not completely Hindsight compatible (the state of
+       the script is not reversed). (Bug #3812)
+
+     - All targets have not been Hindsight-certified. In particular, some x86
+       models are not fully Hindsight compatible and leak memory when executing
+       backwards. (bug #1874).
+       
+     - When running backward with a hindsight-aware gdb, watchpoints are not
+       handled properly (bug #4065).
+
+     - The trace module is not compatible with Hindsight and will output
+       garbage if tracing is enabled while running backward (bug #4180).
+
+ * Host-related Problems
+
+     - Weird output in the console window when running Simics on a remote
+       desktop (Windows XP). This problem can be worked around by adding the
+       line:
+         set SDL_VIDEODRIVER=windib
+       to the script that starts Simics.
+
+     - On Windows, running Simics in a Cygwin xterm (or rxvt) console is not
+       supported.  If Simics is run in this way, pressing control-c will return
+       control to the shell, leaving the Simics process unaccessable in the
+       background. Simics can be run from a "standard" Windows command prompt
+       (either in a Cygwin/bash shell, or using cmd.exe), however
+       tab-completion does not work (bug #3714).
+
+     - On Windows, when running targets with a SDL console (such as Enterprise
+       or Dredd), control-C cannot be used to break simulation. Use Ctrl+Break
+       instead (bug #4463).
+
+     - On Windows, it is not possible to make Simics echo commands executed
+       when starting a session from a .simics script by specifying the "-echo"
+       flag in the "Command line flags" field of the Preferences dialog
+       (bug #5092).
+       As a workaround, the "-echo" flag can be specified when starting Simics
+       from a command shell (e.g. cmd.exe or cygwin bash). The following
+       example will launch the First Steps machine and echo all executed Simics
+       commands:
+       C:\>[simics]\x86-win32\bin\simics-wx\simics.exe
+           -echo targets\ebony\ebony-linux-firststeps.simics
+
+ * Installation
+
+     - If Simics is installed read-only, Python files in Simics (scripts and
+       commands) can not be compiled, which will affect start-up
+       performance. If you are starting Simics very often (for example, for
+       many small tests), you may want to run Simics directly from the tree
+       (read-write) once to let Python compile the files you need (bug #3570).
+
+ * Micro-Architecture Interface
+        
+     - Not all scripts available in Simics 2.x have been converted to the new
+       targets scripts; for example, the P4 memory hierarchy is missing (bug
+       #4392).
+
+ * Real Network
+
+     - Setting the tx_bandwidth and tx_packet_rate attributes of a real network
+       connection to very high or unlimited values may cause an event queue
+       overflow. If this happens, use lower values. (bug #2930).
+
+     - Connecting the same link to the real network twice can cause
+       problems. (bug #2148).
+
+ * Serial Link
+
+     - Setting the bandwidth throttle too high in a <serial-link> object may
+       cause the event queue to overflow. (bug #2028).
+
+ * SimicsFS
+ 
+     - if a directory is accessed through simicsfs, and the directory is
+       actually a symbolic link with a trailing slash, it might not be
+       accessible. (bug #2186).
+
+ * Source Code Debugging:
+
+     - Source stepping functions (step into, step over, and so on) and
+       run-to-line may leave breakpoints behind if the simulation is stopped
+       by something unrelated. (Bug #3115).
+
+     - Source stepping functions do not always work well in the
+       absence of a running process tracker, since they will then be
+       unable to tell the difference between their own process and the
+       rest of the system. (Bug 4784.)
+
+ * x86 Target:
+ 
+     - Starting X does not work on some hippie configurations. (bug #2631).
+
+     - Some newer Fedora/Redhat distributions and derivates use a graphical
+       boot-progress screen that does not work with the Voodoo3 device in
+       Simics. (Error message "unknown packet type 7"). The workaround is to
+       remove "rhgb" from the boot command line in the boot menu. (bug #2243).

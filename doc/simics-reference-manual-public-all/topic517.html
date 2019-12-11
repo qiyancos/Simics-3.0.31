@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>pci_device</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2257, true);
+</script>
+<a name="label17806"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic516.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic518.html">Next</a></span></p>
+<h3 class="jdocu">pci_device</h3 class="jdocu">
+
+
+<a name="label17807"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic23.html#label3245">AM79C973</a>, <a class="jdocu" href="topic33.html#label3549">BCM5703C</a>, <a class="jdocu" href="topic34.html#label3762">BCM5704C</a>, <a class="jdocu" href="topic45.html#label4524">CL-PD6729</a>, <a class="jdocu" href="topic61.html#label4873">CY82C693_0</a>, <a class="jdocu" href="topic62.html#label4881">CY82C693_1</a>, <a class="jdocu" href="topic63.html#label4887">CY82C693_2</a>, <a class="jdocu" href="topic67.html#label4946">DEC21041</a>, <a class="jdocu" href="topic68.html#label5001">DEC21140A</a>, <a class="jdocu" href="topic69.html#label5056">DEC21140A-dml</a>, <a class="jdocu" href="topic70.html#label5114">DEC21143</a>, <a class="jdocu" href="topic100.html#label6318">GT64120-pci</a>, <a class="jdocu" href="topic135.html#label7170">ISP1040</a>, <a class="jdocu" href="topic136.html#label7221">ISP2200</a>, <a class="jdocu" href="topic159.html#label7738">MD1535D-ide</a>, <a class="jdocu" href="topic160.html#label7761">MD1535D-isa</a>, <a class="jdocu" href="topic161.html#label7775">MD1535D-power</a>, <a class="jdocu" href="topic224.html#label8893">PCI0646</a>, <a class="jdocu" href="topic371.html#label13958">SIO82378ZB</a>, <a class="jdocu" href="topic434.html#label14860">SYM53C810</a>, <a class="jdocu" href="topic435.html#label14885">SYM53C875</a>, <a class="jdocu" href="topic37.html#label4005">cassini</a>, <a class="jdocu" href="topic38.html#label4214">cassini_sub</a>, <a class="jdocu" href="topic41.html#label4264">cheerio-e2bus</a>, <a class="jdocu" href="topic42.html#label4282">cheerio-hme</a>, <a class="jdocu" href="topic55.html#label4766">cpc700-pci</a>, <a class="jdocu" href="topic103.html#label6365">i21150</a>, <a class="jdocu" href="topic104.html#label6385">i21152</a>, <a class="jdocu" href="topic105.html#label6405">i21554-prim</a>, <a class="jdocu" href="topic106.html#label6422">i21554-scnd</a>, <a class="jdocu" href="topic107.html#label6435">i21555-prim</a>, <a class="jdocu" href="topic108.html#label6452">i21555-scnd</a>, <a class="jdocu" href="topic116.html#label6673">i82443bx</a>, <a class="jdocu" href="topic117.html#label6687">i82443bx_agp</a>, <a class="jdocu" href="topic119.html#label6713">i82468GX_0</a>, <a class="jdocu" href="topic241.html#label9092">piix4_ide</a>, <a class="jdocu" href="topic242.html#label9116">piix4_isa</a>, <a class="jdocu" href="topic243.html#label9133">piix4_power</a>, <a class="jdocu" href="topic244.html#label9159">piix4_usb</a>, <a class="jdocu" href="topic245.html#label9218">piix4_usb_dummy</a>, <a class="jdocu" href="topic262.html#label9659">ppc405gp-pci</a>, <a class="jdocu" href="topic273.html#label10204">ppc440gp-pci</a>, <a class="jdocu" href="topic289.html#label10863">ppc440gx-pci</a>, <a class="jdocu" href="topic312.html#label12614">ragexl</a>, <a class="jdocu" href="topic332.html#label12994">sample-pci-device</a>, <a class="jdocu" href="topic338.html#label13055">sbbc-pci</a>, <a class="jdocu" href="topic461.html#label15942">uPD66566S1016</a>, <a class="jdocu" href="topic464.html#label16014">vga_pci</a>, <a class="jdocu" href="topic465.html#label16063">voodoo3</a>, <a class="jdocu" href="topic466.html#label16147">voodoo3-agp</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface is implemented by all PCI devices (including bridges).
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        void (*bus_reset)(conf_object_t *obj);
+
+        /* Interrupt Acknowlege cycle */
+        int (*interrupt_acknowledge)(conf_object_t *obj);
+
+        /* Special Cycle */
+        void (*special_cycle)(conf_object_t *obj, uint32 value);
+
+        /* System Error */
+        void (*system_error)(conf_object_t *obj);
+
+        /* peer-to-peer interrupt mechanism */
+        void (*interrupt_raised)(conf_object_t *obj, int pin);
+        void (*interrupt_lowered)(conf_object_t *obj, int pin);
+} pci_device_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic516.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic518.html">Next</a></span></p>
+</body>
+</html>

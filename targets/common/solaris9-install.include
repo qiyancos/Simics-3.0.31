@@ -1,0 +1,144 @@
+# The following script installs Solaris 9 from the free CD available from
+# Sun's web site. The script has been tested with Solaris 9 version 5/02,
+# 9/02, 12/02, 4/03, 8/03, 12/03, 4/04 and 9/04.
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    wait-for-variable solaris9_phase1
+    #
+    $con.wait-for-string "ok "
+    $con.input "boot cdrom -v\n"
+    # language
+    $con.wait-for-string "help: "
+    $con.input "0\n"
+    # locale
+    $con.wait-for-string "help: "
+    $con.input "57\n"
+    # terminal
+    $con.wait-for-string "Return: "
+    $con.input "12\n"
+    #
+    $con.wait-for-string "Installation Program"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Identify This"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Network Connectivity"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "DHCP"
+    $con.input "\033OA \0332"
+    #
+    $con.wait-for-string "IPv6"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Configure Security Policy"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Name Service"
+    $con.input "\033OB\033OB \0332"
+    #
+    $con.wait-for-string "Domain Name"
+    $con.input "network.sim\0332"
+    #
+    $con.wait-for-string "DNS Server"
+    $con.input "10.10.0.1\0332"
+    #
+    $con.wait-for-string "DNS Search"
+    $con.input "network.sim\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Time Zone"
+    $con.input "\033OB \0332"
+    #
+    $con.wait-for-string "Country or Region"
+    $con.input " \0332"
+    #
+    $con.wait-for-string "Time Zone"
+    $con.input " \0332"
+    #
+    $con.wait-for-string "Date and Time"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    # "System identification is completed."
+    #
+    $con.wait-for-string "Interactive Installation"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Geographic Regions"
+    $con.input "\0332"
+    #
+    if (current-processor)->classname == "ultrasparc-ii" {
+        # only on UltraSPARC II systems
+        $con.wait-for-string "Select 64 Bit"
+        $con.input "\0332"
+    }
+    #
+    $con.wait-for-string "Select Software"
+    # Select Developer System
+    $con.input "\033OB \0332"
+    #
+    $con.wait-for-string "Select Disks"
+    $con.input " \0332"
+    #
+    $con.wait-for-string "Preserve Data"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Layout File Systems"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Layout File Systems"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Disk Layout"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Remote File Systems"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Profile"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Warning" # Change of default boot device
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Reboot After Installation"
+    $con.input "\0332"
+    #
+    # "Preparing system for Solaris install"
+    #
+}
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    wait-for-variable solaris9_phase2
+    # root password - none
+    $con.wait-for-string "word:"
+    $con.input "\n\n"
+    $con.wait-for-string "enter 2"
+    $con.input "2\n"
+    $con.wait-for-string "reboot"
+    $con.input "\n"
+}
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    wait-for-variable solaris9_phase3
+    $con.wait-for-string "ogin: "
+    $con.input "root\n"
+    $con.wait-for-string "# "
+    # take the machine down again
+    $con.input "init 0\n"
+}

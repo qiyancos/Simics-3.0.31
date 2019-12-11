@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Checkpointing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(51, true);
+</script>
+<a name="label124"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+<h4 class="jdocu">6.2&nbsp;&nbsp;&nbsp;Checkpointing</h4 class="jdocu">
+
+
+<p>
+Simics's configuration system can save the complete state of a simulation in a
+portable way. This functionality is known as <em>checkpointing</em>, and the
+set of files that represent the elements of the systems are called a
+<em>checkpoint</em>.
+<p>
+Saving and restoring a checkpoint can be done on the command-line with the
+<b>write-configuration</b> and <b>read-configuration</b> commands.
+<p>
+A checkpoint consists of the following files:
+<p>
+<ul>
+<p>
+<li>A main file called <em>configuration file</em> (usually terminated by
+<tt>.conf</tt>, but this is only a convention). This file is a text
+representation of the objects present in the system.</li>
+<p>
+<li>An optional raw data file (described below), having the same name as the
+configuration file, with the suffix <tt>.raw</tt> appended.</li>
+<p>
+<li>Optional image files (described in section <a class="jdocu" href="#label126">6.2.2</a>), having
+the same name as the configuration file, with the suffix
+<tt>.</tt><em>object</em><tt>_image</tt> appended.</li>
+<p>
+</ul>
+<p>
+Below is a portion of a checkpoint file showing an object. Saved objects are
+always represented as <tt>OBJECT</tt> <em>object-name</em> <tt>TYPE</tt>
+<em>class-name</em> <tt>{</tt> <em>attributes</em> <tt>}</tt>. In this case we have
+an instance of the <b>AM79C960</b> class (a 10Mbits ISA Ethernet card
+with on-board DMA) named <b>lance0</b>. The <i>irq_dev</i> and the
+<i>irq_level</i> attributes connect the device to a controller that will
+handle the interrupts it generates. Since this device has on-board DMA, it is
+also connected to memory with the <i>memory</i> attribute.
+<p>
+<pre class="jdocu_small" style="color: black">
+   ...
+}
+OBJECT lance0 TYPE AM79C960 {
+        mac_address: "10:10:10:10:10:30"
+        irq_dev: isa0
+        irq_level: 7
+        memory: pci_mem0
+        ...
+}
+OBJECT ... TYPE ... {
+...
+</pre>
+<p>
+Objects are saved in the main checkpoint file in no specific order.
+<p>
+<a name="label125"></a><h5 class="jdocu">6.2.1&nbsp;&nbsp;&nbsp;Attributes</h5 class="jdocu">
+
+
+<p>
+The short example of the <b>lance0</b> description only uses three types of
+attribute values: strings, objects, and (signed 64-bit) integers. The possible attribute
+types are:
+<p>
+<dl><dt><b>string</b></dt><dd>Strings are enclosed in double quotes, with C-style control
+characters: <tt>"a string\n"</tt></dd><dt><b>integer</b></dt><dd>Integers can be in hexadecimal (<tt>0xfce2</tt>) or signed
+decimal (<tt>-17</tt>) notation.</dd><dt><b>boolean</b></dt><dd>One of TRUE or FALSE.</dd><dt><b>floating-point</b></dt><dd>Specified in decimal (<tt>1.0e-2</tt>) or
+hexadecimal (<tt>0x5.a21p-32</tt>) style, just like in C.</dd><dt><b>object</b></dt><dd>The name of a configuration object: <tt>cpu0</tt>.</dd><dt><b>raw data</b></dt><dd>Arbitrary data; typically used to save large dumps of
+binary information. The data itself is stored in the raw data file. The syntax
+is <tt>[R</tt> <em>length-in-bytes</em> <em>filename</em>
+<em>file-offset</em><tt>]</tt>.</dd><dt><b>list</b></dt><dd>Comma-separated list of any attribute values, enclosed in
+parentheses.  Example: <tt>("a string", 4711, (1, 2, 3), cpu0)</tt></dd><dt><b>dictionary</b></dt><dd>The format is a comma-separated list of key/value
+pairs, like in: <tt>{ "master-cpu" : cpu0, "slave-cpu" : cpu1 }</tt>. The key
+should be a string, integer or object, while the value can be of any attribute
+type. Dictionaries are typically used to save Python dictionaries in a
+checkpoint. Keys must be unique, although Simics does not enforce this.</dd></dl>
+<p>
+Each attribute belongs to one of the following categories. Note that only
+attributes of the first two categories are saved in checkpoints.
+<p>
+<dl><dt><b>Required</b></dt><dd>Required attributes must be set when creating an
+object. They are saved in checkpoints. If you edit a checkpoint, you should
+never remove a required attribute&#8212;Simics will complain and refuse to load
+the checkpoint if you do.</dd><dt><b>Optional</b></dt><dd>If no other value is provided, optional attributes take
+their default value when the object is created. They are saved in checkpoints,
+but if you edit them out they will revert to their default value when the
+checkpoint is loaded.</dd><dt><b>Session</b></dt><dd>Session attributes are only valid during a Simics
+session. They are not saved in checkpoints. They are usually used for
+statistics gathering or values that can be computed from the rest of the object
+state.</dd><dt><b>Pseudo</b></dt><dd>Pseudo attributes are not saved in checkpoints and usually
+contain read-only information that does not change, or that is calculated when
+the attribute is accessed. Pseudo attributes are in some cases used to trigger
+state changes in the object when written.</dd></dl>
+<p>
+There are two special cases in the attribute checkpointing process. The first
+one, described above, concerns raw data. Raw data is saved in a separate file
+that belongs to the checkpoint file set. The main configuration file only
+contains a pointer to the corresponding data in the raw data file.
+<p>
+The second one concerns <em>images</em>.
+<p>
+
+<a name="label126"></a><h5 class="jdocu">6.2.2&nbsp;&nbsp;&nbsp;Images</h5 class="jdocu">
+
+
+<p>
+Simics implements a special class called <b>image</b> for objects that
+potentially need to save a huge amount of state, like memories and disks. An
+image represents a big amount of raw data using pages and compression to
+minimize disk usage.
+<p>
+To save space and time, images do not save their entire state every time a
+checkpoint is written. They can work in two ways:
+<p>
+<ul>
+<p>
+<li>Images can save their state <em>incrementally</em>. At each checkpoint, an
+image saves the difference between its current state and the previously saved
+state (either the previous checkpoint or the initial state). This is the
+default behavior implemented by Simics. This allows several checkpoints to be
+saved and restored using the same base image and a series of difference
+files.</li>
+<p>
+<li>Images can be used as <em>read-write</em> media. In that case the file
+representing the data is always up to date to the current state. However, this
+prevents the image from being used in a previously saved checkpoint or initial
+state, since its contents are modified as the simulation advances.</li>
+<p>
+</ul>
+<p>
+It is important to understand that when used in incremental mode, images create
+<em>dependencies</em> between checkpoints. A checkpoint can only be loaded if
+all previous checkpoints are intact.
+<p>
+To re-use the example above, let us have a look at the disk image of the same
+x86 computer:
+<p>
+<pre class="jdocu_small" style="color: black">
+   ...
+}
+OBJECT disk0_image TYPE image {
+        ...
+        files: (("enterprise3-rh73.craff", "ro", 0, 0x4c5abc000, 0),
+                ("checkpoint-1.disk0_image", "ro", 0, 0x4c5abc000, 0))
+        size: 0x4c5abc000
+        ...
+}
+...
+</pre>
+<p>
+The checkpointed image is based on the file
+<tt>enterprise3-rh73.craff</tt>, on top of which is added the file
+<tt>checkpoint-1.disk0_image</tt> that contains the difference between the
+checkpoint <i>checkpoint-1</i> and the initial state.
+<p>
+Files like <tt>checkpoint-1.disk0_image</tt> are often called <em>diff
+files</em> because they contain the difference between the new state and the
+previous state.
+<p>
+<a name="label127"></a><h6 class="jdocu">Image Search Path</h6 class="jdocu">
+
+
+<p>
+<em>This section contains more in-depth explanations about image handling that
+you may skip when reading this guide for the first time</em>.
+<p>
+When successive checkpoints are saved, an image object may become dependent on
+several diff files present in different directories. To keep track of all
+files, Simics stores in the checkpoint a <em>checkpoint path</em> list that
+contains the absolute directory paths where image files may be found. Images
+filenames are then saved as <tt>%</tt><em>n</em><tt>%/</tt><em>filename</em><tt></tt>
+where <tt>%</tt><em>n</em><tt>%</tt> represents the number of the entry in the
+checkpoint path, counting from zero.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Simics's checkpoint path is different from Simics's search path (see
+section <a class="jdocu" href="topic74.html#label473">15.4</a>), although both will be used when looking
+for image files, as show below.<hr class="jdocu_note">
+<p>
+To summarize, when loading a checkpoint or a new configuration, Simics looks
+for images in the following way:
+<p>
+<ul>
+<p>
+<li>If the filename doesn't contain any path information (like
+<tt>image.craff</tt>) or contains a relative path (like
+<tt>test/image.craff</tt>), the file is looked up
+<em>first</em> from the checkpoint directory, <em>then</em> from all
+the path entries in Simics's search path, <em>in order</em> (see also
+section <a class="jdocu" href="topic74.html#label473">15.4</a> for more information).
+<p>
+For example, if Simics's search path contains
+<tt>[workspace]/targets/sunfire/</tt>
+and the checkpoint is located in 
+<tt>/home/joe/checkpoints/</tt>,
+Simics will look for the file <tt>test/image.craff</tt>
+in the following places:
+<p>
+<ol>
+ <li><tt>/home/joe/checkpoints/test/image.craff</tt></li>
+ <li><tt>[workspace]/targets/sunfire/test/image.craff</tt></li>
+</ol>
+<p>
+</li>
+<p>
+<li>If the filename contains a checkpoint path marker
+(<tt>%</tt><em>n</em><tt>%</tt>), the marker is translated using Simics's checkpoint
+path and the file is looked up in the corresponding path.
+<p>
+For example, if Simics's checkpoint path contains
+<tt>/home/joe/c1:/home/joe/c2</tt>, the file <tt>%1%/image.craff</tt>
+will be translated into <tt>/home/joe/c2/image.craff</tt>.</li>
+<p>
+<li>If the filename contains an absolute path (like
+<tt>/home/joe/image.craff</tt>), the file path is used as is.</li>
+<p>
+</ul>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The reason why Simics's search path is involved in the process is that it
+makes writing new configurations easier. Adding a path to the place where all
+initial images are located allows you to just specify the image names.<hr class="jdocu_note">
+<p>
+
+<p>
+
+<a name="label128"></a><h5 class="jdocu">6.2.3&nbsp;&nbsp;&nbsp;Saving and Restoring Persistent Data</h5 class="jdocu">
+
+
+<a name="label129"></a>
+<p>
+As an alternative to checkpointing, Simics allows you to only save the
+<em>persistent</em> state of a machine, i.e., data that survive when the
+machine is powered-down. This typically consists of disk images and flash
+memory or NVRAM contents. A persistent data checkpoint is handled exactly like
+any other checkpoint and contains the same file set, but only objects
+containing persistent data are saved. This persistent data checkpoint can be
+loaded on top of a corresponding configuration later on.
+<p>
+The commands <b><a name="label130">save-persistent-state</a></b> and
+<b><a name="label131">load-persistent-state</a></b> respectively save and load the
+persistent data in a configuration.
+<p>
+<hr class="jdocu_note"><b>Note:</b> These commands are often used to save the state and reboot a machine
+after the disk contents have been modified. Remember that the target OS
+<b>might have cached disk contents in memory</b>. In order to have a clean disk
+that can be used at boot, you should synchronize the disk, for example by
+running <tt>init 0</tt> on a Unix target system, or shutting down the operating
+system, before you issue the <b>save-persistent-state</b> command.<hr class="jdocu_note">
+<p>
+
+<a name="label132"></a><h5 class="jdocu">6.2.4&nbsp;&nbsp;&nbsp;Modifying Checkpoints</h5 class="jdocu">
+
+
+<p>
+Checkpoints are usually created by saving a configuration inside Simics, but it
+is possible to edit or even create checkpoints yourself.
+<p>
+Because a minimal checkpoint only has to include required attributes,
+<em>creating a checkpoint from scratch</em> works relatively well for small
+configurations. We suggest you use an existing checkpoint as a starting point
+if you wish to do that. Note that more advanced layers have been built on top
+of the configuration system to make the creation of a new machine much
+easier. Refer to section <a class="jdocu" href="topic29.html#label148">6.5</a> for more
+information.
+<p>
+<em>Modifying checkpoints</em> require some extra care. Adding or removing
+devices may confuse the operating system, which does not expect devices to
+appear or disappear while the system is running, and cause it to crash.
+<p>
+Changing the processor frequency may be enough to confuse the operating
+system. Many operating systems check the CPU frequency at boot time, and base
+their waiting loops and timing on the value they got. Saving a checkpoint and
+changing the frequency after boot may affect the simulation and confuse the
+system. Devices that use processor frequency to trigger events at specific
+times may also behave strangely when the frequency suddenly changes.
+<p>
+
+<a name="label133"></a><h5 class="jdocu">6.2.5&nbsp;&nbsp;&nbsp;Merging Checkpoints</h5 class="jdocu">
+
+
+<p>
+If you want to make a checkpoint independent from all previous checkpoints, for
+example to distribute it, you can use the small <b>checkpoint-merge</b>
+program in <tt>[simics]/bin</tt> from your system command line. It
+merges the checkpoint with all its ancestors to create a checkpoint that has no
+dependencies.  Specify the checkpoint you want to distribute as the first
+parameter and the name of the new stand-alone checkpoint as the second. This
+tool can be used in both Unix and Windows environments, but it can not handle
+Cygwin paths on Windows.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+</body>
+</html>

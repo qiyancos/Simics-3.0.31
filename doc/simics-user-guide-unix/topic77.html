@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Observing Memory Transactions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(203, true);
+</script>
+<a name="label478"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic76.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic78.html">Next</a></span></p>
+<h4 class="jdocu">16.1&nbsp;&nbsp;&nbsp;Observing Memory Transactions</h4 class="jdocu">
+
+
+<p>
+Memory-spaces provide a <em>memory hierarchy interface</em> for observing and
+modifying memory transactions passing through them. This interface is in fact
+composed of two different interfaces acting at different phases of a memory
+transaction execution:
+<p>
+<ul>
+<p>
+<li>The <tt>timing-model</tt> interface provides access to a transaction
+<em>before</em> it has been executed (i.e., it has just arrived at the
+memory-space).
+<p>
+To connect an object to the timing model interface, just set the
+<i>timing_model</i> attribute of the corresponding memory-space with the
+value of the object you want to connect:
+<pre class="jdocu_small" style="color: black">simics&gt; <b>@conf.phys_mem0.timing_model = conf.listening_object</b></pre>
+<p>
+The timing model interface can also be used to change the timing and the
+execution of a memory transaction, as well as to modify the value of a store
+going to memory. This is described in more detail in section <a class="jdocu" href="topic78.html#label479">16.2</a> and in the <em>Simics Programming Guide</em>.</li>
+<p>
+<li>The <tt>snoop-memory</tt> interface provides access to a transaction
+<em>after</em> it has been executed.
+<p>
+Connecting an object to the snoop memory interface is done in the same way as
+for the timing model interface:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.phys_mem0.snoop_device = conf.listening_object</b></pre>
+<p>
+The <b>trace</b> module, for example, automatically connects itself
+(or rather one of its objects) to this interface when a trace is started. The
+advantage of using this interface is that the value of load operations is
+accessible, since the operation has already been performed.
+<p>
+The snoop memory interface can also be used to modify the value of a load
+operation. This is described in more detail in the <em>Simics Programming
+Guide</em>.</li>
+<p>
+</ul>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Both interfaces can be used simultaneously, even by the same object. This
+property is used by the <b>trace</b> module, which is in fact
+connected both to the timing-model and the snoop-memory interfaces. The reason
+for this double connection is explained later in this chapter.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic76.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic78.html">Next</a></span></p>
+</body>
+</html>

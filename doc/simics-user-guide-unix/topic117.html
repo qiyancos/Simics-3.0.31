@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Performance</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(257, true);
+</script>
+<a name="label577"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic116.html">Previous</a> - <a class="jdocu" href="topic115.html">Up</a> - <a class="jdocu" href="topic118.html">Next</a></span></p>
+<h4 class="jdocu">22.2&nbsp;&nbsp;&nbsp;Performance</h4 class="jdocu">
+
+
+<p>
+Hindsight optimizes for certain reverse operations that are expected to be common.
+One example of this is that skipping to bookmarks can be faster than skipping to
+some other location.
+<p>
+The usage of time bookmarks has a certain impact on overall performance since it
+implicitly enables Hindsight support. Normal performance is always obtained if all
+time bookmarks are removed.
+<p>
+It is possible to tune certain reverse execution parameters in order to optimize
+operations for a particular usage pattern (although the default settings should work well in
+most situations). Tradeoffs exists between:
+<p>
+<ul>
+<li>reverse performance</li>
+<li>forward performance</li>
+<li>memory utilization</li>
+<li>scope of reversibility</li>
+</ul>
+The <b>rexec-limit</b> command is the primary tool for adjusting the balance, e.g.
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>rexec-limit steps = 20000000 </b>
+    simics&gt; <b>rexec-limit size_mb = 200 </b>
+</pre>
+<p>
+The steps limit indicate that the scope of interest is at most the specified number of steps.
+By imposing a steps limit, resources can be spent more effectively with
+the drawback that reversal past the limit may not possible. By default, no steps limit is imposed.
+<p>
+The size limit imposes a limit on the amount of memory Hindsight may use. If the limit is exceeded,
+reverse performance will be traded for less memory consumption.
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic116.html">Previous</a> - <a class="jdocu" href="topic115.html">Up</a> - <a class="jdocu" href="topic118.html">Next</a></span></p>
+</body>
+</html>

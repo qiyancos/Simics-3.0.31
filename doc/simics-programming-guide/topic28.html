@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Attributes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(66, true);
+</script>
+<a name="label139"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+<h3 class="jdocu">6.4&nbsp;&nbsp;&nbsp;Attributes</h3 class="jdocu">
+
+
+<a name="label140"></a>
+<p>
+Attributes are linked to the class definition, usually just after the class has
+been declared, with the <b><i>SIM_register_typed_attribute()</i></b> function. It
+has the following declaration in C, and Python:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// in C</b>
+int SIM_register_typed_attribute(
+           conf_class_t *cls, const char *name,
+           get_attr_t get_attr, lang_void *user_data_get,
+           set_attr_t set_attr, lang_void *user_data_set,
+           attr_attr_t attr,
+           const char *type, const char *idx_type,
+           const char *doc);
+
+<b># in Python</b>
+SIM_register_typed_attribute(cls, 
+                             name,
+                             get_attr, user_data_get,
+                             set_attr, user_data_set,
+                             attr,
+                             type, idx_type,
+                             doc)
+</pre>
+<p>
+The parameters of <b><i>SIM_register_typed_attribute()</i></b> are:
+<p>
+<dl><dt><b><i>cls</i></b></dt><dd>The name of the class (previously registered
+with <b><i>SIM_register_class()</i></b>.)</dd><dt><b><i>name</i></b></dt><dd>The name of the attribute to register.</dd><dt><b><i>get_attr</i>, <i>set_attr</i></b></dt><dd>The
+<b><i>get()</i></b> and <b><i>set()</i></b> functions for the attribute. If one of
+these operations is not supported, <tt>NULL</tt> (or <tt>None</tt> in
+Python) can be used.</dd><dt><b><i>user_data_get</i>, <i>user_data_set</i></b></dt><dd>User
+defined parameters that are passed to the <b><i>get</i></b> and <b><i>set</i></b>
+functions as the <i>arg</i> parameters. This allows passing one extra
+argument, for example when the same <b><i>get()</i></b> or <b><i>set()</i></b>
+function is shared between a number of attributes.</dd><dt><b><i>attr</i></b></dt><dd>The properties of the attribute, a combination
+of the configuration type, an optional index type and initialization order. It
+tells Simics how the attribute will be saved and addressed, and is specified
+using the constants described below.
+<p>
+    The <em>configuration type</em> of an attribute must be selected from one
+    of the following values:
+<p>
+    <dl><dt><b><tt>Sim_Attr_Required</tt></b></dt><dd>The attribute has to be set
+    when creating the object. It will also be saved during checkpointing.</dd><dt><b><tt>Sim_Attr_Optional</tt></b></dt><dd>If a value isn't specified, the
+    attribute will keep its default value when creating an object. It will be
+    saved during checkpointing.</dd><dt><b><tt>Sim_Attr_Session</tt></b></dt><dd>The attribute is only used in
+    the current session and won't be saved during checkpointing.</dd><dt><b><tt>Sim_Attr_Pseudo</tt></b></dt><dd>The attribute does not really
+    represent any internal state. It may work instead as a command in disguise,
+    or as a redundant way of accessing internal state. It won't be saved during
+    checkpointing.</dd></dl>
+<p>
+    Attributes may also have the following additional kinds added (using a
+    bitwise <em>or</em> operation).
+<p>
+    <dl><dt><b><tt>Sim_Attr_Persistent</tt></b></dt><dd>Attribute represents a persistent value and is included in persistent
+    files, created with the <b>save-persistent-state</b> command.
+    Persistent attributes are used for data that survives power-cycling.</dd><dt><b><tt>Sim_Attr_Internal</tt></b></dt><dd>Indicates that the attribute is internal to the object and should not
+    be accessed directly by other users.</dd></dl>
+<p>
+    <a name="label141"></a>The <em>index type</em>, if any, is
+    added (using a bitwise <em>or</em> operation) with one or several of the
+    following values:
+<p>
+    <dl><dt><b><tt>Sim_Attr_Integer_Indexed</tt></b></dt><dd>Attribute can be indexed with an integer value.</dd><dt><b><tt>Sim_Attr_String_Indexed</tt></b></dt><dd>Attribute can be indexed with a string.</dd><dt><b><tt>Sim_Attr_List_Indexed</tt></b></dt><dd>Attribute can be indexed with a list.</dd></dl>
+<p>
+    In addition the order in which the attribute will be initialized can be
+    defined by adding (also using a bitwise <em>or</em> operation) with
+     one of the following values:
+<p>
+    <dl><dt><b><tt>Sim_Init_Phase_0</tt></b></dt><dd>Early initialization (default)</dd><dt><b><tt>Sim_Init_Phase_1</tt></b></dt><dd>Late initialization</dd></dl>
+<p>
+    Attributes with <tt>Sim_Init_Phase_1</tt> will be initialized after
+    attributes with <tt>Sim_Init_Phase_0</tt>, but no other order is
+    guaranteed.
+<p>
+    </dd><dt><b><i>type</i>, <i>idx_type</i></b></dt><dd>Strings describing
+the data type of the attribute. <i>type</i> describes the type when not
+indexed, and <i>type_idx</i> when indexed.</dd><dt><b><i>desc</i></b></dt><dd>A documentation string describing the
+attribute.</dd></dl>
+<p>
+<a name="label142"></a><h4 class="jdocu">6.4.1&nbsp;&nbsp;&nbsp;A Simple Example</h4 class="jdocu">
+
+
+<p>
+Let us use a simple counter attribute as an example.
+<p>
+In C, we'll have an object declared as:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef struct my_object {
+        conf_object_t obj;
+        int foo;
+} my_object_t;
+</pre>
+<p>
+In Python, we'll use a data member of the class defining the object
+(<b>sample-python-class</b>) that we will call <i>foo</i>.
+<p>
+We want to implement an attribute called <i>counter</i>, thus we need a
+pair of <b><i>set</i></b>/<b><i>get</i></b> functions. <i>counter</i> will
+internally use <i>foo</i> to keep its value. The pair of <b><i>get/set</i></b>
+functions could be defined as:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// In C</b>
+static attr_value_t
+get_counter(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        return SIM_make_attr_integer(mo-&gt;foo);
+}
+
+static set_error_t
+set_counter(void *arg, conf_object_t *obj, attr_value_t *val,
+            attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        mo-&gt;foo = val-&gt;u.integer;
+        return Sim_Set_Ok;
+}
+</pre>
+<p>
+In the <b><i>get_counter()</i></b> function, <i>obj</i> is the object that
+owns the attribute and <i>arg</i> is the user information that was
+registered along with the attribute. Note that <i>obj</i> can be safely
+cast to <tt>my_object_t</tt> (<tt>conf_object_t</tt> is used as a "base
+type" here). The function creates an <tt>attr_value_t</tt> variable that
+will be of type <tt>Sim_Val_Integer</tt> and contain the value
+<i>foo</i>. It then returns this attribute value.
+<p>
+The <b><i>set_counter()</i></b> function on the other hand takes a
+<i>val</i> argument which contains the value to be written. The return
+value is of type <tt>set_error_t</tt>, which is defined as
+below. Descriptions of the values can be found in the <em>Simics Reference
+Manual</em>.
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef enum {
+        Sim_Set_Ok,
+        Sim_Set_Need_Integer,
+        Sim_Set_Need_Floating,
+        Sim_Set_Need_String,
+        Sim_Set_Need_List,
+        Sim_Set_Need_Dict,
+        Sim_Set_Need_Boolean,
+        Sim_Set_Need_Data,
+        Sim_Set_Need_Object,
+        Sim_Set_Object_Not_Found,
+        Sim_Set_Interface_Not_Found,
+        Sim_Set_Illegal_Value,
+        Sim_Set_Illegal_Type,
+        Sim_Set_Attribute_Not_Found,
+        Sim_Set_Not_Writable,
+        Sim_Set_Ignored
+} set_error_t;
+</pre>
+<p>
+In Python, the value used in the <b><i>get()</i></b>/<b><i>set()</i></b> functions is
+represented in Python's native types:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+def get_counter(arg, obj, idx):
+    return obj.object_data.counter
+
+def set_counter(arg, obj, val, idx):
+    obj.object_data.counter = val
+    return Sim_Set_Ok
+</pre>
+<p>
+Note, however, that the object is referred to by the <em>log object</em>, and
+not the object created from the <b><i>new_instance()</i></b> function that creates
+object instances. The data of the object is thus referred to via the
+<i>object_data</i> member of the <i>obj</i> parameter.
+<p>
+Registering the <i>counter</i> attribute is just a matter of calling
+<b><i>SIM_register_typed_attribute()</i></b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// in C</b>
+SIM_register_typed_attribute(my_class, 
+                             "counter",
+                             get_counter, NULL,
+                             set_counter, NULL,
+                             Sim_Attr_Required,
+                             "i", NULL,
+                             "A counter");
+
+<b># and in Python</b>
+SIM_register_typed_attribute(my_class, 
+                             "counter",
+                             get_counter, None,
+                             set_counter, None,
+                             Sim_Attr_Required,
+                             "i", None,
+                             "A counter");
+</pre>
+<p>
+
+<a name="label143"></a><h4 class="jdocu">6.4.2&nbsp;&nbsp;&nbsp;A Pseudo Attribute</h4 class="jdocu">
+
+
+<p>
+In the previous example, the attribute <i>counter</i> was a direct
+representation of the value <i>foo</i> inside the object. Now let us add an
+attribute called <i>add_counter</i> that will increase <i>foo</i> by
+a given value when the attribute is set, and do nothing when the attribute is
+read. This would give us the following code:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// In C</b>
+static set_error_t
+set_add_counter(void *arg, conf_object_t *obj, attr_value_t *val,
+                attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        mo-&gt;foo += val-&gt;u.integer;
+        return Sim_Set_Ok;
+}
+
+<b># and in Python</b>
+def add_counter(arg, obj, val, idx):
+    obj.object_data.counter += val
+    return Sim_Set_Ok
+
+</pre>
+<p>
+There is no need for a get function since this attribute only can
+be written. The semantics of <b><i>set_add_counter()</i></b> are also
+slightly different, since the function actually <em>adds</em> a value to
+<i>foo</i>.
+<p>
+It is thus possible to create <em>real</em> attributes whose value
+corresponds to a real variable in an object, and <em>pseudo</em>
+attributes which are only used as object "methods".
+<p>
+Registering the <i>add_counter</i> attribute is straightforward:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// In C</b>
+SIM_register_typed_attribute(class_name, "add_counter",
+                             NULL, NULL,
+                             set_add_counter, NULL,
+                             Sim_Attr_Pseudo,
+                             "i", NULL,
+                             "A sample pseudo attribute.")
+
+<b># and in Python</b>
+SIM_register_typed_attribute(class_name, "add_counter",
+                             None, None,
+                             add_counter, None,
+                             Sim_Attr_Pseudo,
+                             "i", None,
+                             "A sample pseudo attribute.")
+</pre>
+<p>
+
+<a name="label144"></a><h4 class="jdocu">6.4.3&nbsp;&nbsp;&nbsp;An indexed attribute</h4 class="jdocu">
+
+
+<a name="label145"></a>
+<p>
+If an attribute advertises the possibility of being indexed, Simics will allow
+access using an index of a type specified when registering the attribute: an
+integer, a string and/or a list. In Python, a <em>slice</em> is also accepted
+and will be converted to a list as described later in this section. Using
+indexed attributes in Python would correspond to the following code:
+<p>
+<pre class="jdocu_small" style="color: black">
+object.attr[i] = a
+b = object.attr['a string']
+c = object.attr[i:j]
+d = object.attr[[i,j]]
+</pre>
+<p>
+When an indexed access is performed, the <i>idx</i> parameter of the
+<b><i>get()</i></b>/<b><i>set()</i></b> functions contains the index value. In C this
+value will be coded as an <tt>attr_value_t</tt> representing an integer, a
+string or a list. In Python, the index will be the corresponding native python
+type.
+<p>
+Let us add an array of counters to our previous example:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// In C</b>
+typedef struct my_object {
+        conf_object_t obj;
+        int foo[10];
+} my_object_t;
+</pre>
+<p>
+The <b><i>get()</i></b> and <b><i>set()</i></b> function will be:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// In C</b>
+static attr_value_t
+get_counter_array(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        if (idx-&gt;kind != Sim_Val_Nil) {
+                if (idx-&gt;u.integer &lt; 0 || idx-&gt;u.integer &gt;= 10)
+                        return SIM_make_attr_invalid();
+
+                return SIM_make_attr_integer(mo-&gt;foo[idx-&gt;u.integer]);
+        } else {
+                attr_value_t ret = SIM_alloc_attr_list(10);
+                int i;
+                for (i = 0; i &lt; 10; i++) {
+                        ret.u.list.vector[i] =
+                                SIM_make_attr_integer(mo-&gt;foo[i]);
+                }
+                return ret;
+        }
+}
+
+static set_error_t
+set_counter_array(void *arg, conf_object_t *obj, attr_value_t *val,
+                  attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        if (idx-&gt;kind != Sim_Val_Nil) {
+                if (idx-&gt;u.integer &lt; 0 || idx-&gt;u.integer &gt;= 10)
+                        return Sim_Set_Illegal_Value;
+
+                mo-&gt;foo[idx-&gt;u.integer] = val-&gt;u.integer;
+        } else {
+                int i;
+                for (i = 0; i &lt; 10; i++)
+                        mo-&gt;foo[i] = ret.u.list.vector[i].u.integer;
+        }
+
+        return Sim_Set_Ok;
+}
+
+<b># And in Python:</b>
+def get_counter_array(arg, obj, idx):
+    if idx != None:
+        if idx &lt; 0 or idx &gt;= 10:
+            return None
+        return obj.object_data.vcounter[idx]
+    else:
+        return obj.object_data.vcounter
+
+def set_counter_array(arg, obj, val, idx):
+    if idx != None:
+        if idx &lt; 0 or idx &gt;= 10:
+            return Sim_Set_Illegal_Value
+        obj.object_data.vcounter[idx] = val
+    else:
+        obj.object_data.vcounter = val
+    return Sim_Set_Ok
+
+SIM_register_typed_attribute(class_name, "counter_array",
+                             get_counter_array, None,
+                             set_counter_array, None,
+                             Sim_Attr_Optional | Sim_Attr_Integer_Indexed,
+                             "[i{10}]", "i",
+                             "Sample array of counters")
+</pre>
+<p>
+These functions handle both indexed and non-indexed access to the attribute.
+This is important for checkpointing, as all attributes are saved and restored
+using <em>non-indexed access</em>. Thus, if you wish your attribute to be
+checkpointed, you will always have to handle non-indexed accesses.
+<p>
+As shown in the example usages above, it is also possible to use strings, lists
+and Python slices as index. An index corresponding to a slice is provided as a
+list of two elements, the first and last element that should be included.  Note
+that this means a slight change, since the Python slice refers to the first
+element included, and the one after the last included. This means that:
+<tt>object.attr[i:j]</tt> will be translated to an index parameter with the
+value <tt>[i, j - 1]</tt>, or in C, an attribute of type
+<tt>Sim_Val_List</tt> with two <tt>Sim_Val_Integer</tt> elements
+i and j &minus; 1.
+<p>
+<hr class="jdocu_note"><b>Note:</b> When accessing attributes from Python, you may not be able to access an
+indexed attribute without specifying an index even if your <b><i>get</i></b>
+function supports a non-indexed access. The reason is that the short access
+syntax is ambiguous: it can not differentiate between an indexed access to a
+Simics attribute and a non-indexed access later indexed by Python itself. You
+will have to explicitly use <b><i>SIM_get_attribute()</i></b> to access the
+attribute's non-indexed value.
+<p>
+As an example, let's consider two attributes, <i>foo</i> and
+<i>bar</i>. <i>foo</i> is an array of 5 elements that do not
+support indexing, while <i>bar</i> is a table of 10 elements supporting
+both indexed and non-indexed accesses:
+<p>
+<pre class="jdocu_small" style="color: black">
+# non-indexed access to 'foo' attribute
+simics&gt; @conf.object.foo
+[0,1,2,3,4]
+
+# non-indexed access to 'foo' attribute, later indexed by python
+simics&gt; @conf.object.foo[2]
+2
+
+# indexed access to 'bar' attribute
+simics&gt; @conf.object.bar[12]
+12
+
+# no access performed to 'bar' attribute
+simics&gt; @conf.object.bar
+&lt;object bar&gt;
+
+# non-indexed access to 'bar' attribute
+simics&gt; @SIM_get_attribute(conf.object, "bar")
+[0,1,2,3,4,5,6,7,8,9]
+</pre><hr class="jdocu_note">
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>symtable</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2278, true);
+</script>
+<a name="label17974"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic535.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic537.html">Next</a></span></p>
+<h3 class="jdocu">symtable</h3 class="jdocu">
+
+
+<a name="label17975"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic436.html#label14911">symtable</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+This is a collection of API calls for the symtable module, providing
+symbolic debugging support of the target machine.
+<pre class="jdocu_small" style="color: black">
+typedef struct symtable_interface {
+        attr_value_t (*eval_sym)(processor_t *cpu,
+                                 const char *expr,
+                                 attr_value_t *frame,
+                                 const char *format);
+</pre>
+Evaluates the symbolic expression <i>expr</i> in the given stack frame on the
+specified cpu. The result is the list (<i>value</i>, <i>type</i>) where
+<i>value</i> depends on the format, and <i>type</i> is a string describing
+the type of the result. If <i>format</i> is "v", then <i>value</i> is the
+value of the result as a string or integer; otherwise it is a human-readable
+string representation of the result. The only operators allowed in <i>expr</i>
+are casts, indirection and member selection (no arithmetic).
+<pre class="jdocu_small" style="color: black">
+        attr_value_t (*stack_trace)(processor_t *cpu,
+                                    int maxframes);
+</pre>
+Does a stack trace in the current context of the specified cpu, and returns
+a list of stack frames (at most <i>maxframes</i>). Each stack frame is
+in turn a list of state variables, suitable for passing to <tt>eval_sym</tt>
+above, but has no defined structure other than that the first element
+is the program counter. This program counter points to the next
+instruction to be executed in respective frame.
+<pre class="jdocu_small" style="color: black">
+        attr_value_t (*fun_args)(processor_t *cpu,
+                                 attr_value_t *frame);
+</pre>
+Given a stack frame, returns a list of the formal and actual parameters
+to the function where that frame is currently executing. Each element of
+the returned list is a list on the form (<i>name</i>, <i>value</i>).
+<pre class="jdocu_small" style="color: black">
+        attr_value_t (*source_profile)(conf_object_t *symtable,
+                                       conf_object_t *profile);
+</pre>
+Find the corresponding source lines for profile values and return a list
+on the form ((<i>source-file</i>, (<i>line</i>, <i>value</i>) ...) ...).
+<pre class="jdocu_small" style="color: black">
+} symtable_interface_t;
+</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic535.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic537.html">Next</a></span></p>
+</body>
+</html>

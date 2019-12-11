@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Using SimicsFS</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(85, true);
+</script>
+<a name="label181"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic32.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic34.html">Next</a></span></p>
+<h4 class="jdocu">7.3&nbsp;&nbsp;&nbsp;Using SimicsFS</h4 class="jdocu">
+
+
+<p>
+SimicsFS gives you access to the file system of your real computer inside the
+simulated machine. This greatly simplifies the process of importing files into
+the simulated machine.
+<p>
+SimicsFS is supported for targets running Solaris 7, 8, 9 and 10, and Linux
+kernel versions 2.0 to 2.6.
+<p>
+SimicsFS is installed on disk dumps distributed by Virtutech. For users booting
+from other disks, there are a number of steps needed to configure the target
+system. This process is target OS specific, and is described in the following
+sections.
+<p>
+SimicsFS is not fully functional on all simulated operating systems. The
+following limitations apply:
+<p>
+<table>
+<tr><td class="jdocu_border"><b>Simulated OS</b></td><td class="jdocu_border"><b>Limitations</b></td></tr>
+<tr><td class="jdocu_border">Linux</td><td class="jdocu_border">Access is read-only. (Write support experimental.)</td></tr>
+<tr><td class="jdocu_border">Solaris</td><td class="jdocu_border">Truncating files does not work.</td></tr>
+<tr><td class="jdocu_border">Other</td><td class="jdocu_border">SimicsFS is not currently available.</td></tr>
+</table>
+<p>
+<a name="label182"></a><h5 class="jdocu">7.3.1&nbsp;&nbsp;&nbsp;Installing SimicsFS on a Simulated Linux System</h5 class="jdocu">
+
+
+<p>
+For Linux kernel versions prior to 2.4, the SimicsFS kernel module is called
+<tt>hostfs</tt> rather than <tt>simicsfs</tt>, so for those kernels just
+replace the <tt>simicsfs</tt> part in file names with <tt>hostfs</tt> in the
+following description. When the instructions ask you to copy files into the
+simulated machine, one of the methods described elsewhere must be used (e.g.,
+network, loopback disk access, or CD-ROM).
+<p>
+<ul>
+<p>
+    <li>Since there are lots of different Linux kernels, and a module has to
+    match the kernel version, Simics does not provide any pre-compiled
+    <tt>simicsfs</tt> modules. To build your own <tt>simicsfs</tt> module,
+    download the SimicsFS source code from
+    <a class="jdocu" href="https://www.simics.net/pub/simicsfs.tar.gz" target="_top">https://www.simics.net/pub/simicsfs.tar.gz</a>.  The
+    <tt>README_2.4</tt> and <tt>README_2.6</tt> files in the archive
+    will explain how to add the SimicsFS sources to the Linux kernel tree and
+    compile it with the kernel you want to use.</li>
+<p>
+    <li>Create a new directory
+    <tt>/lib/modules/</tt><em>version</em><tt>/kernel/fs/simicsfs/</tt> on the
+    simulated machine, where <tt></tt><em>version</em><tt></tt> is the simulated
+    machine's kernel version.</li>
+<p>
+    <li>Copy the newly compiled SimicsFS module file to the directory
+    <tt>/lib/modules/</tt><em>version</em><tt>/kernel/fs/simicsfs/</tt> on the
+    simulated machine, and make sure it is called <tt>simicsfs.o</tt> for
+    Linux 2.4 (and older), and <tt>simicsfs.ko</tt> for Linux 2.6.</li>
+<p>
+    <li>Create the mount point on the simulated machine with <tt>mkdir
+    /host</tt>.</li>
+<p>
+    <li>Add the following line in the simulated machine's
+    <tt>/etc/fstab</tt> (replace <tt>/host</tt> with your
+    mount point):
+<p>
+<pre class="jdocu_small" style="color: black">
+special      /host      simicsfs     noauto,ro      0 0
+</pre>
+    </li>
+    <hr class="jdocu_note"><b>Note:</b> To use the experimental write support, change <tt>ro</tt> into
+    <tt>rw</tt>.<hr class="jdocu_note">
+<p>
+    <li>Mount SimicsFS with the command <tt>mount /host</tt> on the simulated
+    machine.</li>
+<p>
+</ul>
+<p>
+SimicsFS should now be working, and by issuing <tt>ls /host</tt> on the
+simulated machine, you should get a listing of the host machine's files.
+<p>
+
+<a name="label183"></a><h5 class="jdocu">7.3.2&nbsp;&nbsp;&nbsp;Installing SimicsFS on a Simulated Solaris System</h5 class="jdocu">
+
+
+<p>
+These are the steps needed to install SimicsFS on a simulated Solaris, version
+7, 8, 9 and 10. When the instructions ask you to copy files into the simulated
+machine, one of the methods described above must be used (network, loopback
+disk access, CD-ROM...). Note that the driver included with earlier Simics
+distributions was called <tt>hostfs</tt> and not <tt>simicsfs</tt>.
+<p>
+<ul>
+<p>
+    <li>Create a new directory <tt>/usr/lib/fs/simicsfs/</tt> on the
+    simulated machine.</li>
+<p>
+    <li>Copy the file <tt>[simics]/import/sun4u/mount_simicsfs</tt> to
+    <tt>/usr/lib/fs/simicsfs/</tt> on the simulated disk, and rename
+    it to <tt>mount</tt>.</li>
+<p>
+    <li>Copy the file
+    <tt>[simics]/import/sun4u/simicsfs-sol</tt><em>version</em><tt></tt> (where
+    <tt></tt><em>version</em><tt></tt> matches the version of Solaris running on your
+    simulated machine) to <tt>/usr/kernel/fs/sparcv9/</tt>
+    on the simulated machine, and rename it to <tt>simicsfs</tt>.</li>
+<p>
+
+    <li>Add the following line to <tt>/etc/vfstab</tt> on the
+    simulated disk:
+<p>
+<pre class="jdocu_small" style="color: black">
+simicsfs  -       /host   simicsfs  -       no      -
+</pre>
+<p>
+    </li>
+<p>
+    <li>Create the mount point on the simulated machine with <tt>mkdir
+    /host</tt>.</li>
+<p>
+    <li>When the simulated system is running, issue the command:
+<p>
+<pre class="jdocu_small" style="color: black">
+mount /host
+</pre>
+    </li>
+<p>
+</ul>
+<p>
+
+You should now be able to do <tt>ls /host</tt> on the simulated system to get a
+list of the files on the host.
+<p>
+
+<a name="label184"></a><h5 class="jdocu">7.3.3&nbsp;&nbsp;&nbsp;Using SimicsFS</h5 class="jdocu">
+
+
+<p>
+
+By default, the simulated machine can access the entire file tree of the host
+computer from the mount point (typically <tt>/host</tt>).
+<p>
+
+This can sometimes be inconvenient (or dangerous, if the simulator runs
+untrusted or unreliable code), so it is recommended to set the directory that
+is visible to the simulated machine using the <b>&lt;hostfs&gt;.root</b>
+command, e.g.:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>hfs0.root /home/alice/sandbox</b>
+</pre>
+<p>
+The command will take effect next time SimicsFS is mounted.
+<p>
+Because of implementation limitations, it is recommended that SimicsFS be
+chiefly used to copy files into and out from the target machine. In particular,
+executing binaries residing on the host machine may be unreliable.
+<p>
+<hr class="jdocu_note"><b>Note:</b> When saving a checkpoint while a SimicsFS is mounted, take care that the
+host files that were used at that time are kept unchanged when the checkpoint
+is loaded.<hr class="jdocu_note"> 
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic32.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic34.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,24 @@
+if not defined cpu_class     {$cpu_class   = "ppc603e"}
+if not defined freq_mhz      {$freq_mhz      = 500}
+if not defined memory_megs   {$memory_megs   = 256}
+
+###
+
+add-directory "%simics%/targets/ppc-simple/images/"
+
+import-ppc-simple-components 
+import-std-components 
+
+$system = (create-ppc-simple cpu_class = $cpu_class
+                             cpu_frequency = $freq_mhz
+                             memory_megs = $memory_megs)
+$con = (create-std-text-console)
+$system.connect $con
+
+# Allow user to control colors and font of serial terminal
+if $terminal_bg_color {$con->bg_color = $terminal_bg_color}
+if $terminal_fg_color {$con->fg_color = $terminal_fg_color}
+if $terminal_win32_font {$con->win32_font = $terminal_win32_font}
+if $terminal_x11_font {$con->x11_font = $terminal_x11_font}
+
+$machine_defined = 1

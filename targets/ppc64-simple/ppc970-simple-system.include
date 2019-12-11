@@ -1,0 +1,17 @@
+if not defined freq_mhz      {$freq_mhz    = 100}
+if not defined memory_megs   {$memory_megs = 256}
+if not defined rtc_time      {$rtc_time    = "2006-07-18 16:41:00 UTC"}
+###
+
+add-directory "%simics%/targets/ppc64-simple/images"
+
+import-std-components
+import-ppc970fx-components
+
+$system = (create-ppc970-simple cpu_frequency = $freq_mhz
+                                memory_megs = $memory_megs
+                                time_of_day = $rtc_time)
+
+$system.connect uart0 (create-std-text-console)
+
+$machine_defined = 1

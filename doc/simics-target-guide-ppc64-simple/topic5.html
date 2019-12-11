@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(37, true);
+</script>
+<a name="label105"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Limitations</h2 class="jdocu">
+
+
+This chapter contains the limitations that exist on the PowerPC 970fx
+processor core.
+The SPRs listed do currently have no associated side-effect when
+either the register is read or written. In many cases this is not
+a problem even when code do use these registers. 
+<p>
+The instructions implemented as no-operation (NOPs) will just 
+execute without any side-effects at all.
+<p>
+<a name="label106"></a><h3 class="jdocu">6.1&nbsp;&nbsp;&nbsp;PowerPC 970fx limitations</h3 class="jdocu">
+
+
+<a name="label107"></a><h4 class="jdocu">6.1.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">ACCR</td><td class="jdocu_noborder">29</td><td class="jdocu_noborder">Address Compare Control Register</td></tr>
+<tr><td class="jdocu_noborder">MMCR0</td><td class="jdocu_noborder">795</td><td class="jdocu_noborder">Performance Monitor Control Register 0</td></tr>
+<tr><td class="jdocu_noborder">MMCR1</td><td class="jdocu_noborder">798</td><td class="jdocu_noborder">Performance Monitor Control Register 1</td></tr>
+<tr><td class="jdocu_noborder">MMCRA</td><td class="jdocu_noborder">786</td><td class="jdocu_noborder">Performance Monitor Control Register 2</td></tr>
+</table></span>
+<a name="label108"></a><h4 class="jdocu">6.1.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Floating-point estimate instructions are not bit exact.<a name="label109"></a><h4 class="jdocu">6.1.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+None
+<a name="label110"></a><h4 class="jdocu">6.1.4&nbsp;&nbsp;&nbsp;Instructions Implemented as NOPs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dss[all]</td></tr>
+</table></span>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

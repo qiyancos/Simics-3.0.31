@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>branch_recorder</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(558, true);
+</script>
+<a name="label3987"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+<h3 class="jdocu">branch_recorder</h3 class="jdocu">
+
+
+<a name="label3988"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2886">Simics Core</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <b>branch_recorder</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic490.html#label17697">branch_arc</a>, <a class="jdocu" href="topic487.html#label17681">address_profiler</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+A branch recorder records the branches taken by the zero or more processors that it is attached to. For each pair of addresses, the branch recorder keeps track of how many times the processors have branched from the first to the second address. This information can be used directly, or be processed to yield e.g. execution count for each address.
+
+</dd>
+
+</dl>
+<a name="label3989"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>address_type</i></b></dt><a name="label3990"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Record physical or virtual addresses?</dd></dl>
+<dl><dt><b><i>clean</i></b></dt><a name="label3991"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Nil</b>.
+<p>
+Write <tt>nil</tt> to this attribute to erase all recorded branch arcs.</dd></dl>
+<dl><dt><b><i>cpu_type</i></b></dt><a name="label3992"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+Type of processor this branch recorder can handle.</dd></dl>
+<dl><dt><b><i>num_arcs</i></b></dt><a name="label3993"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Number of branch arcs in this recorder.</dd></dl>
+<dl><dt><b><i>processors</i></b></dt><a name="label3994"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+Processors this branch recorder is attached to.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label3995"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic487.html#label17681">address_profiler</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic487.html#label17684">address-profile-data</a>, <a class="jdocu" href="topic487.html#label17686">address-profile-info</a>, <a class="jdocu" href="topic487.html#label17688">address-profile-toplist</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3997">clean</a></b></td><td class="jdocu_noborder">delete all branch arcs in the branch recorder</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3999">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4001">print-branch-arcs</a></b></td><td class="jdocu_noborder">print branch arcs</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4003">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label3996"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label3997"></a><a name="label3998"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;branch_recorder&gt;.clean</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;branch_recorder&gt;.clean</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Delete all branch arcs stored in the branch recorder.</dd>
+
+</dl>
+
+
+
+<a name="label3999"></a><a name="label4000"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;branch_recorder&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;branch_recorder&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label4001"></a><a name="label4002"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;branch_recorder&gt;.print-branch-arcs</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;branch_recorder&gt;.print-branch-arcs</b> [<i>"direction"</i>] [<i>start</i>] [<i>stop</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print a subset of the branch arcs in a branch recorder. With no
+arguments, print all arcs. Given <i>start</i> and <i>stop</i>
+addresses, print only arcs with 'to' or 'from' address in that
+interval, depending on whether <i>direction</i> is 'to' or 'from' (its
+default value is 'from'). The printed arcs are sorted by their 'to' or
+'from' address, as specified by <i>direction</i>.</dd>
+
+</dl>
+
+
+
+<a name="label4003"></a><a name="label4004"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;branch_recorder&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;branch_recorder&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+</body>
+</html>

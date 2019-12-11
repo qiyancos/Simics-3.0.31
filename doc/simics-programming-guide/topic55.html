@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Writing a PCI Device in DML</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(130, true);
+</script>
+<a name="label253"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic54.html">Previous</a> - <a class="jdocu" href="topic53.html">Up</a> - <a class="jdocu" href="topic56.html">Next</a></span></p>
+<h3 class="jdocu">11.2&nbsp;&nbsp;&nbsp;Writing a PCI Device in DML</h3 class="jdocu">
+
+
+<p>
+<a name="label254"></a><h4 class="jdocu">11.2.1&nbsp;&nbsp;&nbsp;Overview</h4 class="jdocu">
+
+
+<p>
+<hr class="jdocu_note"><b>Note:</b> This chapter assumes a basic knowledge of the PCI standard, how PCI is
+modelled in Simics and how to program in DML. Refer to the <em>Simics User
+Guide</em> for Simics PCI modelling information.<hr class="jdocu_note">
+<p>
+Creating a minimal PCI device is very easy: you just need to import the file
+<tt>pci-device.dml</tt> in your device. It will define the following:
+<p>
+<ul>
+<p>
+<li>A PCI configuration register bank called <tt>pci_config</tt>, populated
+with the registers defined by the PCI standard.</li>
+<p>
+<li>A <tt>pci_bus</tt> <em>connect</em> object to let the PCI device be
+plugged into a PCI bus.</li>
+<p>
+<li>Several functions to handle DMA and interrupts.</li>
+<p>
+<li>Several templates to add PCI or PCI Express capabilities to the device with
+minimal effort.</li>
+<p>
+</ul>
+<p>
+In this section, we will use as an example the model of a DEC21140A network
+card. The source code of the model is available in the
+<tt>src/devices/DEC21140A-dml/</tt> directory and section <a class="jdocu" href="topic52.html#label247">10.3</a> contains a more complete description. Let us
+now create a minimal DEC21140A:
+<p>
+<pre class="jdocu_small" style="color: black">
+dml 1.0;
+
+device DEC21140A_dml;
+
+import "utility.dml";
+import "io-memory.dml";
+import "pci-device.dml";
+</pre>
+<p>
+We now have a working&#8212;although not very useful&#8212;PCI device. Let us
+have a closer look at what is provided by <tt>pci-device.dml</tt>.
+<p>
+
+<a name="label255"></a><h4 class="jdocu">11.2.2&nbsp;&nbsp;&nbsp;pci_config Bank</h4 class="jdocu">
+
+
+<p>
+The <tt>pci_config</tt> bank defines the standard PCI configuration registers
+for a type 0 PCI header. Following the PCI standard, it interprets all accesses
+as little-endian.
+<p>
+Some of the registers defined by <tt>pci_config</tt> have a <b>default
+value</b>. Others need to be customized before the device can be used. The
+<i>vendor_id</i>, <i>device_id</i>, <i>revision_id</i>,
+<i>class_code</i>, <i>subsystem_vendor_id</i> and
+<i>subsystem_id</i> registers are handled in a special way to cover the
+different possible implementations. They are declared as
+<tt>maybe_constant</tt> registers, which gives them the following behavior: if
+you set the parameter <tt>value</tt> in one of them, this register will
+act as a constant. If you do not set <tt>value</tt>, it will act as a
+read-write register, and take <tt>hard_reset_value</tt> as initial value.
+<p>
+In the DEC21140A device, <tt>pci_config</tt> is extended to give some of these
+registers a constant value:
+<p>
+<pre class="jdocu_small" style="color: black">
+bank pci_config {
+    ...
+    register revision_id { parameter value = 0x21; }
+    register class_code { parameter value = 0x020000; }
+    ...
+    register subsystem_vendor_id { parameter value = 0x0E11; }
+    register subsystem_id { parameter value = 0xB0BB; }
+    ...
+}
+</pre>
+<p>
+<b>Base address registers</b> are not defined by default, but a set of
+templates is provided for you to customize them. Refer to section <a class="jdocu" href="#label256">11.2.3</a> for more information.
+<p>
+The <tt>pci_config</tt> bank defines a number of <b>functions that can be
+called</b> to let the PCI device perform various actions:
+<p>
+<dl><dt><b><tt>pci_raise_interrupt()</tt> and <tt>pci_lower_interrupt()</tt></b></dt><dd>Respectively raise and lower the interrupt pin defined by the value of the
+register <i>interrupt_pin</i>. A call to one of these functions has no
+effect if the interrupt is already in the desired status.</dd><dt><b><tt>pci_system_error()</tt></b></dt><dd>Send a SERR# signal to the PCI
+bus.</dd><dt><b><tt>update_all_mappings()</tt></b></dt><dd>This function is described in
+section <a class="jdocu" href="#label258">Template, Parameters, and Functions</a>.</dd></dl>
+<p>
+As an example, the DEC21140A model handles interrupt in the following way (from
+<tt>DEC21140A-eth.dml</tt>):
+<p>
+<pre class="jdocu_small" style="color: black">
+// Update interrupt summary and PCI interrupt pin 
+// according to current status
+method update_interrupts()
+{
+    // update interrupt summary
+    ...
+
+    // set PCI interrupt pin
+    if (($csr.csr5.nis | $csr.csr5.ais) != 0)
+        call $pci_config.pci_raise_interrupt();
+    else
+        call $pci_config.pci_lower_interrupt();
+}
+</pre>
+<p>
+The <tt>pci_config</tt> bank also provides a number of <b>functions that you
+can override</b> with your own implementation to react to some PCI events:
+<p>
+<dl><dt><b><tt>interrupt_ack()</tt></b></dt><dd>Called when an Interrupt Acknowledge
+cycle has been sent to the bus. The default function only prints a
+warning. Unless your system uses Interrupt Acknowledge cycle, which is pretty
+uncommon, you can leave this function as it is.</dd><dt><b><tt>bus_reset()</tt></b></dt><dd>Called when the bus is reset. The default
+function performs a soft-reset on the device and remove all BAR mappings. You
+should override this function if you need to perform some special action at
+reset that is can not be handled by the <b><i>soft_reset()</i></b> functions of
+the registers.</dd></dl>
+<p>
+The parameter <tt>busmaster</tt> can be overridden in the
+<tt>pci_config</tt> bank to prevent the device from doing DMA accesses. It
+defaults to true.
+<p>
+
+<a name="label256"></a><h4 class="jdocu">11.2.3&nbsp;&nbsp;&nbsp;Base Address Registers</h4 class="jdocu">
+
+
+<p>
+<a name="label257"></a><h5 class="jdocu">Introduction</h5 class="jdocu">
+
+
+<p>
+The base address registers (BARs) are not defined by <tt>pci_config</tt>, in
+order to leave you complete freedom to organize them. By default, they will map
+the PCI device itself in either the PCI memory or I/O space, depending on the
+type of BAR defined. To each BAR is associated a <em>function number</em>
+(controlled by the <tt>map_func</tt> parameter) that will be used to
+identify which mapping of the PCI device is accessed. To let some automatic
+functions handle the base address registers, you will need to provide a list of
+active BAR by overriding the <tt>base_address_registers</tt> parameter.
+<p>
+Let us take an example. The following device defines one I/O BAR and two memory
+BARs:
+<p>
+<pre class="jdocu_small" style="color: black">
+bank pci_config {
+    ...
+    parameter base_address_registers = ["base_address_0",
+                                        "base_address_1",
+                                        "base_address_2"];
+
+    register base_address_0 @ 0x10 is (io_base_address) {
+        parameter size_bits = 7;
+        parameter map_func = 2;
+    }
+    register base_address_1 @ 0x14 is (memory_base_address) {
+        parameter size_bits = 12;
+        parameter map_func = 2;
+    }
+    register base_address_2 @ 0x18 is (memory_base_address) {
+        parameter size_bits = 14;
+        parameter map_func = 6;
+    }
+    // Other base address registers are not used
+    register base_address_3 @ 0x1C is (no_base_address);
+    register base_address_4 @ 0x20 is (no_base_address);
+    register base_address_5 @ 0x24 is (no_base_address);
+    ...
+}
+</pre>
+<p>
+The BAR <i>base_address_0</i> is defined as mapping into PCI I/O space. The
+<tt>map_func</tt> parameter indicates that our PCI device will be mapped
+with the function number 2. The <tt>size_bits</tt> parameter determines
+how many address bits will be used in the BAR, and thus how big the mapping
+is. A <tt>size_bits</tt> of 7 means that the bits [31:7] will be used,
+thus the mapping will be 128 bytes long (2 &lt;&lt; 7).
+<p>
+The BAR <i>base_address_1</i> is defined as mapping into PCI memory
+space. The PCI device will be mapped in a 4096 bytes space. The mapping will
+use the function number 2 as well, thus the PCI device won't see any difference
+between an I/O access via the BAR0 space and a memory access via the BAR1
+space.
+<p>
+The BAR <i>base_address_2</i> is defined as mapping into PCI memory
+space. The PCI device will be mapped in a 16384 bytes space. The mapping will
+use the function number 6.
+<p>
+In DML, the function number associated to the mapping is usually used to
+determine which register bank should be accessed (each register bank has to
+have a <tt>function</tt> number). This makes it very easy to map a given
+register bank via the PCI BAR mechanism. If we add the following code to our
+example:
+<p>
+<pre class="jdocu_small" style="color: black">
+bank first_bank {
+    parameter function = 2;
+    ...
+}
+
+bank second_bank {
+    parameter function = 6;
+    ...
+}
+</pre>
+<p>
+The bank <tt>first_bank</tt> will be mapped by BAR0 in I/O space and BAR1 in
+memory-space. The bank <tt>second_bank</tt> will be accessible via the space
+define by BAR2. No additional code is necessary for the device to automatically
+receive accesses to the right register bank.
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <tt>pci_config</tt> bank is defined as having a function number of
+255. This is a Simics convention that allows the PCI bus object to
+automatically map the configuration registers of PCI devices in the
+configuration space and ensure that the right register bank is handling the
+access.<hr class="jdocu_note">
+<p>
+
+<a name="label258"></a><h5 class="jdocu">Template, Parameters, and Functions</h5 class="jdocu">
+
+
+<p>
+The following templates are provided to define base address registers:
+<p>
+<dl><dt><b><tt>memory_base_address</tt></b></dt><dd>Defines a 32-bit memory base
+address register.</dd><dt><b><tt>memory_base_address_64</tt></b></dt><dd>Defines a 64-bit memory base
+address register. Note that the register will be 8 bytes wide.</dd><dt><b><tt>io_base_address</tt></b></dt><dd>Defines a 32-bit I/O base address
+register.</dd><dt><b><tt>no_base_address</tt></b></dt><dd>Defines a 4-bytes long
+non-implemented base address register.</dd></dl>
+<p>
+The following parameters can be customized in a given base address register:
+<p>
+<dl><dt><b><tt>map_func</tt></b></dt><dd>Function number associated to the
+mapping.</dd><dt><b><tt>size_bits</tt></b></dt><dd>Least significant bit for the base
+address, which indicates the size of the mapping.</dd></dl>
+<p>
+A base address register is composed of the following fields:
+<p>
+<ul>
+<p>
+<li>The field <i>s</i> at bit 0. Its default value is automatically defined
+by the type of mapping chosen (0 for memory and 1 for I/O). However, you can
+redefine it by setting the parameter <tt>override_map_bit</tt> to either
+0 or 1.</li>
+<p>
+<li>The field <i>type</i> (only for memory base address registers) at bits
+[2:1] is a constant defining the type of the mapping. It defaults to 0.</li>
+<p>
+<li>The field <i>p</i> at bit 3 for memory base address registers and 1 for
+I/O base address registers. It defines whether the mapping is prefetchable or
+not. It defaults to 0.</li>
+<p>
+<li>The field <i>base</i> at bits [31:$size_bits] or [63:$size_bits]
+contains the base address and will automatically remap the space it controls
+when changed.</li>
+<p>
+</ul>
+<p>
+Note that the three first fields have <b>no functional meaning in Simics</b>,
+i.e., changing <i>s</i> will not change in which space the mapping is
+done. The only field having side-effects is the <i>base</i> field.
+<p>
+A base register address gives you access to the following functions:
+<p>
+<dl><dt><b><tt>update_mapping()</tt></b></dt><dd>Triggers a de-mapping and remapping of the space controlled by the
+BAR. This is a useful function if the <i>base</i> is changed by some other
+means than a memory transaction.</dd><dt><b><tt>pci_mapping_enabled() -&gt; (bool enabled)</tt></b></dt><dd>This function is called to check whether a mapping is enabled or not. By
+default, it returns always true, but you can override it to check, for example,
+another register before enabling the mapping. Note that the standard control
+provided by the bits <tt>io</tt> and <tt>mem</tt> in the <i>command</i>
+register in <tt>pci_config</tt> are taken into account <em>independently</em>
+of the value returned by <b><i>pci_mapping_enabled()</i></b>.</dd><dt><b><tt>pci_mapping_object() -&gt; (conf_object_t *obj)</tt></b></dt><dd>This function is called to obtain the object that should be mapped by the
+BAR. By default, the PCI object itself is returned, but this can be customized
+to be any object. Note that this function is called <b>when removing and when
+adding the mapping</b> to the corresponding PCI space, so it is responsible for
+returning <b>the same value</b> for the automatic mapping mechanism to work
+properly.</dd><dt><b><tt>pci_mapping_target() -&gt; (conf_object_t *target)</tt></b></dt><dd>This function is called to obtain the target that should be mapped by the
+BAR. By default, no target is used. This function allows a PCI device to create
+a translator or bridge mapping for another object. It is only called when
+mapping in the PCI space.</dd><dt><b><tt>pci_mapping_customize(map_info_t *info)</tt></b></dt><dd>This function is called after the <tt>map_info_t</tt> information for
+the mapping has been set up but before the mapping is done. It allows you to
+customize the <tt>map_info_t</tt> structure (changing the base address, the
+size, the priority, etc.) in any way you want, except for the function number
+associated with the mapping, as this would break the automatic mapping
+mechanism. The device will print out a warning if you attempt to do that and
+ignore the new value.</dd><dt><b><tt>pci_bar_size_bits() -&gt; (int bits)</tt></b></dt><dd>This function is called when reading the BAR value and when creating
+the mapping. By default, <tt>size_bits</tt> is returned. By overriding this
+function it is possible to create dynamically resizable BARs, where the size
+is configured by e.g. another configuration register.</dd><dt><b><tt>pci_bar_is_64() -&gt; (bool is_bar_64)</tt></b></dt><dd>This function is called when reading the BAR value and when creating
+the mapping, but only for 64-bit memory BARs. By default, true is returned.
+If false is returned, the base address will be limited to 32 bits. In other
+words, it allows you to dynamically reconfigure a 64-bit BAR to 32 bits.</dd></dl>
+<p>
+The <tt>pci_config</tt> bank also gives you access to the
+<b><i>update_all_mappings()</i></b> function that calls
+<b><i>update_mapping()</i></b> on all active base address registers (defined by
+the <tt>base_address_registers</tt> parameter).
+<p>
+
+<a name="label259"></a><h5 class="jdocu">Expansion ROM</h5 class="jdocu">
+
+
+<p>
+The <i>expansion_rom_base</i> register is an already customized base
+address register that will map the ROM object provided by the attribute
+<i>expansion_rom</i>. To enable this register, you need to set the
+<tt>enabled</tt> parameter to true, and specify the
+<tt>map_func</tt> and <tt>size_bits</tt> parameters.
+<p>
+
+<p>
+
+<a name="label260"></a><h4 class="jdocu">11.2.4&nbsp;&nbsp;&nbsp;Functions</h4 class="jdocu">
+
+
+<p>
+A number of functions are provided to help writing PCI devices:
+<p>
+<dl><dt><b><b><i>pci_data_from_memory()</i></b> and
+<b><i>pci_value_from_memory()</i></b></b></dt><dd><pre class="jdocu_small" style="color: black">pci_data_from_memory(addr_space_t space, void *buffer,
+                     uint64 address, uint64 size)
+    -&gt; (exception_type_t ex)
+
+pci_value_from_memory(addr_space_t space, uint64 address,
+                      uint8 size) 
+    -&gt; (uint64 value, exception_type_t ex)</pre>
+<p>
+Perform a DMA read.</dd><dt><b><b><i>pci_data_to_memory()</i></b> and <b><i>pci_value_to_memory()</i></b></b></dt><dd><pre class="jdocu_small" style="color: black">pci_data_to_memory(addr_space_t space, void *buffer, 
+                   uint64 address, uint64 size)
+    -&gt; (exception_type_t ex)
+
+method pci_value_from_memory(addr_space_t space, uint64 address, 
+                             uint8 size)
+    -&gt; (uint64 value, exception_type_t ex)</pre>
+<p>
+Perform a DMA write.</dd></dl>
+<p>
+For example, the DEC21140A model reads its descriptors with the following
+function:
+<p>
+<pre class="jdocu_small" style="color: black">
+// Read a descriptor from memory at address 'addr' to fill in 'desc'
+method read_descriptor(descriptor_t *desc, uint32 addr) 
+    -&gt; (exception_type_t ex)
+{
+    local int i;
+    local uint32 *desc_data = cast(desc, uint32 *);
+
+    log "info", 4, 0: "Fetching a descriptor at address 0x%x", addr;
+    call $pci_data_from_memory(Sim_Addr_Space_Memory, 
+                               cast(desc, void *), addr,
+                               sizeof(descriptor_t))
+        -&gt; (ex);
+    ...
+}
+</pre>
+<p>
+
+<a name="label261"></a><h4 class="jdocu">11.2.5&nbsp;&nbsp;&nbsp;PCI and PCIe Capabilities</h4 class="jdocu">
+
+
+<p>
+The command DML PCI code contains templates for a number of capabilities. These
+templates do not provide any side-effects. Registers are behaving as they are
+expected to by software (<tt>read_only</tt>, <tt>read_write</tt>,
+<tt>write_1_clears</tt>, etc.) but all other side-effects should be
+customized.
+<p>
+Each template provides two parameters that should be overridden: an offset
+parameter that defines where the capability begins in the configuration
+registers space, and a next pointer parameter that defines where the next
+capability will be.
+<p>
+A device with the Power Management capability defined by the PCI standard could
+be implemented this way:
+<p>
+<pre class="jdocu_small" style="color: black">
+bank pci_config {
+    ...
+    // Power Management
+    parameter pm_offset = 0x50;
+    parameter pm_next_ptr = 0x58;
+    is defining_pci_power_management_capability;
+
+    // Customize the Power Management capability
+    register pm_capabilities {
+        field version  { parameter hard_reset_value = 0x2; }
+        field ds_init  { parameter hard_reset_value = 0x1; }
+        field pme_supp { parameter hard_reset_value = 0x19; }
+    }
+    ...
+}
+</pre>
+<p>
+These are the available capabilities with their related parameters:
+<p>
+<dl><dt><b>Power Management</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pci_power_management_capability
+    parameter pm_offset
+    parameter pm_next_ptr</pre></dd><dt><b>MSI (32 bits)</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_msi_capability
+    parameter msi_offset
+    parameter msi_next_ptr</pre></dd><dt><b>MSI (64 bits)</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_msi64_capability
+    parameter msi_offset
+    parameter msi_next_ptr</pre></dd><dt><b>PCI-X</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pcix_capability
+    parameter pcix_offset
+    parameter pcix_next_ptr</pre></dd><dt><b>PCI Express</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pci_express_capability
+    parameter exp_offset
+    parameter exp_next_ptr</pre></dd><dt><b>PCI Express Advanced Error Reporting Capability</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pcie_advanced_error_reporting_capability
+    parameter aer_offset
+    parameter aer_next_ptr</pre></dd><dt><b>Device Serial Number Extended Capability</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pci_device_serial_number_extended_capability
+    parameter dsn_offset
+    parameter dsn_next_ptr</pre></dd><dt><b>Device Power Budgeting Extended Capability</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pci_device_power_budgeting_extended_capability
+    parameter dpb_offset
+    parameter dpb_next_ptr</pre></dd><dt><b>Virtual Channel Extended Capability</b></dt><dd>
+<pre class="jdocu_small" style="color: black">template defining_pci_virtual_channel_extended_capability
+    parameter vce_offset
+    parameter vce_next_ptr</pre></dd></dl>
+<p>
+
+<a name="label262"></a><h4 class="jdocu">11.2.6&nbsp;&nbsp;&nbsp;Source Code</h4 class="jdocu">
+
+
+<p>
+For more detailed information, the source code of the PCI templates and
+functions is available in your installation in the directory
+<tt>[simics]/</tt><em>host</em><tt>/lib/dml/1.0/</tt>, in the files
+<tt>pci-device.dml</tt> and <tt>pci-common.dml</tt>.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic54.html">Previous</a> - <a class="jdocu" href="topic53.html">Up</a> - <a class="jdocu" href="topic56.html">Next</a></span></p>
+</body>
+</html>

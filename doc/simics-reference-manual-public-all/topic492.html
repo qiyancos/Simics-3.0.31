@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>bridge</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2230, true);
+</script>
+<a name="label17719"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic491.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic493.html">Next</a></span></p>
+<h3 class="jdocu">bridge</h3 class="jdocu">
+
+
+<a name="label17720"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic100.html#label6318">GT64120-pci</a>, <a class="jdocu" href="topic55.html#label4766">cpc700-pci</a>, <a class="jdocu" href="topic87.html#label5632">fiesta-tomatillo</a>, <a class="jdocu" href="topic103.html#label6365">i21150</a>, <a class="jdocu" href="topic104.html#label6385">i21152</a>, <a class="jdocu" href="topic105.html#label6405">i21554-prim</a>, <a class="jdocu" href="topic106.html#label6422">i21554-scnd</a>, <a class="jdocu" href="topic107.html#label6435">i21555-prim</a>, <a class="jdocu" href="topic108.html#label6452">i21555-scnd</a>, <a class="jdocu" href="topic116.html#label6673">i82443bx</a>, <a class="jdocu" href="topic117.html#label6687">i82443bx_agp</a>, <a class="jdocu" href="topic118.html#label6703">i82461GX</a>, <a class="jdocu" href="topic262.html#label9659">ppc405gp-pci</a>, <a class="jdocu" href="topic353.html#label13557">serengeti-schizo</a>, <a class="jdocu" href="topic430.html#label14742">sunfire-psycho</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The <tt>bridge</tt> interface is implemented by objects
+   that bridge between memory spaces. The <b><i>not_taken</i></b> function
+   is called if the access is not claimed by any device in the
+   destination memory-space. If a memory transaction reaches a mapping
+   that has the same bridge object as the previous mapping, the access
+   is considered as not taken, and the <b><i>not_taken</i></b> function
+   for the first bridge mapping is called.
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        exception_type_t (*not_taken)(conf_object_t *NOTNULL obj,
+                                      conf_object_t *NOTNULL src_space,
+                                      conf_object_t *NOTNULL dst_space,
+                                      exception_type_t ex,
+                                      generic_transaction_t *NOTNULL mem_op,
+                                      map_info_t mapinfo);
+} bridge_interface_t;
+
+#define BRIDGE_INTERFACE "bridge"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic491.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic493.html">Next</a></span></p>
+</body>
+</html>

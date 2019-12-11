@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Miscellaneous Notes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(51, true);
+</script>
+<a name="label232"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Miscellaneous Notes</h2 class="jdocu">
+
+
+<a name="label233"></a><h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;The Firmware (ia64-fakeprom)</h3 class="jdocu">
+
+
+<p>
+The Simics/IA64-460GX package contains a firmware implementation called the
+<em>ia64-fakeprom</em>. The fakeprom handles initial bootstrapping, and is
+basically an emulation of the PAL, SAL, and EFI layers of a real Itanium
+system.
+<p>
+<a name="label234"></a><h4 class="jdocu">5.1.1&nbsp;&nbsp;&nbsp;Firmware Interface</h4 class="jdocu">
+
+
+<p>
+The ia64-fakeprom accepts a number of arguments, passed as register values when
+calling the firmware entry point. These arguments are located in input register
+0 to 7. A complete list is given in
+<nobr>figure <a class="jdocu" href="#label235">1</a></nobr>.
+<p>
+<a name="label235"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+<table>
+<tr><td class="jdocu_noborder"><b>Register</b></td><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Usage</b></td></tr>
+<tr></tr>
+<tr><td class="jdocu_noborder">in0</td><td class="jdocu_noborder"><tt>fnc</tt></td><td class="jdocu_noborder">Function selector</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td><td class="jdocu_noborder">If 0, boot with a real EFI implementation</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"><em>(this is currently unsupported)</em></td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td><td class="jdocu_noborder">If 1, use an EFI emulation layer in the fakeprom</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td><td class="jdocu_noborder">If 2, jump directly to <tt>sal_vector[2]</tt></td></tr>
+<tr><td class="jdocu_noborder">in1</td><td class="jdocu_noborder"><tt>debug_flags</tt>  </td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">in2</td><td class="jdocu_noborder"><tt>iobase</tt></td><td class="jdocu_noborder">The base address for memory-mapped i/o</td></tr>
+<tr><td class="jdocu_noborder">in3</td><td class="jdocu_noborder"><tt>entry</tt></td><td class="jdocu_noborder">The entry point of kernel or EFI image</td></tr>
+<tr><td class="jdocu_noborder">in4</td><td class="jdocu_noborder"><tt>rdstart</tt></td><td class="jdocu_noborder">The start address of a Linux ramdisk (initrd)</td></tr>
+<tr><td class="jdocu_noborder">in5</td><td class="jdocu_noborder"><tt>rdstart</tt></td><td class="jdocu_noborder">The size (in bytes) of a Linux ramdisk</td></tr>
+<tr><td class="jdocu_noborder">in6</td><td class="jdocu_noborder"><tt>cmdline</tt></td><td class="jdocu_noborder">Pointer to the boot command line</td></tr>
+<tr><td class="jdocu_noborder">in7</td><td class="jdocu_noborder"><tt>num_cpus</tt></td><td class="jdocu_noborder">If <tt>fnc</tt> &lt; 2: the number of CPUs in the system</td></tr>
+<tr><td class="jdocu_noborder">in7</td><td class="jdocu_noborder"><tt>cpuidx</tt></td><td class="jdocu_noborder">If <tt>fnc</tt> = 2: the index of the current CPU</td></tr>
+</table>
+</center>
+
+</td></tr>
+<tr><td style="text-align: center">Figure 1. The interface to the ia64-fakeprom</td></tr>
+</table>
+
+<p>
+
+<p>
+
+<a name="label236"></a><h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Bundles and instruction addresses</h3 class="jdocu">
+
+
+<p>
+In the IA-64 architectures, instructions are encoded in <i>bundles</i>, which
+are 128 bits (16 bytes).  Each instruction uses 41 bits, and there is an extra
+5-bit template in the bundle.  The first instruction in a bundle is said to be
+in <i>slot 0</i> of the bundle, the second instruction in <i>slot 1</i>, and
+the last instruction in <i>slot 2</i>.
+<p>
+Since individual instruction do not have well-defined addresses,
+Simics uses the encoding scheme (bundle address + slot number) when
+dissassembling instructions.  Bundle addresses are always 16-byte aligned, and
+thus the lower 4 bits in the bundle address are always zero.  When encoding the
+slot number, the lowest two bits of the address is used.
+<p>
+This encoding is also used when setting execution breakpoints. To break on
+execution of the instruction in slot 1 in the bundle located at the address
+0x12340, execute the command <b>break 0x12341</b>.
+<p>
+
+<a name="label237"></a><h3 class="jdocu">5.3&nbsp;&nbsp;&nbsp;Changing the Processor Clock Frequency</h3 class="jdocu">
+
+
+<a name="label238"></a> 
+<a name="label239"></a>
+<a name="label240"></a>
+<p>
+The clock frequency of a simulated processor can be set arbitrarily in
+Simics.  This will not affect the actual speed of simulation, but it
+will affect the number of instructions that need to be executed for a
+certain amount of simulated time to pass.  If your execution only
+depends on executing a certain number of instructions, increasing the clock frequency will take
+the same amount of host time (but a shorter amount of target
+time). However, if there are time based delays of some kind in the simulation,
+these will take  longer to execute. 
+<p>
+At a simulated 1 MHz, one million target instructions will correspond to a
+simulated second (assuming the simple default timing of one cycle per
+instruction). At 100 MHz, on the other hand, it will take 100 million
+target instructions to complete a simulated second. So with a higher clock
+frequency, less simulated target time is going to pass for a certain
+period of host execution time.
+<p>
+If Simics is used to emulate an interactive system (especially one
+with a graphical user interface) it is a good idea to set the clock
+frequency quite low.  Keyboard and mouse inputs events are handled by
+periodic interrupts in most operating systems, using a higher clock
+frequency will result in longer delays between invocations of periodic
+interrupts.  Thus, the simulated system will feel slower in its user
+response, and update the mouse cursor position etc. less frequently.
+If this is a problem, the best technique for running experiments at a
+high clock frequency is to first complete the configuration of the
+machine using a low clock frequency.  Save all configuration changes
+to a disk diff (like when installing operating systems).  Then change
+the configuration to use a higher a clock frequency and reboot the
+target machine.
+<p>
+Note that for a lightly-loaded machine (for example, working at an
+interactive prompt on a serial console to an embedded Linux system),
+Simics will often execute quickly enough at the real target clock
+frequency that there is no need to artifically lower it.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

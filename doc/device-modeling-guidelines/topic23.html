@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Error Reporting</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(37, true);
+</script>
+<a name="label69"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic22.html">Previous</a> - <a class="jdocu" href="topic20.html">Up</a> - <a class="jdocu" href="topic24.html">Next</a></span></p>
+<h3 class="jdocu">9.3&nbsp;&nbsp;&nbsp;Error Reporting</h3 class="jdocu">
+
+<a name="label70"></a>
+
+<p>
+   The model should handle errors in a forgiving way.  Avoid crashing
+   or triggering assertions; instead, log an error message and try to
+   continue anyway.  If necessary, halt the simulator, but allow the
+   user to continue manually.
+<p>
+   There are three different kinds of errors that should be reported
+   by a Simics device:
+<p>
+   <ol>
+   <li><a name="label71"></a><i>Outside architecture</i>
+       error.  A part of the device whose behavior is not specified
+       in the hardware documentation has been accessed.  For example,
+       a reserved register has been written to.</li>
+<p>
+   <li><a name="label72"></a><i>Unimplemented</i> error.  A
+       part of the device which has been left unimplemented in the
+       model (abstracted away) was accessed.  This suggests a bug in
+       the model, or that the model is used with software it was not
+       developed for.
+<p>
+       <a name="label73"></a> In some cases it is sufficient to give
+       a warning for this kind of situation, for example if the model
+       returns approximate or invented values.</li>
+<p>
+   <li><a name="label74"></a><i>Internal</i> error.  The internal
+       state of the model implementation has been corrupted beyond
+       repair.  Look for "this will never happen" comments and
+       reconsider...</li>
+   </ol>
+<p>
+   Simics has extensive support for <a name="label75">logging</a>, allowing you
+   to assign the output to different message categories, and different
+   levels of verbosity. See the <em>DML Reference Manual</em> and
+   the <em>Simics Reference Manual</em> for details.
+   Logging is mostly used during development and debugging of the
+   model, but is also useful to aid inspection of the device state
+   during actual simulation.
+<p>
+   Always use detailed error messages.  Often, the error messages are
+   the only source of information when a bug is reported by
+   another user.  It is not certain that the execution can be repeated, or
+   that the developer will have access to the same setup.
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic22.html">Previous</a> - <a class="jdocu" href="topic20.html">Up</a> - <a class="jdocu" href="topic24.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Simics Micro-Architectural Interface" topic="html/index.html">
+ <topic label="1 About Simics Documentation" href="html/topic0.html">
+  <topic label="1.1 Conventions" href="html/topic1.html">
+  </topic>
+  <topic label="1.2 Simics Guides and Manuals" href="html/topic2.html">
+   <topic label="Simics Installation Guide for Unix and for Windows" href="html/topic3.html">
+   </topic>
+   <topic label="Simics User Guide for Unix and for Windows" href="html/topic4.html">
+   </topic>
+   <topic label="Simics Eclipse User Guide" href="html/topic5.html">
+   </topic>
+   <topic label="Simics Target Guides" href="html/topic6.html">
+   </topic>
+   <topic label="Simics Programming Guide" href="html/topic7.html">
+   </topic>
+   <topic label="DML Tutorial" href="html/topic8.html">
+   </topic>
+   <topic label="DML Reference Manual" href="html/topic9.html">
+   </topic>
+   <topic label="Simics Reference Manual" href="html/topic10.html">
+   </topic>
+   <topic label="Simics Micro-Architectural Interface" href="html/topic11.html">
+   </topic>
+   <topic label="RELEASENOTES and LIMITATIONS files" href="html/topic12.html">
+   </topic>
+   <topic label="Simics Technical FAQ" href="html/topic13.html">
+   </topic>
+   <topic label="Simics Support Forum" href="html/topic14.html">
+   </topic>
+   <topic label="Other Interesting Documents" href="html/topic15.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="2 Introduction" href="html/topic16.html">
+ </topic>
+ <topic label="3 Simics MAI Execution Model" href="html/topic17.html">
+  <topic label="3.1 Dependences" href="html/topic18.html">
+   <topic label="3.1.1 Register Dependences" href="html/topic19.html">
+    <topic label="3.1.1.1 SPARC-V9" href="html/topic20.html">
+    </topic>
+    <topic label="3.1.1.2 x86" href="html/topic21.html">
+    </topic>
+   </topic>
+   <topic label="3.1.2 Control Dependences" href="html/topic22.html">
+   </topic>
+   <topic label="3.1.3 Memory Dependences" href="html/topic23.html">
+   </topic>
+  </topic>
+  <topic label="3.2 Instruction Tree" href="html/topic24.html">
+   <topic label="3.2.1 Tracking Instruction Execution" href="html/topic25.html">
+   </topic>
+   <topic label="3.2.2 Instruction Tree Example" href="html/topic26.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="4 The Micro-Architectural Interface" href="html/topic27.html">
+  <topic label="4.1 Cycle Handler" href="html/topic28.html">
+  </topic>
+  <topic label="4.2 Creating the Instruction Tree" href="html/topic29.html">
+  </topic>
+  <topic label="4.3 Proceeding Instructions" href="html/topic30.html">
+   <topic label="4.3.1 Fetch Phase" href="html/topic31.html">
+   </topic>
+   <topic label="4.3.2 Decode Phase" href="html/topic32.html">
+   </topic>
+   <topic label="4.3.3 Execution Phase" href="html/topic33.html">
+   </topic>
+   <topic label="4.3.4 Retire Phase" href="html/topic34.html">
+   </topic>
+   <topic label="4.3.5 Commit Phase" href="html/topic35.html">
+   </topic>
+   <topic label="4.3.6 Exceptions" href="html/topic36.html">
+   </topic>
+   <topic label="4.3.7 Interrupts" href="html/topic37.html">
+   </topic>
+  </topic>
+  <topic label="4.4 Discarding Instructions" href="html/topic38.html">
+  </topic>
+  <topic label="4.5 Synchronous Instructions" href="html/topic39.html">
+  </topic>
+  <topic label="4.6 Limitations in the Simics MAI Implementation" href="html/topic40.html">
+  </topic>
+ </topic>
+ <topic label="5 The Memory System" href="html/topic41.html">
+  <topic label="5.1 Load-Store Queue" href="html/topic42.html">
+   <topic label="5.1.1 Disabling the Load-Store Queue" href="html/topic43.html">
+   </topic>
+  </topic>
+  <topic label="5.2 Atomic Instructions" href="html/topic44.html">
+  </topic>
+  <topic label="5.3 Consistency Controller" href="html/topic45.html">
+  </topic>
+  <topic label="5.4 Generic Cache OOO" href="html/topic46.html">
+  </topic>
+  <topic label="5.5 Instruction Fetches" href="html/topic47.html">
+  </topic>
+ </topic>
+ <topic label="6 Getting Started with SPARC-V9 MAI" href="html/topic48.html">
+ </topic>
+ <topic label="7 Getting Started with x86 MAI" href="html/topic49.html">
+ </topic>
+ <topic label="8 Using Simics with MAI" href="html/topic50.html">
+  <topic label="8.1 Starting Simics" href="html/topic51.html">
+  </topic>
+  <topic label="8.2 Inspecting State" href="html/topic52.html">
+  </topic>
+  <topic label="8.3 Running and Stepping" href="html/topic53.html">
+  </topic>
+  <topic label="8.4 Breakpoints" href="html/topic54.html">
+  </topic>
+  <topic label="8.5 Checkpointing" href="html/topic55.html">
+  </topic>
+ </topic>
+ <topic label="Appendix A - Micro Architectural Interface API" href="html/topic56.html">
+  <topic label="1 Micro Architecture API Functions" href="html/topic57.html">
+   <topic label="SIM_instruction_begin()" href="html/topic58.html">
+   </topic>
+   <topic label="SIM_instruction_child()" href="html/topic59.html">
+   </topic>
+   <topic label="SIM_instruction_cpu()" href="html/topic60.html">
+   </topic>
+   <topic label="SIM_instruction_end()" href="html/topic61.html">
+   </topic>
+   <topic label="SIM_instruction_force_correct()" href="html/topic62.html">
+   </topic>
+   <topic label="SIM_instruction_get_field_value()" href="html/topic63.html">
+   </topic>
+   <topic label="SIM_instruction_get_reg_info()" href="html/topic64.html">
+   </topic>
+   <topic label="SIM_instruction_get_user_data()" href="html/topic65.html">
+   </topic>
+   <topic label="SIM_instruction_handle_exception()" href="html/topic66.html">
+   </topic>
+   <topic label="SIM_instruction_handle_interrupt()" href="html/topic67.html">
+   </topic>
+   <topic label="SIM_instruction_id_from_mem_op_id()" href="html/topic68.html">
+   </topic>
+   <topic label="SIM_instruction_insert()" href="html/topic69.html">
+   </topic>
+   <topic label="SIM_instruction_is_sync()" href="html/topic70.html">
+   </topic>
+   <topic label="SIM_instruction_length()" href="html/topic71.html">
+   </topic>
+   <topic label="SIM_instruction_nth_id()" href="html/topic72.html">
+   </topic>
+   <topic label="SIM_instruction_opcode()" href="html/topic73.html">
+   </topic>
+   <topic label="SIM_instruction_phase()" href="html/topic74.html">
+   </topic>
+   <topic label="SIM_instruction_proceed()" href="html/topic75.html">
+   </topic>
+   <topic label="SIM_instruction_read_input_reg()" href="html/topic76.html">
+   </topic>
+   <topic label="SIM_instruction_remaining_stall_time()" href="html/topic77.html">
+   </topic>
+   <topic label="SIM_instruction_rewind()" href="html/topic78.html">
+   </topic>
+   <topic label="SIM_instruction_set_stop_phase()" href="html/topic79.html">
+   </topic>
+   <topic label="SIM_instruction_speculative()" href="html/topic80.html">
+   </topic>
+   <topic label="SIM_instruction_squash()" href="html/topic81.html">
+   </topic>
+   <topic label="SIM_instruction_stalling_mem_op()" href="html/topic82.html">
+   </topic>
+   <topic label="SIM_instruction_status()" href="html/topic83.html">
+   </topic>
+   <topic label="SIM_instruction_store_queue_mem_op()" href="html/topic84.html">
+   </topic>
+   <topic label="SIM_instruction_type()" href="html/topic85.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="Appendix B - SPARC-V9 Instructions" href="html/topic86.html">
+ </topic>
+ <topic label="Appendix C - x86 Instructions" href="html/topic87.html">
+ </topic>
+</toc>

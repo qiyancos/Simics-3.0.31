@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>base-trace-mem-hier</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(542, true);
+</script>
+<a name="label3522"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+<h3 class="jdocu">base-trace-mem-hier</h3 class="jdocu">
+
+
+<a name="label3523"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2962">trace</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <b>base-trace-mem-hier</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+None</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The base class for the trace mode.  This module provides an easy way of generating traces from Simics. Actions traced are executed instructions, memory accesses and, occurred exceptions. Traces will by default be printed as text to the terminal but can also be directed to a file in which case a binary format is available as well. It is also possible to control what will be traced by setting a few of the provided attributes.
+
+</dd>
+
+</dl>
+<a name="label3524"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>consumer</i></b></dt><a name="label3525"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Optional consumer object. Must implement trace_consume.</dd></dl>
+<dl><dt><b><i>data_intervals_p</i></b></dt><a name="label3526"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+List of physical address intervals for data tracing. If no intervals are specified, all addresses are traced.</dd></dl>
+<dl><dt><b><i>data_intervals_v</i></b></dt><a name="label3527"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+List of virtual address intervals for data tracing. If no intervals are specified, all addresses are traced.</dd></dl>
+<dl><dt><b><i>enabled</i></b></dt><a name="label3528"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable tracing, 0 to disable.</dd></dl>
+<dl><dt><b><i>file</i></b></dt><a name="label3529"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>s|n</b>.
+<p>
+Name of output file that the trace is written to. If the name ends in <tt>.gz</tt>, the output will be gzipped.</dd></dl>
+<dl><dt><b><i>filter_duplicates</i></b></dt><a name="label3530"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to filter out duplicate trace entries. Useful to filter out multiple steps in looping or repeating instructions.</dd></dl>
+<dl><dt><b><i>print_access_type</i></b></dt><a name="label3531"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable printing of the memory access type, 0 to disable.</dd></dl>
+<dl><dt><b><i>print_data</i></b></dt><a name="label3532"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable printing of data and instruction op codes, 0 to disable.</dd></dl>
+<dl><dt><b><i>print_linear_address</i></b></dt><a name="label3533"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable printing of the linear address, 0 to disable.</dd></dl>
+<dl><dt><b><i>print_memory_type</i></b></dt><a name="label3534"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable printing of the linear address, 0 to disable.</dd></dl>
+<dl><dt><b><i>print_physical_address</i></b></dt><a name="label3535"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable printing of the physical address, 0 to disable.</dd></dl>
+<dl><dt><b><i>print_virtual_address</i></b></dt><a name="label3536"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable printing of the virtual address, 0 to disable.</dd></dl>
+<dl><dt><b><i>raw_mode</i></b></dt><a name="label3537"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 for raw output format, and 0 for ascii. Raw output format is only supported when writing to a file.</dd></dl>
+<dl><dt><b><i>trace_data</i></b></dt><a name="label3538"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable tracing of data, 0 to disable.</dd></dl>
+<dl><dt><b><i>trace_exceptions</i></b></dt><a name="label3539"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable tracing of exceptions, 0 to disable.</dd></dl>
+<dl><dt><b><i>trace_instructions</i></b></dt><a name="label3540"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+<tt>1</tt>|<tt>0</tt> Set to 1 to enable instruction tracing, 0 to disable.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label3541"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3543">start</a></b></td><td class="jdocu_noborder">control default tracer</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3546">stop</a></b></td><td class="jdocu_noborder">stop default tracer</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label3542"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label3543"></a><a name="label3544"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;base-trace-mem-hier&gt;.start</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label3545"></a>&lt;base-trace-mem-hier&gt;.trace-start</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;base-trace-mem-hier&gt;.start</b> [<i>file</i>] [-raw] [-same] <br><b>&lt;base-trace-mem-hier&gt;.stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+An installed tracer is required for this commands to work. Use the
+command <b>new-tracer</b> to get a default tracer.
+<p>
+The <b>start</b> command turns on the tracer. The tracer logs all executed
+instructions, memory accesses and exceptions. The output is written to
+<i>file</i> (appended) if given, otherwise to standard output. If the
+<tt>-raw</tt> flag is used, each trace entry is written in binary form; i.e., a
+<tt>struct trace_entry</tt>. This structure can be found in trace_api.h. Raw
+format can only be written to file.
+<p>
+If the <tt>-same</tt> flag is used, you will get the same output file
+and mode as the last time.
+<p>
+<b>stop</b> switches off the tracer and closes the file. Until you
+have given the <b>stop</b> command, you can not be sure that the
+entire trace has been written to the file.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2159">new-tracer</a></dd>
+
+</dl>
+
+
+
+<a name="label3546"></a><a name="label3547"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;base-trace-mem-hier&gt;.stop</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label3548"></a>&lt;base-trace-mem-hier&gt;.trace-stop</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;base-trace-mem-hier&gt;.stop</b><br><b>&lt;base-trace-mem-hier&gt;.start</b> [<i>file</i>] [-raw] [-same] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+An installed tracer is required for this commands to work. Use the
+command <b>new-tracer</b> to get a default tracer.
+<p>
+The <b>start</b> command turns on the tracer. The tracer logs all executed
+instructions, memory accesses and exceptions. The output is written to
+<i>file</i> (appended) if given, otherwise to standard output. If the
+<tt>-raw</tt> flag is used, each trace entry is written in binary form; i.e., a
+<tt>struct trace_entry</tt>. This structure can be found in trace_api.h. Raw
+format can only be written to file.
+<p>
+If the <tt>-same</tt> flag is used, you will get the same output file
+and mode as the last time.
+<p>
+<b>stop</b> switches off the tracer and closes the file. Until you
+have given the <b>stop</b> command, you can not be sure that the
+entire trace has been written to the file.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2159">new-tracer</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+</body>
+</html>

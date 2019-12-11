@@ -1,0 +1,33 @@
+if not defined machine_count {$machine_count = 3}
+if not defined mac_address   {$mac_address = "00:04:ac:00:50:00"}
+if not defined ip_address    {$ip_address = "10.10.0.50"}
+if not defined host_name     {$host_name = "ebony"}
+if not defined id            {$id = 0}
+
+@from components import mac_as_list, mac_from_list
+@from components import ip_as_list, ip_from_list
+@mac = mac_as_list(simenv.mac_address)
+@ip = ip_as_list(simenv.ip_address)
+
+$host = $host_name
+$create_network = "yes"
+
+if not defined eth_link {
+    import-std-components
+    $eth_link = (create-std-ethernet-link)
+}
+
+$count = 0
+while $count < $machine_count {
+    set-component-prefix "ebony" + $id + "_"
+    $mac_address = `mac_from_list(mac)`
+    $ip_address = `ip_from_list(ip)`
+    $host_name = $host + $id
+    run-command-file "%script%/ebony-vxworks-common.simics"
+    python "mac[5] += 1"
+    python "ip[3] += 1"
+    $id += 1
+    $count += 1
+}
+
+sim->cpus_may_share_memory = 0

@@ -1,0 +1,12 @@
+dml 1.0;
+
+import "pci-bridge.dml";
+
+// Compute the map of the PCI configuration space of the secondary bus to put it
+// in the primary bus configuration space
+method compute_conf_space_window(map, sec, sub) default 
+{
+    map->base = sec << 16;
+    map->start = sec << 16;
+    map->length = (1 << 16) * (sub - sec + 1);    
+}

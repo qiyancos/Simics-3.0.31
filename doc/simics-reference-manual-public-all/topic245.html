@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>piix4_usb_dummy</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1330, true);
+</script>
+<a name="label9218"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic244.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic246.html">Next</a></span></p>
+<h3 class="jdocu">piix4_usb_dummy</h3 class="jdocu">
+
+
+<a name="label9219"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2758">piix4</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>piix4_usb_dummy</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+USB controller from the 440BX chipset.
+
+</dd>
+
+</dl>
+<a name="label9220"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>command</i></b></dt><a name="label9221"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Command register</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label9222"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size, in the byte order of the target machine.</dd></dl>
+<dl><dt><b><i>frame_list_base_address</i></b></dt><a name="label9223"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Frame list base address register</dd></dl>
+<dl><dt><b><i>frame_number</i></b></dt><a name="label9224"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Frame number register</dd></dl>
+<dl><dt><b><i>interrupt_enable</i></b></dt><a name="label9225"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Interrupt enable register</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label9226"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>port_status_control_0</i></b></dt><a name="label9227"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Port Status Control 0</dd></dl>
+<dl><dt><b><i>port_status_control_1</i></b></dt><a name="label9228"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Port Status Control 1</dd></dl>
+<dl><dt><b><i>sof_modify</i></b></dt><a name="label9229"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+SOF modify register</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label9230"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label9232">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label9231"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label9232"></a><a name="label9233"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;piix4_usb_dummy&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;piix4_usb_dummy&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic244.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic246.html">Next</a></span></p>
+</body>
+</html>

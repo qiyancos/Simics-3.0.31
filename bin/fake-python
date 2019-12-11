@@ -1,0 +1,37 @@
+#!/bin/sh
+
+DIR="$0"
+case `uname` in
+    CYGWIN*)
+	DIR="`cygpath "$0"`"
+	;;
+esac
+
+bindir="`dirname "$DIR"`"
+SIMICS_BASE="`cd "$bindir/.."; pwd`"
+HOST_TYPE="`sh "$SIMICS_BASE/scripts/host-type.sh"`"
+DIR="$SIMICS_BASE/$HOST_TYPE"
+
+if [ -n "$LD_LIBRARY_PATH_64" ]; then
+    LD_LIBRARY_PATH_64="$DIR/bin:$DIR/sys/lib:$LD_LIBRARY_PATH_64"
+    export LD_LIBRARY_PATH_64
+fi
+
+LD_LIBRARY_PATH="$DIR/bin:$DIR/sys/lib:$LD_LIBRARY_PATH"
+
+if [ "$HOST_TYPE" = "amd64-linux" -o "$HOST_TYPE" = "x86-linux" ]; then
+    if [ "x`getconf GNU_LIBPTHREAD_VERSION 2> /dev/null | grep NPTL`" != x ] ; then
+        LD_LIBRARY_PATH="$SIMICS_BASE/$HOST_TYPE/sys/lib/nptl:$LD_LIBRARY_PATH"
+    fi
+fi
+
+export LD_LIBRARY_PATH
+
+if [ $# -eq 0 ] ; then
+    echo "Usage: $0 -c command | script"
+    exit 1
+elif [ $# -eq 2 -a "x$1" = "x-c" ] ; then
+    "$DIR/bin/simics-common" -quiet -no-copyright -batch-mode -e "@$2"
+else
+    "$DIR/bin/simics-common" -quiet -python "$@"
+fi

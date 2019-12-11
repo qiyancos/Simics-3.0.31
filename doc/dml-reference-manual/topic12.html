@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Attributes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label96"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+<h3 class="jdocu">3.8&nbsp;&nbsp;&nbsp;Attributes</h3 class="jdocu">
+
+
+<p>
+An <em>attribute</em> object in DML represents a Simics configuration
+object attribute of the device. An attribute is basically a name with an
+associated pair of <b><i>get</i></b> and <b><i>set</i></b> functions; see Section
+<a class="jdocu" href="topic31.html#label417">5.2.3</a>. The type of the value read and written
+through the get/set functions is controlled by the <tt>type</tt>
+parameter; see Section <a class="jdocu" href="topic30.html#label302">5.1.4</a>. More
+information about configuration object attributes can be found in the
+<em>Simics Programming Guide</em>.
+<p>
+Attributes can be used to provide synthetic information about the device
+for inspection, or as a simple programming interface. By default,
+attributes are saved automatically when a Simics checkpoint is created;
+this is controlled by the the <tt>configuration</tt> parameter.
+<p>
+Note that an attribute is not required to save the written value; this
+is entirely dependent on the intended semantics of the attribute. For
+example, a very simple attribute could do nothing in the <b><i>set</i></b>
+function, and always return zero from the <b><i>get</i></b> function.
+<p>
+By defining the <tt>allocate_type</tt> parameter, the <b><i>get</i></b> and
+<b><i>set</i></b> functions and the <tt>type</tt> parameter can be created
+automatically, for simple attribute types that store the written value.
+<p>
+For attributes defined using <tt>allocate_type</tt>, the value of the
+attribute can be accessed within DML by referencing the object directly,
+e.g.:
+<pre class="jdocu_small" style="color: black">
+    log "info": "the value of attribute a is %d", $dev.a;
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+</body>
+</html>

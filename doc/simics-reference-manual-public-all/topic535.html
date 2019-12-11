@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>sparc_v9</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2276, true);
+</script>
+<a name="label17966"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic534.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic536.html">Next</a></span></p>
+<h3 class="jdocu">sparc_v9</h3 class="jdocu">
+
+
+<a name="label17967"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic453.html#label15309">ultrasparc-ii</a>, <a class="jdocu" href="topic454.html#label15397">ultrasparc-iii</a>, <a class="jdocu" href="topic455.html#label15487">ultrasparc-iii-i</a>, <a class="jdocu" href="topic456.html#label15577">ultrasparc-iii-plus</a>, <a class="jdocu" href="topic457.html#label15667">ultrasparc-iv</a>, <a class="jdocu" href="topic458.html#label15757">ultrasparc-iv-plus</a>, <a class="jdocu" href="topic459.html#label15847">ultrasparc-t1</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   SPARC V9 specific functions.
+ <p>
+   This interface is implemented by SPARC V9 processors to provide
+   various functionality that is specific for this class of processors.
+<p>
+   The <b><i>install_default_class_asi_handler</i></b> installs a function,
+   <i>handler</i>, that is called each time an address is accessed
+   in the <i>asi</i> address space a processor of the same class
+   that <i>cpu</i> belongs to. This function will override
+   the Simics default handling of the selected ASI. The
+   <b><i>install_user_class_asi_handler</i></b> is similar, but is called before
+   the default handler. If this function returns <i>Sim_PE_Default_Semantics</i>
+   the default handler will be called. A return of <i>Sim_PE_No_Exception</i> will
+   override the default handler.
+<p>
+   The function can also return <i>Sim_PE_Ignore_Semantics</i>, this will tell
+   Simics not to update the destination register on loads.
+<p>
+   The function <b><i>access_asi_handler</i></b> allows user access to a specific ASI.
+   In no handler is installed, or the ASI is a memory ASI, 'Data_Access_Exception'
+   will be returned. The real_address pointer in the memory_transaction struct
+   should point to an aligned buffer with big-endian data.
+   <p>
+   Note that installing and accessing ASI handlers using this interface is
+   only supported for non-memory ASIs.
+<p>
+   The <b><i>get_asi_info</i></b> function is used to query Simics about the
+   characteristics of a specified ASI. For example if the ASI is
+   translating, refers to a block access, etc. All available
+   queries/characteristics are listed in the <tt>asi_info_t</tt> enum.
+   <a name="label17968"></a> Several characteristics can be checked at once
+   and the function will return a mask of matching ones.
+<p>
+   The <b><i>read_window_register</i></b> and <b><i>write_window_register</i></b>
+   functions can be used to access registers in any register window. Similarly
+   the <b><i>read_global_register</i></b> and <b><i>write_global_register</i></b> functions
+   provide access to all global registers. The <i>globals</i> argument
+   is used to select the set of global registers to read from. The mapping
+   between global set and set number can be found in the <i>global_set_name</i>
+   attribute in the processor class.
+<p>
+   The register number when accessing windowed registers is 0 - 7 for accesses
+   to the current global registers, 8 - 15 for the out registers of the selected
+   window, 16 - 23 for the local registers, and 24 - 32 for the in registers.
+<p>
+   There are several functions that can be used to read and write floating point
+   register values. The <tt>_i</tt> versions use single-precision (32bit) with
+   integer representation, the <tt>_s</tt> versions use single-precision float
+   representation, <tt>_x</tt> versions use double-precision (64 bit) integer
+   representation, and the <tt>_d</tt> versions use double-precision and double float
+   representation. Single-precision registers are numbered 0, 1 to 31 and
+   double-precision 0, 2, 62.
+<p>
+   <span class="jdocu_small">
+   <pre class="jdocu_small" style="color: black">typedef struct sparc_v9_interface {
+
+        void (*install_default_class_asi_handler)(
+                conf_object_t *cpu,
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+        void (*install_user_class_asi_handler)(
+                conf_object_t *cpu,
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+        void (*remove_default_class_asi_handler)(
+                conf_object_t *cpu,
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+        void (*remove_user_class_asi_handler)(
+                conf_object_t *cpu,
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+
+        exception_type_t (*access_asi_handler)(conf_object_t *cpu,
+                                               v9_memory_transaction_t *mem_op);
+
+        int (*get_asi_info)(conf_object_t *cpu, int asi, asi_info_t info);
+
+        uinteger_t (*read_window_register)(conf_object_t *cpu,
+                                           int window, int reg);
+
+        void (*write_window_register)(conf_object_t *cpu,
+                                      int window, int reg,
+                                      uinteger_t value);
+
+        uinteger_t (*read_global_register)(conf_object_t *cpu,
+                                           int globals, int reg);
+
+        void (*write_global_register)(conf_object_t *cpu,
+                                      int globals, int reg,
+                                      uinteger_t value);
+
+        uint32  (*read_fp_register_i)(conf_object_t *cpu, int reg);
+        uint64  (*read_fp_register_x)(conf_object_t *cpu, int reg);
+        float   (*read_fp_register_s)(conf_object_t *cpu, int reg);
+        double  (*read_fp_register_d)(conf_object_t *cpu, int reg);
+        void   (*write_fp_register_i)(conf_object_t *cpu,
+                                      int reg, uint32 value);
+        void   (*write_fp_register_x)(conf_object_t *cpu,
+                                      int reg, uint64 value);
+        void   (*write_fp_register_s)(conf_object_t *cpu,
+                                      int reg, float value);
+        void   (*write_fp_register_d)(conf_object_t *cpu,
+                                      int reg, double value);
+
+        /* obsolete installers */
+        void (*install_default_asi_handler)(
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+        void (*install_user_asi_handler)(
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+        void (*remove_default_asi_handler)(
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+        void (*remove_user_asi_handler)(
+                exception_type_t (*handler)(conf_object_t *,
+                                            generic_transaction_t *),
+                int asi);
+} sparc_v9_interface_t;
+
+#define SPARC_V9_INTERFACE "sparc-v9"
+</pre>
+<p>
+   </span>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17970">list-asis</a></td><td class="jdocu_noborder">List all ASIs</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17972">pregs-fpu</a></td><td class="jdocu_noborder">print the floating point registers</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17969"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17970"></a><a name="label17971"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;sparc_v9&gt;.list-asis</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;sparc_v9&gt;.list-asis</b> [<i>asi</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print a list of all ASIs for the currently selected
+frontend processor.</dd>
+
+</dl>
+
+
+
+<a name="label17972"></a><a name="label17973"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;sparc_v9&gt;.pregs-fpu</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;sparc_v9&gt;.pregs-fpu</b> [-s] [-d] [-q] [-f] [-x] [-i] [-b] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the contents of the floating point registers.<br>
+This command can take one subregister size flag and one formatting flag.<br>
+The subregister size is selected using the either the -s flag (32-bit single precision), the -d flag (64-bit double precision), or the -q flag (128-bit quad precision).<br>
+The formatting flags -f, -x, and -i select the formatting of the output.
+The -f flag prints the floating-point values of the registers.
+The -x flag prints the contents of the registers as hexadecimal integers.
+The -i flag prints the contents of the registers as decimal integers.
+With the -b flag, the registers are printed in binary floating point form.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic534.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic536.html">Next</a></span></p>
+</body>
+</html>

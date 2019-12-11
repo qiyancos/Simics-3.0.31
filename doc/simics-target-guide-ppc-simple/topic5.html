@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(38, true);
+</script>
+<a name="label115"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Limitations</h2 class="jdocu">
+
+
+<p>
+<a name="label116"></a><h3 class="jdocu">6.1&nbsp;&nbsp;&nbsp;PPC603e Limitations</h3 class="jdocu">
+
+
+<p>
+This chapter contains the limitations that exist on the PowerPC 603e
+processor core.
+The SPRs listed do currently have no associated side-effect when
+either the register is read or written. In many cases this is not
+a problem even when code do use these registers.
+<p>
+The instructions implemented as no-operation (NOPs) will just
+execute without any side-effects at all.
+<p>
+<a name="label117"></a><h4 class="jdocu">6.1.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+None
+<a name="label118"></a><h4 class="jdocu">6.1.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<br>Little endian mode setting in <tt>MSR[LE]</tt> is not implemented.<br>Floating-point estimate instructions are not bit exact.<a name="label119"></a><h4 class="jdocu">6.1.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">eciwx</td></tr>
+<tr><td class="jdocu_noborder">ecowx</td></tr>
+</table></span>
+
+
+<a name="label120"></a><h3 class="jdocu">6.2&nbsp;&nbsp;&nbsp;PPC440GP Limitations</h3 class="jdocu">
+
+
+<p>
+This chapter contains the limitations that exist on the PowerPC 440GP
+processor core.
+The SPRs listed do currently have no associated side-effect when
+either the register is read or written. In many cases this is not
+a problem even when code do use these registers.
+<p>
+The instructions implemented as no-operation (NOPs) will just
+execute without any side-effects at all.
+<p>
+<a name="label121"></a><h4 class="jdocu">6.2.1&nbsp;&nbsp;&nbsp;Unsupported SPRs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder"><b>SPR name</b></td><td class="jdocu_noborder"><b>Number</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder">CCR0</td><td class="jdocu_noborder">947</td><td class="jdocu_noborder">Core Configuration register 0</td></tr>
+<tr><td class="jdocu_noborder">DCDBTRH</td><td class="jdocu_noborder">925</td><td class="jdocu_noborder">Data Cache Debug Tag Register High</td></tr>
+<tr><td class="jdocu_noborder">DCDBTRL</td><td class="jdocu_noborder">924</td><td class="jdocu_noborder">Data Cache Debug Tag Register Low</td></tr>
+<tr><td class="jdocu_noborder">DNV0</td><td class="jdocu_noborder">912</td><td class="jdocu_noborder">Data cache normal victim 0</td></tr>
+<tr><td class="jdocu_noborder">DNV1</td><td class="jdocu_noborder">913</td><td class="jdocu_noborder">Data cache normal victim 1</td></tr>
+<tr><td class="jdocu_noborder">DNV2</td><td class="jdocu_noborder">914</td><td class="jdocu_noborder">Data cache normal victim 2</td></tr>
+<tr><td class="jdocu_noborder">DNV3</td><td class="jdocu_noborder">915</td><td class="jdocu_noborder">Data cache normal victim 3</td></tr>
+<tr><td class="jdocu_noborder">DTV0</td><td class="jdocu_noborder">916</td><td class="jdocu_noborder">Data cache transient victim 0</td></tr>
+<tr><td class="jdocu_noborder">DTV1</td><td class="jdocu_noborder">917</td><td class="jdocu_noborder">Data cache transient victim 1</td></tr>
+<tr><td class="jdocu_noborder">DTV2</td><td class="jdocu_noborder">918</td><td class="jdocu_noborder">Data cache transient victim 2</td></tr>
+<tr><td class="jdocu_noborder">DTV3</td><td class="jdocu_noborder">919</td><td class="jdocu_noborder">Data cache transient victim 3</td></tr>
+<tr><td class="jdocu_noborder">DVC1</td><td class="jdocu_noborder">318</td><td class="jdocu_noborder">Data Value Compare 1</td></tr>
+<tr><td class="jdocu_noborder">DVC2</td><td class="jdocu_noborder">319</td><td class="jdocu_noborder">Data Value Compare 2</td></tr>
+<tr><td class="jdocu_noborder">DVLIM</td><td class="jdocu_noborder">920</td><td class="jdocu_noborder">Data cache victim limit</td></tr>
+<tr><td class="jdocu_noborder">IAC3</td><td class="jdocu_noborder">314</td><td class="jdocu_noborder">Instruction Address Compare 3</td></tr>
+<tr><td class="jdocu_noborder">IAC4</td><td class="jdocu_noborder">315</td><td class="jdocu_noborder">Instruction Address Compare 4</td></tr>
+<tr><td class="jdocu_noborder">ICDBDR</td><td class="jdocu_noborder">979</td><td class="jdocu_noborder">Instruction Cache Debug Data reg</td></tr>
+<tr><td class="jdocu_noborder">ICDBTRH</td><td class="jdocu_noborder">927</td><td class="jdocu_noborder">Instruction Cache Debug Tag Register High</td></tr>
+<tr><td class="jdocu_noborder">ICDBTRL</td><td class="jdocu_noborder">926</td><td class="jdocu_noborder">Instruction Cache Debug Tag Register Low</td></tr>
+<tr><td class="jdocu_noborder">INV0</td><td class="jdocu_noborder">880</td><td class="jdocu_noborder">Instruction cache normal victim 0</td></tr>
+<tr><td class="jdocu_noborder">INV1</td><td class="jdocu_noborder">881</td><td class="jdocu_noborder">Instruction cache normal victim 1</td></tr>
+<tr><td class="jdocu_noborder">INV2</td><td class="jdocu_noborder">882</td><td class="jdocu_noborder">Instruction cache normal victim 2</td></tr>
+<tr><td class="jdocu_noborder">INV3</td><td class="jdocu_noborder">883</td><td class="jdocu_noborder">Instruction cache normal victim 3</td></tr>
+<tr><td class="jdocu_noborder">ITV0</td><td class="jdocu_noborder">884</td><td class="jdocu_noborder">Instruction cache transient victim 0</td></tr>
+<tr><td class="jdocu_noborder">ITV1</td><td class="jdocu_noborder">885</td><td class="jdocu_noborder">Instruction cache transient victim 1</td></tr>
+<tr><td class="jdocu_noborder">ITV2</td><td class="jdocu_noborder">886</td><td class="jdocu_noborder">Instruction cache transient victim 2</td></tr>
+<tr><td class="jdocu_noborder">ITV3</td><td class="jdocu_noborder">887</td><td class="jdocu_noborder">Instruction cache transient victim 3</td></tr>
+<tr><td class="jdocu_noborder">IVLIM</td><td class="jdocu_noborder">921</td><td class="jdocu_noborder">Instruction cache victim limit</td></tr>
+<tr><td class="jdocu_noborder">PIR</td><td class="jdocu_noborder">286</td><td class="jdocu_noborder">Processor ID</td></tr>
+<tr><td class="jdocu_noborder">RSTCFG</td><td class="jdocu_noborder">923</td><td class="jdocu_noborder">Reset configuration</td></tr>
+<tr><td class="jdocu_noborder">DBCR1</td><td class="jdocu_noborder">309</td><td class="jdocu_noborder">Debug Control register 1</td></tr>
+<tr><td class="jdocu_noborder">DBCR2</td><td class="jdocu_noborder">310</td><td class="jdocu_noborder">Debug Control register 2</td></tr>
+<tr><td class="jdocu_noborder">DBDR</td><td class="jdocu_noborder">1011</td><td class="jdocu_noborder">Debug Data Register</td></tr>
+</table></span>
+<a name="label122"></a><h4 class="jdocu">6.2.2&nbsp;&nbsp;&nbsp;Miscellaneous Processor Core Limitations</h4 class="jdocu">
+
+
+<br>PMC: Performance Monitor Counters (PMC) are not supported.<a name="label123"></a><h4 class="jdocu">6.2.3&nbsp;&nbsp;&nbsp;Unimplemented Instructions</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dcread</td></tr>
+<tr><td class="jdocu_noborder">icread</td></tr>
+<tr><td class="jdocu_noborder">macchw</td></tr>
+<tr><td class="jdocu_noborder">macchws</td></tr>
+<tr><td class="jdocu_noborder">macchwsu</td></tr>
+<tr><td class="jdocu_noborder">macchwu</td></tr>
+<tr><td class="jdocu_noborder">machhw</td></tr>
+<tr><td class="jdocu_noborder">machhws</td></tr>
+<tr><td class="jdocu_noborder">machhwsu</td></tr>
+<tr><td class="jdocu_noborder">machhwu</td></tr>
+<tr><td class="jdocu_noborder">maclhw</td></tr>
+<tr><td class="jdocu_noborder">maclhws</td></tr>
+<tr><td class="jdocu_noborder">maclhwsu</td></tr>
+<tr><td class="jdocu_noborder">maclhwu</td></tr>
+<tr><td class="jdocu_noborder">mulchw</td></tr>
+<tr><td class="jdocu_noborder">mulchwu</td></tr>
+<tr><td class="jdocu_noborder">mulhhw</td></tr>
+<tr><td class="jdocu_noborder">mulhhwu</td></tr>
+<tr><td class="jdocu_noborder">nmacchhw</td></tr>
+<tr><td class="jdocu_noborder">nmacchhws</td></tr>
+<tr><td class="jdocu_noborder">nmacchw</td></tr>
+<tr><td class="jdocu_noborder">nmacchws</td></tr>
+<tr><td class="jdocu_noborder">nmaclhw</td></tr>
+<tr><td class="jdocu_noborder">nmaclhws</td></tr>
+</table></span>
+<a name="label124"></a><h4 class="jdocu">6.2.4&nbsp;&nbsp;&nbsp;Instructions Implemented as NOPs</h4 class="jdocu">
+
+
+<span class="jdocu_smaller"><table>
+<tr><td class="jdocu_noborder">dccci</td></tr>
+<tr><td class="jdocu_noborder">icbt</td></tr>
+<tr><td class="jdocu_noborder">iccci</td></tr>
+</table></span>
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Header Inclusion Order</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(110, true);
+</script>
+<a name="label230"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic41.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic43.html">Next</a></span></p>
+<h3 class="jdocu">8.4&nbsp;&nbsp;&nbsp;Header Inclusion Order</h3 class="jdocu">
+
+
+<a name="label231"></a>
+<a name="label232"></a>
+<a name="label233"></a>
+<p>
+For modules written in C or C++, the general order of header file inclusion
+should be from most to least general:
+<p>
+<table>
+<tr><td class="jdocu_noborder">Language</td><td class="jdocu_noborder">eg. <tt>&lt;stdio.h&gt;</tt> (C), <tt>&lt;map&gt;</tt> (C++)</td></tr>
+<tr><td class="jdocu_noborder">Operating system</td><td class="jdocu_noborder">eg. <tt>&lt;unistd.h&gt;</tt> (Unix),
+      <tt>&lt;windows.h&gt;</tt> (Windows)</td></tr>
+<tr><td class="jdocu_noborder">Simics</td><td class="jdocu_noborder">eg. <tt>&lt;simics/api.h&gt;</tt></td></tr>
+<tr><td class="jdocu_noborder">Application</td><td class="jdocu_noborder">specific to your module</td></tr>
+</table>
+<p>
+Observing this order is likely to minimise any problems of
+interference between include files. In particular, Simics may redefine
+some standard functions with preprocessor macros and this can cause
+problems unless the standard headers are included first.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic41.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic43.html">Next</a></span></p>
+</body>
+</html>

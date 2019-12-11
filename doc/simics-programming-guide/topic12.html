@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Interfaces</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(39, true);
+</script>
+<a name="label85"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+<h3 class="jdocu">4.3&nbsp;&nbsp;&nbsp;Interfaces</h3 class="jdocu">
+
+
+<p>
+Interfaces allows objects to interact with each other. A interface defines a
+number of functions. Every class that implements an interface (by registering
+it) must define those functions. An object A may then ask for an interface
+registered by an object B, and thus use the interface's functions to
+communicate with B. Simics comes with many predefined interfaces but you can
+freely add your owns.
+<p>
+One of the most important interfaces for a device class is probably the
+<tt>io-memory</tt> interface. Implementing the <tt>io-memory</tt>
+interface enables a class to be mapped into a memory space and be accessed by
+the simulated machine. In C or DML, it is defined as:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef int (*map_func_t)(conf_object_t *obj,
+                          addr_space_t memory_or_io,
+                          map_info_t map_info);
+typedef exception_type_t (*operation_func_t)(conf_object_t *obj,
+                                             generic_transaction_t *mem_op,
+                                             map_info_t map_info);
+
+typedef struct io_memory_interface {
+        map_func_t map;
+        operation_func_t operation;
+} io_memory_interface_t;
+</pre>
+<p>
+Another important interface is the <tt>event-poster</tt> interface, which
+should be implemented by all classes that post events. Other interfaces can be
+used for things like raising processor interrupts or implementing PCI device
+functionality. A complete list of all interfaces and functions for handling
+interfaces can be found in the <em>Simics Reference Manual</em>.
+<p>
+To learn more about interfaces in DML, refer to section <a class="jdocu" href="topic20.html#label98">5.3</a>. For C and Python, refer to section <a class="jdocu" href="topic29.html#label146">6.5</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+</body>
+</html>

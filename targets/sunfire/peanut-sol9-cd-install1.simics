@@ -1,0 +1,90 @@
+#
+# You may have to modify the path to the CD-ROM image. The script below
+# assumes the name sol-9-u7-sparc-v[1|2].iso for the images.
+# To use a different name, modify the script or use the cdrom-path
+# parameter in the GUI New Session dialog. 
+#
+# This first part of the installation may take a few hours.
+#
+# When the script has finished, it is time for the second part of the
+# installation.
+#
+# Start the second part of the installation by running Simics with the
+# peanut-sol9-cd-install2.simics script.
+# 
+# Use the peanut-common.simics script to run with the new Solaris 9
+# installation.  
+#
+
+# Check for existing install disk file
+if `SIM_lookup_file("peanut-sol9-install.disk")` {
+    echo "The file 'peanut-sol9-install.disk' already exists."
+    echo "Move or delete this file before continuing."
+    echo ""
+    quit 1
+}
+
+# we don't want automatic login
+$do_login = "no"
+
+# path to CD-ROM, use default if none given by user setup variables.
+if not defined cdrom_path {
+    $cdrom_path = "sol-9-u7-sparc-v1.iso"
+}
+
+if not `SIM_lookup_file(simenv.cdrom_path)` {
+    echo "Cannot find the CD-ROM specified as : "  + $cdrom_path
+    echo "Please add this file, or edit the path in this script."
+    echo ""
+    quit
+}
+
+echo "Using CD-ROM image file: " + $cdrom_path
+
+$create_network = "yes"
+$disk_size = 8513945600
+$os = "none"
+
+run-command-file "%script%/peanut-common.simics"
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+@image.files = [["peanut-sol9-install.disk", "rw", 0, simenv.disk_size]]
+
+# create a new vtoc on the disk, needed by Solaris
+($scsi_disk.get-component-object sd).create-sun-vtoc-header -quiet 10940 19 80
+
+# create and insert CD media
+($scsi_cdrom.get-component-object cd).insert (new-file-cdrom $cdrom_path)
+
+$system.set-prom-env auto-boot? false
+$system.set-prom-env diag-device disk1
+
+# remove previous log, if any
+@try:
+    os.unlink("peanut-install-log.txt")
+except:
+    pass
+
+echo "Capturing output to 'peanut-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "peanut-install-log.txt"
+
+######################################
+
+run-command-file "%script%/../common/solaris9-install.include"
+
+script-branch {
+    $solaris9_phase1 = 1 # trigger script
+    $con.wait-for-string "Resetting..."
+    stop "Installation complete"
+    save-persistent-state peanut-sol9-p1.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Now exit Simics and continue with the peanut-sol9-cd-install2.simics "
+echo "script."
+echo ""

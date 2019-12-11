@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="com.virtutech.vdb.online_doc_simics_target_guide_pmppc"
+   name="online_doc_simics_target_guide_pmppc"
+   version="1.0.0"
+   provider-name="Virtutech"
+   class="com.virtutech.vdb.online_doc_simics_target_guide_pmppc.HelpPlugin">
+
+   <runtime>
+      <library name="help.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.help"/>
+   </requires>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            primary="true"
+            file="toc.xml"/>
+   </extension>
+
+</plugin>

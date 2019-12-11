@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>g-cache-ooo</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(779, true);
+</script>
+<a name="label5810"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic94.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic96.html">Next</a></span></p>
+<h3 class="jdocu">g-cache-ooo</h3 class="jdocu">
+
+
+<a name="label5811"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2632">g-cache-ooo</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>g-cache-ooo</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic537.html#label17976">timing_model</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+g-cache-ooo is an out-of-order cache model with the following features: configurable number of lines, line size, associativity; indexing/tagging on physical/virtual addresses; configurable policies for write-allocate and write-back; random, cyclic and lru replacement policies; several caches can be connected in chain; a single cache can be connected to several processors; multiple out-of-order transactions support.
+
+</dd>
+
+</dl>
+<a name="label5812"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>config_accept_not_stall</i></b></dt><a name="label5813"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+By default, the cache considers all non-stallable memory transactions as uncacheable. If this is set to 1, the cache will accept non-stallable cpu memory transactions as cacheable. This is useful to run a g-cache-ooo memory hierarchy with in-order Simics binaries. Note that *all* the memory hierarchy elements below the cache MUST have all stall penalties to zero for this to work properly (0: non-stallable transactions are uncacheable, 1: non-stallable transactions may be cached, default is 0).</dd></dl>
+<dl><dt><b><i>config_assoc</i></b></dt><a name="label5814"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cache associativity. Note that the total number of lines divided by the associativity must be a power of 2. (default is 4).</dd></dl>
+<dl><dt><b><i>config_line_number</i></b></dt><a name="label5815"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of lines in the cache (default is 128)</dd></dl>
+<dl><dt><b><i>config_line_size</i></b></dt><a name="label5816"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cache line size (must be a power of 2, default is 32). If you plan to use the STC in combination to improve the cache performance, this value must be greater or equal to the instruction_profile_line_size.</dd></dl>
+<dl><dt><b><i>config_max_out_trans</i></b></dt><a name="label5817"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Maximum number of outstanding transactions handled simultaneously by the cache (default is 16).</dd></dl>
+<dl><dt><b><i>config_read_per_cycle</i></b></dt><a name="label5818"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of read transactions allowed per cycle (default is 4).</dd></dl>
+<dl><dt><b><i>config_replacement_policy</i></b></dt><a name="label5819"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Replacement policy ("random", "LRU" or "cyclic", default is "random").</dd></dl>
+<dl><dt><b><i>config_seed</i></b></dt><a name="label5820"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Seed for random replacement policy, default is 0).</dd></dl>
+<dl><dt><b><i>config_virtual_index</i></b></dt><a name="label5821"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Address used to compute the set in the cache (0: physical, 1: virtual; default is 0).</dd></dl>
+<dl><dt><b><i>config_virtual_tag</i></b></dt><a name="label5822"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Address used to compute the tag of the cache line (0: physical, 1: virtual; default is 0).</dd></dl>
+<dl><dt><b><i>config_write_allocate</i></b></dt><a name="label5823"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Write allocation policy (0: non-write allocate, 1: write-allocate, default is 0).</dd></dl>
+<dl><dt><b><i>config_write_back</i></b></dt><a name="label5824"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Write policy (0: write-through, 1: write-back, default is 0).</dd></dl>
+<dl><dt><b><i>config_write_per_cycle</i></b></dt><a name="label5825"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of write transactions allowed per cycle (default is 4).</dd></dl>
+<dl><dt><b><i>cpus</i></b></dt><a name="label5826"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>n|o|[o+]</b>.
+<p>
+cpus that can send transactions to the cache.</dd></dl>
+<dl><dt><b><i>lines</i></b></dt><a name="label5827"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{8}]*]</b>; <b>integer</b> indexed;  indexed type: <b>[i{8}]</b>.
+<p>
+Content of the cache lines.</dd></dl>
+<dl><dt><b><i>lines_last_used</i></b></dt><a name="label5828"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+Last used timestamp for the cache lines</dd></dl>
+<dl><dt><b><i>outstanding_transactions</i></b></dt><a name="label5829"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[isiii]*]</b>; <b>integer</b> indexed;  indexed type: <b>[isiii]</b>.
+<p>
+Outstanding transactions information.</dd></dl>
+<dl><dt><b><i>penalty_read</i></b></dt><a name="label5830"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Stall penalty (in cycles) for any incoming read transaction.A cache-hit on read will only suffer a 'read' penalty (default is 0). Note that if you set this to a non-zero value, the simulation won't be able to use the STCs.</dd></dl>
+<dl><dt><b><i>penalty_write</i></b></dt><a name="label5831"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Stall penalty (in cycles) for any incoming write transaction. A cache-hit on write (in a write-back cache) will only suffer a 'write' penalty (default is 0). Note that if you set this to a non-zero value, the simulation won't be able to use the STCs.</dd></dl>
+<dl><dt><b><i>profilers</i></b></dt><a name="label5832"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o|n*]</b>; <b>integer</b> indexed;  indexed type: <b>Object or Nil</b>.
+<p>
+Profilers connected to the cache.</dd></dl>
+<dl><dt><b><i>stat_copy_back</i></b></dt><a name="label5833"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of copy-back transactions initiated by the cache.</dd></dl>
+<dl><dt><b><i>stat_data_read</i></b></dt><a name="label5834"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of cacheable data read transactions (may be underestimated if the STCs are used, see Simics User Guide for more information).</dd></dl>
+<dl><dt><b><i>stat_data_read_miss</i></b></dt><a name="label5835"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of cacheable data read transactions that missed in the cache.</dd></dl>
+<dl><dt><b><i>stat_data_write</i></b></dt><a name="label5836"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of cacheable data write transactions (may be underestimated if the STCs are used, see Simics User Guide for more information).</dd></dl>
+<dl><dt><b><i>stat_data_write_miss</i></b></dt><a name="label5837"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of cacheable data write transactions that missed in the cache (write-through caches report a correct miss value but all writes are sent to the next level).</dd></dl>
+<dl><dt><b><i>stat_dev_data_read</i></b></dt><a name="label5838"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of device data read transactions (DMA).</dd></dl>
+<dl><dt><b><i>stat_dev_data_write</i></b></dt><a name="label5839"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of device data write transactions (DMA).</dd></dl>
+<dl><dt><b><i>stat_inst_fetch</i></b></dt><a name="label5840"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of cacheable instruction fetches (may be underestimated if the STCs are used, see Simics User Guide for more information).</dd></dl>
+<dl><dt><b><i>stat_inst_fetch_miss</i></b></dt><a name="label5841"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of cacheable instruction fetches that missed in the cache.</dd></dl>
+<dl><dt><b><i>stat_transaction</i></b></dt><a name="label5842"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Total number of transactions seen by the cache.</dd></dl>
+<dl><dt><b><i>stat_uc_data_read</i></b></dt><a name="label5843"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of uncacheable data read transactions.</dd></dl>
+<dl><dt><b><i>stat_uc_data_write</i></b></dt><a name="label5844"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of uncacheable data write transactions.</dd></dl>
+<dl><dt><b><i>stat_uc_inst_fetch</i></b></dt><a name="label5845"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of uncacheable inst fetch transactions.</dd></dl>
+<dl><dt><b><i>timing_model</i></b></dt><a name="label5846"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Object listening on transactions coming from the cache (line fetch, copy-back).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5847"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5849">add-profiler</a></b></td><td class="jdocu_noborder">Add a profiler to the cache</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5851">info</a></b></td><td class="jdocu_noborder">print the cache information</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5853">remove-profiler</a></b></td><td class="jdocu_noborder">Remove a profiler from the cache</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5855">reset-cache-lines</a></b></td><td class="jdocu_noborder">Reset all the cache lines</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5857">reset-statistics</a></b></td><td class="jdocu_noborder">reset the cache statistics</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5859">statistics</a></b></td><td class="jdocu_noborder">print the cache statistics</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5861">status</a></b></td><td class="jdocu_noborder">print the cache lines status</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5848"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5849"></a><a name="label5850"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.add-profiler</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.add-profiler</b> [<i>"type"</i>] [<i>"profiler"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Add a profiler of the given 'type' to the cache. If a 'profiler' is passed as argument, it will be used instead of a newly created object.</dd>
+
+</dl>
+
+
+
+<a name="label5851"></a><a name="label5852"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print configuration information for the cache.</dd>
+
+</dl>
+
+
+
+<a name="label5853"></a><a name="label5854"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.remove-profiler</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.remove-profiler</b> [<i>"type"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Remove the profiler of a given 'type' from the cache.</dd>
+
+</dl>
+
+
+
+<a name="label5855"></a><a name="label5856"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.reset-cache-lines</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.reset-cache-lines</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Reset all the cache lines to their default values.</dd>
+
+</dl>
+
+
+
+<a name="label5857"></a><a name="label5858"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.reset-statistics</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.reset-statistics</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Reset the cache statistics.</dd>
+
+</dl>
+
+
+
+<a name="label5859"></a><a name="label5860"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.statistics</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.statistics</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the current value of the cache statistics (this will flush the STC counters to report correct values).</dd>
+
+</dl>
+
+
+
+<a name="label5861"></a><a name="label5862"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;g-cache-ooo&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;g-cache-ooo&gt;.status</b> [-cycle] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the cache lines status. -cycle prints the last cycle each cache line was accessed (if LRU replacement policy is active). A '&lt;' marks the next line to be replaced (if cyclic replacement policy is active).</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic94.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic96.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Loading And Testing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(8, true);
+</script>
+<a name="label11"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Loading And Testing</h3 class="jdocu">
+
+
+<p>
+To test your new module, start Simics and load the example machine
+configuration <tt>vacuum</tt>, as follows (from the
+<tt>[home]/workspace</tt> directory):
+<pre class="jdocu_small" style="color: black">
+  $ <b>./simics targets/vacuum/vacuum.simics</b>
+</pre>
+<p>
+The <tt>vacuum</tt> machine is a minimal configuarion that contains
+only a clock and a memory space, called <b>phys_mem</b>, with some
+RAM mapped at addresses <tt>0x10000000</tt> to <tt>0x1fffffff</tt>.
+<p>
+At the Simics prompt, type the <b>list-modules</b> command to see
+if your module appears on the list:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>list-modules</b>
+</pre>
+<p>
+Som of the modules in the list will have <tt>Loaded</tt> printed in
+the second columnt, but not your new module.  You can load it using
+the <b>load-module</b> command:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>load-module simple_device</b>
+</pre>
+<p>
+If the module was successfully loaded, it should now be marked as
+loaded in the output from by the <b>list-modules</b> command.
+<p>
+You can also try the <b>list-classes</b> command to see if your
+device apears in the list of available models.  It should appear in
+this list even if you have not loaded the module yet. Normally,
+modules are loaded automatically when you try to use them, so the
+<b>load-module</b> command is mostly used for testing.
+<p>
+To test the new model, we first of all need to create an instance of
+the device class. This can be done with the following command:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>@SIM_create_object("simple_device", "dev1", [])</b>
+</pre>
+(the <b>@</b> operator on the Simics command line executes the rest of
+the line as a Python expression), which uses the Simics API directly to
+create a new object named <b>dev1</b>.
+<p>
+To be able to communicate with the device object, it must be mapped
+into the physical memory space of the machine.  This can be done using
+the <b>&lt;memory-space&gt;.add-map</b> command.
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.add-map dev1 0x1000 0x100 0</b>
+</pre>
+<p>
+The first argument is the device to map, in this case our newly
+created object <b>dev1</b>. The following arguments are the base
+address within the memory space and the size of the mapped range.  The
+fourth argument is the <em>function number</em> which is used by the
+device model to choose which register bank will handle the accesses to
+this mapping.  In this example, we have a mapping from the range
+<tt>0x1000</tt>-<tt>0x10ff</tt> (0x100 bytes) to the range
+<tt>0</tt>-<tt>0xff</tt> of function 0 (bank <tt>b</tt>) of the device
+object <b>dev1</b>.
+<p>
+We can now try to read from register <tt>r0</tt> of our device. (Since
+it has internal offset 0, it will correspond to address 0x1000 of the
+physical memory.) Use the <b><i>get</i></b> method of the memory space to
+simulate a read operation:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.get 0x1000</b>
+</pre>
+(do not use the <b>@</b> operator here). You should see the following
+output:
+<pre class="jdocu_small" style="color: black">
+  [dev1 info] Hello, bus!
+  42
+</pre>
+The first line is the info message printed by the <tt>log</tt> statement
+in the <b><i>read</i></b> method of <tt>r0</tt>, and the second is the value
+that was returned by <b><i>get</i></b>. The device is working!
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

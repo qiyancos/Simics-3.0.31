@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Transaction-Oriented vs. Bit-Level Device Models</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label25"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic3.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h3 class="jdocu">2.3&nbsp;&nbsp;&nbsp;Transaction-Oriented vs. Bit-Level Device Models</h3 class="jdocu">
+
+
+<p>
+   The defining difference between full-system simulation and
+   traditional instruction set simulation is the modeling of
+   devices. Device models are necessary in order to get meaningful
+   software to run on the simulator: timers, network interfaces, PCI
+   bridges, SCSI interfaces, graphics devices, serial ports - there is
+   a large number of different devices in a computer system that are
+   visible to the software, and therefore need to be modeled.
+<p>
+   Device models can be either transaction-oriented or bit-level. A
+   transaction-oriented model handles each interaction (typically, a
+   read or write access to the interface registers of a device)
+   as an atomic operation: the device is presented with a
+   request, computes the reply, and returns it in a single function
+   call. This synchronous model is very efficient.
+<p>
+   A bit-level model instead models the actual bit patterns traveling
+   over buses and pins in the computer. Instead of a synchronous
+   transaction, each phase of a transaction is played out as a
+   unidirectional message. The device model will read the address and
+   data lines, wait for some cycles, and then put its reply on the bus
+   connecting it to the CPU. This is an asynchronous style that
+   results in much lower performance, since the simulation needs to
+   switch contexts more often.
+<p>
+   Of course, it is possible to create hybrids between the two
+   extremes described above.
+   One quite common approach is to let most of a system work at the
+   transaction level, modeling only a small part of the system at the
+   asynchronous bit-level.  This offers an efficient way to drive a
+   detailed model of a device with real traffic from a full system.
+<p>
+   Most of the guidelines in this document assume that a (mainly)
+   transaction-oriented device model is being developed.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic3.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

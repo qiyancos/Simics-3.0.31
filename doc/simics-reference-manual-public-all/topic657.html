@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Craff</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2401, true);
+</script>
+<a name="label18240"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic656.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic658.html">Next</a></span></p>
+<h2 class="jdocu">9&nbsp;&nbsp;&nbsp;Craff</h2 class="jdocu">
+
+
+<p>
+The compressed random access file format is used by Simics's image
+module to handle sparse block data. The <b>craff</b> command-line utility
+can be used to create and manipulate craff files.
+<p>
+The general craff usage is:
+<p>
+<pre class="jdocu_small" style="color: black"><b>craff</b> [options] files ...</pre>
+<p>
+The default operation is to merge the input files, each of which can
+be either in craff format or raw files (e.g., disk or memory dumps)
+and to output the merged result to an output file. The order of the
+input files is important: data from later input files override earlier
+files. Since craff files can have holes (gaps) in them, data from
+earlier files can propagate to the result.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic658.html#label18241" target="main">9.1&nbsp;&nbsp;&nbsp;Options</a></p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic656.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic658.html">Next</a></span></p>
+</body>
+</html>

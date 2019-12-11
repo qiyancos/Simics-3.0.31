@@ -1,0 +1,29 @@
+The niagara-simple machine needs an Openboot PROM and a Solaris dump to boot.
+These files can be found on the opensparc.org web page, bundled with the
+UltraSPARC T1 simulator from Sun.
+
+Copy the files in the S10image/ directory of the Sun simulator package to
+[simics]/targets/niagara-simple/images/. The files needed are:
+
+1up-hv.bin
+1up-md.bin
+1g2p-hv.bin
+1g2p-md.bin
+1g32p-hv.bin
+1g32p-md.bin
+disk.s10hw2
+openboot.bin
+q.bin
+reset.bin
+
+The possible machine configurations are currently limited by the files 
+supplied by Sun. The memory size is set at 256MB, and the processor frequency 
+is 5MHz.There are three processor configurations:
+
+* 1 core,  1 strand/core
+* 2 cores, 1 strand/core
+* 8 cores, 4 strands/core
+
+The default configuration includes a disk diff file that adds the "simicsfs"
+file-system to the disk.s10hw2 image. If using a different disk image, set the
+CLI variable $use_simicsfs to "no" before starting.

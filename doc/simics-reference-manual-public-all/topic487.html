@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>address_profiler</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2222, true);
+</script>
+<a name="label17681"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic486.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic488.html">Next</a></span></p>
+<h3 class="jdocu">address_profiler</h3 class="jdocu">
+
+
+<a name="label17682"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic36.html#label3987">branch_recorder</a>, <a class="jdocu" href="topic64.html#label4893">data-profiler</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   Interface for getting statistics out of profilers. The target is some kind
+   of profiler whose data can be meaningfully viewed as counts per address.
+<p>
+   The function <b><i>num_views</i></b> returns the number k of
+   different ways you can view the data of this object. The view selection
+   parameter <i>view</i> to all other functions in the interface
+   accepts values between 0 and k &minus; 1.
+<p>
+   <b><i>description</i></b> returns a short string that explains what the data
+   means. <b><i>physical_addresses</i></b> returns true if the profiler works with
+   physical addresses, or false if it uses virtual addresses.
+   <b><i>address_bits</i></b> returns the number of bits in an address.
+<p>
+   <b><i>granularity_log2</i></b> returns the base 2 logarithm of the size, in
+   bytes, of the address intervals that the counters are associated to. For
+   example, if the data is instruction execution count and each instruction is
+   4 bytes long, one would expect the granularity to be at least 4 bytes since
+   that is the smallest interval containing a whole instruction (but it might
+   be more, if the profiler is less fine-grained for some reason). And for a
+   4-byte granularity, <b><i>granularity_log2</i></b> would return 2.
+<p>
+   <b><i>sum</i></b> returns the sum of all counters between <i>start</i>
+   and <i>stop</i>, inclusive. <b><i>max</i></b> returns the maximum value
+   of any counter in the range.
+<p>
+   <b><i>iter</i></b> returns an address profile iterator that will visit all
+   nonzero counters in the range precisely once, in some order. In C, you can
+   use the functions <b><i>SIM_iter_next</i></b>, <b><i>SIM_iter_addr</i></b> and
+   <b><i>SIM_iter_free</i></b> to operate the iterator. In Python, it works just
+   like any other iterator, and returns (count, address) pairs. Note that you
+   may not continue to use the iterator after the underlying address profiler
+   has been modified.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct address_profiler_interface {
+        addr_prof_iter_t *(*iter)(conf_object_t *prof_obj, unsigned view,
+                                  generic_address_t start,
+                                  generic_address_t stop);
+        uint64 (*sum)(conf_object_t *prof_obj, unsigned view,
+                      generic_address_t start, generic_address_t end);
+        uint64 (*max)(conf_object_t *prof_obj, unsigned view,
+                      generic_address_t start, generic_address_t end);
+        unsigned (*granularity_log2)(conf_object_t *prof_obj, unsigned view);
+        int (*address_bits)(conf_object_t *prof_obj, unsigned view);
+        int (*physical_addresses)(conf_object_t *prof_obj, unsigned view);
+        const char *(*description)(conf_object_t *prof_obj, unsigned view);
+        unsigned (*num_views)(conf_object_t *prof_obj);
+} address_profiler_interface_t;
+
+#define ADDRESS_PROFILER_INTERFACE "address_profiler"
+</pre>
+<p>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17684">address-profile-data</a></td><td class="jdocu_noborder">linear map of address profiling data</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17686">address-profile-info</a></td><td class="jdocu_noborder">general info about an address profiler</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17688">address-profile-toplist</a></td><td class="jdocu_noborder">print toplist of address profiling data</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17683"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17684"></a><a name="label17685"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;address_profiler&gt;.address-profile-data</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;address_profiler&gt;.address-profile-data</b> [<i>view</i>] [<i>address</i>] [<i>cell-bits</i>] [<i>row-bits</i>] [<i>table-bits</i>] [<i>start</i>] [<i>stop</i>] [<i>lines</i>] [-same-prefix] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Display a map of (a part of) the address space covered by the address
+profiler, and the counts of one of its views associated with each
+address. The view is specified by the <i>view</i> argument; default is
+view 0. The default behavior is to display the smallest interval that
+contains all counts; you can change this with either the <i>start</i>
+and <i>stop</i> or the <i>address</i> and <i>cell-bits</i>,
+<i>row-bits</i> or <i>table-bits</i> arguments.
+<p>
+Cells that have zero counts are marked with ".". Cells that have a
+non-zero count, but were rounded to zero, are marked with "o".
+<p>
+If one of <i>cell-bits</i>, <i>row-bits</i> or <i>table-bits</i> is
+specified, then each cell, or each table row, or the entire table is
+limited to that many bits of address space. By default the display
+starts at address 0, but if an address is specified with the
+<i>address</i> argument, the displayed interval is shifted to make
+that address is visible.
+<p>
+If <i>start</i> and <i>stop</i> are specified, the display is limited
+to the smallest interval containing both addresses.
+<p>
+The maximum number of lines in the table is limited by the
+<i>lines</i> argument (the default is 20 lines). The scale of the map
+is adjusted to fit this limit.
+<p>
+Normally, the display chooses an appropriate prefix for the count of
+each cell; with the <tt>-same-prefix</tt> flag, all counts will be
+forced to have the same prefix. This is useful if a lot of small but
+non-zero values makes it hard to spot the really big values.</dd>
+
+</dl>
+
+
+
+<a name="label17686"></a><a name="label17687"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;address_profiler&gt;.address-profile-info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;address_profiler&gt;.address-profile-info</b> [-sum] [-max] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print general info about an object implementing the address-profiler
+interface, such as a list of the available views. If the <tt>-sum</tt>
+or <tt>-max</tt> flags are given, will also print the sum or max of
+each view over the entire address space.</dd>
+
+</dl>
+
+
+
+<a name="label17688"></a><a name="label17689"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;address_profiler&gt;.address-profile-toplist</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;address_profiler&gt;.address-profile-toplist</b> [<i>symtable</i>] [<i>samples</i>] [<i>start</i>] [<i>stop</i>] [<i>view</i>] [<i>count_interval</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print address profiling regions sorted by count. The <i>symtable</i>
+attribute can be used to map data profiling regions in form of
+physical addresses to source function and file information.
+<p>
+The <i>samples</i> argument specifies the number of sampling points
+used to create the list containing the highest count. The sampling
+range is determined by <i>start</i> and <i>stop</i>. The default
+values are 100 samples in the interval 0x0 - 0xfffffffc. The
+granularity is defined by the data profiler object.
+<p>
+The <i>view</i> attribute selects the address profiler view.
+<p>
+The <i>count_interval</i> attribute defines the range in which sampled
+data regions will match even thought the data profiler count is not
+equal. Ex. Assume that the samples in the region 0x20c - 0x20c has a
+count of 4711 and region 0x20d - 0x20f a count of 4713. The regions
+will be considered on region if <i>count_interval</i> is 4 but not if
+1.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic486.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic488.html">Next</a></span></p>
+</body>
+</html>

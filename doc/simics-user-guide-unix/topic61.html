@@ -1,0 +1,597 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Symbolic Debugging Using Symtable</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(171, true);
+</script>
+<a name="label396"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic60.html">Previous</a> - <a class="jdocu" href="topic58.html">Up</a> - <a class="jdocu" href="topic62.html">Next</a></span></p>
+<h4 class="jdocu">12.3&nbsp;&nbsp;&nbsp;Symbolic Debugging Using Symtable</h4 class="jdocu">
+
+
+<a name="label397"></a>
+<a name="label398"></a>
+<a name="label399"></a>
+<a name="label400"></a>
+<p>
+As an alternative to <b>gdb-remote</b>, Simics comes with
+some symbolic debugging facilities of its own in the
+<b>symtable</b> module. It is less full-featured than GDB
+but is easy to use, and it can be scripted in Python.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Not all Simics targets have full <b>symtable</b> support
+implemented. Check the reference manual for more information.  <hr class="jdocu_note">
+<p>
+<a name="label401"></a><h5 class="jdocu">12.3.1&nbsp;&nbsp;&nbsp;Symtables and Contexts</h5 class="jdocu">
+
+
+<p>
+Each processor in the simulated system has a <em><a name="label402">current
+context</a></em><a name="label403"></a>, which represents the
+virtual address space currently visible to code running on the
+processor. This context is embodied by a <b>context</b>
+object. A context object has various attributes, such as
+virtual-address breakpoints and symbolic information for the address
+space (contained in a <b>symtable</b> object).
+<p>
+The correctness of the simulation does not depend on contexts in any
+way; the concept of multiple virtual address spaces is useful
+for <em>understanding</em> the simulated software, but not necessary
+for just running it. What contexts to create and how to use them is
+entirely your business; Simics does not care.
+<p>
+By default, each processor has the object <b>primary-context</b>
+as its current context. You may create new contexts and switch between
+them at any time. This allows you, for example, to maintain separate
+debugging symbols and breakpoints for different processes in your
+target machine. When a context is used in this manner (active when and
+only when a certain simulated process is active), the context is said
+to <em>follow</em><a name="label404"></a> the process.
+<p>
+One handy tool when trying to make a context follow a simulated process is
+process trackers. A <a name="label405">process tracker</a> knows something about the target
+machine and its operating system&#8212;just enough to be able to tell when a
+given process is active (Simics itself knows nothing about the
+abstractions&#8212;such as processes&#8212;implemented by the simulated
+software). When listening to the haps triggered by the process tracker,
+switching contexts at the right moment is a breeze.
+<p>
+Simics comes with process trackers for some targets, but far from all.
+Chapter <a class="jdocu" href="topic111.html#label557">21</a> describes process
+trackers in more detail, including how to build your own.
+<p>
+<a name="label406"></a><h5 class="jdocu">12.3.2&nbsp;&nbsp;&nbsp;Sample Session</h5 class="jdocu">
+
+
+<p>
+Here we inspect a user-space program&#8212;the
+<tt><a name="label407">zsh</a></tt> shell&#8212;running on a 32-bit PowerPC
+target. Two things are required for this session: a <tt>zsh</tt>
+binary built with debug info (see section <a class="jdocu" href="#label414">12.3.5</a>), and its source code.
+<p>
+Start by creating a process tracker:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-linux-process-tracker kernel = ppc32-linux-2.4.17</b>
+Using parameters suitable for ppc32 Linux 2.4.17.
+New process tracker tracker0 created.
+simics&gt; <b>tracker0.add-processor cpu0</b>
+simics&gt; <b>new-context-switcher tracker = tracker0</b>
+New context switcher switcher0 created.
+</pre>
+<p>
+Note that we had to tell the process tracker which kernel we
+use&#8212;or rather, what we have to tell it is the value of a number
+of numerical parameters:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>tracker0.status</b>
+Status of tracker0 [class linux-process-tracker]
+================================================
+
+                    Processors : cpu0
+                Processor type : ppc32
+
+Process tracking parameters:
+                       ts_comm : 582
+                       ts_next : 72
+              ts_next_relative : 0
+                        ts_pid : 128
+                       ts_prev : 76
+                      ts_state : 0
+              ts_thread_struct : 624
+</pre>
+<p>
+<tt>ppc32-linux-2.4.17</tt> is simply a convenient name for the set of
+parameters that work with the 32-bit PowerPC Linux 2.4.17 kernel; such
+predefined parameter sets exist for some of the kernels in the
+machines shipped by Virtutech. If you want to do process tracking on a
+kernel for which there is no such predefined parameter set, you will
+want to look up the process tracker's <b>autodetect-parameters</b>
+command in the Reference Manual.
+<p>
+We also created a <a name="label408">context switcher</a><a name="label409"></a>. It handles the rather boring task of listening to the
+process tracker and actually switching contexts at the right moment,
+so that one context will follow the process that runs <tt>zsh</tt>.
+(Context switchers are covered in more detail in section <a class="jdocu" href="topic114.html#label570">21.3</a>.)
+<p>
+Now create the symbol table and load the symbols. Note that for this to
+work, the <tt>zsh</tt> binary must have been built with debug info.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-symtable zsh_sym</b>
+Created symbol table 'zsh_sym'
+zsh_sym set for context primary_context
+simics&gt; <b>zsh_sym.load-symbols ~/zsh-4.2.3/Src/zsh</b>
+found load segment at 0x10000000
+[symtable] Symbols loaded at 0x10000000
+</pre>
+<p>
+Tell the context switcher to use a special context for the
+<tt>zsh</tt> process. Make sure that the new context uses the
+symbol table:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>switcher0.track-bin zsh zsh_context</b>
+Context 'zsh_context' will be tracking the first process
+that executes the binary 'zsh'.
+simics&gt; <b>@conf.zsh_context.symtable = conf.zsh_sym</b>
+</pre>
+<p>
+We would like to start debugging the program at the beginning of its
+<tt>main</tt> function. The symbol table can tell us where that is:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>psym main</b>
+{int (int, char **)} 0x100001f8
+simics&gt; <b>whereis (sym main)</b>
+in main() at /home/jane/zsh-4.2.3/Src/main.c:92
+</pre>
+<p>
+<b>sym</b> is like <b>psym</b>, except that it only returns
+the value, and not its type&#8212;which is exactly what other
+commands are expecting as input.
+<p>
+Let us set a breakpoint at <tt>main</tt>, and let the simulation run:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>zsh_context.break -x (sym main)</b>
+Breakpoint 1 set on address 0x100001f8 with access mode 'x'
+1
+simics&gt; <b>c</b>
+</pre>
+<p>
+Note that as long as you do not execute a binary named "<tt>zsh</tt>",
+you can
+run whatever program you want without triggering this breakpoint. That
+is because it is set on the <b>zsh_context</b> context, which will
+not be activated until <tt>zsh</tt> is run:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>ls /</b>
+bin   dev  home  lib         mnt  proc  sbin  usr
+boot  etc  host  lost+found  opt  root  tmp   var
+$ <b>sh -c 'echo foo'</b>
+foo
+$ <b>zsh</b>
+</pre>
+<p>
+Now the simulation stops:
+<p>
+<pre class="jdocu_small" style="color: black">
+Code breakpoint 1 reached.
+main (argc=0, argv=0x0) at /home/jane/zsh-4.2.3/Src/main.c:92
+92      {
+[cpu0] v:0x100001f8 p:0x079d41f8  stwu r1,-32(r1)
+</pre>
+<p>
+We can single-step through the code:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>zsh_context.step</b>
+
+93          return (zsh_main(argc, argv));
+simics&gt;
+
+zsh_main (argc=1, argv=0x7ffffe14) at /home/jane/zsh-4.2.3/Src/init.c:1205
+1205    {
+simics&gt;
+
+1206        char **t;
+simics&gt;
+
+1209        setlocale(LC_ALL, "");
+simics&gt;
+
+1212        init_jobs(argv, environ);
+simics&gt;
+
+init_jobs (argv=0x1, envp=0x7ffffe14) at /home/jane/zsh-4.2.3/Src/jobs.c:1465
+1465    {
+</pre>
+<p>
+(Just pressing Return at the prompt repeats the last stepping
+command.)
+<p>
+Note how the function <tt>setlocale</tt> was skipped. It is part of
+the C library linked into <tt>zsh</tt>, which was not compiled with
+line number information.
+<p>
+We can also examine the contents of variables (note that some C
+expressions must be quoted to prevent the command-line parser from
+trying to parse them):
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>psym envp</b>
+(char **) 0x7ffffe14
+simics&gt; <b>psym "envp[0]"</b>
+(char *) 0x7ffffefa "zsh"
+</pre>
+<p>
+Looking at the stack, we can see that we have made two function calls
+that have not returned since we started single-stepping:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>stack-trace</b>
+#0 0x10043914 in init_jobs (argv=0x1, envp=0x7ffffe14)
+    at /home/jane/zsh-4.2.3/Src/jobs.c:1465
+#1 0x1003d394 in zsh_main (argc=1, argv=0x7ffffe14)
+    at /home/jane/zsh-4.2.3/Src/init.c:1219
+#2 0x10000220 in main (argc=1, argv=0x7ffffe14)
+    at /home/jane/zsh-4.2.3/Src/main.c:93
+#3 0x10129830 in __libc_start_main () in zsh
+#4 0x0 in ?? ()
+</pre>
+<p>
+<a name="label410"></a><h5 class="jdocu">12.3.3&nbsp;&nbsp;&nbsp;Source Code Stepping</h5 class="jdocu">
+
+
+<p>
+There are other source code stepping functions besides
+<b>step</b>. <b>next</b>, for example, steps to the next
+source line without descending into function calls like
+<b>step</b> does. (This is exactly what happened when
+<b>step</b> skipped <tt>setlocale</tt>, but <b>next</b> will
+do this with every function call whether or not we have line number
+information for them.) And <b>finish</b> runs the simulation until
+the current function returns:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>zsh_context.finish</b>
+
+zsh_main (argc=1, argv=0x7ffffe14) at /home/jane/zsh-4.2.3/Src/init.c:1219
+1219        typtab['\0'] |= IMETA;
+</pre>
+<p>
+If Hindsight is enabled, all these stepping commands have reverse
+counterparts: <b>rstep</b>, <b>rnext</b>, and
+<b>uncall</b>.
+<p>
+<hr class="jdocu_note"><b>Note:</b> The stepping commands expect to step through a single
+single-threaded process. If the context does not properly follow a
+single process, or if that process is multi-threaded, they may
+terminate too soon, or too late, or not at all.
+<p>
+The reason for this is that all but the simplest stepping commands
+rely on the stack pointer to be well-behaved &#8211; in particular,
+that it keeps pointing to the same stack. The presence of multiple
+threads &#8211; or multiple processes not hidden by a process tracker
+&#8211; breaks this assumption.<hr class="jdocu_note">
+<p>
+<a name="label411"></a><h5 class="jdocu">12.3.4&nbsp;&nbsp;&nbsp;Symbolic Breakpoints</h5 class="jdocu">
+
+
+<a name="label412"></a>
+<p>
+We saw earlier how <b>sym</b> could be used to set a breakpoint on
+a function. <b>pos</b> can be used to set a breakpoint on a source
+line:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>pos jobs.c:1465</b>
+268712212
+simics&gt; <b>hex (pos jobs.c:1465)</b>
+0x10043914
+simics&gt; <b>zsh_context.break -x (pos jobs.c:1465)</b>
+Breakpoint 26 set on address 0x10043914 with access mode 'x'
+26
+</pre>
+<p>
+It is also possible to set a breakpoint on data (a
+<a name="label413">watchpoint</a>). The following example sets a data breakpoint
+on the variable "<tt>argc</tt>", causing the simulation to stop
+whenever this
+variable is read from or written to. The second parameter is the
+extent of the breakpoint, in bytes.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>zsh_context.break -r -w (sym "&amp;argc") (sym "sizeof argc")</b>
+Breakpoint 27 set on address 0x7ffffd88, length 4 with access mode 'rw'
+27
+</pre>
+<p>
+See section <a class="jdocu" href="topic59.html#label352">12.1</a> for more information about how
+to use breakpoints.
+<p>
+<a name="label414"></a><h5 class="jdocu">12.3.5&nbsp;&nbsp;&nbsp;Reading Debug Information from Binaries</h5 class="jdocu">
+
+
+<a name="label415"></a>
+<a name="label416"></a>
+<p>
+Symbolic information is normally read from file using the <b>&lt;symtable&gt;.load-symbols</b> command as in the example above.
+Currently only <a name="label417">ELF</a> binaries can be used, and the debug info
+must be in the <a name="label418">STABS</a> format. Also, the files must
+be present on the host machine&#8212;Simics cannot read directly
+from the file system of the simulated machine.
+<p>
+Here are some things to think about when preparing a binary for debugging:
+<p>
+<ul>
+<p>
+  <li>On some platforms, the <a name="label419">GCC</a> compiler does not use the
+  <a name="label420">STABS</a> format by default. Use the <tt>-gstabs+</tt> option
+  to force STABS (with some GCC extensions) to be used.</li>
+<p>
+  <li>Some versions of the Sun WorkShop<a name="label421"></a> (Forte<a name="label422"></a>) C compiler do not
+  put the debug information in the final executable, but expect a
+  debugger to read it from the object files directly. This is not
+  supported by Simics, so be sure to use the <tt>-xs</tt> option when
+  compiling.</li>
+<p>
+  <li>If getting sensible stack traces is important, adhere to the
+  target machine's calling and stack frame conventions. In other
+  words, avoid optimizations such as GCC's
+  <tt>-fomit-frame-pointer</tt>.</li>
+<p>
+  <li>Currently, only C is supported, not C++. It is possible to debug
+  programs built from a mixture of C and C++ source, but then only
+  symbols from the C part (and those declared <tt>extern "C"</tt>)
+  will be reliably recognized, for name mangling reasons.</li>
+<p>
+  <li>It is possible to debug dynamically loaded code by specifying
+  the base address of each module when using <b>load-symbols</b>,
+  but it is easier to just link the code statically when possible. See
+  section <a class="jdocu" href="topic60.html#label388">12.2.1</a> for how to
+  find the base address on some systems.</li>
+<p>
+</ul>
+<p>
+<a name="label423"></a><h5 class="jdocu">12.3.6&nbsp;&nbsp;&nbsp;Loading Symbols from Alternate Sources</h5 class="jdocu">
+
+
+<a name="label424"></a>
+<p>
+Sometimes it is desirable to read symbols from a source other than a
+binary file&#8212;perhaps all you have is a text file listing the symbols.
+The <b>&lt;symtable&gt;.<a name="label425">plain-symbols</a></b> command reads
+symbols from a file in the output format of the BSD <b>nm</b>
+command. <a name="label426"></a> Example:
+<p>
+<pre class="jdocu_small" style="color: black">
+000000000046b7e0 T iunique
+000000000062ba40 B ivector_table
+00000000005a6338 D jiffies
+</pre>
+<p>
+The hexadecimal number is the symbol value, usually the address. The letter
+is a type code; for this purpose, D, B, and R are treated as data and anything
+else as code.
+<p>
+The symbols do not have any C type or line number information associated with
+them, but you will at least be able to print stack traces and find the location of
+statically allocated variables.
+<p>
+<a name="label427"></a><h5 class="jdocu">12.3.7&nbsp;&nbsp;&nbsp;Multiple Debugging Contexts</h5 class="jdocu">
+
+
+<a name="label428"></a>
+<p>
+The process tracker and context switcher can without problem handle
+separate contexts (and symbol tables) for two or more processes at once:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-symtable encode_sym</b>
+Created symbol table 'encode_sym'
+encode_sym set for context primary_context
+simics&gt; <b>encode_sym.load-symbols ~/sharutils-4.3.80/src/uuencode</b>
+[symtable] Symbols loaded at 0x10000000
+simics&gt; <b>switcher0.track-bin uuencode context = encode_context</b>
+Context 'encode_context' will be tracking the first process
+that executes the binary 'uuencode'.
+simics&gt; <b>@conf.encode_context.symtable = conf.encode_sym</b>
+</pre>
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-symtable decode_sym</b>
+Created symbol table 'decode_sym'
+simics&gt; <b>decode_sym.load-symbols ~/sharutils-4.3.80/src/uudecode</b>
+[symtable] Symbols loaded at 0x10000000
+simics&gt; <b>switcher0.track-bin uudecode context = decode_context</b>
+Context 'decode_context' will be tracking the first process
+that executes the binary 'uudecode'.
+simics&gt; <b>@conf.decode_context.symtable = conf.decode_sym</b>
+</pre>
+<p>
+Here, we have created separate contexts for the programs
+<tt>uuencode</tt> and <tt>uudecode</tt>, loaded their symbols into two
+<b>symtable</b>s, and asked the context switcher to associate
+these contexts
+with the first processes that execute "<tt>uuencode</tt>" and
+"<tt>uudecode</tt>", respectively.
+<p>
+We would like to step through <tt>uudecode</tt> first:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>decode_context.step</b>
+</pre>
+<p>
+The simulation just runs freely now, waiting for us to reach a source
+line while <b>decode_context</b> is active&#8212;which will
+happen as soon as we start <tt>uudecode</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>ls -laR / | uuencode - | uudecode | wc</b>
+</pre>
+<p>
+<pre class="jdocu_small" style="color: black">
+main (argc=0, argv=0x0) at /home/jane/sharutils-4.3.80/src/uudecode.c:432
+432     {
+</pre>
+<p>
+We started four programs at once, here. First, <tt>ls</tt> prints a
+listing of every file on the target machine. This listing is fed to
+<tt>uuencode</tt>, which encodes it, then feeds the coded result to
+<tt>uudecode</tt>, which decodes it. The decoded file listing (which
+is identical to the original listing produced by <tt>ls</tt>) is then
+fed to <tt>wc</tt>, which counts the number of words in it and prints
+the result on the terminal.
+<p>
+This description makes it sound like the four programs are run in
+sequence, one after the other. This is not the case. They all run
+simultaneously&#8212;or rather, since this is a single-processor
+system, they run interleaved. It works more or less like this:
+<p>
+<ol>
+<p>
+  <li><tt>ls</tt> runs, accumulating output in a buffer. When that
+  buffer is full, it makes a system call that passes the buffered
+  output to the next process, <tt>uuencode</tt>.</li>
+<p>
+  <li><tt>uuencode</tt> runs until it has consumed all available
+  input, or until it has to flush its output buffer.</li>
+<p>
+  <li><tt>uudecode</tt> runs until it has consumed all available
+  input, or until it has to flush its output buffer.</li>
+<p>
+  <li><tt>wc</tt> runs until it has consumed all available input.</li>
+<p>
+  <li>Repeat until <tt>wc</tt> has finished.</li>
+<p>
+</ol>
+<p>
+Things may not happen in exactly that order; the only constraint is
+that a process that is waiting for input cannot be run until some
+input is available. As long as the amount of data to be passed is
+large enough to fill the programs' output buffers several times over
+(and a directory listing of the entire file system should be large
+enough), execution will alternate between the different programs. So,
+when we reach the first source line in <tt>uudecode</tt>,
+<tt>uuencode</tt> should still be running.
+<p>
+Let's first step a few lines in <tt>uudecode</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>decode_context.step</b>
+
+433       int opt;
+simics&gt;
+
+437       program_name = argv[0];
+</pre>
+<p>
+This is just like when we were debugging a single program. Now, let's
+test our assumption by stepping to the next line in <tt>uuencode</tt>.
+The step command will let the simulation run until we reach a new line
+<em>in that context</em>, so we will either stop when
+<tt>uuencode</tt> gets to run again, or continue running forever if
+<tt>uuencode</tt> has already finished.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>encode_context.step</b>
+
+try_putchar (c=34) at /home/jane/sharutils-4.3.80/src/uuencode.c:130
+130       if (putchar (c) == EOF)
+</pre>
+<p>
+As expected, <tt>uuencode</tt> was still running. In fact, it was busy
+outputting text for <tt>uudecode</tt> when it was interrupted so that
+<tt>uudecode</tt> could be started.
+<p>
+If we step to the next line in <tt>uudecode</tt> again, we see that it
+has now run to the point where it was blocking, waiting for
+<tt>uuencode</tt> to produce more output:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>decode_context.step</b>
+
+read_stduu (inname=0x100464ec "stdin", outname=0x7fffbcf8 "-")
+    at /home/jane/sharutils-4.3.80/src/uudecode.c:126
+126           if (fgets ((char *) buf, sizeof(buf), stdin) == NULL)
+</pre>
+<p>
+<a name="label429"></a><h5 class="jdocu">12.3.8&nbsp;&nbsp;&nbsp;Scripted Debugging</h5 class="jdocu">
+
+
+<a name="label430"></a>
+<p>
+It is often useful to access data symbolically from <a name="label431">Python</a>
+scripts. Scripts access the debugging facilities using the
+<tt>symtable</tt> interface and attributes of the
+<b>symtable</b> class. These are documented in the <em>Simics
+Reference Manual</em>.
+<p>
+For instance, here is a short script to print out the contents of one
+of the linked lists that <tt>zsh</tt> uses. It uses the
+<b><i>eval_sym</i></b> function, which takes a C expression and returns a
+(<i>type</i>, <i>value</i>) pair. The expression parsed by
+<b><i>eval_sym</i></b> may contain casts, <tt>struct</tt> member
+selection and indexing.
+<p>
+<pre class="jdocu_small" style="color: black">
+eval_sym = SIM_get_class_interface("symtable", "symtable").eval_sym
+
+def eval_expr(cpu, expr):
+    return eval_sym(cpu, expr, [], 'v')
+
+def ptr_str(typed_val):
+    (type, val) = typed_val
+    return "((%s)0x%x)" % (type, val)
+
+def print_linklist(list):
+    cpu = current_processor()
+    ll = eval_expr(cpu, list)
+    first = eval_expr(cpu, ptr_str(ll) + "-&gt;first")
+    l = []
+    def print_tail(node):
+        type, val = node
+        if val == 0:
+            return # end of list
+        type, val = eval_expr(cpu, ptr_str(node) + "-&gt;dat")
+        type, val = eval_expr(cpu, ptr_str(("char *", val)))
+        l.append(val)
+        next = eval_expr(cpu, ptr_str(node) + "-&gt;next")
+        print_tail(next)
+    print_tail(first)
+    print l
+</pre>
+<p>
+<tt>zsh</tt> uses these lists for lots of things, among them to store
+the directory stack. After having given the command <tt>pushd</tt> a
+few times on the <tt>zsh</tt> prompt, we can inspect the directory
+stack by stopping in the <tt>bin_cd</tt> function and printing the
+linked list "<tt>dirstack</tt>":
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>zsh_context.break -x (sym bin_cd)</b>
+Breakpoint 1 set on address 0x1000282c with access mode 'x'
+1
+simics&gt; <b>c</b>
+Code breakpoint 1 reached.
+bin_cd (nam=0x300001a8 "/usr/bin", argv=0x0, ops=0x101b0000, func=2147481984)
+    at /home/jane/zsh-4.2.3/Src/builtin.c:772
+772     {
+simics&gt; <b>@print_linklist("dirstack")</b>
+['/var/tmp', '/tmp', '/usr', '/home', '/sbin', '/bin', '/root']
+</pre>
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic60.html">Previous</a> - <a class="jdocu" href="topic58.html">Up</a> - <a class="jdocu" href="topic62.html">Next</a></span></p>
+</body>
+</html>

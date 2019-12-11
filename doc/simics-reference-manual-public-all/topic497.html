@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>event_poster</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2235, true);
+</script>
+<a name="label17731"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic496.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic498.html">Next</a></span></p>
+<h3 class="jdocu">event_poster</h3 class="jdocu">
+
+
+<a name="label17732"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic21.html#label3134">AM79C960</a>, <a class="jdocu" href="topic22.html#label3181">AM79C960-dml</a>, <a class="jdocu" href="topic23.html#label3245">AM79C973</a>, <a class="jdocu" href="topic33.html#label3549">BCM5703C</a>, <a class="jdocu" href="topic34.html#label3762">BCM5704C</a>, <a class="jdocu" href="topic60.html#label4834">CS8900A</a>, <a class="jdocu" href="topic67.html#label4946">DEC21041</a>, <a class="jdocu" href="topic68.html#label5001">DEC21140A</a>, <a class="jdocu" href="topic69.html#label5056">DEC21140A-dml</a>, <a class="jdocu" href="topic70.html#label5114">DEC21143</a>, <a class="jdocu" href="topic71.html#label5170">DS12887</a>, <a class="jdocu" href="topic72.html#label5217">DS12887-dml</a>, <a class="jdocu" href="topic75.html#label5289">DS17485</a>, <a class="jdocu" href="topic84.html#label5512">FAS366U</a>, <a class="jdocu" href="topic135.html#label7170">ISP1040</a>, <a class="jdocu" href="topic136.html#label7221">ISP2200</a>, <a class="jdocu" href="topic154.html#label7659">M5823</a>, <a class="jdocu" href="topic170.html#label8079">MK48T08</a>, <a class="jdocu" href="topic183.html#label8304">NS16450</a>, <a class="jdocu" href="topic184.html#label8340">NS16550</a>, <a class="jdocu" href="topic198.html#label8626">PCF8584</a>, <a class="jdocu" href="topic324.html#label12912">SA1110-device</a>, <a class="jdocu" href="topic434.html#label14860">SYM53C810</a>, <a class="jdocu" href="topic435.html#label14885">SYM53C875</a>, <a class="jdocu" href="topic483.html#label17656">Z8530</a>, <a class="jdocu" href="topic18.html#label3033">alpha-ev5</a>, <a class="jdocu" href="topic24.html#label3340">apic</a>, <a class="jdocu" href="topic28.html#label3410">armv5te</a>, <a class="jdocu" href="topic35.html#label3977">bitmask-translator</a>, <a class="jdocu" href="topic37.html#label4005">cassini</a>, <a class="jdocu" href="topic39.html#label4227">central-client</a>, <a class="jdocu" href="topic42.html#label4282">cheerio-hme</a>, <a class="jdocu" href="topic46.html#label4554">clock</a>, <a class="jdocu" href="topic52.html#label4689">cpc700-gpt</a>, <a class="jdocu" href="topic81.html#label5405">etg</a>, <a class="jdocu" href="topic83.html#label5477">ethernet-link</a>, <a class="jdocu" href="topic85.html#label5569">fc-disk</a>, <a class="jdocu" href="topic87.html#label5632">fiesta-tomatillo</a>, <a class="jdocu" href="topic96.html#label5863">gdb-remote</a>, <a class="jdocu" href="topic97.html#label5887">generic-flash-memory</a>, <a class="jdocu" href="topic98.html#label5928">gfx-console</a>, <a class="jdocu" href="topic113.html#label6512">i8042</a>, <a class="jdocu" href="topic114.html#label6602">i82077</a>, <a class="jdocu" href="topic120.html#label6720">i8254</a>, <a class="jdocu" href="topic121.html#label6755">i8259x2</a>, <a class="jdocu" href="topic123.html#label6794">ia64-itanium</a>, <a class="jdocu" href="topic124.html#label6853">ia64-itanium2</a>, <a class="jdocu" href="topic127.html#label6927">ide</a>, <a class="jdocu" href="topic130.html#label7090">image</a>, <a class="jdocu" href="topic141.html#label7428">leon2</a>, <a class="jdocu" href="topic143.html#label7530">leon2_cfg</a>, <a class="jdocu" href="topic144.html#label7546">leon2_ioport</a>, <a class="jdocu" href="topic145.html#label7553">leon2_irq</a>, <a class="jdocu" href="topic146.html#label7563">leon2_timer</a>, <a class="jdocu" href="topic147.html#label7577">leon2_uart</a>, <a class="jdocu" href="topic167.html#label7848">mii-transceiver</a>, <a class="jdocu" href="topic168.html#label7886">mips-4kc</a>, <a class="jdocu" href="topic169.html#label7982">mips-5kc</a>, <a class="jdocu" href="topic171.html#label8101">msp430</a>, <a class="jdocu" href="topic177.html#label8195">niagara-strand-mmu</a>, <a class="jdocu" href="topic188.html#label8445">opencores_eth</a>, <a class="jdocu" href="topic243.html#label9133">piix4_power</a>, <a class="jdocu" href="topic244.html#label9159">piix4_usb</a>, <a class="jdocu" href="topic254.html#label9330">ppc405gp</a>, <a class="jdocu" href="topic259.html#label9576">ppc405gp-iic</a>, <a class="jdocu" href="topic264.html#label9716">ppc440gp</a>, <a class="jdocu" href="topic270.html#label10099">ppc440gp-iic</a>, <a class="jdocu" href="topic278.html#label10365">ppc440gx</a>, <a class="jdocu" href="topic285.html#label10766">ppc440gx-iic</a>, <a class="jdocu" href="topic297.html#label11100">ppc603e</a>, <a class="jdocu" href="topic299.html#label11254">ppc7400</a>, <a class="jdocu" href="topic300.html#label11410">ppc7447</a>, <a class="jdocu" href="topic301.html#label11589">ppc7450</a>, <a class="jdocu" href="topic302.html#label11750">ppc7457</a>, <a class="jdocu" href="topic303.html#label11936">ppc750</a>, <a class="jdocu" href="topic304.html#label12083">ppc750fx</a>, <a class="jdocu" href="topic305.html#label12247">ppc750gx</a>, <a class="jdocu" href="topic307.html#label12425">ppc970fx</a>, <a class="jdocu" href="topic310.html#label12593">python</a>, <a class="jdocu" href="topic312.html#label12614">ragexl</a>, <a class="jdocu" href="topic314.html#label12693">recorder</a>, <a class="jdocu" href="topic315.html#label12719">rev-execution</a>, <a class="jdocu" href="topic335.html#label13026">sample_micro_arch_x86</a>, <a class="jdocu" href="topic337.html#label13045">sb16</a>, <a class="jdocu" href="topic339.html#label13085">sbus-hme</a>, <a class="jdocu" href="topic340.html#label13177">scsi-bus</a>, <a class="jdocu" href="topic341.html#label13197">scsi-cdrom</a>, <a class="jdocu" href="topic342.html#label13255">scsi-disk</a>, <a class="jdocu" href="topic349.html#label13472">serengeti-console</a>, <a class="jdocu" href="topic350.html#label13510">serengeti-console-old</a>, <a class="jdocu" href="topic353.html#label13557">serengeti-schizo</a>, <a class="jdocu" href="topic360.html#label13678">serial-link</a>, <a class="jdocu" href="topic361.html#label13696">server-console</a>, <a class="jdocu" href="topic362.html#label13753">service-node</a>, <a class="jdocu" href="topic380.html#label14080">state-assertion</a>, <a class="jdocu" href="topic416.html#label14499">sun4u-counter</a>, <a class="jdocu" href="topic417.html#label14519">sun4u-fasdma</a>, <a class="jdocu" href="topic418.html#label14531">sun4u-fhc</a>, <a class="jdocu" href="topic430.html#label14742">sunfire-psycho</a>, <a class="jdocu" href="topic432.html#label14798">sunfire-sysio</a>, <a class="jdocu" href="topic438.html#label14988">telos-basic-clock</a>, <a class="jdocu" href="topic439.html#label14995">telos-button</a>, <a class="jdocu" href="topic440.html#label15002">telos-environment</a>, <a class="jdocu" href="topic441.html#label15015">telos-io-ports</a>, <a class="jdocu" href="topic443.html#label15067">telos-sfr</a>, <a class="jdocu" href="topic444.html#label15079">telos-timer</a>, <a class="jdocu" href="topic445.html#label15109">telos-usart</a>, <a class="jdocu" href="topic446.html#label15134">text-console</a>, <a class="jdocu" href="topic453.html#label15309">ultrasparc-ii</a>, <a class="jdocu" href="topic454.html#label15397">ultrasparc-iii</a>, <a class="jdocu" href="topic455.html#label15487">ultrasparc-iii-i</a>, <a class="jdocu" href="topic456.html#label15577">ultrasparc-iii-plus</a>, <a class="jdocu" href="topic457.html#label15667">ultrasparc-iv</a>, <a class="jdocu" href="topic458.html#label15757">ultrasparc-iv-plus</a>, <a class="jdocu" href="topic459.html#label15847">ultrasparc-t1</a>, <a class="jdocu" href="topic463.html#label15970">vga</a>, <a class="jdocu" href="topic464.html#label16014">vga_pci</a>, <a class="jdocu" href="topic465.html#label16063">voodoo3</a>, <a class="jdocu" href="topic466.html#label16147">voodoo3-agp</a>, <a class="jdocu" href="topic468.html#label16229">x86-486sx</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a>, <a class="jdocu" href="topic475.html#label16876">x86-p2</a>, <a class="jdocu" href="topic476.html#label17148">x86-p4</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   This interface is intended for objects that post events. Each events has a
+   pointer to a call-back function and a data pointer associated with it. These
+   pointers need to be converted to values that can be represented in a file
+   when a configuration is written (a checkpoint is taken), and converted back
+   to pointers when a configuration is read (a checkpoint is opened). Simics
+   also needs some way to get a text description of an event that can be
+   presented to the user. These functions should be implemented through the
+   <tt>event-poster</tt> interface by all objects posting event.
+<p>
+   <pre class="jdocu_small" style="color: black">struct event_poster_interface {
+        attr_value_t (*get_event_info_val)(conf_object_t *NOTNULL obj,
+                                           void (*NOTNULL func)(
+                                                            conf_object_t *obj,
+                                                            lang_void *param),
+                                           void *user_data);
+        const char *(*describe_event)(conf_object_t *NOTNULL obj,
+                                      void (*NOTNULL func)(conf_object_t *obj,
+                                                           lang_void *param),
+                                      void *user_data);
+        void (*get_event_info)(attr_value_t *NOTNULL checkpoint_value,
+                               conf_object_t *NOTNULL obj,
+                               void (*NOTNULL func)(conf_object_t *obj,
+                                                    lang_void *param),
+                               void *user_data);
+        int (*set_event_info)(conf_object_t *NOTNULL obj,
+                              attr_value_t *NOTNULL checkpoint_value,
+                              void (**NOTNULL out_func)(conf_object_t *obj,
+                                                        lang_void *param),
+                              void **NOTNULL out_info);
+};
+
+#define EVENT_POSTER_INTERFACE "event_poster"
+</pre>
+<p>
+
+   <b><i><a name="label17733">get_event_info_val</a>()</i></b> is called for each event posted
+   by the object <i>obj</i> present in the event queues when writing a
+   configuration. Using the <i>func</i> and the <i>info</i>
+   parameters <b><i>get_event_info_val()</i></b> should return a checkpoint value
+   so that <b><i>set_event_info()</i></b> can restore both <i>func</i> and
+   <i>info</i> when the configuration is later read. If the event
+   should not be saved, <b><i>get_event_info_val()</i></b> should return
+   <tt>Sim_Val_Nil</tt>.
+<p>
+   <b><i><a name="label17734">get_event_info</a>()</i></b> is an alternative interface
+   kept for compatibility. It modifies the <i>checkpoint_value</i>
+   parameter instead of returning a value. It is only used if
+   <b><i>get_event_info_val()</i></b> is not present.
+<p>
+   <b><i><a name="label17735">set_event_info</a>()</i></b> is called for each event associated
+   with <i>obj</i> found when restoring events from a saved
+   configuration. Using the <i>checkpoint_value</i>
+   <b><i>set_event_info()</i></b> should fill in <i>out_func</i> and
+   <i>out_info</i> with the associated
+   values. <b><i>set_event_info()</i></b> should return one of
+   <tt>Sim_Set_Ok</tt>, <tt>Sim_Set_Ignored</tt> and
+   <tt>Sim_Set_Illegal_Value</tt>.
+   <tt>Sim_Set_Ok</tt> should be returned if the event was recognised and
+   should be posted, <tt>Sim_Set_Ignored</tt> if the event was recognised for
+   backwards compatibility but should not be posted, and
+   <tt>Sim_Set_Illegal_Value</tt> if the event was not recognised.
+<p>
+   <b><i><a name="label17736">describe_event</a>()</i></b> should return a string describing the
+   event using the <i>func</i> and <i>user_data</i>
+   parameters. The string is for example used when the event queue is printed.
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic496.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic498.html">Next</a></span></p>
+</body>
+</html>

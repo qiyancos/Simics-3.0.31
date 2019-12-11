@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Source File Structure</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(29, true);
+</script>
+<a name="label107"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+<h3 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Source File Structure</h3 class="jdocu">
+
+
+<a name="label108"></a>
+<p>
+A DML source file describes both the structure of the modeled device and
+the actions to be taken when the device is accessed.
+<p>
+A DML source file defining a device starts with a <em>language version
+declaration</em> and a <em>device declaration</em>. After that, any
+number of <em>parameter declarations</em>, <em>methods</em>, <em>data
+fields</em>, <em>object declarations</em>, or <em>global
+declarations</em> can be written. A DML file intended to be
+<em>imported</em> (by an <tt>import</tt> statement in another DML file)
+has the same layout except for the device declaration.
+<p>
+<a name="label109"></a><h4 class="jdocu">4.4.1&nbsp;&nbsp;&nbsp;Language Version Declaration</h4 class="jdocu">
+
+
+<a name="label110"></a>
+<p>
+Every DML source file should contain a version declaration, on the form
+"<tt>dml </tt><i>m</i><tt>.</tt><i>n</i><tt>;</tt>", where <i>m</i> and <i>n</i> are
+nonnegative integers denoting the major and minor version of DML,
+respectively, that the source file is written in. The version
+declaration allows the <tt>dmlc</tt> compiler to select the proper
+versions of the DML parser and standard libraries to be used for the
+file. (Note that each file has its own individual language version, even
+if it is imported by a file using another version.) A file should not
+import a file with a higher language version than its own.
+<p>
+The version declaration must be the first declaration in the file,
+possibly preceded by comments. For example:
+<pre class="jdocu_small" style="color: black">
+    // My Device
+    dml 1.0;
+    ...
+</pre>
+<p>
+A file that does not contain any version declaration is assumed to have
+the version DML 0.9, for reasons of backward compatibility with existing
+legacy code, but this feature will eventually be deprecated. All new
+code should use DML 1.0 or later, and all old code should at a minimum
+be given the version declaration "dml 0.9;", or preferably be rewritten
+in DML 1.0.
+<p>
+
+<a name="label111"></a><h4 class="jdocu">4.4.2&nbsp;&nbsp;&nbsp;Device Declaration</h4 class="jdocu">
+
+
+<a name="label112"></a>
+<p>
+Every DML source file that contains a device declaration is a <em>DML
+program</em>, and defines a device class with the specified name. Such a
+file may <em>import</em> other files, but only the initial file may
+contain a device declaration.
+<p>
+The device declaration must be the first proper declaration in the file,
+only preceded by comments and the language version declaration. For
+example:
+<pre class="jdocu_small" style="color: black">
+    /*
+     *  My New Device
+     */
+    dml 1.0;
+    device my_device;
+    ...
+</pre>
+<p>
+
+<a name="label113"></a><h4 class="jdocu">4.4.3&nbsp;&nbsp;&nbsp;Source File Example</h4 class="jdocu">
+
+
+<a name="label114"></a>
+<p>
+The following is an example of a small DML program defining a very
+simple device. This lacks many details that would appear in a real
+device.
+<p>
+<pre class="jdocu_small" style="color: black">
+    dml 1.0;
+
+    device excalibur;
+
+    connect bus {
+      interface pci;
+    }
+
+    bank config_registers {
+        parameter function = 0;
+        register cfg1 size 4 @ 0x0000 {
+            field status {
+                method read { ... }
+                method write { ... }
+            }
+            field enable {
+              method read { ... }
+              method write { ... }
+            }
+        }
+    }
+
+    bank databank {
+        parameter function = 1;
+        register r1 size 4 @ 0x0000 {
+            field f1 {
+                method read { ... }
+                method write { ... }
+            }
+        }
+        register r2 size 4 @ 0x0004 {
+            field f2 {
+                method read { ... }
+                method write { ... }
+            }
+        }
+    }
+</pre>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+</body>
+</html>

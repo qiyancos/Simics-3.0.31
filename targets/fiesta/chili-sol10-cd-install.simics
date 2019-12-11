@@ -1,0 +1,127 @@
+#
+# You may have to modify the path to the CD-ROM image. The script below
+# assumes the name sol-10-u2-ga-sparc-v<N>.iso for the images.
+# To use a different name, modify the script or use the cdrom-path
+# parameter in the GUI New Session dialog. 
+#
+# This installation may take a few hours.
+#
+# Use the chili-common.simics script to run with the new Solaris 10
+# installation.  
+#
+
+# Check for existing install disk file
+if `SIM_lookup_file("chili-sol10-install.disk")` {
+    echo "The file 'chili-sol10-install.disk' already exists."
+    echo "Move or delete this file before continuing."
+    echo ""
+    quit 1
+}
+
+# we don't want automatic login
+$do_login = "no"
+
+# Change limit from 6 to 5 if installing older Solaris 10 than 6/06
+
+# path to CD-ROM, use default if none given by user setup variables.
+$idx = 1
+if not defined cdrom_path {
+    while $idx < 6 {
+        $cdrom_path[$idx] = ("sol-10-u2-ga-sparc-v" + $idx + ".iso")
+        $idx += 1
+    }
+}
+
+$idx = 1
+while $idx < 6 {
+    if not `SIM_lookup_file(simenv.cdrom_path[simenv.idx])` {
+        echo "Cannot find the CD-ROM specified as : "  + $cdrom_path[$idx]
+        echo "Please add this file, or edit the path in this script."
+        echo ""
+        quit 1
+    }
+
+    echo "Using CD-ROM image file: " + $cdrom_path[$idx]
+    $idx += 1
+}
+
+$create_network = "yes"
+$disk_size = 9115287552
+$os = "none"
+
+run-command-file "%script%/chili-common.simics"
+
+@image = sim.objects[simenv.ide_disk].object_list['hd_image']
+@image.files = [["chili-sol10-install.disk", "rw", 0, simenv.disk_size]]
+
+# create a new vtoc on the disk, needed by Solaris
+($ide_disk.get-component-object hd).create-sun-vtoc-header -quiet 17662 16 63
+
+# create and insert CD media
+$cd = ($ide_cdrom.get-component-object cd)
+$cd.insert (new-file-cdrom $cdrom_path[1])
+
+$system.set-prom-defaults
+$system.set-prom-env nvramrc "devalias disk1 /pci@1e,600000/ide@d/disk@0,0"
+$system.set-prom-env diag-switch? true
+$system.set-prom-env use-nvramrc? true
+$system.set-prom-env diag-device  disk1
+$system.set-prom-env boot-command "boot -v"
+$system.set-prom-env auto-boot? false
+
+# remove previous log, if any
+@try:
+    os.unlink("chili-install-log.txt")
+except:
+    pass
+
+echo "Capturing output to 'chili-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "chili-install-log.txt"
+
+######################################
+
+run-command-file "%script%/../common/solaris10-install.include"
+
+script-branch {
+    $solaris10_phase1 = 1 # trigger script
+    $con.wait-for-string "rebooting..."
+    $cd.eject
+    $cd.insert (new-file-cdrom $cdrom_path[2])
+    $solaris10_phase2 = 1 # trigger script
+    $con.wait-for-string "[]"
+    $cd.insert (new-file-cdrom $cdrom_path[3])
+    $con.input "\n"
+    # CD 4 software
+    $con.wait-for-string "Media"
+    $con.input "1\n"
+    $con.wait-for-string "[]"
+    $cd.insert (new-file-cdrom $cdrom_path[4])
+    $con.input "\n"
+    # Remove the following lines if installing older Solaris 10 than 6/06
+    # CD 5 software
+    $con.wait-for-string "Media"
+    $con.input "1\n"
+    $con.wait-for-string "[]"
+    $cd.insert (new-file-cdrom $cdrom_path[5])
+    $con.input "\n"
+    # remove until this line. (Solaris 10 6/06)
+    #
+    $con.wait-for-string "rebooting..."
+    $solaris10_phase3 = 1 # trigger script
+    $con.wait-for-string "ok "
+    stop "Installation complete"
+    $system.set-prom-env auto-boot? true
+    save-persistent-state chili-sol10.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Installation finished!"
+echo ""
+echo "Now exit Simics and use the chili-common.simics script to start the "
+echo "machine. Make sure that the $os variable is set to solaris10."
+echo ""

@@ -1,0 +1,8 @@
+# Ebony running Debian PPC (Sarge)
+
+if not defined scsi_disk_image {$scsi_disk_image = "debian-sarge-ppc.craff"}
+if not defined scsi_disk_size  {$scsi_disk_size = 0xc0000000}
+if not defined flash_image_1   {$flash_image_1 = "linux-2.4.31-fp.uimage"}
+if not defined create_network  {$create_network = "yes" }
+
+run-command-file "%script%/ebony-scsi-common.simics"

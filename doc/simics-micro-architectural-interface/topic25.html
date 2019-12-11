@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Running and Stepping</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(54, true);
+</script>
+<a name="label283"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+<h3 class="jdocu">8.3&nbsp;&nbsp;&nbsp;Running and Stepping</h3 class="jdocu">
+
+
+<p>
+The <b><a name="label284">run-cycles</a></b> command is used in the example above. It
+will run a particular number of cycles before returning to prompt. It
+is more appropriate to use this command than the <b><a name="label285">run</a></b>
+(<b><a name="label286">continue</a></b>) command when running MAI since the
+<b><a name="label287">run</a></b> command will run a certain number of instructions
+(steps) and this may not add up to an even number of cycles causing a
+cycle to be incomplete. The same holds for <b><a name="label288">step-instruction</a></b>
+and step breakpoints inserted by the <b><a name="label289">step-break</a></b> and
+<b><a name="label290">step-break-absolute</a></b> commands.
+<p>
+Steps are consumed just before an instruction is committed, or an
+exception or interrupt is handled. Breaking after a number of steps
+may force the MAI module to break inside a cycle. It is up to the
+module to decide what action to take if this happens.
+<b><i><a name="label291">SIM_instruction_proceed</a></i></b>, <b><i><a name="label292">SIM_instruction_commit</a></i></b>,
+<b><i><a name="label293">SIM_instruction_handle_exception</a></i></b>, and
+<b><i><a name="label294">SIM_instruction_handle_interrupt</a></i></b> will return special value
+if the simulation should be stopped at the next step count. The module
+can call <b><i><a name="label295">SIM_break_cycle(cpu, 0)</a></i></b> or
+<b><i><a name="label296">SIM_break_simulation</a></i></b> and then exit the <a name="label297">cycle handler</a> to
+return to prompt. The <b><a name="label298">sample-micro-arch</a></b> and
+<b><a name="label299">ooo-micro-arch</a></b> do this after printing a warning
+message.
+<p>
+To advance the simulation a single cycle use the <b><a name="label300">step-cycle</a></b>
+command. A neat combination of commands is:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; sc; piq -v
+</pre>
+<p>
+<b><a name="label301">sc</a></b> is short for <b><a name="label302">step-cycle</a></b> and <b><a name="label303">piq</a></b> is
+short for <b><a name="label304">print-instruction-queue</a></b>. With this it is easy to
+monitor changes in the instruction tree for each new cycle. 
+<p>
+For multiprocessor systems there is a special command called
+<b><a name="label305">step-cycle-single</a></b> or <b><a name="label306">scs</a></b> for short that steps
+the first processor one cycle, then if reinvoked it steps the next
+processor one cycle etc. The current fronted processor is changed
+between each invocation making inspection commands like
+<b><a name="label307">print-instruction-queue</a></b> to work on the newly stepped
+processor:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; scs; piq -v
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+</body>
+</html>

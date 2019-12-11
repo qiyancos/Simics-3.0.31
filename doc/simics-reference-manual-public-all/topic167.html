@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>mii-transceiver</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1036, true);
+</script>
+<a name="label7848"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic166.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic168.html">Next</a></span></p>
+<h3 class="jdocu">mii-transceiver</h3 class="jdocu">
+
+
+<a name="label7849"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2706">mii-transceiver</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>mii-transceiver</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic501.html#label17744">ieee_802_3_phy</a>, <a class="jdocu" href="topic495.html#label17725">ethernet_device</a></dd>
+
+
+<dt class="jdocu_di"><b>Ports</b></dt><dd class="jdocu_di">
+MDIO (<a class="jdocu" href="topic529.html#label17946">signal</a>), MDC (<a class="jdocu" href="topic529.html#label17946">signal</a>)</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+mii-transceiver is an IEEE 802.3 physical layer device with MII interface
+
+</dd>
+
+</dl>
+<a name="label7850"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>add_crc_on_inject</i></b></dt><a name="label7851"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Frames injected using the 'inject_packet' will get a correctly calculated CRC added at the end when this attribute is set to 1 (default). When set to 0, the user has to supply a CRC field with the injected frame. Note that you must always provide room for the CRC field, even when this attribute is set to 1.</dd></dl>
+<dl><dt><b><i>address</i></b></dt><a name="label7852"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Address on the MII management bus.</dd></dl>
+<dl><dt><b><i>current_packet</i></b></dt><a name="label7853"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+(Obsolete - see the "last-frame" attribute instead). The packet that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>duplex_mode</i></b></dt><a name="label7854"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 for full duplex (0 for half duplex).</dd></dl>
+<dl><dt><b><i>inject_packet</i></b></dt><a name="label7855"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Data</b>.
+<p>
+Attribute used to send a packet to the network device. Writing this attribute at any time injects a new packet into the device (without involving the network simulation). Injecting a packet copies the packet data, allowing the caller to reuse or dispose of the buffer used for creating the packet, after the attribute is written.</dd></dl>
+<dl><dt><b><i>last_frame</i></b></dt><a name="label7856"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+The frame that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label7857"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The Ethernet link that the network device is connected to.</dd></dl>
+<dl><dt><b><i>link_speed</i></b></dt><a name="label7858"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The link speed (usually 10 or 100 Mbit/s).</dd></dl>
+<dl><dt><b><i>link_status</i></b></dt><a name="label7859"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The status of the link - 0 when completely unconnected, 1 when connected but down, and 2 when connected and up.</dd></dl>
+<dl><dt><b><i>mac</i></b></dt><a name="label7860"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Set to a media access controller (MAC) object, implementing the ieee_802_3_mac_interface_t.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label7861"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|[i{6}]|n</b>.
+<p>
+Ethernet (MAC) address of the network interface.</dd></dl>
+<dl><dt><b><i>mdio_target</i></b></dt><a name="label7862"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|o|[os]</b>.
+<p>
+Describes where the outgoing MDIO signal should be connected</dd></dl>
+<dl><dt><b><i>model_crc</i></b></dt><a name="label7863"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to 1, the device will calculate and include an Ethernet CRC on all transmitted frames, and check the CRC on received frames.</dd></dl>
+<dl><dt><b><i>network</i></b></dt><a name="label7864"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Obsolete attribute. Use link instead.</dd></dl>
+<dl><dt><b><i>recorder</i></b></dt><a name="label7865"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Recorder object that allows recording and later playback of network traffic to the interface.</dd></dl>
+<dl><dt><b><i>registers</i></b></dt><a name="label7866"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{32}]</b>.
+<p>
+The MII management register set as described in IEEE 802.3.</dd></dl>
+<dl><dt><b><i>reliability</i></b></dt><a name="label7867"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+This value determined how reliable an established connection is. If set to N it means that with a probability of 1 out of N a package will be lost (not sent to the receiver). The default value is 0 which means that no packages will be lost.</dd></dl>
+<dl><dt><b><i>reliability_seed</i></b></dt><a name="label7868"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The seed value for the randomization of packet loss. See the reliability attribute</dd></dl>
+<dl><dt><b><i>serial_clock</i></b></dt><a name="label7869"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+MII Management Interface serial communication state.</dd></dl>
+<dl><dt><b><i>serial_data_in</i></b></dt><a name="label7870"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+MII Management Interface serial communication state.</dd></dl>
+<dl><dt><b><i>serial_data_out</i></b></dt><a name="label7871"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+MII Management Interface serial communication state.</dd></dl>
+<dl><dt><b><i>serial_num_cycles</i></b></dt><a name="label7872"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+MII Management Interface serial communication state.</dd></dl>
+<dl><dt><b><i>serial_port_status</i></b></dt><a name="label7873"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+MII Management Interface serial communication state.</dd></dl>
+<dl><dt><b><i>tx_bandwidth</i></b></dt><a name="label7874"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The transmit bandwidth of the network interface in bits per second. The network interface will limit the rate at which it sends packets to remain below this bandwidth. Set to 0 for unlimited bandwidth.</dd></dl>
+<dl><dt><b><i>tx_next_time</i></b></dt><a name="label7875"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+The earliest time at which that the network interface may send another packet. Used for transmit bandwidth limitation.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label7876"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7878">connect</a></b></td><td class="jdocu_noborder">connect to a simulated Ethernet link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7880">disconnect</a></b></td><td class="jdocu_noborder">disconnect from simulated link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7882">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7884">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label7877"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label7878"></a><a name="label7879"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mii-transceiver&gt;.connect</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mii-transceiver&gt;.connect</b> [-auto] (<i>link</i>|<i>"link-name"</i>) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Connect the device to a simulated Ethernet link.
+                The flag '-auto' is deprecated and shouldn't be used.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label7880">&lt;mii-transceiver&gt;.disconnect</a></dd>
+
+</dl>
+
+
+
+<a name="label7880"></a><a name="label7881"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mii-transceiver&gt;.disconnect</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mii-transceiver&gt;.disconnect</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Disconnect the device from a simulated Ethernet link.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label7878">&lt;mii-transceiver&gt;.connect</a></dd>
+
+</dl>
+
+
+
+<a name="label7882"></a><a name="label7883"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mii-transceiver&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mii-transceiver&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label7884"></a><a name="label7885"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mii-transceiver&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mii-transceiver&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic166.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic168.html">Next</a></span></p>
+</body>
+</html>

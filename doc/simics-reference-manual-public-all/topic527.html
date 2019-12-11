@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>serial_device</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2268, true);
+</script>
+<a name="label17942"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic526.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic528.html">Next</a></span></p>
+<h3 class="jdocu">serial_device</h3 class="jdocu">
+
+
+<a name="label17943"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic183.html#label8304">NS16450</a>, <a class="jdocu" href="topic184.html#label8340">NS16550</a>, <a class="jdocu" href="topic324.html#label12912">SA1110-device</a>, <a class="jdocu" href="topic484.html#label17671">Z8530-port</a>, <a class="jdocu" href="topic147.html#label7577">leon2_uart</a>, <a class="jdocu" href="topic349.html#label13472">serengeti-console</a>, <a class="jdocu" href="topic350.html#label13510">serengeti-console-old</a>, <a class="jdocu" href="topic361.html#label13696">server-console</a>, <a class="jdocu" href="topic403.html#label14342">sun-keyboard</a>, <a class="jdocu" href="topic404.html#label14358">sun-mouse</a>, <a class="jdocu" href="topic445.html#label15109">telos-usart</a>, <a class="jdocu" href="topic446.html#label15134">text-console</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Interface used to connect serial devices together. It is typically
+   implemented by both devices and text consoles. A character (byte) is
+   sent with the <b><i>write()</i></b> function where <i>obj</i> is the
+   destination device and the <i>value</i> argument is either a data
+   byte, or the out-of-band value <tt>TTY_ABORT</tt>.
+<p>
+   The called device will return the number of characters accepted; i.e.
+   1 on success and 0 if it could not handle the new byte. If the receiver
+   returns 0, it must later call <b><i>receive_ready()</i></b> in the sender's
+   interface to signal that new bytes can be accepted. A serial device should
+   handle the case where the <b><i>receive_ready()</i></b> function is called
+   although it has no more bytes to send.
+<p>
+   <pre class="jdocu_small" style="color: black">#define TTY_ABORT   0x100
+
+typedef struct {
+        int (*write)(conf_object_t *obj, int value);
+        void (*receive_ready)(conf_object_t *obj);
+} serial_device_interface_t;
+
+#define SERIAL_DEVICE_INTERFACE "serial-device"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic526.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic528.html">Next</a></span></p>
+</body>
+</html>

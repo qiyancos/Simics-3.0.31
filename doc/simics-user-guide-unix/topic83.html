@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Events</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(209, true);
+</script>
+<a name="label485"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic82.html">Previous</a> - <a class="jdocu" href="topic82.html">Up</a> - <a class="jdocu" href="topic84.html">Next</a></span></p>
+<h4 class="jdocu">17.1&nbsp;&nbsp;&nbsp;Events</h4 class="jdocu">
+
+
+<p>
+Simics is an <em><a name="label486">event</a> driven simulator</em> with a maximum
+time resolution of a <em><a name="label487">clock cycle</a></em>. In a
+single-processor system, the length (in seconds) of a clock <a name="label488">cycle</a> is
+easily defined as 1 divided by the processor frequency set by the
+user. As described later in this chapter, Simics can also handle
+multiprocessor systems with different clock frequencies, but we will
+focus on single-processor systems for the rest of this section.
+<p>
+As Simics makes the <a name="label489">simulated time</a> progress, cycle by cycle, events
+are triggered and executed. Events include device interrupts, internal state
+updates, as well as <em><a name="label490">step</a></em> executions. A <em>step</em> is the
+unit in which Simics divides the execution of a flow of instructions going
+through a processor; it is defined as the execution of an instruction, an
+instruction resulting in an exception, or an interrupt. Steps are by far the
+most common events.
+<p>
+Steps and cycles are fundamental Simics concepts. Simics exposes
+two types of events to users: events linked to a specific step, and events
+linked to a specific cycle. Step events are useful for debugging (execute 1
+step at a time, stop after executing 3 steps, etc.), whereas time events are
+rather independent from the flow of execution (sector read operation on the
+hard disk will finish in 1 ms).
+<p>
+For each executed cycle, events are triggered in the following order:
+<p>
+<ol>
+  <li>All events posted for this specific <i>cycle</i>, except step execution.
+  </li>
+  <li>For each step scheduled for execution on this cycle: 
+    <ol>
+      <li>All events scheduled for that specific <i>step</i>.</li>
+      <li>A step execution.</li>
+    </ol>
+  </li>
+</ol>
+<p>
+Events belonging to the same category are executed in FIFO order: posted first
+is executed first.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic82.html">Previous</a> - <a class="jdocu" href="topic82.html">Up</a> - <a class="jdocu" href="topic84.html">Next</a></span></p>
+</body>
+</html>

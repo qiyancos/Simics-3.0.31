@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Stalling Memory Transactions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(204, true);
+</script>
+<a name="label479"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic77.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic79.html">Next</a></span></p>
+<h4 class="jdocu">16.2&nbsp;&nbsp;&nbsp;Stalling Memory Transactions</h4 class="jdocu">
+
+
+<p>
+When an object attached to the <em>timing-model</em> interface receives a
+memory-transaction, it is allowed to modify the timing of the transaction by
+returning a <em>stall time</em> (as a number of processor cycles). Upon
+receiving a non-zero stall time, Simics will block the transaction for that number
+of processor cycles before executing it.
+<p>
+This behavior is a key to modeling caches and memory hierarchies in Simics,
+particularly in multi-processor simulations. A complete description of cache
+simulation in Simics is available in chapter <a class="jdocu" href="topic86.html#label517">18</a>. The <em>Simics Programming Guide</em> explains how to make
+your own timing-model object to observe and stall memory transactions, and
+provides more information about the different types of stalling available.
+<p>
+To be able to stall transactions, the simulation must be started with the
+<i>-stall</i> flag. This will tell Simics to set up the processors so that
+stalling is allowed. It is otherwise disabled for performance reasons.
+<p>
+Stalling a transaction is not always possible, depending on the processor model
+you are using in the simulation:
+<p>
+<ul>
+<p>
+<li>UltraSPARC processors can stall both data accesses and instruction
+fetches.</li>
+<p>
+<li>x86, PowerPC and MIPS processors can stall data accesses.</li>
+<p>
+</ul>
+<p>
+<hr class="jdocu_note"><b>Note:</b> As mentioned above, a transaction may go through several memory-spaces
+in hierarchical order before being executed. Each of these memory-spaces may
+have a timing-model connected to them. However, if the transaction is stalled
+by one timing model, the other timing models may see the transaction being
+reissued before it is executed.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic77.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic79.html">Next</a></span></p>
+</body>
+</html>

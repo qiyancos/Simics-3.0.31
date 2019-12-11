@@ -1,0 +1,374 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>symtable</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2050, true);
+</script>
+<a name="label14911"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic435.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic437.html">Next</a></span></p>
+<h3 class="jdocu">symtable</h3 class="jdocu">
+
+
+<a name="label14912"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2954">symtable</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>symtable</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic536.html#label17974">symtable</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+Symbolic debugging information for an address space.
+
+</dd>
+
+</dl>
+<a name="label14913"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>abi</i></b></dt><a name="label14914"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+ABI to use, or empty string if not set.</dd></dl>
+<dl><dt><b><i>addr_of</i></b></dt><a name="label14915"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>list</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+Address of (<i>file</i>, <i>line</i>, <i>function</i>) where file/line or function may be 0.</dd></dl>
+<dl><dt><b><i>all_abis</i></b></dt><a name="label14916"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>.
+<p>
+List of all symtable ABIs.</dd></dl>
+<dl><dt><b><i>arch</i></b></dt><a name="label14917"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Architecture the symbols are for, or the empty string if not set.</dd></dl>
+<dl><dt><b><i>arch_compat</i></b></dt><a name="label14918"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>string</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+True if symtable is compatible with architecture given as index</dd></dl>
+<dl><dt><b><i>data_at</i></b></dt><a name="label14919"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[sssi]</b>.
+<p>
+(<i>file</i>, <i>variable</i>, <i>type</i>, <i>offset</i>) Variable at given address</dd></dl>
+<dl><dt><b><i>display_position</i></b></dt><a name="label14920"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set, the current source position is displayed after each command.</dd></dl>
+<dl><dt><b><i>eager_loading</i></b></dt><a name="label14921"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Whether to load debug info right away, as opposed to only when needed.</dd></dl>
+<dl><dt><b><i>fun_addr</i></b></dt><a name="label14922"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[i,i,i]|n</b>; <b>list</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+ Address, offset to first code line, and size of a function. Index is (<i>function</i>, <i>file</i>), where <i>file</i> can be Nil.</dd></dl>
+<dl><dt><b><i>functions</i></b></dt><a name="label14923"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[s,s,i,i]*]</b>.
+<p>
+((<i>function</i>, <i>file</i>, <i>start</i>, <i>end</i>)*) List of functions and where in memory they are located</dd></dl>
+<dl><dt><b><i>host_source_at</i></b></dt><a name="label14924"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[sis]</b>.
+<p>
+(<i>file</i>, <i>line</i>, <i>function</i>) Source code position at given address. The <i>file</i> is a complete path to the file on the host.</dd></dl>
+<dl><dt><b><i>load_symbol_file</i></b></dt><a name="label14925"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>[si]</b>.
+<p>
+(<i>file</i>, <i>address</i>) Set to load symbols from <i>file</i> at <i>address</i></dd></dl>
+<dl><dt><b><i>local_vars</i></b></dt><a name="label14926"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[s*]|n</b>.
+<p>
+list of local variable and function parameter names; index is program location</dd></dl>
+<dl><dt><b><i>selfprof_active</i></b></dt><a name="label14927"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>i|[iii]</b>.
+<p>
+Set to (<i>skip</i>, <i>buffers</i> <i>flat</i>) for starting self-profiling, 0 for stopping and nonzero for continuing after stopping. <i>skip</i> is the number of stack frames to skip from the call root, and <i>buffers</i> is the number of call buffers to use. A non-zero <i>flat</i> value enables flat profiling.</dd></dl>
+<dl><dt><b><i>selfprof_dump_flat</i></b></dt><a name="label14928"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+(Internal use only) Set to the file name for dumping flat profile data.</dd></dl>
+<dl><dt><b><i>selfprof_graph</i></b></dt><a name="label14929"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>[s|nfsib]</b>.
+<p>
+(<i>function-name</i>, <i>cut-off</i>, <i>dot-file</i>, <i>page-size</i> <i>landscape</i>) List the call path for <i>function-name </i> and the accumulated time spent in each function called from this path. A value if NIL will list all call paths in Simics. To skip rarely used paths, specify a cut-off limit in <i>cut-off</i> in percent. If <i>dot-file</i> is non-NIL, the output is written to a file in the dot graph language. The dot file is generated for a page size given by the <i>page-size</i> field which is one of 1, 2, 3 or 4 for A1, A2, A3 and A4.</dd></dl>
+<dl><dt><b><i>selfprof_info</i></b></dt><a name="label14930"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+(Internal use only) Print some self-profiling info. Does not return anything interesting.</dd></dl>
+<dl><dt><b><i>selfprof_list</i></b></dt><a name="label14931"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+(Internal use only) (<i>n</i>, <i>function-name</i>, <i>accum</i>, <i>file</i>) List the <i>n</i> most executed functions whose name begin with <i>fun-name</i> and reside in <i>file</i>. If <i>accum</i> is nonzero, list in order of accumulated times (including time spent in callees)</dd></dl>
+<dl><dt><b><i>selfprof_stat</i></b></dt><a name="label14932"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[ssii]]|n</b>.
+<p>
+(Internal use only)Get the time spent in different functions. Each entry in the returned list is a list of the form [function, file name, ticks, accumulated ticks]. Self-profiling must have been started an stopped (using <i>selfprof-start</i> and <i>selfprof-stop</i> before this attribute is read. Failure to do so will result in <i>nil</i> being returned. If self-profiling was started in flat mode <i>nil</i> is returned.</dd></dl>
+<dl><dt><b><i>selfprof_tick</i></b></dt><a name="label14933"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Trigger a selfprof tick.</dd></dl>
+<dl><dt><b><i>simics_symbols</i></b></dt><a name="label14934"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>[ii]</b>.
+<p>
+(<i>all</i>, <i>verbose</i>) Set to load Simics own symbols into this symtable object. Set <i>all</i> to 0 to just load symbols, 1 to load debug info as well. If the <i>verbose</i> flag is non-zero, information about loaded symbol files is printed.</dd></dl>
+<dl><dt><b><i>source_at</i></b></dt><a name="label14935"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[sis]</b>.
+<p>
+(<i>file</i>, <i>line</i>, <i>function</i>) Source code position at given address</dd></dl>
+<dl><dt><b><i>source_lines</i></b></dt><a name="label14936"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[[si]*]</b>.
+<p>
+((<i>file</i>, <i>line</i>), ...) All source lines corresponding to a given instruction</dd></dl>
+<dl><dt><b><i>sourcepath</i></b></dt><a name="label14937"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+set source search path for debug info</dd></dl>
+<dl><dt><b><i>symbol_file</i></b></dt><a name="label14938"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[si]*]</b>; <b>string</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+((<i>file</i>, <i>address</i>), ...) Loaded symbol tables</dd></dl>
+<dl><dt><b><i>symbol_list</i></b></dt><a name="label14939"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; ; <b>string</b> indexed;  indexed type: <b>[[siii]*]</b>.
+<p>
+((<i>symbol-name</i>, <i>info</i>, <i>value</i>, <i>size</i>), ...) Specify a list of symbols to be entered under the indexed name. <i>info</i> is an integer as follows: local=0, global=1, weak=2; variable=0, function=16.</dd></dl>
+<dl><dt><b><i>symbol_value</i></b></dt><a name="label14940"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>string</b> indexed;  indexed type: <b>i|n</b>.
+<p>
+ Value of symbol (index), or Nil if no such symbol exists.</dd></dl>
+<dl><dt><b><i>total_walks</i></b></dt><a name="label14941"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+(Internal use only)Get total number of walks (perfanalyze/time_handler events)</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label14942"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14944">abi</a></b></td><td class="jdocu_noborder">set ABI to use</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14946">host-source-at</a></b></td><td class="jdocu_noborder">return the source code position for a given address</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14948">list</a></b></td><td class="jdocu_noborder">list source and/or disassemble</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14950">load-symbols</a></b></td><td class="jdocu_noborder">load symbols from file</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14952">plain-symbols</a></b></td><td class="jdocu_noborder">read raw symbols in nm format</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14954">pos</a></b></td><td class="jdocu_noborder">address of line or function</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14956">source-path</a></b></td><td class="jdocu_noborder">set source search path for debug info</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14958">whereis</a></b></td><td class="jdocu_noborder">find symbol by address</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label14943"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label14944"></a><a name="label14945"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.abi</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.abi</b> [<i>"abi"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the ABI to <i>abi</i>, or show the current ABI. This is normally not
+needed when loading debug info from a binary, but is needed when using
+<b>plain-symbols</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14952">&lt;symtable&gt;.plain-symbols</a></dd>
+
+</dl>
+
+
+
+<a name="label14946"></a><a name="label14947"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.host-source-at</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.host-source-at</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Return the source code position (file, line, function) corresponding to a given address.</dd>
+
+</dl>
+
+
+
+<a name="label14948"></a><a name="label14949"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.list</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.list</b> [(-s|-d)] (<i>address</i>|<i>"location"</i>) [<i>maxlines</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+List the source code corresponding to a given address, function or line.
+The location can be specified as
+<p>
+<i>line</i> or <i>file</i><tt>:</tt><i>line</i> --- list from given line
+<p>
+<i>function</i> or <i>file</i><tt>:</tt><i>function</i> --- list that function
+<p>
+<i>address</i> --- list from that address
+<p>
+At most <i>maxlines</i> lines of source or asm are printed.
+<tt>-s</tt> produces source intermixed with disassembly, and <tt>-d</tt>
+only disassembles.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1850">disassemble</a>, <a class="jdocu" href="topic13.html#label2475">whereis</a>, <a class="jdocu" href="topic13.html#label2203">pos</a>, <a class="jdocu" href="topic13.html#label2417">symval</a></dd>
+
+</dl>
+
+
+
+<a name="label14950"></a><a name="label14951"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.load-symbols</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.load-symbols</b> <i>file</i> [<i>start</i>] [-t] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Loads symbolic debugging information from <i>file</i>. If <i>start</i> is
+given, it is the (absolute) starting address of the file's code.
+If <tt>-t</tt> is specified, <i>start</i> is interpreted as the address
+of the .text section (similarly to GDB); otherwise <i>start</i> is taken to be
+the address of the first executable segment. The Simics search path is used
+to locate <i>file</i>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2155">new-symtable</a>, <a class="jdocu" href="#label14952">&lt;symtable&gt;.plain-symbols</a></dd>
+
+</dl>
+
+
+
+<a name="label14952"></a><a name="label14953"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.plain-symbols</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.plain-symbols</b> <i>file</i> [<i>start</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Reads "plain" symbols in BSD <b>nm(1)</b> output format. Each line looks like:
+<p>
+<i>value</i> <i>type</i> <i>symbol</i>
+<p>
+where <i>value</i> is the symbol value (usually the address) in hex, and
+<i>type</i> is a code letter describing the type of the symbol: <b>B</b>,
+<b>D</b> or <b>R</b> are treated as data symbols, and <b>T</b> as text (code)
+symbols. File-local symbols have their type letters in lower case, global
+symbols in upper case. If <i>start</i> is specified, it is added to the value
+of each symbol.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2155">new-symtable</a>, <a class="jdocu" href="#label14950">&lt;symtable&gt;.load-symbols</a></dd>
+
+</dl>
+
+
+
+<a name="label14954"></a><a name="label14955"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.pos</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.pos</b> (<i>line</i>|<i>"function"</i>) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Finds the address of a source line or a function in a given file
+(e.g., <tt>myfile.c:4711</tt> or <tt>myfile.c:myfunction</tt>). If
+only a line number is specified, the command looks at the current
+value of the program counter to determine the current file. (If this
+command is called from the symtable namespace, no current file is
+defined.) It may be necessary to put the argument inside double quotes
+for it to be parsed correctly.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2371">stack-trace</a>, <a class="jdocu" href="topic13.html#label2254">psym</a>, <a class="jdocu" href="topic13.html#label2417">symval</a></dd>
+
+</dl>
+
+
+
+<a name="label14956"></a><a name="label14957"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.source-path</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.source-path</b> [<i>"path"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Sets the source search path to <i>path</i>. If no <i>path</i> is given, the
+current search path will be displayed. The source search path is used when
+translating file names in debug information to the appropriate place in the
+host machine's file system.
+<p>
+Each component of the (semicolon-separated) search path is either a path name,
+added to the beginning of source file names, or a string of the form
+<i>a</i><tt>&gt;</tt><i>b</i>, replacing <i>a</i> with <i>b</i> at the beginning
+of source file names.
+<p>
+Example: The source path <tt>/usr/src&gt;/pkg/source;/usr&gt;/misc</tt> would cause
+the file name <tt>/usr/src/any.c</tt> to be translated to
+<tt>/pkg/source/any.c</tt>, or, if no such file exists, to
+<tt>/misc/src/any.c</tt>.
+<p>
+Another example: The source path <tt>/usr/src&gt;C:\My\Source</tt> would
+translate the file name <tt>/usr/src/any/file.c</tt> to
+<tt>C:\My\Source\any\file.c</tt>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14950">&lt;symtable&gt;.load-symbols</a>, <a class="jdocu" href="topic13.html#label2155">new-symtable</a></dd>
+
+</dl>
+
+
+
+<a name="label14958"></a><a name="label14959"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;symtable&gt;.whereis</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;symtable&gt;.whereis</b> [-d] <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Displays the function or variable and (if possible) the source file and line
+number corresponding to <i>address</i>. If <tt>-d</tt> is specified, searches
+only data symbols. Does not look for stack-allocated variables.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2203">pos</a>, <a class="jdocu" href="topic13.html#label2254">psym</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic435.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic437.html">Next</a></span></p>
+</body>
+</html>

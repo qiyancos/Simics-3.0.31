@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Running dmlc</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(3, true);
+</script>
+<a name="label7"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Running dmlc</h2 class="jdocu">
+
+
+<p>
+The syntax for running <tt>dmlc</tt> from the command line is:
+<pre class="jdocu_small" style="color: black">
+    dmlc [<i>options</i>] <i>input</i> [<i>output-base</i>]
+</pre>
+where <i>input</i> should be the name of a DML source file. If
+<i>output-base</i> is provided, it will be used to name the created
+files. The name of a DML source file should in general have the suffix
+"<tt>.dml</tt>". The <i>input</i> file must contain a
+<tt>device</tt> declaration; see Section <a class="jdocu" href="topic20.html#label111">4.4.2</a>.
+<p>
+The output of <tt>dmlc</tt> is a set of <a name="label8">C source</a> and header
+files that can be compiled into a Simics module in the same way a
+hand-written module would. (See the <em>Simics Programming
+Guide</em> for details on writing Simics modules in C.) The generated
+C code should be possible to compile with any ISO C compatible compiler.
+For reference and debugging purposes, an <a name="label9">HTML</a> file
+summarizing the modeled device is also generated.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic3.html#label10" target="main">2.1&nbsp;&nbsp;&nbsp;Command-line Options</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

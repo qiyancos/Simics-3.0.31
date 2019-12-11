@@ -1,0 +1,200 @@
+/* manual type stylesheet for html documentation */
+
+/* body for normal topic page */
+body.jdocu_main { margin: 2ex 2em 2ex 2em; 
+                  font-family: serif; 
+                  background-color: white; }
+
+/* body for table of contents/doclist frames */
+body.jdocu_toc { margin: 0em 0em 2ex 0em; 
+                 font-family: serif; 
+                 background-color: white; }
+
+
+a:link.jdocu    { color: blue }          /* unvisited link */
+a:visited.jdocu { color: purple }        /* visited links */
+a:active.jdocu  { color: red }           /* active links */
+
+/* horizontal rule for notes */
+hr.jdocu_note { border: none;
+                border-top-width: thin;
+                border-top-color: black;
+                border-top-style: solid; 
+                text-align: left; }
+
+/* h1 title */
+h1.jdocu { font-family: sans-serif;
+           font-size: 200%;
+           font-weight: bold;
+           color: navy;
+           text-align: center; }
+
+/* link to an h1 title */
+.jdocu_ph1 { font-family: sans-serif;
+             text-align: center; 
+             margin: 0em; }
+
+h2.jdocu { font-family: sans-serif;
+           font-size: 144%; 
+           color: navy;
+           font-weight: bold; }
+
+.jdocu_ph2 { font-family: sans-serif;
+             margin: 0em; }
+
+h3.jdocu { font-family: sans-serif;
+           color: navy;
+           font-size: 144%; }
+
+.jdocu_ph3 { font-family: sans-serif;
+             margin: 0em; }
+
+h4.jdocu { font-family: sans-serif;
+           color: navy;
+           font-size: 120%; 
+           font-weight: bold; }
+
+.jdocu_ph4 { font-family: sans-serif;
+             margin: 0em; }
+
+h5.jdocu { font-family: sans-serif;
+           color: navy;
+           font-size: 110%; }
+
+.jdocu_ph5 { font-family: sans-serif;
+             margin: 0em; }
+
+h6.jdocu { font-family: sans-serif;
+           font-size: 100%; 
+           color: navy; }
+
+.jdocu_ph6 { font-family: sans-serif;
+             margin: 0em; }
+
+/* definition for table cells (td) */
+.jdocu_border { border: solid black 1px;
+                padding: 0.2ex 0.4ex 0.2ex 0.4ex;
+                margin: 0ex; }
+
+.jdocu_noborder { border: none;
+                  padding: 0.2ex 0.4ex 0.2ex 0.4ex;
+                  margin: 0ex; }
+
+/* item description (doclist) */
+.jdocu_descitem { font-family: sans-serif;
+                  color: navy;
+                  margin-top: 1ex; margin-bottom: 0.5ex; }
+
+/* doc-item type classes */
+
+dl.jdocu_di { margin-left: 2em; }
+
+dt.jdocu_di_name { font-family: sans-serif;
+                   font-size: 100%;
+                   background-color: rgb(230, 230, 255);
+                   padding: 0.5ex;
+                   margin-top: 6ex; margin-bottom: 2ex; 
+                   margin-left: -2em; }
+
+dt.jdocu_di_synopsis { font-weight: bold; }
+dd.jdocu_di_synopsis { font-family: monospace;
+                       margin-left: 1em;
+                       margin-top: 0.5ex; margin-bottom: 0.5ex; }
+
+dt.jdocu_di_description { font-weight: bold; }
+dd.jdocu_di_description { margin-left: 1em; }
+
+dt.jdocu_di_parameters { font-weight: bold; }
+dd.jdocu_di_parameters { margin-left: 1em; }
+
+dt.jdocu_di_returnvalue { font-weight: bold; }
+dd.jdocu_di_returnvalue { margin-left: 1em; }
+
+dt.jdocu_di_exceptions { font-weight: bold; }
+dd.jdocu_di_exceptions { margin-left: 1em; }
+
+dt.jdocu_di { font-weight: bold; }
+dd.jdocu_di { margin-left: 1em; margin-bottom: 2ex; }
+
+
+/* navigation bar rectangle */
+.jdocu_navbar { font-family: sans-serif;
+                background-color: rgb(224,224,255);
+                padding: 0.2ex 1em 0.2ex 1em; }
+
+/* navigation bar paragraph */
+.jdocu_navbarp { text-align: right; }
+
+/* winhelp - navigation bar rectangle */
+.jdocu_wh_navbar { font-family: sans-serif;
+                   font-size: 80%;
+                   color: gray;
+                   padding: 0.2ex 1em 0.2ex 1em; }
+
+/* winhelp - navigation bar paragraph */
+.jdocu_wh_navbarp { text-align: right; }
+
+
+/* tables */
+table.jdocu { border-spacing: 0px; border: none; }
+
+/* head elements */
+/* head elements */
+.jdocu_title { color: navy; }
+td.jdocu_title { padding-left: 1em; padding-right: 1em; }
+
+.jdocu_version { font-family: sans-serif; 
+                 font-size: 144%; 
+                 font-weight: bold;
+                 color: navy;
+                 text-align: center; }
+
+.jdocu_subtitle { font-family: sans-serif; 
+                  font-size: 144%; 
+                  font-style: italic;
+                  color: navy;
+                  text-align: center; }
+
+.jdocu_confidential { font-family: sans-serif; 
+                      font-size: 144%; 
+                      font-style: italic;
+                      color: navy;
+                      text-align: center; }
+
+.jdocu_copyright { margin: 5ex 4em 5ex 4em;
+                   border: solid black 1px;
+                   padding: 0.5ex 1em 0.5ex 1em;
+                   font-family: monospace; }
+
+.jdocu_small    { font-size: 90%; }
+.jdocu_smaller  { font-size: 80%; }
+.jdocu_smallest { font-size: 70%; }
+.jdocu_tiny     { font-size: 60%; }
+sup.jdocu       { font-size: 60%; }
+sub.jdocu       { font-size: 60%; }
+
+/* table of contents title (centered) */
+.jdocu_toctitle { font-family: sans-serif;
+                  font-size: 144%;
+                  color: navy;
+                  font-weight: bold;
+                  text-align: center; }
+
+/* table of contents title (if in main document) */
+.jdocu_toctitleleft { font-family: sans-serif;
+                      font-size: 144%;
+                      color: navy;
+                      font-weight: bold; }
+
+.jdocu_toc1 { font-family: sans-serif; font-size: 90% ; margin: 0em; 
+              padding: 0em; margin-left: 2em ; text-indent: -2em; }
+.jdocu_toc2 { font-family: sans-serif; font-size: 90% ; margin: 0em; 
+              padding: 0em; margin-left: 3em ; text-indent: -2em; }
+.jdocu_toc3 { font-family: sans-serif; font-size: 90%; margin: 0em; 
+              padding: 0em; margin-left: 4em ; text-indent: -2em; }
+.jdocu_toc4 { font-family: sans-serif; font-size: 90%; margin: 0em; 
+              padding: 0em; margin-left: 5em ; text-indent: -2em; }
+.jdocu_toc5 { font-family: sans-serif; font-size: 90%; margin: 0em; 
+              padding: 0em; margin-left: 6em ; text-indent: -2em; }
+.jdocu_toc6 { font-family: sans-serif; font-size: 90%; margin: 0em; 
+              padding: 0em; margin-left: 7em ; text-indent: -2em; }

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Getting Started with SPARC-V9 MAI</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(49, true);
+</script>
+<a name="label254"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Getting Started with SPARC-V9 MAI</h2 class="jdocu">
+  
+
+<p>
+There are a number of pre-configured setups included in the Simics distribution
+that uses the MAI to simulate out-of-order processors. They are all examples on
+how to use the API in different ways. The scripts reside in the same directory
+as the ordinary Simics scrips for a specific target. The name of the scripts
+contains <tt>ooo</tt> (for <em>out-of-order</em>). Here follows a short
+description of each script and how they can be further configured:
+<p>
+<ul>
+<li><tt>simics/targets/sunfire/bagle-ooo-common.simics</tt></li>
+<li><tt>simics/targets/sunfire/donut-ooo-common.simics</tt></li>
+<li><tt>simics/targets/serengeti/sarek-ooo-common.simics</tt>
+<p>
+These scripts uses the module <b><a name="label255">ooo-micro-arch</a></b> (see
+the source code in <tt>simics/src/extensions/ooo-micro-arch</tt>) to
+demonstrate how MAI works. The model can fetch, execute, and commit a
+configurable number of instructions per cycle. No branch speculation is
+performed, thus if an unresolved branch is found the fetches are stalled until
+the outcome of the branch is determined.
+<p>
+If an exception occurs the instruction tree is drained and all the
+speculative instructions beyond the one that caused the exception are
+discarded.
+<p>
+A pipeline is modeled with a combined fetch/decode stage, an execute
+state, and a commit stage.
+<p>
+Each processor gets an object of the <b><a name="label256">ooo_micro_arch</a></b>
+class attached to it that handles the simulation. These objects have
+some attributes that can be changed to alter the behavior of the
+model:
+<p>
+<ul>
+<li><i>&lt;ooo_micro_arch&gt;.<a name="label257">fetches_per_cycles</a></i> controls
+the number of instructions that can be fetched and decoded per
+cycle. Default is 1.</li>
+<p>
+<li><i>&lt;ooo_micro_arch&gt;.<a name="label258">execute_per_cycles</a></i> controls
+the number of instructions that can be executed per cycle. The
+instructions can be dependent of each other. Default is 1.</li>
+<p>
+<li><i>&lt;ooo_micro_arch&gt;.<a name="label259">commits_per_cycles</a></i> controls
+how many instructions that can be committed per cycle. Default is
+1.</li>
+</ul>
+</li>
+<p>
+<li><tt>simics/targets/sunfire/bagle-ma-common.simics</tt></li>
+<li><tt>simics/targets/sunfire/donut-ma-common.simics</tt></li>
+<li><tt>simics/targets/serengeti/sarek-ma-common.simics</tt>
+<p>
+These scripts use the <b><a name="label260">sample-micro-arch</a></b> module (see
+<tt>simics/src/extensions/sample-micro-arch</tt>). The processors modeled
+can fetch/decode, execute, and commit a configurable number of instructions per
+cycle.
+<p>
+The model has a simple branch-predictor that uses a hash table (<a name="label261">Branch
+Target Buffer</a><a name="label262"></a>) to lookup the target address from the
+address of the branch instruction. This allows for <a name="label263">branch
+speculation</a>. The hash table is updated for every successfully committed
+branch.
+<p>
+Besides speculating on the target address, the model also speculate
+fall through for every branch. This way two possible execution paths
+are created for every branch.  This makes the instruction tree into a
+binary tree. The number of instructions executed and fetch per cycle
+is actually per branch in the instruction tree.
+<p>
+There is a compile time switch available called <a name="label264"></a>
+<tt>VALUE_PREDICTION</tt> that can be defined to switch on value prediction of
+loads. It works like a small cache that maps logical addresses to values. When
+a load is issued, the cache is looked up first to quickly get value that can be
+used by later instructions. When the load is finished the speculated value is
+checked against the real value. If they mismatch, the later instructions need
+to be squashed.
+<p>
+Each processor gets an object of the <b><a name="label265">sample_micro_arch</a></b>
+class attached to it that handles the simulation. The class implements
+the following attributes:
+<p>
+<ul>
+<li><i>&lt;sample_micro_arch&gt;.<a name="label266">fetches_per_cycles</a></i> controls
+the number of instructions that can be fetched and decoded per
+cycle. Default is 4.</li>
+<p>
+<li><i>&lt;sample_micro_arch&gt;.<a name="label267">execute_per_cycles</a></i> controls
+the number of instructions that can be executed per cycle. The
+instructions can be dependent of each other. Default is 4.</li>
+<p>
+<li><i>&lt;sample_micro_arch&gt;.<a name="label268">retires_per_cycles</a></i> controls
+how many stores that can be retired to memory per cycle. Default is
+4.</li>
+<p>
+<li><i>&lt;sample_micro_arch&gt;.<a name="label269">commits_per_cycles</a></i> controls
+how many instructions that can be committed per cycle. Default is
+4.</li>
+<p>
+<li><i>&lt;sample_micro_arch&gt;.<a name="label270">out_of_order_retire</a></i>. If
+non-zero the retire phase can be performed out of order. Default is
+0.</li>
+</ul>
+</li>
+<p>
+</ul>
+<p>
+The following attributes in each CPU object can also be used
+to further configure the models:
+<p>
+<ul>
+<p>
+<li><i>&lt;processor&gt;.<a name="label271">reorder_buffer_size</a></i> controls
+the total number of instructions that fit in the instruction tree.</li>
+<p>
+<li><i>&lt;processor&gt;.<a name="label272">auto_speculate_cwp</a></i>. If set to
+non-zero the <a name="label273">CWP</a> register is automatically speculated, i.e. if a save
+instruction is encountered in the instruction stream the value of the
+CWP register will automatically be incremented (modulo the number of
+windows) for the following instructions, and if a restore or a return
+instruction is found CWP will be decremented automatically.
+<p>
+</li>
+<p>
+</ul>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+</body>
+</html>

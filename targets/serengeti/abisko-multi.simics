@@ -1,0 +1,11 @@
+import-std-components
+$eth_link = (create-std-ethernet-link link)
+
+set-component-prefix a1_
+run-command-file "%script%/abisko-common.simics"
+
+$mac_address = "10:10:10:10:10:25"
+$ip_address   = "10.10.0.12"
+$host_name    = "abisko2"
+set-component-prefix a2_
+run-command-file "%script%/abisko-common.simics"

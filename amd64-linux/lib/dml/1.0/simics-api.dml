@@ -1,0 +1,242 @@
+// Simics API definitions
+
+dml 1.0;
+
+// simics/util/alloc.h
+// MM_MALLOC doesn't have a function signature
+// MM_ZALLOC doesn't have a function signature
+extern char *MM_STRDUP(const char *s);
+extern void MM_FREE(void *m);
+
+// simics/util/vect.h
+extern VNULL;
+extern void VINIT(...);
+extern size_t VELEMSIZE(...);
+extern void VRESIZE(...);
+extern void VRESIZE_FREE(...);
+extern void VADD(...);
+extern void VREMOVE(...);
+extern void VDELETE_ORDER(...);
+extern void VINSERT(...);
+extern VSET;
+extern VGET;
+extern VPOP;
+extern VDROPLAST;
+extern VLAST;
+extern void VSETLAST(...);
+extern int VLEN(...);
+extern void *VVEC(...);
+extern void VGROW(...);
+extern void VSHRINK(...);
+extern void VFREE(...);
+extern void VTRUNCATE(...);
+extern void VCLEAR(...);
+extern void VCOPY(...);
+// No QUEUE
+
+// simics/util/swabber.h
+extern uint8  TARGET_ENDIAN8(uint8 val);
+extern uint16 TARGET_ENDIAN16(uint16 val);
+extern uint32 TARGET_ENDIAN32(uint32 val);
+extern uint64 TARGET_ENDIAN64(uint64 val);
+
+extern uint8  LOAD_TARGET8(void *src);
+extern uint16 LOAD_TARGET16(void *src);
+extern uint32 LOAD_TARGET32(void *src);
+extern uint64 LOAD_TARGET64(void *src);
+
+extern void STORE_TARGET8 (void *dst, uint8 val);
+extern void STORE_TARGET16(void *dst, uint16 val);
+extern void STORE_TARGET32(void *dst, uint32 val);
+extern void STORE_TARGET64(void *dst, uint64 val);
+
+extern uint8  UNALIGNED_LOAD_TARGET8(void *src);
+extern uint16 UNALIGNED_LOAD_TARGET16(void *src);
+extern uint32 UNALIGNED_LOAD_TARGET32(void *src);
+extern uint64 UNALIGNED_LOAD_TARGET64(void *src);
+
+extern void UNALIGNED_STORE_TARGET8 (void *dst, uint8 val);
+extern void UNALIGNED_STORE_TARGET16(void *dst, uint16 val);
+extern void UNALIGNED_STORE_TARGET32(void *dst, uint32 val);
+extern void UNALIGNED_STORE_TARGET64(void *dst, uint64 val);
+
+extern uint8  LOAD_CROSS8(void *src);
+extern uint16 LOAD_CROSS16(void *src);
+extern uint32 LOAD_CROSS32(void *src);
+extern uint64 LOAD_CROSS64(void *src);
+
+extern uint8  UNALIGNED_LOAD_CROSS8(void *src);
+extern uint16 UNALIGNED_LOAD_CROSS16(void *src);
+extern uint32 UNALIGNED_LOAD_CROSS32(void *src);
+extern uint64 UNALIGNED_LOAD_CROSS64(void *src);
+
+extern void UNALIGNED_STORE_CROSS8 (void *dst, uint8 val);
+extern void UNALIGNED_STORE_CROSS16(void *dst, uint16 val);
+extern void UNALIGNED_STORE_CROSS32(void *dst, uint32 val);
+extern void UNALIGNED_STORE_CROSS64(void *dst, uint64 val);
+
+extern uint8  CONVERT_LE8 (uint8  val);
+extern uint16 CONVERT_LE16(uint16 val);
+extern uint32 CONVERT_LE32(uint32 val);
+extern uint64 CONVERT_LE64(uint64 val);
+
+extern uint8  CONVERT_BE8 (uint8  val);
+extern uint16 CONVERT_BE16(uint16 val);
+extern uint32 CONVERT_BE32(uint32 val);
+extern uint64 CONVERT_BE64(uint64 val);
+
+extern uint8  LOAD_LE8 (void *src);
+extern uint16 LOAD_LE16(void *src);
+extern uint32 LOAD_LE32(void *src);
+extern uint64 LOAD_LE64(void *src);
+
+extern uint8  LOAD_BE8 (void *src);
+extern uint16 LOAD_BE16(void *src);
+extern uint32 LOAD_BE32(void *src);
+extern uint64 LOAD_BE64(void *src);
+
+extern void STORE_LE8 (void *dst, uint8  val);
+extern void STORE_LE16(void *dst, uint16 val);
+extern void STORE_LE32(void *dst, uint32 val);
+extern void STORE_LE64(void *dst, uint64 val);
+
+extern void STORE_BE8 (void *dst, uint8  val);
+extern void STORE_BE16(void *dst, uint16 val);
+extern void STORE_BE32(void *dst, uint32 val);
+extern void STORE_BE64(void *dst, uint64 val);
+
+extern uint8  UNALIGNED_LOAD_LE8 (void *src);
+extern uint16 UNALIGNED_LOAD_LE16(void *src);
+extern uint32 UNALIGNED_LOAD_LE32(void *src);
+extern uint64 UNALIGNED_LOAD_LE64(void *src);
+
+extern uint8  UNALIGNED_LOAD_BE8 (void *src);
+extern uint16 UNALIGNED_LOAD_BE16(void *src);
+extern uint32 UNALIGNED_LOAD_BE32(void *src);
+extern uint64 UNALIGNED_LOAD_BE64(void *src);
+
+extern void UNALIGNED_STORE_LE8 (void *dst, uint8  val);
+extern void UNALIGNED_STORE_LE16(void *dst, uint16 val);
+extern void UNALIGNED_STORE_LE32(void *dst, uint32 val);
+extern void UNALIGNED_STORE_LE64(void *dst, uint64 val);
+
+extern void UNALIGNED_STORE_BE8 (void *dst, uint8  val);
+extern void UNALIGNED_STORE_BE16(void *dst, uint16 val);
+extern void UNALIGNED_STORE_BE32(void *dst, uint32 val);
+extern void UNALIGNED_STORE_BE64(void *dst, uint64 val);
+
+// simics/util/dbuffer.h
+typedef struct {} dbuffer_t;
+
+extern dbuffer_t *new_dbuffer();
+extern void dbuffer_free(dbuffer_t *dbuffer);
+extern size_t dbuffer_len(dbuffer_t *dbuffer);
+extern uint8 *dbuffer_append_external_data(dbuffer_t *dbuffer, void *data, size_t len, int adopt);
+extern uint8 *dbuffer_prepend_external_data(dbuffer_t *dbuffer, void *data, size_t len, int adopt);
+extern void dbuffer_copy_append(dbuffer_t *dst, dbuffer_t *src, size_t offset, size_t len);
+extern void dbuffer_copy_prepend(dbuffer_t *dst, dbuffer_t *src, size_t offset, size_t len);
+extern uint8 *dbuffer_append_value(dbuffer_t *dbuffer, int value, size_t len);
+extern uint8 *dbuffer_prepend_value(dbuffer_t *dbuffer, int value, size_t len);
+extern uint8 *dbuffer_append(dbuffer_t *dbuffer, size_t len);
+extern uint8 *dbuffer_prepend(dbuffer_t *dbuffer, size_t len);
+extern uint8 *dbuffer_insert(dbuffer_t *dbuffer, size_t offset, size_t len);
+extern void dbuffer_remove(dbuffer_t *dbuffer, size_t offset, size_t remove_len);
+extern void dbuffer_remove_head(dbuffer_t *dbuffer, size_t remove);
+extern void dbuffer_remove_tail(dbuffer_t *dbuffer, size_t remove);
+extern uint8 *dbuffer_read(dbuffer_t *dbuffer, size_t offset, size_t len);
+extern uint8 *dbuffer_read_some(dbuffer_t *dbuffer, size_t offset, size_t len, size_t *actual_len);
+extern uint8 *dbuffer_read_all(dbuffer_t *dbuffer);
+extern uint8 *dbuffer_update(dbuffer_t *dbuffer, size_t offset, size_t len);
+extern uint8 *dbuffer_update_some(dbuffer_t *dbuffer, size_t offset, size_t len, size_t *actual_len);
+extern uint8 *dbuffer_update_all(dbuffer_t *dbuffer);
+extern uint8 *dbuffer_replace(dbuffer_t *dbuffer, size_t offset, size_t len);
+extern uint8 *dbuffer_replace_some(dbuffer_t *dbuffer, size_t offset, size_t len, size_t *actual_len);
+extern uint8 *dbuffer_replace_all(dbuffer_t *dbuffer);
+extern dbuffer_t * dbuffer_clone(dbuffer_t *dbuffer);
+extern void dbuffer_clear(dbuffer_t *dbuffer);
+extern void dbuffer_set(dbuffer_t *dbuffer, int val, size_t len);
+
+// simics/util/strbuf.h
+typedef struct {} strbuf_t;
+
+extern void sb_free(strbuf_t *sb);
+extern char *sb_detach(strbuf_t *sb);
+extern void sb_realloc(strbuf_t *sb, int minlen);
+extern int sb_write(strbuf_t *sb, FILE *f);
+//extern void sb_vaddfmt(strbuf_t *sb, const char *format, va_list va);
+extern void sb_addfmt(strbuf_t *sb, const char *format, ...);
+//extern void sb_vfmt(strbuf_t *sb, const char *format, va_list va);
+extern sb_fmt; //extern void sb_fmt(strbuf_t *sb, const char *format, ...)
+extern void sb_addesc(strbuf_t *sb, char c, char delim);
+extern int sb_len(strbuf_t *sb);
+extern char *sb_str(strbuf_t *sb);
+extern char sb_char(strbuf_t *sb, int i);
+extern strbuf_t SB_INIT;
+extern void sb_init(strbuf_t *sb); 
+extern void sb_extend(strbuf_t *sb, int minlen);
+extern void sb_set(strbuf_t *sb, const char *str);
+extern void sb_copy(strbuf_t *dst, strbuf_t *src);
+extern void sb_clear(strbuf_t *sb);
+extern void sb_cat(strbuf_t *sb1, strbuf_t *sb2);
+extern void sb_addstr(strbuf_t *sb, const char *str);
+extern void sb_addmem(strbuf_t *sb, const char *str, int len);
+extern void sb_addc(strbuf_t *sb, char c);
+extern void sb_addchars(strbuf_t *sb, int n, char c);
+extern void sb_resize(strbuf_t *sb, int size);
+extern strbuf_t sb_dup(strbuf_t *sb);
+extern void sb_delete(strbuf_t *sb, int start, int n);
+
+// simics/util/bitcount.h
+extern bool IS_POWER_OF_2(uint64 x);
+extern uint32 COUNT_LEADING_ZEROS32(uint32 x);
+extern uint32 COUNT_LEADING_ZEROS64(uint64 x);
+extern uint32 COUNT_TRAILING_ZEROS32(uint32 x);
+extern uint32 COUNT_TRAILING_ZEROS64(uint64 x);
+extern uint32 LOG2(uint32 x);
+extern uint32 LOG2_64(uint64 x);
+
+
+import "simics-types.dml";
+
+import "simics-breakpoints.dml";
+import "simics-callbacks-types.dml";
+import "simics-callbacks.dml";
+import "simics-configuration.dml";
+import "simics-control.dml";
+import "simics-device.dml";
+import "simics-event.dml";
+import "simics-front.dml";
+import "simics-hindsight.dml";
+import "simics-memory.dml";
+import "simics-processor.dml";
+
+typedef int os_time_t;
+typedef struct {
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+} os_tm_t;
+extern os_tm_t *os_gmtime(const os_time_t *timep);
+extern os_time_t os_timegm(os_tm_t *tmp);
+extern char *os_strptime(const char *str, const char *format, os_tm_t *tm);
+extern integer_t os_get_current_time_usec();
+extern integer_t os_get_user_cpu_time_usec();
+
+// for backward compatibility
+import "recorder.dml";
+
+// C library stuff
+
+typedef int8 char;
+typedef int32 int;
+
+extern void *memset(void *s, int c, size_t n);
+extern int strcmp(const char *s1, const char *s2);
+typedef uint32 size_t;
+typedef struct {} FILE;

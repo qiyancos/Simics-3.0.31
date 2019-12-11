@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Dependences</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(19, true);
+</script>
+<a name="label23"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Dependences</h3 class="jdocu">
+
+
+<p>
+An out-of-order CPU core needs to keep track of all <a name="label24">dependences</a> in the
+instruction stream so that instructions do not get executed in the wrong
+order. We describe below the different types of dependences and how Simics
+handles them.
+<p>
+<a name="label25"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Register Dependences</h4 class="jdocu">
+
+
+<p>
+<a name="label26"></a><a name="label27"></a><a name="label28"></a>
+<a name="label29"></a>
+<a name="label30"></a>
+Figure <a class="jdocu" href="#label38">1</a> shows three types of dependences, <a name="label31"></a>
+<a name="label32">read-after-write</a> (<a name="label33">RAW</a>), <a name="label34">write-after-read</a>
+(<a name="label35">WAR</a>) and <a name="label36">write-after-write</a> (<a name="label37">WAW</a>). We are
+using assembly code with the format <i>opcode source1, source2,
+destination</i>.
+<p>
+<a name="label38"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+<img src="deps.png">
+</center>
+
+</td></tr>
+<tr><td style="text-align: center">Figure 1. Different types of dependences</td></tr>
+</table>
+
+<p>
+RAW dependences are also called <i>data dependences</i> since there is a flow
+of data between the dependent instructions. A data dependence exists between
+instruction <i>x</i> and <i>y </i> if <i>y</i> uses a result directly produced
+by <i>x</i> or produced by an instruction that has a RAW dependence on
+<i>x</i>. Instructions with RAW dependences can not be reordered. Simics will
+ensure that RAW dependences are followed and will refuse to execute
+instructions that did not receive all the input they needed (although the user
+may also speculate on the input values, thus fulfilling this requirement).
+<p>
+WAR and WAW dependences are sometimes called <em>anti-dependences</em> or
+<em>name dependences</em> since the two instructions use the same resource but
+there is no flow of data between them. A name dependence exists if:
+<a name="label39"></a><a name="label40"></a>
+<a name="label41"></a><a name="label42"></a>
+<ul>
+<p>
+<li>Instruction <i>x</i> reads a register or memory location that instruction
+<i>y</i> writes to or</li>
+<p>
+<li>Instruction <i>x</i> writes to a register or memory location that
+instruction <i>y</i> also writes to.</li>
+<p>
+</ul>
+<p>
+Instruction WAW and WAR dependences can be reordered by allocating more
+resources to their execution. In the WAW case, the CPU could write to an
+internal register %r0 instead of %g4, thus removing the resource conflict and
+the dependence. This is commonly called register renaming. Simics has the
+capability to handle all anti-dependences by using an unlimited pool of
+internal registers.<a name="label43"></a><a name="label44"></a>
+<p>
+<a name="label45"></a><h5 class="jdocu">3.1.1.1&nbsp;&nbsp;&nbsp;SPARC-V9</h5 class="jdocu">
+
+
+<p>
+Simics MAI for SPARC-V9 can rename the following registers:
+<p>
+<ul>
+<p>
+<li>All general purpose registers, i.e. %g1 - %g7, %o0 - %o7, %l0- %l7, and %i0
+- %i7. %g0 does not introduce any dependence since it always reads as
+zero.</li>
+<p>
+<li>The register window state registers, i.e. %cwp, %cansave, %canrestore,
+%otherwin, and %cleanwin.</li>
+<p>
+<li>The integer condition code register %ccr.</li>
+<p>
+<li>The multiply and divide register %y.</li>
+<p>
+<li>All floating-point registers, %f0 - %f63. They are treated as single
+entities, e.g. if an instruction is using a quad register for input it will
+depend on four separate single precision registers.</li>
+<p>
+<li>The fcc0, fcc1, fcc2, fcc3, ftt, aexc, and cexc parts of the floating-point
+state register %fsr.</li>
+<p>
+<li>The floating point register state register %fprs.</li>
+<p>
+<li>The graphic status register %gsr.</li>
+<p>
+<li>The alternate space identifier register %asi.</li>
+<p>
+</ul>
+<p>
+Instructions accessing other registers need to be synchronized and
+cannot run out of order. See section <a class="jdocu" href="topic12.html#label189">4.5</a> 
+for more information.
+<p>
+
+<a name="label46"></a><h5 class="jdocu">3.1.1.2&nbsp;&nbsp;&nbsp;x86</h5 class="jdocu">
+
+
+<p>
+Simics MAI for x86 can rename the following registers:
+<p>
+<ul>
+<p>
+<li>EAX, EBX, ECX, EDX, ESP, EBP, ESI and EDI.</li>
+<p>
+<li>MMX registers.</li>
+<p>
+<li>XMM registers.</li>
+<p>
+<li>EFlags register.</li>
+<p>
+</ul>
+<p>
+<a name="label47"></a>
+Instructions accessing other registers need to be synchronized and
+cannot run out of order. See section <a class="jdocu" href="topic12.html#label189">4.5</a> 
+for more information.
+<p>
+Note that the list does not include the x87 FPU that uses a stack model to
+represent floating-point registers. All x87 FPU instructions are currently
+synchronized.
+<p>
+
+<p>
+<a name="label48"></a><h4 class="jdocu">3.1.2&nbsp;&nbsp;&nbsp;Control Dependences</h4 class="jdocu">
+
+
+<p>
+<a name="label49"></a>
+<table>
+<tr><td style="border: none; ">
+<pre class="jdocu_small" style="color: black">
+                    0xfefc  cmp %i3,%i4
+                    0xff00  beq 0xff0c
+                    0xff04  nop
+                    0xff08  add %g2,%g3,%g4
+                    0xff0c  ...
+</pre>
+
+</td></tr>
+<tr><td style="text-align: center">Figure 2. A control dependence</td></tr>
+</table>
+
+<p>
+Figure <a class="jdocu" href="#label49">2</a> is an example of <a name="label50">control
+dependence</a><a name="label51"></a>: a conditional branch
+instruction before an add instruction. The add cannot be executed
+unless the branch target is known. Control dependences can be avoided
+by speculating on the execution path. In Simics MAI control
+dependences are handled by speculating on the Program Counter register
+(PC or IP depending on the architecture). Instructions that have been
+fetched with a speculative PC are marked as "speculative". The
+speculative status will be removed as soon as the control path is
+known. If a speculative instruction was incorrectly executed, it has
+to be squashed before the execution can continue.
+<p>
+<a name="label52"></a><h4 class="jdocu">3.1.3&nbsp;&nbsp;&nbsp;Memory Dependences</h4 class="jdocu">
+
+
+<p>
+<a name="label53"></a> <a name="label54"></a> Memory
+data dependences are handled by an internal <a name="label55">load-store queue</a> (LSQ) and
+an optional <a name="label56">consistency controller</a>. The <a name="label57">LSQ</a>
+handles <a name="label58">self-consistency</a> (i.e. ensures that program order
+consistency is fulfilled) and the consistency controller handles
+memory consistency for multiprocessor systems.
+<p>
+When a store is executed, the transaction is placed in a <a name="label59">store
+queue</a> without being issued to memory. When the store instruction
+becomes non-speculative, the store operation can be retired and sent
+to memory. Speculative loads are matched against the LSQ before being
+sent to memory to ensure that they load the current (and possibly
+speculative) value of the memory area they access.
+<p>
+The LSQ will also make sure that stores are never committed out of order if
+they conflict and that loads cannot execute if there is a risk of conflict with
+a non-executed previous store.
+<p>
+The size of the LSQ is unlimited. It is up to the user module to place
+restrictions on the number of outstanding stores.
+<p>
+The consistency controller is described in section <a class="jdocu" href="topic17.html#label225">5.3</a>.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

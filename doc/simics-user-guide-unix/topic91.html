@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Workload Positioning and Cache Models</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(223, true);
+</script>
+<a name="label526"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic90.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic92.html">Next</a></span></p>
+<h4 class="jdocu">18.5&nbsp;&nbsp;&nbsp;Workload Positioning and Cache Models</h4 class="jdocu">
+
+
+<a name="label527"></a>
+<a name="label528"></a>
+<p>
+You may have noticed that connecting the caches to the memory-space can be done
+separately from defining the caches. It is possible to connect and disconnect
+the caches at any time during the simulation. You may, for example, boot an
+operating system and set up the workload with Simics in <tt>-fast</tt> mode,
+save a checkpoint and reload it in <tt>-stall</tt> mode when you want to start
+cache simulation.
+<p>
+To get decent cache statistics, you should run a few million instructions to
+warm up the caches before actually starting to do measurements on the cache
+behavior of your workload.  Note that this is only a rough advice; the precise
+warm-up time needed will depend on the cache model and the workload.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic90.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic92.html">Next</a></span></p>
+</body>
+</html>

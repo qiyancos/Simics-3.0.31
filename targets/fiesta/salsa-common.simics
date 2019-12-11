@@ -1,0 +1,13 @@
+if not defined create_network {$create_network = yes}
+
+###
+
+run-command-file "%script%/taco-system.include"
+
+instantiate-components
+
+$eth_comp = $eth
+$eth_cnt = ""
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/salsa-setup.include"

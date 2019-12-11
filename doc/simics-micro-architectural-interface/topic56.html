@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_store_queue_mem_op()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(85, true);
+</script>
+<a name="label410"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic55.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic57.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_store_queue_mem_op()</h4 class="jdocu">
+
+<a name="label411"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label412"></a><b>SIM_instruction_store_queue_mem_op</b> &#8212; get store queue transaction</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">generic_transaction_t *
+SIM_instruction_store_queue_mem_op(instruction_id_t ii, int i);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Returns the <i>i</i>:th memory transaction that the
+   instruction has put into the store queue. The value to be stored
+   can be retrieved by calling <b><i>SIM_get_mem_op_value</i></b> on the
+   returned transaction. If <i>i</i> is out of range, NULL
+   will be returned.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The i:th memory transaction or NULL if there is no such transaction.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic55.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic57.html">Next</a></span></p>
+</body>
+</html>

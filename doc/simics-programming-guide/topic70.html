@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Usage</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(191, true);
+</script>
+<a name="label359"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic69.html">Previous</a> - <a class="jdocu" href="topic68.html">Up</a> - <a class="jdocu" href="topic71.html">Next</a></span></p>
+<h3 class="jdocu">14.2&nbsp;&nbsp;&nbsp;Usage</h3 class="jdocu">
+
+
+<p>
+This section gives an overview of the most common operations in the
+dbuffer API.
+<p>
+To create a new dbuffer, call the <b><i>new_dbuffer</i></b> function.
+This will return a pointer to a <tt>dbuffer_t</tt> that is used in
+later API calls to manipulate the dbuffer.
+<p>
+To add data to the buffer, the most commonly used function is
+<b><i>dbuffer_append</i></b>.  It will extend the size of the dbuffer by
+the given amount of bytes and return a pointer to the newly added
+bytes.  This pointer can be used to move data into the buffer by using
+it as the destination address of <b><i>memcpy</i></b> call, or any other
+suitable way.  The pointer returned by <b><i>dbuffer_append</i></b>, or
+the similar functions <b><i>dbuffer_prepend</i></b> and
+<b><i>dbuffer_insert</i></b> can only be used to write data to the newly
+added part of the dbuffer, since the memory allocated for the dbuffer
+may not be contiguous.
+<p>
+There are two ways to read data from the dbuffer, and to write data to
+it.  The first is the simple way of using <b><i>dbuffer_read</i></b>,
+<b><i>dbuffer_update</i></b> and <b><i>dbuffer_replace</i></b> which will
+return a pointer to a memory block that contains the data that is to
+be read from or written to.  However, sometimes the data in the
+dbuffer needs to be reshuffled or copied to produce a contiguous block
+of memory.  To minimize the overhead, it is better to use the
+<b><i>dbuffer_read_some</i></b>, <b><i>dbuffer_update_some</i></b> and
+<b><i>dbuffer_replace_some</i></b> functions instead.
+<p>
+Another important aspect of the dbuffer API is that it is cheap to
+make a copy of a dbuffer.  The <b><i>dbuffer_clone</i></b> function will
+return a new dbuffer that contains the same data as a given dbuffer,
+but the two dbuffers are completely independent, so any changes you
+make to one copy will not affect the other.  The cloning is done using
+a copy-on-write mechanism internally, which means that it doesn't need
+to copy any data from the original dbuffer, but if one of the dbuffers
+is updated in a way that would affect the data in the other, a copy of
+at least parts of the data will be done behind the scenes.  Some
+updates, such as appending to the dbuffer, is still without overhead.
+<p>
+Finally, when the dbuffer is no longer needed, the
+<b><i>dbuffer_free</i></b> function should be called.
+<p>
+See the API section for the full documentation of the dbuffer API.
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic69.html">Previous</a> - <a class="jdocu" href="topic68.html">Up</a> - <a class="jdocu" href="topic71.html">Next</a></span></p>
+</body>
+</html>

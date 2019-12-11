@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>i82077</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(849, true);
+</script>
+<a name="label6602"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic113.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic115.html">Next</a></span></p>
+<h3 class="jdocu">i82077</h3 class="jdocu">
+
+
+<a name="label6603"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2504">82077</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>i82077</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The 82077 device implements the functionality of the 82077 floppy controller together with up to four disk drives. There can usually be two floppy controllers in a PC system, the first and the secondary. While a controller can have four drives connected to it, most BIOSes only support two drives.
+
+</dd>
+
+</dl>
+<a name="label6604"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cmd</i></b></dt><a name="label6605"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{17}]</b>.
+<p>
+(<i>b0</i>, ..., <i>b16</i>). Current command.</dd></dl>
+<dl><dt><b><i>cmd_id</i></b></dt><a name="label6606"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Currently executing command.</dd></dl>
+<dl><dt><b><i>cmd_len</i></b></dt><a name="label6607"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Actual length of current command.</dd></dl>
+<dl><dt><b><i>command_busy</i></b></dt><a name="label6608"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Command busy (main status bit 4).</dd></dl>
+<dl><dt><b><i>cur_cmd_len</i></b></dt><a name="label6609"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of command bytes received.</dd></dl>
+<dl><dt><b><i>cur_res_pos</i></b></dt><a name="label6610"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Current result read position.</dd></dl>
+<dl><dt><b><i>direction_cpu</i></b></dt><a name="label6611"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data transfer direction (main status bit 6).</dd></dl>
+<dl><dt><b><i>dma_channel</i></b></dt><a name="label6612"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+DMA channel.</dd></dl>
+<dl><dt><b><i>dma_dev</i></b></dt><a name="label6613"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+DMA device, implementing the common-dma interface.</dd></dl>
+<dl><dt><b><i>dma_enabled</i></b></dt><a name="label6614"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+DMA enable flag.</dd></dl>
+<dl><dt><b><i>drive_select</i></b></dt><a name="label6615"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Currently selected drive.</dd></dl>
+<dl><dt><b><i>drives</i></b></dt><a name="label6616"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o]|[oo]|[ooo]|[oooo]|n</b>.
+<p>
+((<i>drive</i>)*). List of up to four floppy drives.</dd></dl>
+<dl><dt><b><i>enabled</i></b></dt><a name="label6617"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Controller enable flag.</dd></dl>
+<dl><dt><b><i>fifo_enabled</i></b></dt><a name="label6618"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+FIFO enable flag.</dd></dl>
+<dl><dt><b><i>fifo_threshold</i></b></dt><a name="label6619"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+FIFO threshold.</dd></dl>
+<dl><dt><b><i>head_load</i></b></dt><a name="label6620"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Head load time.</dd></dl>
+<dl><dt><b><i>head_unload</i></b></dt><a name="label6621"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Head unload time.</dd></dl>
+<dl><dt><b><i>implied_seek</i></b></dt><a name="label6622"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Implied seek enable flag.</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label6623"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt request status.</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label6624"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Interrupt device, implementing the simple-interrupt interface.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label6625"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt level.</dd></dl>
+<dl><dt><b><i>poll_change</i></b></dt><a name="label6626"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Polling change detected.</dd></dl>
+<dl><dt><b><i>poll_enabled</i></b></dt><a name="label6627"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Polling mode enable flag.</dd></dl>
+<dl><dt><b><i>precomp</i></b></dt><a name="label6628"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Precompensation.</dd></dl>
+<dl><dt><b><i>receive_ready</i></b></dt><a name="label6629"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Controller is ready to receive data (main status bit 7).</dd></dl>
+<dl><dt><b><i>res</i></b></dt><a name="label6630"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{15}]</b>.
+<p>
+(<i>b0</i>, ..., <i>b14</i>). Result bytes.</dd></dl>
+<dl><dt><b><i>res_len</i></b></dt><a name="label6631"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of result bytes.</dd></dl>
+<dl><dt><b><i>st0</i></b></dt><a name="label6632"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Status register 0.</dd></dl>
+<dl><dt><b><i>st1</i></b></dt><a name="label6633"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Status register 1.</dd></dl>
+<dl><dt><b><i>st2</i></b></dt><a name="label6634"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Status register 2.</dd></dl>
+<dl><dt><b><i>state</i></b></dt><a name="label6635"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Floppy command state. Idle=0, Command=1, Execute=2, Result=3.</dd></dl>
+<dl><dt><b><i>step_rate</i></b></dt><a name="label6636"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Step rate interval.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label6637"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6639">eject-floppy</a></b></td><td class="jdocu_noborder">eject floppy</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6641">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6643">insert-floppy</a></b></td><td class="jdocu_noborder">insert floppy in drive</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6645">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label6638"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label6639"></a><a name="label6640"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i82077&gt;.eject-floppy</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i82077&gt;.eject-floppy</b> <i>"drive-letter"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Eject the media from the disk drive specified by <i>drive-letter</i>.</dd>
+
+</dl>
+
+
+
+<a name="label6641"></a><a name="label6642"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i82077&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i82077&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label6643"></a><a name="label6644"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i82077&gt;.insert-floppy</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i82077&gt;.insert-floppy</b> <i>"drive-letter"</i> <i>floppy-image</i> [-rw] [<i>"size"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Insert the file <i>floppy-image</i> as a floppy in the disk drive specified by
+<i>drive-letter</i>. For floppies with a different size than 1.44 MB, the size
+must be specified explicitly.
+<p>
+The <i>-rw</i> flag uses <i>floppy-image</i> in read-write mode, meaning
+that no save or save-diff-file command to the associated image object need to be
+used in order to save data written by the target software.</dd>
+
+</dl>
+
+
+
+<a name="label6645"></a><a name="label6646"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i82077&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i82077&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic113.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic115.html">Next</a></span></p>
+</body>
+</html>

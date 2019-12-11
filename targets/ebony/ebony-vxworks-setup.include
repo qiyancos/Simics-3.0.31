@@ -1,0 +1,90 @@
+if not defined vxworks_image {$vxworks_image = "ebony-vxWorks"}
+if not defined boot_command  {$boot_command = "bootm ffc00000"}
+if not defined ip_address    {$ip_address   = "10.10.0.50"}
+if not defined tftp_boot     {$tftp_boot    = "no"}
+if not defined host_name     {$host_name    = "ebony"}
+if not defined service_node  {}
+if not defined ebony_bootrom {$ebony_bootrom  = "ebony-bootrom"}
+
+###
+
+if (not (lookup-file $ebony_bootrom)) or (not (lookup-file $vxworks_image)) {
+    echo "This script can only be executed if you have additional files, not part of the"
+    echo "distribution. Virtutech cannot distribute these files without approval from"
+    echo "WindRiver. This is just an example script, if you do have access to the needed"
+    echo "files."
+    quit
+}
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+$plb = ($system.get-component-object plb)
+$plb.load-binary $ebony_bootrom 0x1fff70000
+
+# TODO: what is this?
+@cpc = sim.objects[simenv.system].object_list['cpc']
+@cpc.CPC0_STRP0 = 0x8fb32501
+@cpc.CPC0_SYS0 = 0x8fb32501
+
+@from text_console_common import wait_for_string
+
+@def slow_input(con, str):
+    for c in str:
+        con.input = c
+        wait_for_string(con, c)
+
+@def branch_boot_vxworks_tftp((con, system, vxworks_image, ip_address)):
+    # wait for boot prompt
+    wait_for_string(con, 'Press any key to stop auto-boot...')
+    con.input = "\n"
+    wait_for_string(con, "[VxWorks Boot]:")
+    slow_input(con, ('$emac(0,0):%s h=10.10.0.1 e=%s:ffffff00 '
+                    + 'g=10.10.0.1 f=0x80\n') % (simenv.vxworks_image,
+                                                 simenv.ip_address))
+
+@def branch_boot_vxworks_ram((con, system, vxworks_image, ip_address)):
+    plb = sim.objects[system].object_list['plb']
+    wait_for_string(con, 'Press any key to stop auto-boot...')
+    con.input = '\n'
+    wait_for_string(con, '[VxWorks Boot]:')
+    start_addr = SIM_load_binary(plb, vxworks_image, 0, 1, 0)
+    slow_input(con, 'c\n\n\n\n\n')
+    wait_for_string(con, '10.1.1.10 ')
+    slow_input(con, '%s:0xffffff00\n' % ip_address)
+    wait_for_string(con, '(b): ')
+    con.input = '\n'
+    wait_for_string(con, '10.1.1.2 ')
+    slow_input(con, '10.0.0.186\n')
+    wait_for_string(con, 'gateway inet (g)     : ')
+    slow_input(con, '10.10.0.1\n')
+    wait_for_string(con, 'user (u)             : target ')
+    slow_input(con, '\n')
+    wait_for_string(con, 'ftp password (pw) (blank = use rsh): ')
+    slow_input(con, '\n')
+    wait_for_string(con, 'flags (f)            : 0x0 ')
+    slow_input(con, '\n')
+    wait_for_string(con, 'target name (tn)     : ')
+    slow_input(con, '\n')
+    wait_for_string(con, 'startup script (s)   : ')
+    slow_input(con, '\n')
+    wait_for_string(con, 'other (o)            : ')
+    slow_input(con, '\n')
+    wait_for_string(con, '[VxWorks Boot]:')
+    slow_input(con, 'g 0x%x\n' % start_addr)
+
+if $tftp_boot == "yes" {
+    python ("start_branch(branch_boot_vxworks_tftp, "
+            + "(sim.objects[simenv.console].object_list['con'],"
+            + " simenv.system, simenv.vxworks_image, simenv.ip_address))")
+} else {
+    python ("start_branch(branch_boot_vxworks_ram, "
+            + "(sim.objects[simenv.console].object_list['con'],"
+            + " simenv.system, simenv.vxworks_image, simenv.ip_address))")
+}

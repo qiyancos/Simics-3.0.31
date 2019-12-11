@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_insert()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(70, true);
+</script>
+<a name="label356"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic40.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic42.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_insert()</h4 class="jdocu">
+
+<a name="label357"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label358"></a><b>SIM_instruction_insert</b> &#8212; link instructions</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_instruction_insert(instruction_id_t parent_ii, 
+                       instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function links together instructions created by
+   <b><i>SIM_instruction_begin</i></b>. The linking helps the user to keep track
+   of dependences between instructions and as default, Simics will not accept
+   any dependence violation. To model different (speculative) execution paths
+   instructions can be linked together to form a tree (instruction tree). The
+   instructions in a tree branch should be ordered in program execution order.
+<p>
+   <i>ii</i> is the instruction to insert and
+   <i>ii_parent</i> is the instruction id of the parent
+   instruction. If zero the instruction will be inserted as child to
+   the last inserted one, or as the root if the the tree is empty.
+   <p>
+   If the parent instruction already has a child the new instruction
+   will be added as another child, thus creating an alternative
+   execution path for the parent.
+<p>
+   Instructions can be inserted in the tree after they are fetched and decoded
+   (using <b><i>SIM_instruction_proceed</i></b> or similar), but must be inserted
+   before they are executed. This is useful if different instruction should be
+   inserted at different places. For example the instruction after a delay slot
+   have a different parent depending on whether the delay slot can be annulled
+   or not.
+<p>
+   Instructions are automatically removed from the tree when they are
+   committed
+   (<b><i>SIM_instruction_proceed</i></b>/<b><i>SIM_instruction_commit</i></b>)
+   or squashed (<b><i>SIM_instruction_squash</i></b>).</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic30.html#label321">SIM_instruction_begin</a>, <a class="jdocu" href="topic47.html#label381"> SIM_instruction_proceed</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic40.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic42.html">Next</a></span></p>
+</body>
+</html>

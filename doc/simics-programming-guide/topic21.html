@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Logging</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(53, true);
+</script>
+<a name="label103"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+<h3 class="jdocu">5.4&nbsp;&nbsp;&nbsp;Logging</h3 class="jdocu">
+
+
+<a name="label104"></a>
+<p>
+Logging support is built into the language. Log groups are defined with the
+global declaration <tt>loggroup</tt>. For example:
+<a name="label105"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+loggroup config;
+loggroup request;
+loggroup response;
+</pre>
+<p>
+Log outputs are made with the <em>log</em> statement as follows:
+<p>
+<pre class="jdocu_small" style="color: black">log <em>type</em>, <em>level</em>, <em>groups</em>, <em>string</em>, [<em>value</em>]</pre>
+<p>
+where the parameters mean:
+<dl><dt><b><em>type</em></b></dt><dd>One of the strings:
+    <ul>
+    <a name="label106"></a>
+    <li><em>"error"</em></li>
+    <li><em>"info"</em></li>
+    <li><em>"undefined"</em></li>
+    <li><em>"spec_violation"</em></li>
+    <li><em>"target_error"</em></li>
+    <li><em>"unimplemented"</em></li>
+    </ul>
+</dd><dt><b><em>level</em></b></dt><dd>An integer from 1 through 4, determining the verbosity level at
+    which the message will be logged.</dd><dt><b><em>groups</em></b></dt><dd>One or several log groups, as defined by the <em>loggroup</em> statement,
+    combined with the bitwise or operator "|". If no log groups are defined,
+    the integer 1 makes sense to use.</dd><dt><b><em>string, values</em></b></dt><dd>A formatting string, as for the C function <b><i>printf()</i></b>,
+    optionally followed by a comma separated list of values to be
+    printed.</dd></dl>
+<p>
+A small example:
+<p>
+<pre class="jdocu_small" style="color: black">
+loggroup example;
+
+method m(uint32 val) {
+        log "info", 4, example : "val=%u", val;
+}
+</pre>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+</body>
+</html>

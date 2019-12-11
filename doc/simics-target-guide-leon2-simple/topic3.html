@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Supported Components</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(21, true);
+</script>
+<a name="label39"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Supported Components</h2 class="jdocu">
+
+
+<p>
+The following sections list components that are supported for the LEON2
+architecture. There also exist other components in Simics, such as various
+PCI devices, that may work for LEON2 but that have not been tested.
+<p>
+The default machines are constructed from components in the
+<tt>-system.include</tt> files in
+<tt>[simics]/targets/leon2-simple/</tt>. See the
+Configuration and Checkpointing chapter in the Simics User Guide for
+information on how to define your own machine, or make modifications
+to an existing machine.
+<p>
+
+
+<a name="label40"></a><h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;LEON2 Components</h3 class="jdocu">
+
+
+
+
+<a name="label41"></a><h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;Standard Components</h3 class="jdocu">
+
+
+<a name="label42"></a><h4 class="jdocu">4.2.1&nbsp;&nbsp;&nbsp;std-text-console</h4 class="jdocu">
+
+
+<a name="label43"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-console" component represents a serial text console.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bg_color</i></b></dt><a name="label44"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The background color.</dd></dl>
+<dl><dt><b><i>fg_color</i></b></dt><a name="label45"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The foreground color.</dd></dl>
+<dl><dt><b><i>height</i></b></dt><a name="label46"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The height of the console window.</dd></dl>
+<dl><dt><b><i>title</i></b></dt><a name="label47"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The Window title.</dd></dl>
+<dl><dt><b><i>width</i></b></dt><a name="label48"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The width of the console window.</dd></dl>
+<dl><dt><b><i>win32_font</i></b></dt><a name="label49"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console on Windows host.</dd></dl>
+<dl><dt><b><i>x11_font</i></b></dt><a name="label50"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console when using X11 (Linux/Solaris host).</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label51"></a><a name="label52"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label53"></a><a name="label54"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label55"></a><a name="label56"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label57"></a><a name="label58"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_nth_id()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(73, true);
+</script>
+<a name="label365"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic43.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic45.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_nth_id()</h4 class="jdocu">
+
+<a name="label366"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label367"></a><b>SIM_instruction_nth_id</b> &#8212; get id of nth instruction</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_id_t
+SIM_instruction_nth_id(conf_object_t *cpu, int n);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Get the instruction id (<tt>instruction_id_t</tt>) of the instruction at
+   position <i>n</i> in the "first" branch of the instruction tree of
+   processor <i>cpu</i>. The root instruction has position 0. The first
+   branch is defined to be the branch of the first child (number 0) in every
+   instruction. See <b><i>SIM_instruction_child</i></b>. If successful the
+   function will return an non-zero id. For illegal positions zero is returned.
+<p>
+   This function may only be useful if the tree is actually a list or
+   if the root of the tree is requested.</dd>
+
+<p>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The id of the requested instruction or zero if non-existing.</dd>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic40.html#label355">SIM_instruction_id_from_mem_op_id</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic43.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic45.html">Next</a></span></p>
+</body>
+</html>

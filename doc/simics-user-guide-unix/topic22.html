@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Connect to a Real Network</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(47, true);
+</script>
+<a name="label83"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+<h4 class="jdocu">4.10&nbsp;&nbsp;&nbsp;Connect to a Real Network</h4 class="jdocu">
+
+
+<p>
+A simulation can be connected to a real network. By doing this, simulated
+computers and real computers are able to communicate with each other.
+<p>
+<hr class="jdocu_note"><b>Note:</b> If you experience timing problems, for example
+TCP timeouts, when using real network, the simulation is running too
+fast. In these cases, slow it down by using the
+<b>enable-real-time-mode</b> command.<hr class="jdocu_note">
+<p>
+Before following the steps in this example, launch a new
+<tt>ebony-linux-firststeps.simics</tt>. Don't boot it yet.
+<p>
+Connecting a simulated machine to a real network is done with one command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>connect-real-network 10.10.0.50</b>
+No ethernet-link found, creating 'ethlink0'.
+No service-node found, creating 'ethlink0_sn0' with IP '10.10.0.1'.
+Connecting device 'emac1' to 'ethlink0'
+Connecting device 'emac0' to 'ethlink0'
+NAPT enabled with gateway 10.10.0.1 on link ethlink0.
+Host TCP port 4021 &minus;&gt; 10.10.0.50:21 on link ethlink0
+Host TCP port 4023 &minus;&gt; 10.10.0.50:23 on link ethlink0
+Host TCP port 4080 &minus;&gt; 10.10.0.50:80 on link ethlink0
+Real DNS enabled at 10.10.0.1 on link ethlink0.
+simics&gt;  <b>continue</b>
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Note that the IP address specified in the
+<b>connect-real-network</b> command is the IP address of the simulated
+machine<hr class="jdocu_note">
+<p>
+This command will create a new <b>ethernet-link</b>,
+connect it to both the
+simulated network cards, and to the real network. It will also enable NAPT,
+<i>network address port translation</i>. Finally, it will forward ports
+4021, 4023 and 4080 to the simulated machine's telnet, FTP and HTTP ports.
+<p>
+To actually make the real network accessible from the simulated machine, the
+simulated system must be configured. These commands set up the service
+node as gateway and domain name server:
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>route add default gw 10.10.0.1</b>
+root@firststeps: ~# <b>echo nameserver 10.10.0.1 &gt; /etc/resolv.conf</b>
+root@firststeps: ~#
+</pre>
+<p>
+This tells the simulated system to direct all accesses outside the local
+network to the gateway at 10.10.0.1 (which is the service node
+<b>connect-real-network</b> created for us).
+<p>
+Now, if your computer is connected to Internet, we can try to telnet to a
+real computer on Internet. In this example we use gnu.org.
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>telnet gnu.org 80</b>
+<b>GET /</b>
+&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;HTML&gt;&lt;HEAD&gt;
+&lt;TITLE&gt;301 Moved Permanently&lt;/TITLE&gt;
+&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;Moved Permanently&lt;/H1&gt;
+The document has moved &lt;A HREF="http://www.gnu.org/"&gt;here&lt;/A&gt;.&lt;P&gt;
+&lt;HR&gt;
+&lt;ADDRESS&gt;Apache/1.3.31 Server at gnu.org Port 80&lt;/ADDRESS&gt;
+&lt;/BODY&gt;&lt;/HTML&gt;
+Connection closed by foreign host.
+root@firststeps: ~#
+</pre>
+<p>
+Since <b>connect-real-network</b> forwards ports to the telnet, FTP and
+HTTP ports of the simulated machine, it is possible to telnet into the
+simulated machine, or access its web server from a web browser.
+To access the web server, enter the address <a class="jdocu" href="http://localhost:4080" target="_top">http://localhost:4080</a>
+in a web browser on your real machine.
+<p>
+<table>
+<tr><td style="border: none; ">
+<center>
+<img src="ebony-httpd.png">
+
+</center>
+</td></tr>
+<tr><td style="text-align: center">Figure 2. Montavista Linux HTTP server front page</td></tr>
+</table>
+
+<p>
+In an new shell on your computer, you can also try to telnet into the
+simulated machine:
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer: ~$ <b>telnet -l root localhost 4023</b>
+Trying 127.0.0.1...
+Connected to localhost.localdomain.
+Escape character is '^]'.
+
+
+Welcome to MontaVista Linux 2.1, Professional Edition
+
+
+
+BusyBox v0.60.2 (2002.08.28-16:54+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+# <b>exit</b>
+Connection closed by foreign host.
+joe@computer: ~$
+</pre>
+<p>
+You can read more about real network in chapter
+<a class="jdocu" href="topic45.html#label293">10</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+</body>
+</html>

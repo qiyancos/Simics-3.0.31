@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>mmu</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2253, true);
+</script>
+<a name="label17798"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic512.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic514.html">Next</a></span></p>
+<h3 class="jdocu">mmu</h3 class="jdocu">
+
+
+<a name="label17799"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic43.html#label4377">cheetah-mmu</a>, <a class="jdocu" href="topic44.html#label4450">cheetah-plus-mmu</a>, <a class="jdocu" href="topic138.html#label7277">jaguar-mmu</a>, <a class="jdocu" href="topic139.html#label7352">jalapeno-mmu</a>, <a class="jdocu" href="topic177.html#label8195">niagara-strand-mmu</a>, <a class="jdocu" href="topic190.html#label8487">panther-mmu</a>, <a class="jdocu" href="topic379.html#label14030">spitfire-mmu</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <b><i>logical_to_physical()</i></b> should fill in the
+   <i>physical_address</i> field (and other address fields when
+   appropriate) in the memory transaction if the transaction is
+   valid. Side effects such as modifying dirty or access bits should
+   only take place if the inquiry bit in the transaction is clear.
+   The set_error function can return a new exception to override the
+   one set by the Simics core. The overriding exception is only used
+   for memory accesses.
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        exception_type_t (*logical_to_physical)(conf_object_t *mmu_obj,
+                                                v9_memory_transaction_t *);
+        int (*get_current_context)(conf_object_t *mmu_obj,
+                                   conf_object_t *cpu);
+        void (*cpu_reset)(conf_object_t *mmu_obj,
+                          conf_object_t *cpu_obj,
+                          exception_type_t exc_no);
+        exception_type_t (*undefined_asi)(conf_object_t *mmu_obj,
+                                          v9_memory_transaction_t *mem_op);
+        exception_type_t (*set_error)(conf_object_t *mmu_obj,
+                                      conf_object_t *cpu_obj,
+                                      exception_type_t ex,
+                                      uint64 addr,
+                                      int ft,
+                                      int address_space,
+                                      read_or_write_t r_or_w,
+                                      data_or_instr_t d_or_i,
+                                      int atomic,
+                                      int tl,
+                                      int priv);
+        void (*set_error_info)(mmu_error_info_t *ei);
+
+        exception_type_t (*asi_0x40_callback)(conf_object_t *cpu,
+                                              uint64 addr, uint64 value, int size, int fp);
+
+} mmu_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic512.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic514.html">Next</a></span></p>
+</body>
+</html>

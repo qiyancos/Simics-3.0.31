@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ppc405gp-mal</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1384, true);
+</script>
+<a name="label9605"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic259.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic261.html">Next</a></span></p>
+<h3 class="jdocu">ppc405gp-mal</h3 class="jdocu">
+
+
+<a name="label9606"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2494">405gp-devices</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ppc405gp-mal</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+
+<dt class="jdocu_di"><b>Ports</b></dt><dd class="jdocu_di">
+Reset (<a class="jdocu" href="topic529.html#label17946">signal</a>)</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The ppc405gp-mal device implements the functionality of the ppc405gp memory access layer (MAL).
+
+</dd>
+
+</dl>
+<a name="label9607"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>MAL0_CFG</i></b></dt><a name="label9608"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Configuration register</dd></dl>
+<dl><dt><b><i>MAL0_ESR</i></b></dt><a name="label9609"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Error status register</dd></dl>
+<dl><dt><b><i>MAL0_IER</i></b></dt><a name="label9610"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt enable register</dd></dl>
+<dl><dt><b><i>MAL0_RCBS0</i></b></dt><a name="label9611"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX channel 0 buffer size registers</dd></dl>
+<dl><dt><b><i>MAL0_RCBS1</i></b></dt><a name="label9612"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX channel 1 buffer size registers</dd></dl>
+<dl><dt><b><i>MAL0_RXBADDR</i></b></dt><a name="label9613"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX descriptor base address register</dd></dl>
+<dl><dt><b><i>MAL0_RXCARR</i></b></dt><a name="label9614"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX channel active reset register</dd></dl>
+<dl><dt><b><i>MAL0_RXCASR</i></b></dt><a name="label9615"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX channel active set register</dd></dl>
+<dl><dt><b><i>MAL0_RXCTP0R</i></b></dt><a name="label9616"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX channel 0 table pointer register</dd></dl>
+<dl><dt><b><i>MAL0_RXCTP1R</i></b></dt><a name="label9617"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX channel 1 table pointer register</dd></dl>
+<dl><dt><b><i>MAL0_RXDEIR</i></b></dt><a name="label9618"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX descriptor error interrupt register</dd></dl>
+<dl><dt><b><i>MAL0_RXEOBISR</i></b></dt><a name="label9619"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX end of buffer interrupt status register</dd></dl>
+<dl><dt><b><i>MAL0_RXTATTRR</i></b></dt><a name="label9620"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+RX PLB attribute register</dd></dl>
+<dl><dt><b><i>MAL0_TXBADDR</i></b></dt><a name="label9621"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX descriptor base address register</dd></dl>
+<dl><dt><b><i>MAL0_TXCARR</i></b></dt><a name="label9622"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX channel active reset register</dd></dl>
+<dl><dt><b><i>MAL0_TXCASR</i></b></dt><a name="label9623"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX channel active set register</dd></dl>
+<dl><dt><b><i>MAL0_TXCTP0R</i></b></dt><a name="label9624"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX channel 0 table pointer register</dd></dl>
+<dl><dt><b><i>MAL0_TXCTP1R</i></b></dt><a name="label9625"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX channel 1 table pointer register</dd></dl>
+<dl><dt><b><i>MAL0_TXDEIR</i></b></dt><a name="label9626"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX descriptor error interrupt register</dd></dl>
+<dl><dt><b><i>MAL0_TXEOBISR</i></b></dt><a name="label9627"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX end of buffer interrupt status register</dd></dl>
+<dl><dt><b><i>MAL0_TXTATTRR</i></b></dt><a name="label9628"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TX PLB attribute register</dd></dl>
+<dl><dt><b><i>cpu</i></b></dt><a name="label9629"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+CPU object (for reset callback).</dd></dl>
+<dl><dt><b><i>eob_levels</i></b></dt><a name="label9630"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[ii]</b>.
+<p>
+Interrupt levels to be passed to the TX and RX end-of-buffer interrupt target objects respectively.</dd></dl>
+<dl><dt><b><i>eob_targets</i></b></dt><a name="label9631"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oo]</b>.
+<p>
+Objects to receive TX and RX end-of-buffer interrupts.</dd></dl>
+<dl><dt><b><i>interrupt_levels</i></b></dt><a name="label9632"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>[ii]</b>.
+<p>
+Deprecated (for backward compatibility only).</dd></dl>
+<dl><dt><b><i>interrupts</i></b></dt><a name="label9633"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>[oo]</b>.
+<p>
+Deprecated (for backward compatibility only).</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label9634"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Deprecated (for backward compatibility only).</dd></dl>
+<dl><dt><b><i>memory</i></b></dt><a name="label9635"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Memory space object for packet transactions.</dd></dl>
+<dl><dt><b><i>next_rx_descriptor</i></b></dt><a name="label9636"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{1}]</b>.
+<p>
+The index of rx descriptors to be processed next (per channel).</dd></dl>
+<dl><dt><b><i>next_tx_descriptor</i></b></dt><a name="label9637"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{2}]</b>.
+<p>
+The index of tx descriptors to be processed next (per channel).</dd></dl>
+<dl><dt><b><i>pending_interrupts</i></b></dt><a name="label9638"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupts that currently are pending (the exact representation is internal to this device model).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label9639"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+</dl>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic259.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic261.html">Next</a></span></p>
+</body>
+</html>

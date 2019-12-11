@@ -1,0 +1,6 @@
+#!/bin/sh
+
+SCRIPTSDIR=`dirname "$0"`
+HOSTSDIR=`cd $SCRIPTSDIR/.. ; pwd`
+SIMICS_HOST=`sh $HOSTSDIR/scripts/host-type.sh 2> /dev/null` 
+exec "$HOSTSDIR/$SIMICS_HOST/bin/dmlc" ${1+"$@"}

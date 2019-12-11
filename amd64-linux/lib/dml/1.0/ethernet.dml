@@ -1,0 +1,78 @@
+// ethernet.dml
+//
+// This module contains types needed when implementing ethernet
+// devices.
+
+dml 1.0;
+
+header %{
+#include <simics/devs/ethernet.h>
+%}
+
+extern phy_speed_t Phy_Speed_10BASE_T;
+extern phy_speed_t Phy_Speed_10BASE_T_FD;
+extern phy_speed_t Phy_Speed_100BASE_TX;
+extern phy_speed_t Phy_Speed_100BASE_T4;
+extern phy_speed_t Phy_Speed_100BASE_T2;
+extern phy_speed_t Phy_Speed_100BASE_TX_FD;
+extern phy_speed_t Phy_Speed_100BASE_T2_FD;
+extern phy_speed_t Phy_Speed_1000BASE_T;
+extern phy_speed_t Phy_Speed_1000BASE_T_FD;
+typedef int phy_speed_t;
+
+constant ETHERTYPE_PUP = 0x0200;      /* Xerox PUP */
+constant ETHERTYPE_IP = 0x0800;       /* IP */
+constant ETHERTYPE_ARP = 0x0806;      /* Address resolution */
+constant ETHERTYPE_REVARP = 0x8035;   /* Reverse ARP */
+
+typedef struct {
+    uint8  ether_dhost[6];
+    uint8  ether_shost[6];
+    uint16 ether_type;
+} ether_header_t;
+
+typedef struct {
+    uint8  ip_hl;
+    uint8  ip_v;
+    uint8  ip_tos;
+    uint16 ip_len;
+    uint16 ip_id;
+    uint16 ip_off;
+    uint8  ip_ttl;
+    uint8  ip_p;
+    uint16 ip_sum;
+    uint16 ip_src;
+    uint16 ip_dst;
+} ip_header_t;
+
+typedef struct {
+        int  (*connect_device)(conf_object_t *_obj, conf_object_t *dev,
+                               int *new_connection);
+        void (*disconnect_device)(conf_object_t *_obj,
+                                  conf_object_t *dev);
+        void (*send_frame)(conf_object_t *_obj, int id,
+                           dbuffer_t *frame,
+                           int crc_calculated, nano_secs_t delay);
+        void (*auto_negotiate)(conf_object_t *_obj, int id,
+                               phy_speed_t speed);
+        void (*add_mac)(conf_object_t *_obj, int id,
+                        byte_string_t addr);
+        void (*add_mac_mask)(conf_object_t *_obj, int id,
+                             byte_string_t addr, byte_string_t mask);
+        void (*delete_mac)(conf_object_t *_obj, int id,
+                           byte_string_t addr);
+        void (*delete_mac_mask)(conf_object_t *_obj, int id,
+                                byte_string_t addr, byte_string_t mask);
+        void (*clear_macs)(conf_object_t *_obj, int id);
+        void (*promiscuous_mode)(conf_object_t *_obj, int id, int enable);
+} ethernet_link_interface_t;
+
+typedef struct {
+        void (*receive_frame)(conf_object_t *dev,
+                              conf_object_t *link,
+                              dbuffer_t *frame);
+        phy_speed_t (*auto_neg_request)(conf_object_t *dev,
+                                        phy_speed_t speed);
+        void (*auto_neg_reply)(conf_object_t *dev,
+                               phy_speed_t speed);
+} ethernet_device_interface_t;

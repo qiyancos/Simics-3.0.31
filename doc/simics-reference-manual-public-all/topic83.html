@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ethernet-link</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(735, true);
+</script>
+<a name="label5477"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic82.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic84.html">Next</a></span></p>
+<h3 class="jdocu">ethernet-link</h3 class="jdocu">
+
+
+<a name="label5478"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2608">ethernet-link</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ethernet-link</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic496.html#label17728">ethernet_link</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+ethernet_link device
+
+</dd>
+
+</dl>
+<a name="label5479"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>central</i></b></dt><a name="label5480"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The Simics Central client object used for distributing the simulation.</dd></dl>
+<dl><dt><b><i>devices</i></b></dt><a name="label5481"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i|n,i,s,o|n,[[[ss]*],i]]*]</b>.
+<p>
+The connected devices.  It is a list of entries, where each entry is a list [<i>global id</i>,<i>local id</i>,<i>name</i>,<i>obj</i>,<i>info</i>].  The <i>obj</i> is either a reference to the device object for local devices, or nil if the device was in another Simics process. The <i>info</i> field is a list [<i>macs</i>,<i>promisc</i>], where <i>macs</i> is a a list of pairs [<i>addr</i>,<i>mask</i>].</dd></dl>
+<dl><dt><b><i>filter_enable</i></b></dt><a name="label5482"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+A flag controlling whether the MAC information is used to only deliver frames to devices that will handle them.  A change in this flag might change the result of the simulation in some corner cases, but is usually transparent.  If it is enabled, it may help simulation efficiency.</dd></dl>
+<dl><dt><b><i>frame_echo</i></b></dt><a name="label5483"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+This flag defines if the link will echo frames back to the sender. Default is not to echo frames.</dd></dl>
+<dl><dt><b><i>frequency</i></b></dt><a name="label5484"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The frequency of the clock used by the link to time stamp traffic and state changes.  This defines the granularity of the time of any event on the link. The frequency is given as number of ticks per second.</dd></dl>
+<dl><dt><b><i>last_frame</i></b></dt><a name="label5485"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+This attribute contains the next frame to deliver, when read from an Ethernet_Frame hap handler.  It can also be set from the hap handler, which will modify the packet being sent.  If it is set to nil or to an empty buffer, the packet will be dropped. From anywhere else than an Ethernet_Frame hap handler, this attribute is nil and can't be set. </dd></dl>
+<dl><dt><b><i>latency</i></b></dt><a name="label5486"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>f|i</b>.
+<p>
+The latency on the link.  Every packet that is sent over this link is delayed by at least the time specified in this attribute. Other simulated state changes, such as auto-negotiation and registered MAC addresses also propagate over the link with the same delay.  The type of this attribute is either an integer number of clock ticks in the time base specified in the <i>frequency</i> attribute, or a floating point number which defines the latency in seconds.</dd></dl>
+<dl><dt><b><i>link_id</i></b></dt><a name="label5487"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID number of the link this link object belongs to.</dd></dl>
+<dl><dt><b><i>link_obj_id</i></b></dt><a name="label5488"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The local ID number of this link object on the link.</dd></dl>
+<dl><dt><b><i>master_obj_id</i></b></dt><a name="label5489"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The local ID number of the master link object on the link.</dd></dl>
+<dl><dt><b><i>min_latency</i></b></dt><a name="label5490"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The minimum latency allowed. This is an integer number of clock ticks in the time base specified in the <i>frequency</i> attribute.  In a distributed the value is given by Simics Central server.  This attribute can not be changed.</dd></dl>
+<dl><dt><b><i>nbytes</i></b></dt><a name="label5491"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The number of bytes transmitted over the network.  This does not include any frames still in transfer.</dd></dl>
+<dl><dt><b><i>next_seq</i></b></dt><a name="label5492"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The sequence number assigned to the next frame sent over the link</dd></dl>
+<dl><dt><b><i>nframes</i></b></dt><a name="label5493"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The number of frames transmitted over the network.  This does not include any frames still in transfer.</dd></dl>
+<dl><dt><b><i>pending_frames</i></b></dt><a name="label5494"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[iiiiid]*]</b>.
+<p>
+Frames in transfer</dd></dl>
+<dl><dt><b><i>promisc_default</i></b></dt><a name="label5495"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+This attribute is internal and may go away in the future</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5496"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5498">connect-real-network-bridge</a></b></td><td class="jdocu_noborder">connect to the real network</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5500">connect-real-network-host</a></b></td><td class="jdocu_noborder">connect to the real network</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5502">connect-real-network-napt</a></b></td><td class="jdocu_noborder">enable NAPT from simulated network</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5504">connect-real-network-router</a></b></td><td class="jdocu_noborder">connect to the real network</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5506">disconnect-real-network</a></b></td><td class="jdocu_noborder">disconnect from the real network</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5508">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5510">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5497"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5498"></a><a name="label5499"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.connect-real-network-bridge</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.connect-real-network-bridge</b> [<i>"interface"</i>] [<i>"host-access"</i>] [-no-mac-xlate] [-persistent] [-propagate-link-status] <br><b>connect-real-network-bridge</b> [<i>"interface"</i>] [<i>"host-access"</i>] [-no-mac-xlate] [-persistent] [-propagate-link-status] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Creates an Ethernet bridge between a simulated Ethernet link and a real
+network through an Ethernet interface of the simulation host.
+<p>
+The optional <i>interface</i> argument specifies the Ethernet or TAP
+interface of the host to use.
+<p>
+By default a TAP interface is used, but if the <i>host-access</i> argument
+is <tt>raw</tt>, raw access to an Ethernet interface is used.
+<p>
+MAC address translation can be disabled with the <i>-no-mac-xlate</i> flag.
+<p>
+The <i>-persistent</i> is for backward compatibility and should not be
+used.
+<p>
+If <i>-propagate-link-status</i> is specified, link status changes on
+the host interface will be propagated to all devices on the link that
+implements the link-status interface. For TUN/TAP, only 'up' and 'down'
+status will be propagated (and not 'unconnected'). Link status propagation
+is only supported on Linux.
+<p>
+See the <em>Connecting to a Real Network</em> chapter of the <em>Simics User
+Guide</em> for more information about how to connect to a real network.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1525">connect-real-network</a>, <a class="jdocu" href="#label5498">&lt;ethernet-link&gt;.connect-real-network-bridge</a>, <a class="jdocu" href="topic13.html#label1529">connect-real-network-host</a>, <a class="jdocu" href="topic13.html#label1537">connect-real-network-router</a></dd>
+
+</dl>
+
+
+
+<a name="label5500"></a><a name="label5501"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.connect-real-network-host</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.connect-real-network-host</b> [<i>"interface"</i>] [-persistent] <br><b>connect-real-network-host</b> [<i>"interface"</i>] [-persistent] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Connects a TAP interface of the simulation host to a simulated Ethernet link.
+<p>
+The optional <i>interface</i> argument specifies the TAP interface of the
+host to use.
+<p>
+The <i>-persistent</i> is for backward compatibility and should not be
+used.
+<p>
+See the <em>Connecting to a Real Network</em> chapter of the <em>Simics User
+Guide</em> for more information about how to connect to a real network.
+<p>
+This command is currently not supported on Solaris hosts.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1525">connect-real-network</a>, <a class="jdocu" href="#label5500">&lt;ethernet-link&gt;.connect-real-network-host</a>, <a class="jdocu" href="topic13.html#label1527">connect-real-network-bridge</a>, <a class="jdocu" href="topic13.html#label1537">connect-real-network-router</a></dd>
+
+</dl>
+
+
+
+<a name="label5502"></a><a name="label5503"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.connect-real-network-napt</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.connect-real-network-napt</b><br><b>connect-real-network-napt</b> <i>ethernet-link</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables machines on the simulated network to initiate accesses
+to real hosts without the need to configure the simulated machine
+with a real IP address. NAPT (Network Address Port Translation)
+uses the IP address and a port number of the host that Simics
+is running on to perform the access. Replies are then translated
+back to match the request from the simulated machine. This command
+also enables NAPT for accesses that are initiated from the simulated
+machine.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1525">connect-real-network</a>, <a class="jdocu" href="topic13.html#label1533">connect-real-network-port-in</a>, <a class="jdocu" href="topic13.html#label1535">connect-real-network-port-out</a>, <a class="jdocu" href="topic13.html#label1529">connect-real-network-host</a>, <a class="jdocu" href="topic13.html#label1527">connect-real-network-bridge</a>, <a class="jdocu" href="topic13.html#label1537">connect-real-network-router</a></dd>
+
+</dl>
+
+
+
+<a name="label5504"></a><a name="label5505"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.connect-real-network-router</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.connect-real-network-router</b> <i>"ip"</i> [<i>"netmask"</i>] [<i>"gateway"</i>] [<i>"interface"</i>] <br><b>connect-real-network-router</b> <i>"ip"</i> [<i>"netmask"</i>] [<i>"gateway"</i>] [<i>"interface"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Creates a routed connection between a simulated Ethernet link and a real
+network through an Ethernet interface of the simulation host.
+<p>
+The optional <i>interface</i> argument specifies the Ethernet interface of
+the host to use.
+<p>
+The <i>ip</i> and <i>netmask</i> arguments specify the IP address and
+netmask that the router should use on the simulated Ethernet link.
+<p>
+The <i>gateway</i> argument specifies the gateway on the simulated Ethernet
+link that router should use for packets from the real network that are not
+in the router's subnet.
+<p>
+See the <em>Connecting to a Real Network</em> chapter of the <em>Simics User
+Guide</em> for more information about how to connect to a real network.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1525">connect-real-network</a>, <a class="jdocu" href="#label5504">&lt;ethernet-link&gt;.connect-real-network-router</a>, <a class="jdocu" href="topic13.html#label1529">connect-real-network-host</a>, <a class="jdocu" href="topic13.html#label1527">connect-real-network-bridge</a></dd>
+
+</dl>
+
+
+
+<a name="label5506"></a><a name="label5507"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.disconnect-real-network</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.disconnect-real-network</b><br><b>disconnect-real-network</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Closes all connections to real networks except port forwarding and NAPT.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label5506">&lt;ethernet-link&gt;.disconnect-real-network</a>, <a class="jdocu" href="topic13.html#label1529">connect-real-network-host</a>, <a class="jdocu" href="topic13.html#label1527">connect-real-network-bridge</a>, <a class="jdocu" href="topic13.html#label1537">connect-real-network-router</a></dd>
+
+</dl>
+
+
+
+<a name="label5508"></a><a name="label5509"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label5510"></a><a name="label5511"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ethernet-link&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ethernet-link&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic82.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic84.html">Next</a></span></p>
+</body>
+</html>

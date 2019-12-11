@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics Compatibility</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(36, true);
+</script>
+<a name="label69"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic6.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+<h4 class="jdocu">3.5&nbsp;&nbsp;&nbsp;Simics Compatibility</h4 class="jdocu">
+
+    
+<p>
+    In general, Simics strives for compatibility between major
+    releases. However, different parts of Simics will provide different level
+    of compatibility.
+<p>
+    The following interfaces are backward compatible between major
+    releases. Any exceptions is listed in the release notes: 
+<p>
+    <ul>
+       <li>Configurations and checkpoints</li>
+       <li>Simics API</li>
+       <li>CLI commands</li>
+    </ul>
+<p>
+    The following parts may change in major release and warnings may
+    not be listed in the release notes: 
+<p>
+    <ul>
+       <li>Simics file structure</li>
+       <li>Simics library source code</li>
+    </ul>
+<p>
+    The following parts are likely to change in major release without
+    any warning: 
+<p>
+    <ul>
+       <li>Configuration scripts</li>
+       <li>Module source code</li>
+       <li>Example code</li>
+       <li>Simics ABI</li>
+    </ul> 
+<p>
+    Platform support may change at a major release. 
+<p>
+    &nbsp;
+<p>
+    For minor releases, the Simics ABI is backward compatible with rare
+    exceptions due to error corrections. Error corrections causing
+    incompatibility are noted in the release notes while backward compatible
+    ABI extensions are not guaranteed to be mentioned. Thus, device models will
+    usually only have to be re-compiled for a new major release and it should
+    be possible to load them directly into a newer minor release. Note that
+    there may be direct dependencies between modules unrelated to the Simics
+    ABI that force two or more modules to be updated simultaneously.
+<p>
+    Processor models are not guaranteed to be be movable even between minor
+    releases. Instead a new version of the processor module is supplied with
+    each new minor release.
+<p>
+    Communication between Simics simulation processes is only guaranteed to
+    work when running the same version of Simics.
+<p>
+    DML code has a version number which is recognized or rejected by the DML
+    compiler. DMLC generates code for the Simics version it is distributed
+    with. However, the user can write DML code that runs with an older minor
+    version of Simics by avoiding using interfaces introduced in later minor
+    versions.
+<p>
+    Target model functionality may have been be extended and corrected between
+    minor releases. Target timing may have been changed between minor
+    releases. Important updates and changes will be noted in the release notes.
+<p>
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic6.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+</body>
+</html>

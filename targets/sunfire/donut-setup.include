@@ -1,0 +1,51 @@
+if not defined os           {$os = "solaris9"}
+if not defined do_boot      {$do_boot  = "yes"}
+if not defined do_login     {$do_login = "yes"}
+if not defined ip_address   {$ip_address   = "10.10.0.5"}
+if not defined host_name    {$host_name    = "donut"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+
+@if simenv.os == 'solaris10':
+    if not 'solaris10_diffs' in dir():
+        solaris10_diffs = []
+    image.files = [['donut7-solaris10.craff', 'ro', 0, simenv.disk_size]]
+    image.files += solaris10_diffs
+elif simenv.os == 'solaris9':
+    if not 'solaris9_diffs' in dir():
+        solaris9_diffs = []
+    image.files = [['donut5-solaris9.craff', 'ro', 0, simenv.disk_size],
+                   ['donut5.1-extras.craff', 'ro', 0, simenv.disk_size]]
+    image.files += solaris9_diffs
+elif simenv.os == 'solaris8':
+    if not 'solaris8_diffs' in dir():
+        solaris8_diffs = []
+    image.files = [['donut4-solaris8.craff', 'ro', 0, simenv.disk_size],
+                   ['donut4.1-extras.craff', 'ro', 0, simenv.disk_size]]
+    image.files += solaris8_diffs
+else:
+    print 'Unsupported OS disk dump requested: %s' % os
+
+if $do_boot == "no" {
+    $system.set-prom-env auto-boot? false
+}
+
+if $do_login == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+        $con.wait-for-string "ogin: "
+        $con.input "root\n"
+    }
+}

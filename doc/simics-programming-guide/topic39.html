@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>System Calls and Signals</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(107, true);
+</script>
+<a name="label214"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic38.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic40.html">Next</a></span></p>
+<h3 class="jdocu">8.1&nbsp;&nbsp;&nbsp;System Calls and Signals</h3 class="jdocu">
+
+
+<a name="label215"></a>
+<p>
+<a name="label216"></a> For Unix-like operating systems,
+Simics will register its built-in <a name="label217">signal handlers</a> to make
+system calls restartable after the signal has been handled (cf. the
+<tt><a name="label218">SA_RESTART</a></tt> flag in the
+<tt><a name="label219">sigaction</a>(2)</tt> man page).
+<p>
+However, only some system calls are restartable, so when writing
+modules for Simics, you have to make sure that you restart the other
+system calls yourself:<a name="label220"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+    do {
+            res = accept(sock, &amp;saddr, &amp;slen);
+    } while (res == -1 &amp;&amp; errno == EINTR);
+</pre>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic38.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic40.html">Next</a></span></p>
+</body>
+</html>

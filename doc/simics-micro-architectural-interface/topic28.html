@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Micro Architectural Interface API</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(57, true);
+</script>
+<a name="label316"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+<h2 class="jdocu">Appendix A -&nbsp;&nbsp;&nbsp;Micro Architectural Interface API</h2 class="jdocu">
+
+
+<p>
+Here follows a description on all function in the Micro Architecture
+Interface. Many of the API functions use the enum type
+<a name="label317">instruction_error_t</a> for signaling error codes. The type is
+defined like this:
+<p>
+<span class="jdocu_smaller">
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum instruction_error {
+        Sim_IE_OK = 0,
+        Sim_IE_Unresolved_Dependencies,
+        Sim_IE_Speculative,
+        Sim_IE_Stalling,
+        Sim_IE_Not_Inserted,      /* trying to execute or squash an 
+                                     instruction that is inserted. */ 
+        Sim_IE_Exception,         /* (SPARC-V9 only) */
+        Sim_IE_Fault = Sim_IE_Exception, 
+        Sim_IE_Trap,              /* (X86 only) Returned if a trap is 
+                                     encountered */
+        Sim_IE_Interrupt,         /* (X86 only) Returned if an interrupt is 
+                                     waiting and interrupts are enabled */
+
+        Sim_IE_Sync_Instruction,  /* Returned if sync instruction is 
+                                     not allowd to execute */
+        Sim_IE_No_Exception,      /* Returned by SIM_instruction_
+                                     handle_exception */
+        Sim_IE_Illegal_Interrupt_Point,
+        Sim_IE_Illegal_Exception_Point,
+        Sim_IE_Illegal_Address,
+        Sim_IE_Illegal_Phase,
+        Sim_IE_Interrupts_Disabled,
+        Sim_IE_Illegal_Id,
+        Sim_IE_Instruction_Tree_Full,
+        Sim_IE_Null_Pointer,
+        Sim_IE_Illegal_Reg,
+        Sim_IE_Invalid,
+        Sim_IE_Out_of_Order_Commit, 
+        Sim_IE_Retired_Instruction, /* try to squash a retiring instruction */
+        Sim_IE_Not_Committed,       /* Returned by SIM_instruction_end */
+        Sim_IE_Code_Breakpoint,
+        Sim_IE_Mem_Breakpoint,
+        Sim_IE_Step_Breakpoint,
+        Sim_IE_Hap_Breakpoint
+} instruction_error_t;</pre>
+
+</span>
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic29.html#label318" target="main">1&nbsp;&nbsp;&nbsp;Micro Architecture API Functions</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+</body>
+</html>

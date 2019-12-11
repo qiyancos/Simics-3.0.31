@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>The time server and the time client</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(193, true);
+</script>
+<a name="label361"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic71.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic73.html">Next</a></span></p>
+<h2 class="jdocu">15&nbsp;&nbsp;&nbsp;The time server and the time client</h2 class="jdocu">
+
+
+<a name="label362"></a>
+<p>
+When interfacing Simics, timing may in some cases pose a problem. For example,
+test programs may specify a timeout, but since Simics can run both faster and
+slower than real time, the test may either timeout when it should not, or not
+timeout when it actually should.
+<p>
+The time server solves this by exporting the virtual time ("Simics time") to
+the outer world. Clients can communicate with the time server through TCP/IP,
+using the time client library that provides a C-interface to the time server.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic73.html#label363" target="main">15.1&nbsp;&nbsp;&nbsp;Time client library</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic71.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic73.html">Next</a></span></p>
+</body>
+</html>

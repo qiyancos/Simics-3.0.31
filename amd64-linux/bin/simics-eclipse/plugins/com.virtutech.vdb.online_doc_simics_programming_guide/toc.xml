@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Simics Programming Guide" topic="html/index.html">
+ <topic label="1 About Simics Documentation" href="html/topic0.html">
+  <topic label="1.1 Conventions" href="html/topic1.html">
+  </topic>
+  <topic label="1.2 Simics Guides and Manuals" href="html/topic2.html">
+   <topic label="Simics Installation Guide for Unix and for Windows" href="html/topic3.html">
+   </topic>
+   <topic label="Simics User Guide for Unix and for Windows" href="html/topic4.html">
+   </topic>
+   <topic label="Simics Eclipse User Guide" href="html/topic5.html">
+   </topic>
+   <topic label="Simics Target Guides" href="html/topic6.html">
+   </topic>
+   <topic label="Simics Programming Guide" href="html/topic7.html">
+   </topic>
+   <topic label="DML Tutorial" href="html/topic8.html">
+   </topic>
+   <topic label="DML Reference Manual" href="html/topic9.html">
+   </topic>
+   <topic label="Simics Reference Manual" href="html/topic10.html">
+   </topic>
+   <topic label="Simics Micro-Architectural Interface" href="html/topic11.html">
+   </topic>
+   <topic label="RELEASENOTES and LIMITATIONS files" href="html/topic12.html">
+   </topic>
+   <topic label="Simics Technical FAQ" href="html/topic13.html">
+   </topic>
+   <topic label="Simics Support Forum" href="html/topic14.html">
+   </topic>
+   <topic label="Other Interesting Documents" href="html/topic15.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="2 Tutorial" href="html/topic16.html">
+ </topic>
+ <topic label="3 Build Environment" href="html/topic17.html">
+  <topic label="3.1 Notes for Windows Users" href="html/topic18.html">
+  </topic>
+  <topic label="3.2 Setting up a Workspace" href="html/topic19.html">
+   <topic label="3.2.1 Workspace setup script invocation" href="html/topic20.html">
+   </topic>
+   <topic label="3.2.2 Updating workspaces" href="html/topic21.html">
+   </topic>
+  </topic>
+  <topic label="3.3 Adding modules to a workspace" href="html/topic22.html">
+   <topic label="3.3.1 Creating a new DML module" href="html/topic23.html">
+   </topic>
+   <topic label="3.3.2 Creating a new C module" href="html/topic24.html">
+   </topic>
+   <topic label="3.3.3 Adding an Existing Module" href="html/topic25.html">
+   </topic>
+  </topic>
+  <topic label="3.4 Advanced Tweaks" href="html/topic26.html">
+   <topic label="3.4.1 Platform specific notes" href="html/topic27.html">
+   </topic>
+   <topic label="3.4.2 Module Makefiles" href="html/topic28.html">
+   </topic>
+   <topic label="3.4.3 Standard Module Host Defines" href="html/topic29.html">
+   </topic>
+   <topic label="3.4.4 User Defined Module Version Numbers" href="html/topic30.html">
+   </topic>
+   <topic label="3.4.5 Module Loading Support" href="html/topic31.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="4 Programming Concepts" href="html/topic32.html">
+  <topic label="4.1 Classes and Objects" href="html/topic33.html">
+  </topic>
+  <topic label="4.2 Attributes" href="html/topic34.html">
+   <topic label="Definition" href="html/topic35.html">
+   </topic>
+   <topic label="Type" href="html/topic36.html">
+   </topic>
+   <topic label="Attribute Data Ownership" href="html/topic37.html">
+   </topic>
+  </topic>
+  <topic label="4.3 Interfaces" href="html/topic38.html">
+  </topic>
+  <topic label="4.4 Logging" href="html/topic39.html">
+  </topic>
+  <topic label="4.5 Events" href="html/topic40.html">
+  </topic>
+  <topic label="4.6 Haps" href="html/topic41.html">
+  </topic>
+  <topic label="4.7 Commands" href="html/topic42.html">
+  </topic>
+ </topic>
+ <topic label="5 Programming with DML" href="html/topic43.html">
+  <topic label="5.1 Modules, Classes, and Objects" href="html/topic44.html">
+  </topic>
+  <topic label="5.2 Attributes" href="html/topic45.html">
+   <topic label="5.2.1 A Simple Example" href="html/topic46.html">
+   </topic>
+   <topic label="5.2.2 A Pseudo Attribute" href="html/topic47.html">
+   </topic>
+  </topic>
+  <topic label="5.3 Interfaces" href="html/topic48.html">
+   <topic label="5.3.1 Using Interfaces" href="html/topic49.html">
+   </topic>
+   <topic label="5.3.2 Implementing an Existing Interface" href="html/topic50.html">
+   </topic>
+   <topic label="5.3.3 Implementing an New Interface" href="html/topic51.html">
+   </topic>
+  </topic>
+  <topic label="5.4 Logging" href="html/topic52.html">
+  </topic>
+  <topic label="5.5 Events" href="html/topic53.html">
+  </topic>
+  <topic label="5.6 Haps" href="html/topic54.html">
+  </topic>
+ </topic>
+ <topic label="6 Programming with C and Python" href="html/topic55.html">
+  <topic label="6.1 Module Loading and Unloading" href="html/topic56.html">
+   <topic label="C/C++" href="html/topic57.html">
+   </topic>
+   <topic label="Python" href="html/topic58.html">
+   </topic>
+  </topic>
+  <topic label="6.2 Classes" href="html/topic59.html">
+   <topic label="C/C++" href="html/topic60.html">
+   </topic>
+   <topic label="Python" href="html/topic61.html">
+   </topic>
+  </topic>
+  <topic label="6.3 Objects" href="html/topic62.html">
+   <topic label="C/C++" href="html/topic63.html">
+   </topic>
+   <topic label="Python" href="html/topic64.html">
+   </topic>
+  </topic>
+  <topic label="6.4 Attributes" href="html/topic65.html">
+   <topic label="6.4.1 A Simple Example" href="html/topic66.html">
+   </topic>
+   <topic label="6.4.2 A Pseudo Attribute" href="html/topic67.html">
+   </topic>
+   <topic label="6.4.3 An indexed attribute" href="html/topic68.html">
+   </topic>
+  </topic>
+  <topic label="6.5 Interfaces" href="html/topic69.html">
+   <topic label="6.5.1 Using Interfaces" href="html/topic70.html">
+   </topic>
+   <topic label="6.5.2 Implementing an Existing Interface" href="html/topic71.html">
+   </topic>
+   <topic label="6.5.3 Implementing an New Interface" href="html/topic72.html">
+   </topic>
+  </topic>
+  <topic label="6.6 Logging" href="html/topic73.html">
+   <topic label="Python" href="html/topic74.html">
+   </topic>
+   <topic label="C/C++" href="html/topic75.html">
+   </topic>
+  </topic>
+  <topic label="6.7 Events" href="html/topic76.html">
+  </topic>
+  <topic label="6.8 Haps" href="html/topic77.html">
+   <topic label="6.8.1 Reacting to Haps" href="html/topic78.html">
+   </topic>
+   <topic label="6.8.2 Providing Haps" href="html/topic79.html">
+    <topic label="Adding a new type" href="html/topic80.html">
+    </topic>
+    <topic label="Notifying subscribers" href="html/topic81.html">
+    </topic>
+   </topic>
+  </topic>
+ </topic>
+ <topic label="7 Adding New Commands" href="html/topic82.html">
+  <topic label="7.1 Introduction" href="html/topic83.html">
+  </topic>
+  <topic label="7.2 Example of a new command" href="html/topic84.html">
+  </topic>
+  <topic label="7.3 Argument Types" href="html/topic85.html">
+   <topic label="addr_t" href="html/topic86.html">
+   </topic>
+   <topic label="bool_t(true_str, false_str)" href="html/topic87.html">
+   </topic>
+   <topic label="filename_t(dirs = 0, exist = 0, simpath = 0)" href="html/topic88.html">
+   </topic>
+   <topic label="float_t" href="html/topic89.html">
+   </topic>
+   <topic label="int32_t" href="html/topic90.html">
+   </topic>
+   <topic label="int64_t" href="html/topic91.html">
+   </topic>
+   <topic label="int_t" href="html/topic92.html">
+   </topic>
+   <topic label="integer_t" href="html/topic93.html">
+   </topic>
+   <topic label="obj_t(desc, kind = None)" href="html/topic94.html">
+   </topic>
+   <topic label="range_t(min, max, desc, positive = 0)" href="html/topic95.html">
+   </topic>
+   <topic label="sint32_t" href="html/topic96.html">
+   </topic>
+   <topic label="sint64_t" href="html/topic97.html">
+   </topic>
+   <topic label="str_t" href="html/topic98.html">
+   </topic>
+   <topic label="string_set_t(strings)" href="html/topic99.html">
+   </topic>
+   <topic label="uint32_t" href="html/topic100.html">
+   </topic>
+   <topic label="uint64_t" href="html/topic101.html">
+   </topic>
+  </topic>
+  <topic label="7.4 Info And Status Commands" href="html/topic102.html">
+   <topic label="7.4.1 Example" href="html/topic103.html">
+   </topic>
+   <topic label="7.4.2 Information Structure" href="html/topic104.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="8 Miscellaneous Information" href="html/topic105.html">
+  <topic label="8.1 System Calls and Signals" href="html/topic106.html">
+  </topic>
+  <topic label="8.2 Text Output" href="html/topic107.html">
+  </topic>
+  <topic label="8.3 Using Threads in Simics Modules" href="html/topic108.html">
+  </topic>
+  <topic label="8.4 Header Inclusion Order" href="html/topic109.html">
+  </topic>
+ </topic>
+ <topic label="9 Compatibility" href="html/topic110.html">
+  <topic label="9.1 Simics API" href="html/topic111.html">
+  </topic>
+  <topic label="9.2 Supported Python API" href="html/topic112.html">
+  </topic>
+  <topic label="9.3 Migrating Modules from Older Versions" href="html/topic113.html">
+  </topic>
+  <topic label="9.4 Migrating Python Code from Older Versions" href="html/topic114.html">
+  </topic>
+  <topic label="9.5 Build Environment Compatibility" href="html/topic115.html">
+  </topic>
+ </topic>
+ <topic label="10 More Complex Examples" href="html/topic116.html">
+  <topic label="10.1 AM79C960-dml" href="html/topic117.html">
+   <topic label="10.1.1 Running the AM79C960 model" href="html/topic118.html">
+   </topic>
+   <topic label="10.1.2 Comments to the Code" href="html/topic119.html">
+   </topic>
+  </topic>
+  <topic label="10.2 DS12887-dml" href="html/topic120.html">
+   <topic label="10.2.1 Running the DS12887 model" href="html/topic121.html">
+   </topic>
+   <topic label="10.2.2 Comments to the Code" href="html/topic122.html">
+   </topic>
+  </topic>
+  <topic label="10.3 DEC21140A-dml" href="html/topic123.html">
+   <topic label="10.3.1 Running the DEC21140A model with Enterprise" href="html/topic124.html">
+   </topic>
+   <topic label="10.3.2 Running the DEC21140A model with Ebony" href="html/topic125.html">
+   </topic>
+   <topic label="10.3.3 Comments to the Code" href="html/topic126.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="11 Writing PCI Devices" href="html/topic127.html">
+  <topic label="11.1 Introduction" href="html/topic128.html">
+  </topic>
+  <topic label="11.2 Writing a PCI Device in DML" href="html/topic129.html">
+   <topic label="11.2.1 Overview" href="html/topic130.html">
+   </topic>
+   <topic label="11.2.2 pci_config Bank" href="html/topic131.html">
+   </topic>
+   <topic label="11.2.3 Base Address Registers" href="html/topic132.html">
+    <topic label="Introduction" href="html/topic133.html">
+    </topic>
+    <topic label="Template, Parameters, and Functions" href="html/topic134.html">
+    </topic>
+    <topic label="Expansion ROM" href="html/topic135.html">
+    </topic>
+   </topic>
+   <topic label="11.2.4 Functions" href="html/topic136.html">
+   </topic>
+   <topic label="11.2.5 PCI and PCIe Capabilities" href="html/topic137.html">
+   </topic>
+   <topic label="11.2.6 Source Code" href="html/topic138.html">
+   </topic>
+  </topic>
+  <topic label="11.3 Writing a PCI Device in C/C++" href="html/topic139.html">
+   <topic label="11.3.1 API and Interfaces" href="html/topic140.html">
+   </topic>
+   <topic label="11.3.2 PCI Device Setup" href="html/topic141.html">
+   </topic>
+   <topic label="11.3.3 PCI Device Mappings and BARs" href="html/topic142.html">
+   </topic>
+   <topic label="11.3.4 Accessing Memory" href="html/topic143.html">
+   </topic>
+   <topic label="11.3.5 Interrupts" href="html/topic144.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="12 Writing Components" href="html/topic145.html">
+  <topic label="12.1 Introduction" href="html/topic146.html">
+   <topic label="12.1.1 Component Basics" href="html/topic147.html">
+   </topic>
+   <topic label="12.1.2 Designing Components" href="html/topic148.html">
+   </topic>
+  </topic>
+  <topic label="12.2 Component Module" href="html/topic149.html">
+   <topic label="12.2.1 Component Module Files" href="html/topic150.html">
+   </topic>
+  </topic>
+  <topic label="12.3 Implementing Components" href="html/topic151.html">
+   <topic label="12.3.1 Component Class" href="html/topic152.html">
+   </topic>
+   <topic label="12.3.2 Component Class Data Members" href="html/topic153.html">
+   </topic>
+   <topic label="12.3.3 Defining Connectors" href="html/topic154.html">
+   </topic>
+   <topic label="12.3.4 Required Class Methods" href="html/topic155.html">
+   </topic>
+   <topic label="12.3.5 Optional Class Methods" href="html/topic156.html">
+   </topic>
+   <topic label="12.3.6 Top-level Class Methods" href="html/topic157.html">
+   </topic>
+   <topic label="12.3.7 Adding Configuration Objects" href="html/topic158.html">
+   </topic>
+   <topic label="12.3.8 Providing Connection Information" href="html/topic159.html">
+   </topic>
+   <topic label="12.3.9 Connection Methods" href="html/topic160.html">
+    <topic label="12.3.9.1 Arguments" href="html/topic161.html">
+    </topic>
+    <topic label="12.3.9.2 Method Invocation Time" href="html/topic162.html">
+    </topic>
+    <topic label="12.3.9.3 Method Invocation Order" href="html/topic163.html">
+    </topic>
+    <topic label="12.3.9.4 Connect Failures" href="html/topic164.html">
+    </topic>
+    <topic label="12.3.9.5 Hotplug Support" href="html/topic165.html">
+    </topic>
+   </topic>
+   <topic label="12.3.10 Disallowing Connections" href="html/topic166.html">
+   </topic>
+   <topic label="12.3.11 Naming of Configuration Objects" href="html/topic167.html">
+    <topic label="12.3.11.1 Automatic Object Name Numbering" href="html/topic168.html">
+    </topic>
+    <topic label="12.3.11.2 User-defined Object Name Numbering" href="html/topic169.html">
+    </topic>
+   </topic>
+  </topic>
+  <topic label="12.4 Component Attributes and Commands" href="html/topic170.html">
+   <topic label="12.4.1 Common Component Attributes" href="html/topic171.html">
+   </topic>
+   <topic label="12.4.2 Top-level Component Attributes" href="html/topic172.html">
+   </topic>
+   <topic label="12.4.3 User-defined Attributes" href="html/topic173.html">
+   </topic>
+   <topic label="12.4.4 Standard Component Commands" href="html/topic174.html">
+   </topic>
+   <topic label="12.4.5 User-defined Component Commands" href="html/topic175.html">
+   </topic>
+  </topic>
+  <topic label="12.5 Various Component Features" href="html/topic176.html">
+   <topic label="12.5.1 Checkpointing" href="html/topic177.html">
+   </topic>
+   <topic label="12.5.2 Automatic Queue Assignment" href="html/topic178.html">
+   </topic>
+   <topic label="12.5.3 Automatic Recorder Assignment" href="html/topic179.html">
+   </topic>
+   <topic label="12.5.4 Inheritance" href="html/topic180.html">
+   </topic>
+  </topic>
+  <topic label="12.6 Standard Connector Types" href="html/topic181.html">
+  </topic>
+ </topic>
+ <topic label="13 Programming the Memory Hierarchy Interface" href="html/topic182.html">
+  <topic label="13.1 Implementing the Interface" href="html/topic183.html">
+  </topic>
+  <topic label="13.2 Changing the Behavior of a Memory Transaction" href="html/topic184.html">
+   <topic label="In a Timing Model" href="html/topic185.html">
+   </topic>
+   <topic label="In a Snoop Device" href="html/topic186.html">
+   </topic>
+  </topic>
+  <topic label="13.3 Chaining Timing Models" href="html/topic187.html">
+  </topic>
+ </topic>
+ <topic label="14 The dbuffer library" href="html/topic188.html">
+  <topic label="14.1 Dbuffer fundamentals" href="html/topic189.html">
+  </topic>
+  <topic label="14.2 Usage" href="html/topic190.html">
+  </topic>
+  <topic label="14.3 Conventions" href="html/topic191.html">
+  </topic>
+ </topic>
+ <topic label="15 The time server and the time client" href="html/topic192.html">
+  <topic label="15.1 Time client library" href="html/topic193.html">
+  </topic>
+ </topic>
+</toc>

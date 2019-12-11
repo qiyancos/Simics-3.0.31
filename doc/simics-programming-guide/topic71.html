@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Conventions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(192, true);
+</script>
+<a name="label360"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic70.html">Previous</a> - <a class="jdocu" href="topic68.html">Up</a> - <a class="jdocu" href="topic72.html">Next</a></span></p>
+<h3 class="jdocu">14.3&nbsp;&nbsp;&nbsp;Conventions</h3 class="jdocu">
+
+
+<p>
+As with any memory management API, it is important to know how to
+handle the creation and releasing of dbuffers, in other words how to
+manage ownership of the dbuffers.  The conventions used in Simics,
+which are assumed by many interfaces that employ dbuffers, are
+described in this section.
+<p>
+The conventions are based on two simple rules:
+<p>
+<ul>
+ <li> Ownership of a dbuffer is never passed in a function call</li>
+ <li> A dbuffer received in a function call may not be modified</li>
+</ul>
+<p>
+The first rule means that whoever creates the dbuffer is responsible
+for releasing it.  This often means that the dbuffer is created,
+filled with data, passed to other functions, and released in the same
+function.  For some long-lived dbuffers, a reference may be stored to
+the dbuffer, and code in the same module will create it and release
+it.
+<p>
+Furthermore, this means that if a function receives a dbuffer
+reference as one of its parameter, and wishes to store it for later
+use, it must make a copy of it and store the copy.  Fortunately, this
+is a cheap operation.
+<p>
+The second rule means that a function that takes a dbuffer reference
+as one of its parameter must also make a copy of it if it wants to
+make any changes to it.
+<p>
+Of course, there are exceptions to this rule.  Sometimes the owner of
+a dbuffer will call a function with the explicit intent that the
+dbuffer should be updated.  But these exceptions should always be
+documented in the interface description.
+<p>
+Let's take a look at a small example of how these rules work in
+practice.  Consider a small example where a network device reads a
+packet from memory, adds a header to the packet and sends it to a
+network model that delivers it to a number of receivers.  The
+receivers will strip away the header and store it in a queue.  The
+dequeur is later run from an event handler and writes the incoming
+packet to local memory.
+<p>
+<pre class="jdocu_small" style="color: black">
+    // This is part of the sender model
+    void sender(void)
+    {
+        dbuffer_t *buf = new_dbuffer();
+        long len;
+        char *dataref = get_packet_from_mem(&amp;len);
+        memcpy(dbuffer_append(buf, len), dataref, len);
+        write_header(dbuffer_prepend(buf, HEADERSIZE));
+        send_to_network(buf);
+        dbuffer_free(buf);
+    }
+
+    // This is part of the network model
+    void send_to_network(dbuffer_t *buf)
+    {
+        // This function doesn't modify or store the dbuffer.  It
+        // sends the same dbuffer to all receivers that match the
+        // first six bytes of the header.
+        for (i = 0; i &lt; nreceivers; i++) {
+            if (memcmp(dbuffer_read(buf, 0, 6), receivers[i]-&gt;addr) == 0)
+                receive(receivers[i], buf);
+        }
+    }
+
+    // This is part of the receiver model
+    void receive(receiver_t *receiver, *inbuf)
+    {
+        if (receiver-&gt;enabled) {
+            dbuffer_t *buf = dbuffer_clone(inbuf);
+            dbuffer_remove(buf, 0, HEADERSIZE);
+            enqueue(receiver-&gt;queue, buf);
+        }
+    }
+
+    void dequeue_packet(receiver_t *receiver)
+    {
+        dbuffer_t *buf = dequeue(receiver-&gt;queue);
+        write_packet_to_mem(dbuffer_read_all(buf), dbuffer_len(buf));
+        dbuffer_free(buf);
+    }
+</pre>
+<p>
+Notice how the sender code sends the dbuffer to the network link, and
+the network links sends the same dbuffer to all receivers.  The
+network code will not try to send separate copies to each receiver,
+but instead let the receiver clone it if it needs to, since only the
+receiver code knows whether a copy needs to be made.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic70.html">Previous</a> - <a class="jdocu" href="topic68.html">Up</a> - <a class="jdocu" href="topic72.html">Next</a></span></p>
+</body>
+</html>

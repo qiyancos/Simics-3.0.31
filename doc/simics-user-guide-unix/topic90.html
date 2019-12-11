@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>A More Complex Cache System</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(222, true);
+</script>
+<a name="label524"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic89.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic91.html">Next</a></span></p>
+<h4 class="jdocu">18.4&nbsp;&nbsp;&nbsp;A More Complex Cache System</h4 class="jdocu">
+
+
+<p>
+Using <b>g-cache</b>, we can simulate more complex cache systems. Let
+us consider the structure described by figure <a class="jdocu" href="#label525">5</a>.
+<p>
+<a name="label525"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+    <img src="dc-ic-l2-hier.png">
+    
+</center>
+</td></tr>
+<tr><td style="text-align: center">Figure 5. A More Complex Cache System</td></tr>
+</table>
+
+<p>
+What we want to simulate is a system with separate instruction and data caches
+at level 1 backed by a level 2 cache. We will connect this memory hierarchy to
+an x86 processor. The dotted components in the diagram represent elements that
+are introduced in Simics to complete the simulation. Let us have a look at
+these components:
+<p>
+<dl><dt><b><b>id-splitter</b></b></dt><dd>This module is used by Simics to
+separate instruction and data accesses and send them to separate L1 caches.
+</dd><dt><b><b>splitter</b></b></dt><dd>Since we are simulating an x86 machine,
+accesses can cross a cache-line boundary. To avoid that, we connect two
+splitters before the caches. The splitters will let uncacheable and correctly
+aligned accesses go through untouched, whereas others will be split in two
+accesses.</dd><dt><b><b>trans-staller</b></b></dt><dd>The <b>trans-staller</b> is a
+very simple device that will simulate the memory latency. It will stall all
+accesses by a fixed amount of cycles.</dd></dl>
+<p>
+In terms of script, this configuration gives us the following:
+<p>
+<pre class="jdocu_small" style="color: black">
+#
+# Transaction staller for memory
+#
+@staller = pre_conf_object('staller', 'trans-staller')
+@staller.stall_time = 200
+#
+# l2 cache: 512Kb Write-back
+#
+@l2c = pre_conf_object('l2c', 'g-cache')
+@l2c.cpus = conf.cpu0
+@l2c.config_line_number = 4096
+@l2c.config_line_size = 128
+@l2c.config_assoc = 8
+@l2c.config_virtual_index = 0
+@l2c.config_virtual_tag = 0
+@l2c.config_write_back = 1
+@l2c.config_write_allocate = 1
+@l2c.config_replacement_policy = 'lru'
+@l2c.penalty_read = 10
+@l2c.penalty_write = 10
+@l2c.penalty_read_next = 0
+@l2c.penalty_write_next = 0
+@l2c.timing_model = staller
+#
+# instruction cache: 16Kb
+#
+@ic = pre_conf_object('ic', 'g-cache')
+@ic.cpus = conf.cpu0
+@ic.config_line_number = 256
+@ic.config_line_size = 64
+@ic.config_assoc = 2
+@ic.config_virtual_index = 0
+@ic.config_virtual_tag = 0
+@ic.config_replacement_policy = 'lru'
+@ic.penalty_read = 3
+@ic.penalty_write = 0
+@ic.penalty_read_next = 0
+@ic.penalty_write_next = 0
+@ic.timing_model = l2c
+#
+# data cache: 16Kb Write-through
+#
+@dc = pre_conf_object('dc', 'g-cache')
+@dc.cpus = conf.cpu0
+@dc.config_line_number = 256
+@dc.config_line_size = 64
+@dc.config_assoc = 4
+@dc.config_virtual_index = 0
+@dc.config_virtual_tag = 0
+@dc.config_replacement_policy = 'lru'
+@dc.penalty_read = 3
+@dc.penalty_write = 3
+@dc.penalty_read_next = 0
+@dc.penalty_write_next = 0
+@dc.timing_model = l2c
+#
+# transaction splitter for instruction cache
+#
+@ts_i = pre_conf_object('ts_i', 'trans-splitter')
+@ts_i.cache = ic
+@ts_i.timing_model = ic
+@ts_i.next_cache_line_size = 64
+#
+# transaction splitter for data cache
+#
+@ts_d = pre_conf_object('ts_d', 'trans-splitter')
+@ts_d.cache = dc
+@ts_d.timing_model = dc
+@ts_d.next_cache_line_size = 64
+#
+# instruction-data splitter
+#
+@id = pre_conf_object('id', 'id-splitter')
+@id.ibranch = ts_i
+@id.dbranch = ts_d
+
+@SIM_add_configuration([staller, l2c, ic, dc, ts_i, ts_d, id], None)
+</pre>
+<p>
+Once this is done, we can simply plug the <b>id-splitter</b> to the
+main memory:
+<p>
+<pre class="jdocu_small" style="color: black">
+@conf.phys_mem0.timing_model = conf.id
+</pre>
+<p>
+Note the way the penalties have been set: we don't use <i>_next</i>
+penalties but let the next level report penalties in case they are accessed. In
+this configuration, a read hit in L1 would take 3 cycles; a read miss that goes
+to memory would take 3 + 10 + 200 = 213 cycles if no copy-back is
+performed in the L2 cache. There's no best way to set up the penalties so it's
+up to you to decide how your model should behave.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic89.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic91.html">Next</a></span></p>
+</body>
+</html>

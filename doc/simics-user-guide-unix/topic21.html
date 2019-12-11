@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simple Virtual Network</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(46, true);
+</script>
+<a name="label82"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+<h4 class="jdocu">4.9&nbsp;&nbsp;&nbsp;Simple Virtual Network</h4 class="jdocu">
+
+
+<p>
+Simics can simulate several machines simultaneously. These machines can
+be connected together using a simulated Ethernet link.
+<p>
+This chapter uses a different launch configuration than the rest of the
+First Steps chapters. Before continuing, launch the
+<tt>ebony-linux-firststeps-multi.simics</tt>
+configuration.
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer: simics-workspace$ <b>./simics targets/ebony/ebony-linux-firststeps-multi.simics</b>
+</pre>
+<p>
+This configuration contains two similar machines, with their own
+CPU. Simics will run the machines synchronized, by executing some
+instructions on one CPU and then switch to the other.
+<p>
+Boot the two simulated machines by starting the simulation.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>c</b>
+</pre>
+<p>
+One of them will be assigned the Internet Protocol (IP) address
+10.10.0.50 and the other one 10.10.0.51. If you try to ping from one of the
+machines to the other, it will fail. This is because the two machines have not
+yet been connected to the simulated network.
+<p>
+An Ethernet link is simulated using <b>ethernet-link</b> module.
+You can connect any number of simulated network cards to the link.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>[control-C]</b>
+simics&gt;  <b>new-ethernet-link</b>
+[ethlink0 info] Adjusting latency to 1e-05 s [...]
+Created ethernet-link ethlink0
+simics&gt; 
+</pre>
+<p>
+Next, we must connect the simulated network cards to this link:
+<p>
+
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>ebony0_emac0.connect ethlink0</b>
+simics&gt;  <b>ebony1_emac0.connect ethlink0</b>
+simics&gt;  <b>ethlink0.info</b>
+Information about ethlink0 [class ethernet-link]
+================================================
+
+                    Latency : 10 us
+               Distribution : local
+                  Filtering : enabled
+
+Devices:
+              Local devices : &lt;0:0&gt; ebony0_emac0, &lt;1:1&gt; ebony1_emac0
+             Remote devices : none
+
+Real network connection:
+                  Connected : No
+simics&gt;  <b>c</b>
+</pre>
+<p>
+Now it should be possible to ping between the two simulated machines.
+Enter the following commands in the first machine.
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>ping -c 2 10.10.0.51</b>
+PING 10.10.0.51 (10.10.0.51): 56 data bytes
+64 bytes from 10.10.0.51: icmp_seq=0 ttl=64 time=0.0 ms
+64 bytes from 10.10.0.51: icmp_seq=1 ttl=64 time=0.0 ms
+
+--- 10.10.0.51 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.0/0.0/0.0 ms
+
+root@firststeps: ~#
+</pre>
+<p>
+You can read more about network simulation in chapter
+<a class="jdocu" href="topic39.html#label255">9</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+</body>
+</html>

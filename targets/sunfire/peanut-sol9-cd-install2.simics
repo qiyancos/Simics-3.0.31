@@ -1,0 +1,52 @@
+# we don't want automatic login
+$do_login = "no"
+
+# path to CD-ROM, use default if none given by user setup variables.
+if not defined cdrom_path {
+    $cdrom_path = "sol-9-u7-sparc-v2.iso"
+}
+
+if not `SIM_lookup_file(simenv.cdrom_path)` {
+    echo "Cannot find the CD-ROM specified as : "  + $cdrom_path
+    echo "Please add this file, or edit the path in this script."
+    echo ""
+    quit
+}
+
+echo "Using CD-ROM image file: " + $cdrom_path
+
+$create_network = "yes"
+$disk_size = 8513945600
+$os = "none"
+
+run-command-file "%script%/peanut-common.simics"
+
+load-persistent-state peanut-sol9-p1.state
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+@image.files = [["peanut-sol9-install.disk", "rw", 0, simenv.disk_size]]
+
+# create and insert CD media
+($scsi_cdrom.get-component-object cd).insert (new-file-cdrom $cdrom_path)
+
+echo "Capturing output to 'peanut-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "peanut-install-log.txt"
+
+run-command-file "%script%/../common/solaris9-install.include"
+
+script-branch {
+    $solaris9_phase2 = 1 # trigger script
+    $con.wait-for-string "Resetting..."
+    stop "Installation complete"
+    save-persistent-state peanut-sol9-p2.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Now exit Simics and continue with the peanut-sol9-cd-install3.simics "
+echo "script."
+echo ""

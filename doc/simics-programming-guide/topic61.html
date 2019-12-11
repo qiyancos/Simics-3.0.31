@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Component Attributes and Commands</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(171, true);
+</script>
+<a name="label328"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic60.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic62.html">Next</a></span></p>
+<h3 class="jdocu">12.4&nbsp;&nbsp;&nbsp;Component Attributes and Commands</h3 class="jdocu">
+
+
+<p>
+<a name="label329"></a><h4 class="jdocu">12.4.1&nbsp;&nbsp;&nbsp;Common Component Attributes</h4 class="jdocu">
+
+
+<p>
+All components have the following configuration attributes defined. Refer to
+the <em>Simics Reference Manual</em> for additional documentation.
+<p>
+<dl><dt><b><tt>connectors</tt></b></dt><dd>
+Dictionary with all connectors. Same as the <tt>connectors</tt> data member.
+</dd><dt><b><tt>object_list</tt></b></dt><dd>
+List of all configuration objects that are part of the component. This
+corresponds to all objects in the <tt>o</tt> namespace.
+</dd><dt><b><tt>object_prefix</tt></b></dt><dd>
+Object name prefix, set by the <b>set-component-prefix</b> command when the
+component was created.
+</dd><dt><b><tt>connections</tt></b></dt><dd>
+List of all connections for the component. For each connection there is a
+sub-list with the name of the connector, the name of the other component, and
+the name of the connector on the other component.
+</dd><dt><b><tt>top_level</tt></b></dt><dd>
+Boolean value that is <tt>TRUE</tt> if the component is a top-level one.
+</dd><dt><b><tt>instantiated</tt></b></dt><dd>
+Boolean value that is <tt>TRUE</tt> if the component has been instantiated.
+</dd></dl>
+<p>
+
+<a name="label330"></a><h4 class="jdocu">12.4.2&nbsp;&nbsp;&nbsp;Top-level Component Attributes</h4 class="jdocu">
+
+
+<p>
+Top-level component also have the following attributes:
+<p>
+<dl><dt><b><tt>components</tt></b></dt><dd>
+A list of all components below the top-level one in the component hierarchy.
+</dd><dt><b><tt>cpu_list</tt></b></dt><dd>
+A list of all processors in this top-level component, and in all components
+below it in the component hierarchy.
+</dd></dl>
+<p>
+
+<a name="label331"></a><h4 class="jdocu">12.4.3&nbsp;&nbsp;&nbsp;User-defined Attributes</h4 class="jdocu">
+
+
+<p>
+There are two kinds of attributes that can be added to a component using the
+<b><i>register_component_class()</i></b> function. The first and most common kind
+is intended for simple parameterizing of the component. These attributes are
+automatically converted to command arguments for the
+<b>create-&lt;component&gt;</b> and <b>new-&lt;component&gt;</b> commands.
+The other kind is intended for attributes that are only providing
+checkpoint support of the component-internal state, which users are not expected
+to access. The format of both attribute lists described in section <a class="jdocu" href="topic60.html#label280">12.3.1</a>
+<p>
+For each attribute there has to be a pair of set and get methods defined in the
+component class. The name of the set method should be
+<b><i>set_&lt;attribute&gt;()</i></b>, and similarly for the get method. See the
+<b><i>SIM_register_typed_attribute()</i></b> documentation in the <em>Simics
+Reference Manual</em> for more information on writing attribute methods.
+<p>
+
+<a name="label332"></a><h4 class="jdocu">12.4.4&nbsp;&nbsp;&nbsp;Standard Component Commands</h4 class="jdocu">
+
+
+<p>
+There are several commands in Simics that are used to create, inspect and
+manipulate components. The following table lists the most common ones. The
+<em>Simics Reference Manual</em> contains their complete documentation.
+<p>
+<dl><dt><b>create-&lt;component&gt;</b></dt><dd>
+Creates a non-instantiated component.
+</dd><dt><b>new-&lt;component&gt;</b></dt><dd>
+Creates an instantiated component. This command is only applicable to
+<a name="label333">standalone components</a>.
+</dd><dt><b>connect-components</b></dt><dd>
+Same as <b>&lt;component&gt;.connect</b>, the <b>&lt;component&gt;.</b> version is preferred.
+</dd><dt><b>instantiate-components</b></dt><dd>
+Instantiate all, or a hierarchy of, non-instantiated components.
+</dd><dt><b>list-components</b></dt><dd>
+Prints a list of all existing components. 
+</dd><dt><b>set-component-prefix</b></dt><dd>
+Set a name prefix used for all components and their configuration objects.
+</dd><dt><b>get-component-prefix</b></dt><dd>
+Return the component name prefix.
+</dd><dt><b>import-&lt;component-collection&gt;</b></dt><dd>
+Enable CLI commands for a collection of components.
+</dd><dt><b>&lt;component&gt;.get-component-object</b></dt><dd>
+Return the instance name of a specified configuration object in a component.
+</dd><dt><b>&lt;component&gt;.connect</b></dt><dd>
+Connect component to another component.
+</dd><dt><b>&lt;component&gt;.disconnect</b></dt><dd>
+Disconnect component from another component.
+</dd><dt><b>&lt;component&gt;.info</b></dt><dd>
+Print static configuration information about the component.
+</dd><dt><b>&lt;component&gt;.status</b></dt><dd>
+Print dynamic configuration information about the component.
+</dd></dl>
+<p>
+
+<a name="label334"></a><h4 class="jdocu">12.4.5&nbsp;&nbsp;&nbsp;User-defined Component Commands</h4 class="jdocu">
+
+
+<p>
+It is possible to add additional commands to a component. This is done in the
+same way as for any other configuration class in Simics. See the
+<b>new_command()</b> documentation for more information.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic60.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic62.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_begin()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(59, true);
+</script>
+<a name="label319"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_begin()</h4 class="jdocu">
+
+<a name="label320"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label321"></a><b>SIM_instruction_begin</b> &#8212; begin an instruction</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_id_t 
+SIM_instruction_begin(conf_object_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+In the Micro Architectural Interface instructions passing through the
+   processor pipeline are identified by an instruction id. This function
+   creates a new id and allocates the necessary data structures to handle the
+   instruction. All the API functions referring to the instruction will take
+   the instruction id as a parameter.
+<p>
+   To assign the id to a particular instruction in memory, you should speculate
+   on the program counter input register with
+   <b><i>SIM_instruction_write_input_reg</i></b>. Instructions should also be
+   linked together to form execution paths, see
+   <b><i>SIM_instruction_instert</i></b> for details.
+   <p>
+   Instructions are deallocated by <b><i>SIM_instruction_end</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>General</b> Thrown if the pre-allocated space for
+   the instruction queue which is set by the processor attribute
+   <i>reorder_buffer_size</i> is full.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+A new instruction id.</dd>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic41.html#label358">SIM_instruction_insert</a>, <a class="jdocu" href="topic47.html#label381"> SIM_instruction_proceed</a>, <a class="jdocu" href="topic33.html#label331">
+                       SIM_instruction_end</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+</body>
+</html>

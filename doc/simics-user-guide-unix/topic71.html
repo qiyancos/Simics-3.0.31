@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Invoking Commands</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(193, true);
+</script>
+<a name="label453"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic70.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic72.html">Next</a></span></p>
+<h4 class="jdocu">15.1&nbsp;&nbsp;&nbsp;Invoking Commands</h4 class="jdocu">
+
+   
+<p>
+   Commands are invoked by typing them at the command line followed by their
+   arguments. The synopsis part of a command documentation (you can see many
+   examples in the <em>Simics Reference Manual</em>) explains how to call a
+   command. Here are two examples:
+<p>
+   <dl><dt><b><b>SYNOPSIS</b></b></dt><dd><b>command1</b> <i>-x</i> <i>-y</i> <i>-small</i> [<i><em>cpu-name</em></i>] <i><em>address</em></i> (<i><em>size</em></i>|<i><em>name</em></i>)</dd></dl>
+<p>
+   <dl><dt><b><b>SYNOPSIS</b></b></dt><dd><b>command2</b> <i><em>files</em></i> ... </dd></dl>
+<p>
+   Arguments starting with a hyphen are flags and are always optional. Flags
+   can be more than one character long so it is <i>not</i> possible to write
+   <i>-xy</i> for <i>-x -y</i>. The order of the flags is not
+   significant and they can appear anywhere in the argument list.
+<p>
+   Arguments enclosed within square brackets are optional; in the example
+   above, it is not necessary to specify <i>cpu-name</i>.
+   <i>address</i>, on the other hand, is required. The last argument to
+   <b>command1</b> is either a size or a name, but not both. Such arguments
+   are called <i>polyvalues</i> and can be of different types.  Size and name
+   are called sub-arguments.
+<p>
+   If an argument is followed by three dots as the file argument in
+   <b>command2</b> it indicates that the argument can be repeated
+   one or more times.
+<p>
+   The type of the arguments, e.g., if they are integers or strings,
+   should be evident from their names. For example <i>size</i>
+   should be an integer and <i>name</i> a string if not documented
+   otherwise.
+<p>
+   Integers are written as a sequence of digits beginning with an optional
+   minus character for negative numbers. Hexadecimal numbers can be written by
+   prefixing them with <tt>0x</tt>, octal numbers with <tt>0o</tt>, and binary
+   numbers with with <tt>0b</tt>. Integers may contain "_" characters to make
+   them easier to read. They are ignored during parsing. For example:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; 170_000
+170000
+simics&gt; 0xFFFF_C700
+4294952704
+</pre>
+<p>
+   Strings are written as is or within double quotes if they contain spaces or
+   begin with a non-letter.
+<p>
+
+   Here are some possible invocations of the commands above:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; command1 -small cpu0 0x7fff_c000 14 -y
+
+simics&gt; command1 0x7fffc000 foo
+
+simics&gt; command1 -x "Pentium 4" 0x7fff_c000 -8
+
+simics&gt; command2 "/tmp/txt" "../bootdisk" floppy
+</pre>
+<p>
+   In the first example <tt>cpu-name</tt> is passed as the string <tt>cpu0</tt>
+   and <tt>size</tt> as the integer 14. In the second invocation
+   <tt>cpu-name</tt> has been omitted and <tt>name</tt> is set to the string
+   <tt>foo</tt>. The third example illustrated the use of a string containing a
+   space. In all <b>command1</b> examples the address is set to the
+   hexadecimal value <tt>0x7fffc000</tt>. <b>command2</b> takes a list of
+   at least 1 string.
+<p>
+   A few commonly used commands have aliases. For example, it is possible to
+   write <b>c</b> for <b>continue</b> and <b>si</b> for
+   <b>step-instruction</b> for example. Command aliases are documented with
+   their corresponding command in the <em>Simics Reference Manual</em>.
+<p>
+   <a name="label454"></a><h5 class="jdocu">15.1.1&nbsp;&nbsp;&nbsp;How are Arguments Resolved?</h5 class="jdocu">
+
+   
+   <a name="label455"></a>
+<p>
+   Simics tries to match the provided arguments in same order as they appear in
+   the synopsis. If the type of the next argument is identical to what is typed
+   at the command line the argument will match. If there is a mismatch and the
+   argument is optional, the argument will be skipped and the next argument
+   will be matched, and so on. If a mismatching argument is not optional, the
+   interpreter will fail and explain what it expected. For polyvalues, the
+   argument will match if one of its sub-arguments matches.
+<p>
+   There are situations however when this method is not sufficient.
+   For example, when two arguments both have the same type and are
+   optional, there is no way to know which argument to match if only
+   one is given.  This is resolved by naming the arguments:
+   <tt>arg-name=</tt><i>value</i><tt></tt>. For example <b>command1</b> in
+   the example above can be invoked like this:
+<p>
+   <pre class="jdocu_small" style="color: black">
+simics&gt; command1 size=32 -y address = 0xf000 -small cpu-name=cpu0
+</pre>
+<p>
+   Thus there is no ambiguity in what is meant and in fact this is the only way
+   to specify a polyvalue with sub-arguments of the same type. Note also that
+   named arguments can be placed in any order.
+<p>
+   
+   <a name="label456"></a><h5 class="jdocu">15.1.2&nbsp;&nbsp;&nbsp;Namespace Commands</h5 class="jdocu">
+
+   
+   <a name="label457"></a><a name="label458"></a>
+   <a name="label459"></a>
+<p>
+   Configuration objects (such as devices or CPUs) that define user commands
+   usually place them in a separate namespace. The namespace is the name of the
+   object. Interfaces may also define commands, in which case all objects
+   implementing these interfaces will inherit of the commands in their own
+   namespace.
+<p>
+   Namespace commands are invoked by typing the name of the object,
+   followed by a dot and the command name:
+   <b><i>object</i>.<i>command</i></b>,
+   e.g.,
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; cache0.print-status
+</pre>
+<p>
+   All namespace commands are listed in the <em>Simics Reference
+   Manual</em> under the class or interface they belong to.
+<p>
+   
+   <a name="label460"></a><h5 class="jdocu">15.1.3&nbsp;&nbsp;&nbsp;Expressions</h5 class="jdocu">
+
+   
+   <a name="label461"></a>
+<p>
+   The CLI allows expressions to be evaluated, for example:
+<p>
+   <pre class="jdocu_small" style="color: black">
+print -x 2*(0x3e + %g7) + %pc
+   </pre>
+<p>
+   The precedence order of the operators is as follows (highest first):
+   <a name="label462"></a><a name="label463"></a>
+<p>
+   <table>
+<tr><td class="jdocu_noborder"><tt>$</tt></td><td class="jdocu_noborder">read Simics variable</td></tr>
+<tr><td class="jdocu_noborder"><tt>%</tt></td><td class="jdocu_noborder">get register value</td></tr>
+<tr><td class="jdocu_noborder"><tt>[]</tt></td><td class="jdocu_noborder">variable indexing</td></tr>
+<tr><td class="jdocu_noborder"><tt>-&gt;</tt></td><td class="jdocu_noborder">attribute access</td></tr>
+<tr><td class="jdocu_noborder"><tt>pow</tt></td><td class="jdocu_noborder">power of</td></tr>
+<tr><td class="jdocu_noborder"><tt>~</tt></td><td class="jdocu_noborder">bitwise not</td></tr>
+<tr><td class="jdocu_noborder"><tt>*, /</tt></td><td class="jdocu_noborder">multiplication, division</td></tr>
+<tr><td class="jdocu_noborder"><tt>+, -</tt></td><td class="jdocu_noborder">addition, subtraction</td></tr>
+<tr><td class="jdocu_noborder"><tt>&lt;&lt;, &gt;&gt;</tt></td><td class="jdocu_noborder">left, right shift</td></tr>
+<tr><td class="jdocu_noborder"><tt>&amp;</tt></td><td class="jdocu_noborder">bitwise and</td></tr>
+<tr><td class="jdocu_noborder"><tt>^</tt></td><td class="jdocu_noborder">bitwise xor</td></tr>
+<tr><td class="jdocu_noborder"><tt>|</tt></td><td class="jdocu_noborder">bitwise or</td></tr>
+<tr><td class="jdocu_noborder"><tt>&lt;, &lt;=, ==, !=, &gt;=, &gt;</tt></td><td class="jdocu_noborder">comparison</td></tr>
+<tr><td class="jdocu_noborder"><tt>not</tt></td><td class="jdocu_noborder">boolean not</td></tr>
+<tr><td class="jdocu_noborder"><tt>and</tt></td><td class="jdocu_noborder">boolean and</td></tr>
+<tr><td class="jdocu_noborder"><tt>or</tt></td><td class="jdocu_noborder">boolean or</td></tr>
+</table>
+<p>
+   Parentheses can be used to override the priorities. Commands
+   which return values can also be used in expressions if they are
+   enclosed within parentheses:
+<p>
+   <pre class="jdocu_small" style="color: black">print -x (cpu0.read-reg g7)</pre>
+<p>
+   <a name="label464"></a> Values can be saved in variables
+   for later use.  You set a variable by simply giving an assignment command
+   such as <b>$var = 15</b>.
+<p>
+   
+   <a name="label465"></a><h5 class="jdocu">15.1.4&nbsp;&nbsp;&nbsp;Interrupting Commands</h5 class="jdocu">
+
+   
+<p>
+   Any command which causes the simulation to advance can be interrupted by
+   typing control-C. The simulator will gracefully stop and prompt for a new
+   command. If Simics hangs for some reason, possibly due to some internal
+   error, you can usually force a return to the command line by pressing
+   control-C two or more times in a row.
+<p>
+   <hr class="jdocu_note"><b>Note:</b> Pressing control-C several times may damage some internal state in the
+   simulator so should be used only in last resort.<hr class="jdocu_note">
+<p>
+   
+   <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic70.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic72.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Memory Space Basics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(231, true);
+</script>
+<a name="label536"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic98.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic100.html">Next</a></span></p>
+<h4 class="jdocu">19.1&nbsp;&nbsp;&nbsp;Memory Space Basics</h4 class="jdocu">
+
+
+<p>
+Simics memory-spaces are handled by the generic <b>memory-space</b>
+class. A <b>memory-space</b> object implements interface functions for
+memory accesses, and it has attributes specifying how the mappings are setup.
+<p>
+The most important attribute in a memory-space is the <i>map</i>
+attribute.  This is a list of mapped objects that may contain devices, RAM and
+ROM objects, and other memory-spaces. In addition to the <i>map</i>
+attribute, there is also a <i>default_target</i> attribute that is used
+for accesses that don't match any of the targets in the map list.
+<p>
+Python example of a <b>memory-space</b> object where already created
+objects are mapped into a new memory space:
+<p>
+<pre class="jdocu_small" style="color: black">
+@mem = pre_conf_object('phys_mem', 'memory-space')
+@mem.map = [[0x00000000, conf.ram0,    0, 0,          0xa0000],
+            [0x000a0000, conf.vga0,    1, 0,          0x20000],
+            [0x000c0000, conf.rom0,    0, 0,          0x10000],
+            [0x000f0000, conf.rom0,    0, 0,          0x10000],
+            [0x00100000, conf.ram0,    0, 0x100000, 0xff00000],
+            [0xfee00000, conf.apic0,   0, 0,           0x4000],
+            [0xffe81000, conf.hfs0,    0, 0,               16],
+            [0xffff0000, conf.rom0,    0, 0,          0x10000]]
+@mem.default_target = [conf.pci_mem0, 0, 0, conf.pci_mem0]
+@SIM_add_configuration([mem], None)
+</pre>
+<p>
+The fields for an entry in the map list are as follows:
+<p>
+<dl><dt><b>base</b></dt><dd>The start address of the mapping in the memory space.
+</dd><dt><b>object</b></dt><dd>Reference to the mapped object.
+</dd><dt><b>function</b></dt><dd>An object specific identification number for this mapping. The
+function number is typically used by objects that have several mappings. When an
+object is accessed, it can use the function number to figure out what mapping it
+was accessed through.
+</dd><dt><b>offset</b></dt><dd>The start offset in the target object. This is often used
+when a memory-space is mapped in another memory-space. Example: memory-space B
+is mapped in space A at base 0x4000 with length 0x1000, and with offset
+0x2000. If an access is made in space A at address 0x4010, it will be forwarded
+to space B at address 0x2010. Without any offset in the mapping, the resulting
+address would have been 0x10.  </dd><dt><b>length</b></dt><dd>The size of the mapping in bytes.
+</dd><dt><b>target</b></dt><dd>(optional) If <em>object</em> isn't the final destination for
+the access, then <i>target</i> is a reference to the actual target object. This
+is described in more details in the section about different mapping types.</dd><dt><b>priority</b></dt><dd>(optional) The priority of the mapping. Default is 0
+(highest priority), and the lowest is 256. If mappings overlap, then the
+priority field specified what mapping that has precedence. It is an error if
+overlapping mappings have the same priority. Usually overlapping mappings
+should be avoided, but for bridges that catch unclaimed accesses in specific
+address ranges the priority field is useful. There are also devices that have
+overlapping mappings that have different priorities, and in that case the
+priority field in the map list can be used.</dd><dt><b>align-size</b></dt><dd>(optional) The <i>align-size</i> can be be used
+if a target does not support large accesses. Accesses that crosses an alignment
+boundary will be split into several transactions by the Simics memory
+system. By default this will be set to 4 bytes for port space devices, 8 bytes
+for other devices and 4096 or 8192 for memory.</dd><dt><b>reverse-endian</b></dt><dd>(optional) Some device mappings reverse the byte
+order of data, to support mixed-endian environments. The <i>reverse-endian</i>
+field can be used to model this behavior. It will reverse the byte-order of
+data for mappings that have an <i>align-size</i> of 2, 4 or 8 bytes.  </dd></dl>
+<p>
+<hr class="jdocu_note"><b>Note:</b> In Simics versions prior to 2.0, the priority field was a
+"reverse-endian" flag. Old checkpoints will automatically be updated with this
+field cleared, since the handling of endian swapping has changed. This old
+"reverse-endian" flag was obsoleted since devices in 2.0 read and write data
+with explicit endianness, and reversing the byte-order of all accesses in a
+memory-space often was incorrect.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic98.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic100.html">Next</a></span></p>
+</body>
+</html>

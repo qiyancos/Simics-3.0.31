@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Performance</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(150, true);
+</script>
+<a name="label338"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+<h4 class="jdocu">10.5&nbsp;&nbsp;&nbsp;Performance</h4 class="jdocu">
+
+
+<p>
+When using other connection types than port forwarding, Simics has to prevent
+the simulated network from being flooded with packets from the real network. If
+Simics buffered all incoming traffic while the simulated machine was handling
+it slower than it was arriving, or while the simulation was stopped, Simics
+would require arbitrarily large buffers for the incoming traffic.
+<p>
+This is prevented by limiting the amount of traffic that is allowed to enter
+the simulated network per simulated second. The amount of traffic allowed to
+enter the simulated network is determined by the <i>tx_bandwidth</i> and
+<i>tx_packet_rate</i> attributes of the real network object created for
+the connection, typically named <b>real_net0</b>. The unit of the
+<i>tx_bandwidth</i> attribute is bits per simulated second, and the unit
+of the <i>tx_packet_rate</i> attribute is packets per simulated
+second. You can set either to unlimited by setting them to 0, but this is not
+recommended unless you know that only a very limited amount of data will be
+received. The default is to allow 10 megabits per simulated second and an
+unlimited number of packets.
+<p>
+In addition to allowing the selected rate of traffic into the simulated
+network, Simics buffers traffic for an additional 0.1 seconds simulated
+time. This avoids dropping packets if there is a short peak in the traffic. If
+more packets arrives once this buffer is full, Simics will drop them.
+<p>
+If you want to get better performance out of the connection to the real
+network, you may want to alter the the <i>tx_bandwidth</i> and
+<i>tx_packet_rate</i> attributes. A good strategy is to set the
+<i>tx_bandwidth</i> attribute to the amount of traffic you would expect
+the simulated machine to be able to handle per simulated second, and then try
+to increase the <i>tx_packet_rate</i> from about 5000 and see at what
+packet rate you get the best performance.
+<p>
+For example, this will set the limit to 100 megabits and 10000 packets per
+simulated second:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.real_net0.tx_bandwidth = 100000000</b>
+simics&gt; <b>@conf.real_net0.tx_packet_rate = 10000</b>
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+</body>
+</html>

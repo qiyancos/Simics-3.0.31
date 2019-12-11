@@ -1,0 +1,1303 @@
+/*
+  DS12887.dml
+
+  Copyright 2006-2007 Virtutech AB
+
+  The contents herein are Source Code which are a subset of Licensed
+  Software pursuant to the terms of the Virtutech Simics Software
+  License Agreement (the "Agreement"), and are being distributed under
+  the Agreement.  You should have received a copy of the Agreement with
+  this Licensed Software; if not, please contact Virtutech for a copy
+  of the Agreement prior to using this Licensed Software.
+
+  By using this Source Code, you agree to be bound by all of the terms
+  of the Agreement, and use of this Source Code is subject to the terms
+  the Agreement.
+
+  This Source Code and any derivatives thereof are provided on an "as
+  is" basis.  Virtutech makes no warranties with respect to the Source
+  Code or any derivatives thereof and disclaims all implied warranties,
+  including, without limitation, warranties of merchantability and
+  fitness for a particular purpose and non-infringement.
+*/
+
+// This DS12887 model has a number of known limitations:
+//
+// * The day of the week value written to the real-time clock by software is
+// ignored. The real-time clock always returns the day of the week value that
+// corresponds to the date according to the real calendar, assuming the year is
+// in the range 1930 - 2029.
+//
+// * Daylight saving time is not implemented.
+//
+// * Square wave output is not implemented.
+//
+// * The time conversion functions (os_gmtime() and os_timegm()) used by in
+// this model implement leap seconds, while the real DS12887 does not. This may
+// cause the real-time clock to return second 60 or 61 and alarm interrupts to
+// occur one or two second off when leap seconds occur.
+
+
+// This DS12887 model is designed to avoid posting events unnecessarily. This
+// affects how interrupt events are posted and how the registers of the
+// real-time clock are updated.
+//
+// Interrupt events do of course not need to be (and must not be) posted when
+// the cause of the interrupt is disabled. For example, the update-ended
+// interrupt can only occur if the oscillator is on and the SET flag is not
+// set, so we should only post events for it when these conditions are
+// satisfied. But we can also avoid posting interrupts when the interrupt flag
+// of the interrupt is already set, since the only effect of the interrupt is
+// to set the flag. This also means that when an interrupt flag is changed, we
+// may need to post or remove the corresponding interrupt event.
+//
+// When the real-time clock is running (the oscillator is enabled and the SET
+// bit is not set) the time registers are updated lazily, that is, they are
+// only updated when they are read. This way we don't need to post events to
+// update the time registers every second. When the clock is stopped (the
+// oscillator is disabled or the SET bit is set) the time registers always
+// contain their actual value. This means that whenever the real-time clock is
+// stopped we need to update the time registers.
+//
+// Together, these measures mean that when running in a booted PC configuration
+// with Linux, and the periodic, update-ended and alarm interrupts have been
+// triggered once, the DS12887 model will not post any events at all.
+
+
+dml 1.0;
+
+device DS12887_dml;
+parameter classname = "DS12887-dml";
+parameter documentation = "DS12887 real-time clock.";
+
+// Standard imports.
+
+import "utility.dml";
+import "io-memory.dml";
+
+// We need some functions from the standard C header files.
+
+header %{
+#include <stdio.h>
+#include <math.h>
+%}
+
+extern int snprintf(char *str, size_t size, const char *format, ...);
+extern int sscanf(const char *str, const char *format, ...);
+extern double floor(double x);
+
+// We use the simple-interrupt interface.
+
+import "interrupt.dml";
+
+// The irq_dev and irq_level attributes tell us to what device and at what
+// level to send interrupts.
+
+connect irq_dev {
+    parameter documentation = "The device that interrupts are sent to.";
+    parameter configuration = "required";
+
+    interface simple_interrupt;
+}
+
+attribute irq_level {
+    parameter documentation = "The level at which interrupts are sent.";
+    parameter configuration = "required";
+    parameter allocate_type = "int64";
+}
+
+// The attributes base_time and base_rtc_time keep the time of real-time
+// clock. The base_time attribute contains a simulated time in seconds since
+// the start of the simulation. The base_rtc_time contains a real-time clock
+// time, in seconds since 1970-01-01 00:00:00.
+//
+// The time is represented differently depending on if the oscillator is
+// enabled (the clock is running) or disabled (the clock is stopped).
+//
+// When the oscillator is disabled base_rtc_time contains an absolute time. The
+// base_time attribute is ignored. Getting and setting the current real-time
+// clock time can be done simply by reading or writing base_rtc_time.
+//
+// When the oscillator is enabled base_time contains the simulated time at
+// which the oscillator was enabled, and base_rtc_time contains time of the
+// real-time clock when the oscillator was enabled.
+//
+// From these values we can calculate the current real-time clock time by
+// adding the difference between the current simulated time and base_time to
+// base_rtc_time, adding 0.5 seconds (because the first update starts 0.5
+// seconds after the oscillator is enabled), subtracting 244 microseconds
+// (because updates and take 244 microseconds), and rounding down.
+//
+// When a new time is written to the real-time clock we calculate the new
+// corresponding base_rtc_time. We can't change base_time since the timing of
+// real-time clock updates and periodic interrupts is dependent on the time at
+// which the oscillator was enabled, not the time at which the real-time clock
+// was last set.
+
+attribute base_time {
+    parameter documentation =
+        "The simulated time when the oscillator was enabled, "+
+        "in seconds since the start of the simulation.";
+    parameter allocate_type = "double";
+
+    // All interrupt events need to be updated if base_time is updated.
+    method after_set() {
+        call $periodic_interrupt.update_time();
+        call $alarm_interrupt.update_time();
+        call $update_ended_interrupt.update_time();
+    }
+}
+
+attribute base_rtc_time {
+    parameter documentation =
+        "The real-time clock time when the oscillator was enabled, "+
+        "in seconds since 1970-01-01 00:00:00.";
+    parameter allocate_type = "os_time_t";
+    parameter type = "i";
+
+    // The alarm interrupt event needs to be updated if base_rtc_time is
+    // updated.
+    method after_set() {
+        call $alarm_interrupt.update_time();
+    }
+}
+
+//  These functions get and set the real-time clock time, as described above.
+
+method get_rtc_time() -> (os_time_t rtc_time) {
+    local double current_time = SIM_time($dev.obj);
+
+    if ($registers.a.DV == 0b010)
+        rtc_time = $base_rtc_time
+            + floor(current_time - $base_time + 0.5 - 244.0e-6);
+    else
+        rtc_time = $base_rtc_time;
+}
+
+method set_rtc_time(os_time_t rtc_time) {
+    local double current_time = SIM_time($dev.obj);
+    local char rtc_time_str[18];
+
+    if ($registers.a.DV == 0b010)
+        $base_rtc_time = rtc_time
+            - floor(current_time - $base_time + 0.5 - 244.0e-6);
+    else
+        $base_rtc_time = rtc_time;
+
+    call $get_rtc_time_str(rtc_time_str);
+    log "info", 2: "Time set to %s.", rtc_time_str;
+}
+
+// Writes the current real-time clock time to the string rtc_time_str on the
+// format "YY-MM-DD hh:mm:ss". The string must have space for 18 characters.
+
+method get_rtc_time_str(char *rtc_time_str) {
+    local os_time_t rtc_time;
+    local os_tm_t rtc_time_parts;
+
+    // Get the real-time clock time.
+    inline $get_rtc_time() -> (rtc_time);
+
+    // Split the time parts.
+    rtc_time_parts = *cast(os_gmtime(&rtc_time), os_tm_t *);
+
+    // We count months from 1, os_tm_t counts from 0.
+    rtc_time_parts.tm_mon += 1;
+
+    // We ignore the century.
+    rtc_time_parts.tm_year %= 100;
+
+    // Convert the parts to a string.
+    snprintf(rtc_time_str, 32, "%02d-%02d-%02d %02d:%02d:%02d",
+             rtc_time_parts.tm_year,
+             rtc_time_parts.tm_mon,
+             rtc_time_parts.tm_mday,
+             rtc_time_parts.tm_hour,
+             rtc_time_parts.tm_min,
+             rtc_time_parts.tm_sec);
+}
+
+// Converts a real-time-clock time to the corresponding simulated time.
+
+method rtc_time_to_time(os_time_t rtc_time) -> (double time) {
+    // There is no meaningful way to convert a real-time clock time to a
+    // simulated time if the oscillator is disabled, so this method shouldn't
+    // be called in that case.
+    assert $registers.a.DV == 0b010;
+
+    time = $base_time + rtc_time - $base_rtc_time - 0.5 + 244.0e-6;
+}
+
+// Calculates the amount of simulated time until the next occurrence of a
+// real-time clock update or periodic interrupt.
+
+method next_occurrence_delta(double frequency, double bias)
+    -> (double delta_time)
+{
+    local double current_time = SIM_time($dev.obj);
+    local double occurence_time;
+    local uint64 half_cycles;
+
+    // Complete half-cycles since the oscillator was enabled.
+    half_cycles = floor((current_time - $base_time - bias)
+                        * (frequency * 2.0));
+
+    // The next odd half-cycle.
+    if (half_cycles % 2 == 0)
+        half_cycles +=1;
+    else
+        half_cycles +=2;
+
+    // Simulated time of the next odd half-cycle.
+    occurence_time = $base_time + half_cycles / (frequency * 2.0) + bias;
+
+    // The amount of simulated time until the next occurrence.
+    delta_time = occurence_time - current_time;
+}
+
+// The number of days of the months. Initialized in the post_init() method.
+
+data int mdays[12];
+
+// The time attribute is used to get and set the real-time clock time using a
+// string in human-readable format.
+
+attribute time {
+    parameter documentation =
+        "The internal time of the real-time clock on the "+
+        "format \"YY-MM-DD hh:mm:ss\".";
+    parameter configuration = "pseudo";
+    parameter type = "s";
+
+    // Return the real-time clock time as a human-readable string.
+    method get() -> (attr_value_t value) {
+        static char rtc_time_str[18];
+
+        call $get_rtc_time_str(rtc_time_str);
+
+        value = SIM_make_attr_string(rtc_time_str);
+    }
+
+    // Set the real-time clock from a human-readable string.
+    method set(attr_value_t value) {
+        local os_time_t rtc_time;
+        local os_tm_t rtc_time_parts;
+        local int parts_found;
+
+        // Parse the string into parts.
+        parts_found = sscanf(value.u.string, "%u-%u-%u %u:%u:%u",
+                             &rtc_time_parts.tm_year,
+                             &rtc_time_parts.tm_mon,
+                             &rtc_time_parts.tm_mday,
+                             &rtc_time_parts.tm_hour,
+                             &rtc_time_parts.tm_min,
+                             &rtc_time_parts.tm_sec);
+
+        // Check that the date format and time are ok.
+        if (parts_found != 6 ||
+            rtc_time_parts.tm_year < 0 || rtc_time_parts.tm_year > 99 ||
+            rtc_time_parts.tm_mon  < 1 || rtc_time_parts.tm_mon  > 12 ||
+            rtc_time_parts.tm_hour < 0 || rtc_time_parts.tm_hour > 23 ||
+            rtc_time_parts.tm_min  < 0 || rtc_time_parts.tm_min  > 59 ||
+            rtc_time_parts.tm_sec  < 0 || rtc_time_parts.tm_sec  > 59) {
+            log "error": "Illegal date.";
+            throw;
+        }
+        if (rtc_time_parts.tm_mday < 1 ||
+            rtc_time_parts.tm_mday > ($mdays[rtc_time_parts.tm_mon - 1] +
+                                      ((rtc_time_parts.tm_mon == 2 &&
+                                        rtc_time_parts.tm_year % 4 == 0)
+                                       ? 1 : 0))) {
+            log "error": "Illegal date.";
+            throw;
+        }
+
+        // We count months from 1, os_tm_t counts months from 0.
+        rtc_time_parts.tm_mon -= 1;
+
+        // Count years less than 30 as 20xx, years greater or equal to
+        // 30 as 19xx.
+        if (rtc_time_parts.tm_year < 30)
+            rtc_time_parts.tm_year += 100;
+
+        // Join the time parts.
+        rtc_time = os_timegm(&rtc_time_parts);
+
+        // Set the real-time clock time.
+        inline $set_rtc_time(rtc_time);
+
+        // Update the time registers.
+        call $update_time_registers_unconditional();
+
+        // Update the alarm interrupt event.
+        call $alarm_interrupt.update_time();
+    }
+}
+
+// Layouts of the register banks. The actual register implementations can be
+// found near end of this file.
+
+// The DS12887 has 128 directly addressable registers, represented by the
+// "registers" bank. When used in a PC the DS12887 is accessed indirectly
+// through two register mapped into port space, represented by the
+// "port_registers" bank.
+
+bank port_registers {
+    parameter register_size = 1;
+    parameter function = 0;
+
+    register address @ 0;
+    register data    @ 1;
+}
+
+bank registers {
+    parameter register_size = 1;
+    parameter function = 1;
+
+    register seconds           @ 0;
+    register seconds_alarm     @ 1;
+    register minutes           @ 2;
+    register minutes_alarm     @ 3;
+    register hours             @ 4;
+    register hours_alarm       @ 5;
+    register day_of_the_week   @ 6;
+    register date_of_the_month @ 7;
+    register month             @ 8;
+    register year              @ 9;
+    register a                 @ 10;
+    register b                 @ 11;
+    register c                 @ 12;
+    register d                 @ 13;
+    register nvram[114]        @ 14 + $i;
+}
+
+// The DS12887 has three different interrupts that we need to post events
+// for. This template contains common logic for posting and removing these
+// events.
+//
+// It assumes that each interrupt event type will implement the methods
+// should_be_posted() and post(). should_be_posted() should return whether the
+// event should be posted or not and post() should actually post the interrupt
+// event at the correct time.
+
+template interrupt_event {
+    // This method should not be called directly. I posts or removes the
+    // interrupt event depending on if it should be posted and if it is
+    // already posted.
+    //
+    // If force_repost is true the event is removed and re-posted even if
+    // it both is and should be posted. This is needed if the time at which
+    // the interrupt will occur has changed.
+    method update_internal(bool force_repost) {
+        local bool posted;
+        local bool should_be_posted;
+
+        // Don't post or remove events until the device is properly
+        // configured.
+        if (!$dev.obj->configured)
+            return;
+
+        inline $posted(NULL) -> (posted);
+        inline $should_be_posted() -> (should_be_posted);
+
+        if (posted && (!should_be_posted || force_repost))
+            inline $remove(NULL);
+        if ((!posted || force_repost) && should_be_posted)
+            call $post_interrupt();
+    }
+
+    // Call this method if the interrupt event may need to be posted or
+    // removed, and the time at which it would occur has not been changed.
+    method update() {
+        inline $update_internal(false);
+    }
+
+    // Call this method if the interrupt event may need to be posted or
+    // removed and/or the time at which the event would occur may have
+    // changed.
+    method update_time() {
+        inline $update_internal(true);
+    }
+}
+
+// Table of periodic interrupt frequencies, indexed by the RS bits of register
+// A. Initialized in the post_init() method.
+
+data double pi_freqs[16];
+
+// Event posted for the periodic interrupt.
+
+event periodic_interrupt {
+    is interrupt_event;
+
+    parameter desc = "Periodic interrupt";
+
+    // A periodic interrupt event should be posted if the oscillator is
+    // enabled, the periodic interrupt flag is not already set, and a tap
+    // from the clock divider stages is selected.
+    method should_be_posted() -> (bool should_be_posted) {
+        should_be_posted = ($registers.a.DV == 0b010 &&
+                            $registers.c.PF == 0 &&
+                            $registers.a.RS != 0);
+    }
+
+    // Calculates the time of the next interrupt and posts an event for it.
+    method post_interrupt() {
+        local double frequency = $pi_freqs[$registers.a.RS];
+        local double delta;
+
+        inline $next_occurrence_delta(frequency, 0.0) -> (delta);
+
+        inline $post(delta, NULL);
+    }
+
+    // Called when the interrupt event occurs. Raises the periodic
+    // interrupt flag and updates the IRQF flag.
+    method event(data) {
+        log "info", 3: "Periodic interrupt triggered, raising PF.";
+        $registers.c.PF = 1;
+        call $update_IRQF();
+    }
+}
+
+// Event posted for the alarm interrupt.
+
+event alarm_interrupt {
+    is interrupt_event;
+
+    parameter desc = "Alarm interrupt";
+
+    // An alarm interrupt event should be posted if the oscillator is
+    // enabled, and the alarm interrupt flag is not already set.
+    method should_be_posted() -> (bool should_be_posted) {
+        should_be_posted = ($registers.a.DV == 0b010 &&
+                            $registers.c.AF == 0);
+    }
+
+    // Calculates the time of the next interrupt and posts an event for it.
+    method post_interrupt() {
+        local double current_time = SIM_time($dev.obj);
+        local double alarm_time;
+        local os_time_t rtc_time;
+        local os_tm_t rtc_time_parts;
+
+        local bool hour_wildcard   = $registers.hours_alarm[7:6]   == 0b11;
+        local bool minute_wildcard = $registers.minutes_alarm[7:6] == 0b11;
+        local bool second_wildcard = $registers.seconds_alarm[7:6] == 0b11;
+
+        local int alarm_hour;
+        local int alarm_minute;
+        local int alarm_second;
+
+        // Get the current real-time clock time and split it to parts.
+        call $get_rtc_time() -> (rtc_time);
+        rtc_time_parts = *cast(os_gmtime(&rtc_time), os_tm_t *);
+
+        // Calculate the hour, minute and second at which the alarm
+        // will trigger. This is a little complicated if there are
+        // wildcards.
+        alarm_hour = (hour_wildcard
+                      ? rtc_time_parts.tm_hour
+                      : $registers.hours_alarm);
+        alarm_minute = (minute_wildcard
+                        ? rtc_time_parts.tm_min
+                        : $registers.minutes_alarm);
+        alarm_second = (second_wildcard
+                        ? rtc_time_parts.tm_sec
+                        : $registers.seconds_alarm);
+
+        if (second_wildcard)
+            if ((!hour_wildcard && alarm_hour != rtc_time_parts.tm_hour) ||
+                (!minute_wildcard && alarm_minute != rtc_time_parts.tm_min))
+                alarm_second = 0;
+            else
+                alarm_second = (alarm_second + 1) % 60;
+
+        if (minute_wildcard)
+            if (!hour_wildcard && alarm_hour != rtc_time_parts.tm_hour)
+                alarm_minute = 0;
+            else if (alarm_minute == rtc_time_parts.tm_min &&
+                     alarm_second <= rtc_time_parts.tm_sec)
+                alarm_minute = (alarm_minute + 1) % 60;
+
+        if (hour_wildcard)
+            if (alarm_hour == rtc_time_parts.tm_hour &&
+                (alarm_minute < rtc_time_parts.tm_min ||
+                 (alarm_minute == rtc_time_parts.tm_min &&
+                  alarm_second < rtc_time_parts.tm_sec )))
+                alarm_hour = (alarm_hour + 1) % 24;
+
+        // Add the difference between the time that the alarm will
+        // occur and the real-time clock time to the real-time clock
+        // time.
+        rtc_time += (alarm_hour - rtc_time_parts.tm_hour) * 60 * 60;
+        rtc_time += (alarm_minute - rtc_time_parts.tm_min) * 60;
+        rtc_time += alarm_second - rtc_time_parts.tm_sec;
+
+        // Add a day to the time if the alarm will occur the next day.
+        if (alarm_hour < rtc_time_parts.tm_hour ||
+            (alarm_hour == rtc_time_parts.tm_hour &&
+             (alarm_minute < rtc_time_parts.tm_min ||
+              (alarm_minute == rtc_time_parts.tm_min &&
+               alarm_second <= rtc_time_parts.tm_sec))))
+            rtc_time += 24 * 60 * 60;
+
+        // Calculate the simulated time at which the alarm will occur.
+        inline $rtc_time_to_time(rtc_time) -> (alarm_time);
+
+        // Post the event.
+        inline $post(alarm_time - current_time, NULL);
+    }
+
+    // Called when the interrupt event occurs. Raises the alarm interrupt
+    // flag and updates the IRQF flag.
+    method event(data) {
+        log "info", 3: "Alarm interrupt triggered, raising AF.";
+        $registers.c.AF = 1;
+        call $update_IRQF();
+    }
+}
+
+// Event posted for the update-ended interrupt.
+
+event update_ended_interrupt {
+    is interrupt_event;
+
+    parameter desc = "Update-ended interrupt";
+
+    // An update-ended interrupt event should be posted if the oscillator
+    // is enabled, the update-ended interrupt flag is not already set, and
+    // the SET bit of register B is not set.
+    method should_be_posted() -> (bool should_be_posted) {
+        should_be_posted = ($registers.a.DV == 0b010 &&
+                            $registers.c.UF == 0 &&
+                            $registers.b.SET == 0);
+    }
+
+    // Calculates the time of the next interrupt and posts an event for it.
+    method post_interrupt() {
+        local double delta;
+
+        inline $next_occurrence_delta(1.0, 244.0e-6) -> (delta);
+
+        inline $post(delta, NULL);
+    }
+
+    // Called when the interrupt event occurs. Raises the update-ended
+    // interrupt flag and updates the IRQF flag.
+    method event(data) {
+        log "info", 3: "Update-ended interrupt triggered, raising UF.";
+        $registers.c.UF = 1;
+        call $update_IRQF();
+    }
+}
+
+// Updates the IRQF flag in register C, and raises or lowers the interrupt to
+// irq_dev accordingly.
+
+method update_IRQF() {
+    // Save the old IRQF value and calculate the new value.
+    local int old_IRQF = $registers.c.IRQF;
+    $registers.c.IRQF = (($registers.c.UF && $registers.b.UIE) ||
+                         ($registers.c.AF && $registers.b.AIE) ||
+                         ($registers.c.PF && $registers.b.PIE));
+
+    // Raise the interrupt if the IRQF flag went from 0 to 1.
+    if (old_IRQF == 0 && $registers.c.IRQF == 1) {
+        log "info", 3: "Raising interrupt.";
+        $irq_dev.simple_interrupt.interrupt($irq_dev, $irq_level);
+    }
+
+    // Lower the interrupt if the IRQF flag went from 1 to 0.
+    if (old_IRQF == 1 && $registers.c.IRQF == 0) {
+        log "info", 3: "Lowering interrupt.";
+        $irq_dev.simple_interrupt.interrupt_clear($irq_dev, $irq_level);
+    }
+}
+
+// Copies the contents of the internal time counter to the time registers,
+// regardless of if real-time clock is running (the oscillator is on and the
+// SET bit of register b is set).
+
+method update_time_registers_unconditional() {
+    local os_time_t rtc_time;
+    local os_tm_t tm;
+
+    // Get the real-time clock time.
+    inline $get_rtc_time() -> (rtc_time);
+
+    // Split the time parts.
+    tm = *cast(os_gmtime(&rtc_time), os_tm_t *);
+
+    // Write the time registers. DS12887 counts day of the week and month
+    // from 1, os_tm_t count them from 0. DS12887 doesn't keep track of the
+    // century.
+    $registers.seconds = tm.tm_sec;
+    $registers.minutes = tm.tm_min;
+    $registers.hours = tm.tm_hour;
+    $registers.day_of_the_week = tm.tm_wday  + 1;
+    $registers.date_of_the_month = tm.tm_mday;
+    $registers.month = tm.tm_mon + 1;
+    $registers.year = tm.tm_year % 100;
+}
+
+// Copies the contents of the internal time counter to the time registers if
+// the real-time clock is running (the oscillator is enabled and the SET bit of
+// register b is not set).
+
+method update_time_registers_conditional() {
+    if($registers.a.DV == 0b010 && $registers.b.SET == 0)
+        inline $update_time_registers_unconditional();
+}
+
+// Copies the contents of the time registers to the internal time counter.
+
+method writeback_time_registers() {
+    local os_time_t rtc_time;
+    local os_tm_t tm;
+
+    // Read the time registers. DS12887 counts day of the week and month
+    // from 1, os_tm_t counts them from 0. Count years less than 30 as
+    // 20xx, years greater or equal to 30 as 19xx.
+    tm.tm_sec = $registers.seconds;
+    tm.tm_min = $registers.minutes;
+    tm.tm_hour = $registers.hours;
+    tm.tm_wday = $registers.day_of_the_week - 1;
+    tm.tm_mday = $registers.date_of_the_month;
+    tm.tm_mon = $registers.month - 1;
+    if ($registers.year < 30)
+        tm.tm_year = $registers.year + 100;
+    else
+        tm.tm_year = $registers.year;
+
+    // Join the time parts.
+    rtc_time = os_timegm(&tm);
+
+    // Set the real-time clock time.
+    inline $set_rtc_time(rtc_time);
+
+    // Alarm interrupt events may have to be moved when the real-time clock
+    // time changes.
+    call $alarm_interrupt.update_time();
+}
+
+// Most registers and fields in the DS12887 either ignore reset or are cleared
+// to 0 on reset, so it is useful to have templates for these cases.
+
+template ignore_reset {
+    method hard_reset() {
+    }
+    method soft_reset() {
+    }
+}
+
+template clear_on_reset {
+    parameter hard_reset_value = 0;
+    parameter soft_reset_value = 0;
+}
+
+// We want to log when interrupt and interrupt enable flags are raised and
+// lowered, so we create a template for them.
+
+template irq_flag {
+    is ignore_write;
+    is clear_on_reset;
+
+    method read() -> (value) {
+        value = $this;
+        $this = 0;
+        if (value == 1)
+            log "info", 3: "%s lowered.", $name;
+    }
+}
+
+template irq_enable_flag {
+    is read;
+    is clear_on_reset;
+
+    method write(value) {
+        if ($this == 0 && value == 1)
+            log "info", 3: "%s set.", $name;
+        if ($this == 1 && value == 0)
+            log "info", 3: "%s cleared.", $name;
+        $this = value;
+        call $update_IRQF();
+    }
+}
+
+// This template is used by all time and alarm registers of the real-time
+// clock. It contains methods for converting between BCD and binary format and
+// for checking that the value is within the allowed range.
+
+template rtc_register {
+    is ignore_reset;
+
+    parameter max_value default undefined;
+    parameter min_value default undefined;
+
+    // Converts a value from BCD format to binary format.
+    method from_bcd(uint8 value) -> (uint8 result) {
+        local bool illegal = false;
+        local uint8 adjusted_value = value;
+        if ((adjusted_value >> 4) > 9) {
+            illegal = true;
+            adjusted_value = 0x90 | (adjusted_value & 0xf);
+        }
+        if ((adjusted_value & 0xf) > 9) {
+            illegal = true;
+            adjusted_value = (adjusted_value & 0xf0) | 0x9;
+        }
+        if (illegal)
+            log "spec_violation", 1:
+                "Illegal BCD value 0x%x written to register %s. Adjusting to BCD value 0x%x.",
+                value, $qname, adjusted_value;
+        result = ((adjusted_value >> 4) * 10) + (adjusted_value & 0xf);
+    }
+
+    // Converts a value from binary format to binary BCD.
+    method to_bcd(uint8 value) -> (uint8 result) {
+        if (value > 99) {
+            log "error":
+                "Value 0x%x of register %s can not be converted to a BCD value. Adjusting to BCD value 0x99.",
+                value, $qname;
+            result = 0x99;
+        }
+        else
+            result = ((value / 10) << 4) | (value % 10);
+    }
+
+    // Checks that that value is within the allowed bounds, and adjusts it
+    // if not.
+    method check_bounds(uint8 value) -> (uint8 result) {
+        result = value;
+        if (defined $min_value && result < $min_value) {
+            log "spec_violation", 1:
+                "Illegal value 0x%x written to register %s. Adjusting value to 0x%x.",
+                result, $qname, $min_value;
+            result = $min_value;
+        }
+        if (defined $max_value && result > $max_value) {
+            log "spec_violation", 1:
+                "Illegal value 0x%x written to register %s. Adjusting value to 0x%x.",
+                result, $qname, $max_value;
+            result = $max_value;
+        }
+    }
+
+    // Convert a value from the current register format to binary format.
+    method from_register_format(uint8 value) -> (uint8 result) default {
+        result = value;
+        if ($registers.b.DM == 0)
+            call $from_bcd(result) -> (result);
+        call $check_bounds(result) -> (result);
+    }
+
+    // Convert a value from binary format to the current register format.
+    method to_register_format(uint8 value) -> (uint8 result) default {
+        result = value;
+        if ($registers.b.DM == 0)
+            call $to_bcd(result) -> (result);
+    }
+}
+
+// The hour_rtc_register extends rtc_register with the handling of the AM/PM
+// bit in the hours and hours_alarm registers.
+
+template hour_rtc_register {
+    is rtc_register;
+
+    // Convert a value from the current register format to binary format.
+    method from_register_format(uint8 value) -> (uint8 result) {
+        local bool pm = $registers.b.TWENTYFOUR_TWELVE == 0 && value[7] == 1;
+        result = value;
+        if (pm)
+            result[7] = 0;
+        if ($registers.b.DM == 0)
+            call $from_bcd(result) -> (result);
+        if ($registers.b.TWENTYFOUR_TWELVE == 0)
+            result -= 1;
+        if (pm)
+            result += 12;
+        call $check_bounds(result) -> (result);
+    }
+
+    // Convert a value from binary format to the current register format.
+    method to_register_format(uint8 value) -> (uint8 result) {
+        local bool pm = $registers.b.TWENTYFOUR_TWELVE == 0 && value > 12;
+        result = value;
+        if (pm)
+            result -= 12;
+        if ($registers.b.TWENTYFOUR_TWELVE == 0)
+            result += 1;
+        if ($registers.b.DM == 0)
+            call $to_bcd(result) -> (result);
+        if (pm)
+            result[7] = 1;
+    }
+}
+
+// Handles reads and writes to time registers.
+
+template time_register {
+    // Update the time registers, convert the register value to the
+    // current format and return it.
+    method read() -> (value) {
+        call $update_time_registers_conditional();
+        call $to_register_format($this) -> (value);
+    }
+
+    // Update the time registers, parse the register value from the
+    // current format, perform the write, writeback the value of the time
+    // registers to the internal time, and maybe update the alarm
+    // interrupt event.
+    method write(value) {
+        call $update_time_registers_conditional();
+        call $from_register_format(value) -> ($this);
+        call $writeback_time_registers();
+        inline $update_alarm_interrupt();
+    }
+
+    // Update the time registers and return the register value.
+    method get() -> (value) {
+        call $update_time_registers_conditional();
+        value = $this;
+    }
+
+    // We may need to update the alarm interrupt event after the register
+    // is set through an attribute.
+    method after_set() {
+        inline $update_alarm_interrupt();
+    }
+
+    // Update the alarm interrupt event, if it is dependent on this
+    // register. Doesn't update the alarm interrupt event by default, but
+    // the seconds, minutes and hours registers override it using the
+    // time_alarm_register template.
+    method update_alarm_interrupt() default {
+    }
+}
+
+// Template included by the seconds, minutes and hours registers to update the
+// alarm interrupt event when they are changed.
+
+template time_alarm_register {
+    method update_alarm_interrupt() {
+        call $alarm_interrupt.update_time();
+    }
+}
+
+// Handles reads and writes to alarm registers.
+
+template alarm_register {
+    // Convert the register value to the current format and return it.
+    method read() -> (value) {
+        inline $to_register_format($this) -> (value);
+    }
+
+    // Parse the register value from the current format, perform the write,
+    // and update the alarm interrupt.
+    method write(value) {
+        call $from_register_format(value) -> ($this);
+        call $alarm_interrupt.update_time();
+        log "info", 2: "Alarm set to %02d:%02d:%02d.",
+            $registers.hours_alarm,
+            $registers.minutes_alarm,
+            $registers.seconds_alarm;
+    }
+
+    // We need to update alarm interrupt event after the register has been
+    // set through an attribute.
+    method after_set() {
+        call $alarm_interrupt.update_time();
+    }
+}
+
+// Implementations of the port space registers used to access the DS12887
+// registers in a PC.
+
+bank port_registers {
+    register address is (read_write) {
+        parameter documentation =
+            "Port space address register. Specifies the DS12887 register "+
+            "that reads and writes to the port space data register are "+
+            "forwarded to.";
+    }
+    register data {
+        parameter documentation =
+            "Port space data register. Forwards reads and writes to the "+
+            "DS12887 register specified by the port space address register.";
+
+        // This register only forward accesses to other registers, so
+        // we don't need any storage for it and we don't create an
+        // attribute for it.
+        parameter allocate = false;
+        parameter configuration = "none";
+
+        // Forward read operations to the registers bank, at the
+        // address specified by the address register.
+        method read_access(memop, msb1, lsb) -> (value) {
+            inline $registers.read(memop, $port_registers.address, 1)
+                -> (value);
+        }
+
+        // Forward write operations to the registers bank, at the
+        // address specified by the address register.
+        method write_access(memop, msb1, lsb, value) {
+            inline $registers.write(memop, $port_registers.address,
+                                    1, value);
+        }
+    }
+}
+
+// Implementations of the DS12887 registers.
+
+bank registers {
+    register seconds is (time_register, time_alarm_register, rtc_register) {
+        parameter documentation =
+            "Seconds register. In binary format in the range " +
+            "0-59, regardless of the current register mode.";
+        parameter max_value = 59;
+    }
+    register seconds_alarm is (alarm_register, rtc_register) {
+        parameter documentation =
+            "Seconds alarm register. In binary format in the " +
+            "range 0-59, regardless of the current register mode.";
+        parameter max_value = 59;
+    }
+    register minutes is (time_register, time_alarm_register, rtc_register) {
+        parameter documentation =
+            "Minutes register. In binary format in the range " +
+            "0-59, regardless of the current register mode.";
+        parameter max_value = 59;
+    }
+    register minutes_alarm is (alarm_register, rtc_register) {
+        parameter documentation =
+            "Minutes alarm register. In binary format in the" +
+            "range 0-59, regardless of the current register mode.";
+        parameter max_value = 59;
+    }
+    register hours is (time_register, time_alarm_register, hour_rtc_register) {
+        parameter documentation =
+            "Hours register. In binary format in the range " +
+            "0-23, regardless of the current register mode.";
+        parameter max_value = 23;
+    }
+    register hours_alarm is (alarm_register, hour_rtc_register) {
+        parameter documentation =
+            "Hours alarm register. In binary format in the " +
+            "range 0-23, regardless of the current register mode.";
+        parameter max_value = 23;
+    }
+    register day_of_the_week is (time_register, rtc_register) {
+        parameter documentation =
+            "Day of the week register. In binary format in the " +
+            "range 1-7, regardless of the current register mode.";
+        parameter min_value = 1;
+        parameter max_value = 7;
+    }
+    register date_of_the_month is (time_register, rtc_register) {
+        parameter documentation =
+            "Day of the month register. In binary format in the " +
+            "range 1-31, regardless of the current register mode.";
+        parameter min_value = 1;
+        parameter max_value = 31;
+    }
+    register month is (time_register, rtc_register) {
+        parameter documentation =
+            "Month register. In binary format in the range " +
+            "1-12, regardless of the current register mode.";
+        parameter min_value = 1;
+        parameter max_value = 12;
+    }
+    register year is (time_register, rtc_register) {
+        parameter documentation =
+            "Year register. In binary format in the range 0-99, " +
+            "regardless of the current register mode.";
+        parameter max_value = 99;
+    }
+    register a {
+        parameter documentation = "Register A.";
+        // RS field, determines periodic interrupt frequency.
+        field RS [3:0] is (read, ignore_reset) {
+            method write(value) {
+                inline $set(value);
+            }
+            method set(value) {
+                // Changing the RS field may enable or disabled
+                // periodic interrupts, or change the periodic
+                // interrupt frequency.
+                if ($this != value) {
+                    if (value == 0)
+                        log "info", 3: "Periodic interrupts disabled.";
+                    else
+                        log "info", 3:
+                            "Periodic interrupt frequency set to %f Hz.",
+                            $pi_freqs[value];
+                }
+
+                $this = value;
+
+                call $periodic_interrupt.update_time();
+            }
+        }
+        // DV field, enables or disables the oscillator. A value of
+        // 0b010 enables the oscillator, all other value disable the
+        // oscillator (or at least hold the clock divider in reset).
+        field DV [6:4] is (read, ignore_reset) {
+            method write(value) {
+                // The oscillator is being enabled, so we set
+                // base_time. We read the real-time clock time
+                // before enabling the oscillator and write it
+                // back after, since the time representation is
+                // changed.
+                if (value == 0b010 && $this != 0b010) {
+                    local os_time_t rtc_time;
+                    call $get_rtc_time() -> (rtc_time);
+                    $base_time = SIM_time($dev.obj);
+                    $this = value;
+                    log "info", 2: "Oscillator enabled, clock starting.";
+                    call $set_rtc_time(rtc_time);
+                }
+                // The oscillator is being disabled. We need to
+                // update the time registers, since they can no
+                // longer be update lazily. We read the
+                // real-time clock time before disabling the
+                // oscillator and write it back after, since
+                // the time representation is changed.
+                if (value != 0b010 && $this == 0b010) {
+                    local os_time_t rtc_time;
+                    call $update_time_registers_conditional();
+                    call $get_rtc_time() -> (rtc_time);
+                    $this = value;
+                    log "info", 2: "Oscillator disabled, clock stopping.";
+                    call $set_rtc_time(rtc_time);
+                }
+
+                inline $set(value);
+            }
+            method set(value) {
+                // We need to update all interrupts if the
+                // oscillator is being enabled or disabled.
+                if ((value == 0b010 && $this != 0b010) ||
+                    (value != 0b010 && $this == 0b010)) {
+                    call $periodic_interrupt.update_time();
+                    call $alarm_interrupt.update_time();
+                    call $update_ended_interrupt.update_time();
+                }
+                $this = value;
+            }
+        }
+        // UIP bit, set when there is less than 244 microseconds to the
+        // next real-time clock update.
+        field UIP [7] is (ignore_write, ignore_reset) {
+            // The UIP bit is calculated from other state, so we
+            // don't need any storage for it.
+            parameter allocate = false;
+
+            method read() -> (value) {
+                inline $get() -> (value);
+            }
+
+            // The UIP bit should be 1 if the oscillator is
+            // enabled, the SET bit is not set, and a real-time
+            // clock update will occur within 244 microseconds.
+            method get() -> (value) {
+                value = 0;
+                if ($registers.a.DV == 0b010 && $registers.b.SET == 0) {
+                    local double delta;
+                    inline $next_occurrence_delta(1.0, 244.0e-6) -> (delta);
+                    if (delta <= 244.0e-6)
+                        value = 1;
+                }
+            }
+
+            // We must provide a set method for fields with
+            // allocate = false. Just ignore attempts to set the
+            // bit through the attribute.
+            method set(value) {
+            }
+        }
+    }
+    register b {
+        parameter documentation = "Register B.";
+        // DSE bit, enables daylight saving mode. Not implemented.
+        field DSE [0] is (read, ignore_reset) {
+            method write(value) {
+                inline $set(value);
+            }
+            method set(value) {
+                $this = value;
+                if ($this == 1)
+                    log "unimplemented", 1:
+                        "Daylight saving time enabled, but not implemented.";
+            }
+        }
+        // 24/12 bit, select 24 or 12 hour mode.
+        field TWENTYFOUR_TWELVE [1] is (read_write, ignore_reset);
+        // DM bit, selects binary or BCD time register format.
+        field DM [2] is (read_write, ignore_reset);
+        // SQWE bit, enables square wave output. Not implemented.
+        field SQWE [3] is (read, clear_on_reset) {
+            method write(value) {
+                inline $set(value);
+            }
+            method set(value) {
+                $this = value;
+                if ($this == 1)
+                    log "unimplemented", 1:
+                        "Square wave enabled, but not implemented.";
+            }
+        }
+        // Interrupt enable flags for update-ended, alarm and periodic
+        // interrupts.
+        field UIE [4] is (irq_enable_flag);
+        field AIE [5] is (irq_enable_flag);
+        field PIE [6] is (irq_enable_flag);
+        // SET bit, inhibits real-time clock register updates.
+        field SET [7] is (read, ignore_reset) {
+            method write(value) {
+                if (value != $this)
+                    log "info", 3: "SET %s.", value == 0 ? "cleared" : "set";
+                inline $set(value);
+            }
+            method set(value) {
+                // When the SET bit is set, we need to update
+                // the time registers, since they can no longer
+                // be update lazily.
+                if (value == 1 && $this == 0)
+                    call $update_time_registers_conditional();
+
+                // We need to update the update-ended interrupt
+                // event when the SET bit is changed.
+                if (value != $this)
+                    call $update_ended_interrupt.update();
+
+                $this = value;
+            }
+        }
+
+        // Writing this register or setting it through an attribute may
+        // enable interrupts, so we need to update the IRQF flag.
+
+        method after_write(memop) {
+            inline $after_set();
+        }
+
+        method after_set() {
+            call $update_IRQF();
+        }
+
+        // The interrupt enable flags are cleared on reset, so we need
+        // to update the IRQF flag.
+
+        method after_hard_reset() {
+            call $update_IRQF();
+        }
+
+        method after_soft_reset() {
+            call $update_IRQF();
+        }
+    }
+    register c {
+        parameter documentation = "Register C.";
+        // Reserved bits, just return 0.
+        field RESERVED [3:0] is (silent_constant) {
+            parameter value = 0;
+        }
+        // Interrupt flags for update-ended, alarm and periodic interrupts.
+        field UF [4] is (irq_flag);
+        field AF [5] is (irq_flag);
+        field PF [6] is (irq_flag);
+        // IRQF bit, indicates if there is a raised unmasked interrupt.
+        field IRQF [7] is (read_only);
+
+        // Reading this register or setting it through an attribute may
+        // change the interrupt flags, so we need to update the
+        // interrupt events and the IRQF flag.
+
+        method after_read(memop) {
+            inline $after_set();
+        }
+
+        method after_set() {
+            call $update_ended_interrupt.update();
+            call $alarm_interrupt.update();
+            call $periodic_interrupt.update();
+            call $update_IRQF();
+        }
+
+        // The interrupt flags are cleared on reset, so we need to
+        // update the IRQF flag.
+
+        method after_hard_reset() {
+            call $update_IRQF();
+        }
+
+        method after_soft_reset() {
+            call $update_IRQF();
+        }
+    }
+    register d {
+        parameter documentation = "Register D.";
+        // Reserved bits, just return 0.
+        field RESERVED [6:0] is (silent_constant) {
+            parameter value = 0;
+        }
+        // VRT bit, indicates battery status.
+        field VRT [7] is (silent_constant) {
+            parameter value = 0;
+        }
+    }
+    // NVRAM registers. Simply read-write registers that ignore reset.
+    register nvram[114] is (read_write, ignore_reset) {
+        parameter documentation =
+            "NVRAM registers, corresponding to the offsets 14 to 127.";
+    }
+}
+
+// Run when the object is created.
+method init() {
+    // Initialize the table of days in the months.
+    $mdays[0]  = 31;
+    $mdays[1]  = 28;
+    $mdays[2]  = 31;
+    $mdays[3]  = 30;
+    $mdays[4]  = 31;
+    $mdays[5]  = 30;
+    $mdays[6]  = 31;
+    $mdays[7]  = 31;
+    $mdays[8]  = 30;
+    $mdays[9]  = 31;
+    $mdays[10] = 30;
+    $mdays[11] = 31;
+
+    // Initialize the table of periodic interrupt frequencies.
+    $pi_freqs[0]  =    0.0;
+    $pi_freqs[1]  =  256.0;
+    $pi_freqs[2]  =  128.0;
+    $pi_freqs[3]  = 8192.0;
+    $pi_freqs[4]  = 4096.0;
+    $pi_freqs[5]  = 2048.0;
+    $pi_freqs[6]  = 1024.0;
+    $pi_freqs[7]  =  512.0;
+    $pi_freqs[8]  =  256.0;
+    $pi_freqs[9]  =  128.0;
+    $pi_freqs[10] =   64.0;
+    $pi_freqs[11] =   32.0;
+    $pi_freqs[12] =   16.0;
+    $pi_freqs[13] =    8.0;
+    $pi_freqs[14] =    4.0;
+    $pi_freqs[15] =    2.0;
+}
+
+// Run after all attributes have been set when a device is created or a
+// checkpoint is loaded.
+method post_init() {
+    // The device is configured, so we can start posting interrupts.
+    $dev.obj->configured = true;
+
+    // Post any interrupt events that should be posted.
+    call $periodic_interrupt.update();
+    call $alarm_interrupt.update();
+    call $update_ended_interrupt.update();
+}

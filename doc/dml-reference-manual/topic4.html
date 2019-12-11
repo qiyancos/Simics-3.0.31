@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>The Object Model</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(5, true);
+</script>
+<a name="label11"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;The Object Model</h2 class="jdocu">
+
+
+<p>
+DML is structured around an <em><a name="label12">object model</a></em>, where each
+DML program describes a single <em><a name="label13">device class</a></em> (being a
+subclass of the built-in generic device class), which can contain a
+number of <em><a name="label14">member objects</a></em>. Each member object can in
+its turn have a number of members of its own, and so on in a nested
+fashion.
+<p>
+Every object (including the device itself) can also have
+<em><a name="label15">methods</a></em>, which implement the functionality of the
+object, and <em><a name="label16">parameters</a></em>, which are constant-valued
+members that exist only during compilation.
+<p>
+Each object is an instance of a <em>class</em>, often simply called the
+"object type"; the built-in object types are described in Section <a class="jdocu" href="topic6.html#label32">3.2</a>. There is no way of adding user-defined classes
+in DML 1.0. However, each object is in general locally modified by
+adding (or overriding) members, methods and parameters - this can be
+viewed as creating a local one-shot subclass for each instance.
+<p>
+Many parts of the DML object model are automatically mapped onto the
+Simics "configuration object" model; most importantly, the device class
+itself, its attributes and interface methods. (See the <em>Simics User
+Guide</em> and the <em>Simics Programming Guide</em> for details.)
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic5.html#label17" target="main">3.1&nbsp;&nbsp;&nbsp;Device Structure</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic6.html#label32" target="main">3.2&nbsp;&nbsp;&nbsp;Object Types</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic7.html#label53" target="main">3.3&nbsp;&nbsp;&nbsp;Parameters</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic8.html#label67" target="main">3.4&nbsp;&nbsp;&nbsp;Methods</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic9.html#label69" target="main">3.5&nbsp;&nbsp;&nbsp;Devices</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic10.html#label74" target="main">3.6&nbsp;&nbsp;&nbsp;Register Banks</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic11.html#label81" target="main">3.7&nbsp;&nbsp;&nbsp;Registers</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic12.html#label96" target="main">3.8&nbsp;&nbsp;&nbsp;Attributes</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic13.html#label97" target="main">3.9&nbsp;&nbsp;&nbsp;Connects</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic14.html#label99" target="main">3.10&nbsp;&nbsp;&nbsp;Implements</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic15.html#label100" target="main">3.11&nbsp;&nbsp;&nbsp;Events</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

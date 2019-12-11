@@ -1,0 +1,91 @@
+dml 1.0;
+
+/*
+ * simics-callbacks.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+extern hap_flags_t Sim_Hap_Simulation;
+extern hap_flags_t Sim_Hap_Old_Format;
+extern hap_flags_t Sim_Hap_Added;
+extern hap_flags_t Sim_Hap_Deleted;
+typedef int hap_flags_t;
+
+extern attr_value_t SIM_get_all_hap_types();
+
+extern hap_type_t SIM_hap_add_type(const char *hap, const char *params,
+                                   const char *param_desc,
+                                   const char *index, const char *desc,
+                                   int old_had_obj);
+extern void SIM_hap_remove_type(const char *hap);
+
+extern hap_type_t SIM_hap_get_number(const char *hap);
+extern const char *SIM_hap_get_name(hap_type_t hap);
+
+extern hap_handle_t SIM_hap_add_callback(const char *hap,
+                                         obj_hap_func_t func,
+                                         void *data);
+extern hap_handle_t SIM_hap_add_callback_index(const char *hap,
+                                               obj_hap_func_t func,
+                                               void *data,
+                                               integer_t index);
+extern hap_handle_t SIM_hap_add_callback_range(const char *hap,
+                                               obj_hap_func_t func,
+                                               void *data,
+                                               integer_t start, integer_t end);
+extern hap_handle_t SIM_hap_add_callback_obj(const char *hap,
+                                             conf_object_t *obj,
+                                             hap_flags_t flags,
+                                             obj_hap_func_t func,
+                                             void *data);
+extern hap_handle_t SIM_hap_add_callback_obj_index(const char *hap,
+                                                   conf_object_t *obj,
+                                                   hap_flags_t flags,
+                                                   obj_hap_func_t func,
+                                                   void *data,
+                                                   integer_t index);
+extern hap_handle_t SIM_hap_add_callback_obj_range(const char *hap,
+                                                   conf_object_t *obj,
+                                                   hap_flags_t flags,
+                                                   obj_hap_func_t func,
+                                                   void *data,
+                                                   integer_t start,
+                                                   integer_t end);
+
+extern void SIM_hap_delete_callback(const char *hap,
+                                    obj_hap_func_t func, void *data);
+extern void SIM_hap_delete_callback_obj(const char *hap, conf_object_t *obj,
+                                        obj_hap_func_t func, void *data);
+extern void SIM_hap_delete_callback_id(const char *hap, hap_handle_t handle);
+extern void SIM_hap_delete_callback_obj_id(const char *hap,
+                                           conf_object_t *obj,
+                                           hap_handle_t handle);
+
+extern int SIM_hap_callback_exists(const char *id, obj_hap_func_t func,
+                            void *data);
+extern int SIM_hap_is_active(hap_type_t hap);
+
+extern int SIM_c_hap_occurred(hap_type_t hap, conf_object_t *obj,
+                              integer_t value, ...);
+// extern int SIM_c_hap_occurred_vararg(hap_type_t hap, conf_object_t *obj,
+//                               integer_t value, va_list ap);
+extern int SIM_c_hap_occurred_always(hap_type_t hap, conf_object_t *obj,
+                                     integer_t value, ...);
+// extern int SIM_c_hap_occurred_always_vararg(hap_type_t hap, conf_object_t *obj,
+//                                      integer_t value, va_list ap);
+
+extern int SIM_hap_occurred(hap_type_t hap, conf_object_t *obj,
+                     integer_t value, attr_value_t *list);
+extern int SIM_hap_occurred_always(hap_type_t hap, conf_object_t *obj,
+                            integer_t value, attr_value_t *list);

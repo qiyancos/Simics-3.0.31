@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>simple_interrupt</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2271, true);
+</script>
+<a name="label17948"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic529.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic531.html">Next</a></span></p>
+<h3 class="jdocu">simple_interrupt</h3 class="jdocu">
+
+
+<a name="label17949"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic45.html#label4524">CL-PD6729</a>, <a class="jdocu" href="topic62.html#label4881">CY82C693_1</a>, <a class="jdocu" href="topic132.html#label7135">ISA</a>, <a class="jdocu" href="topic224.html#label8893">PCI0646</a>, <a class="jdocu" href="topic18.html#label3033">alpha-ev5</a>, <a class="jdocu" href="topic28.html#label3410">armv5te</a>, <a class="jdocu" href="topic57.html#label4804">cpc700-uic</a>, <a class="jdocu" href="topic87.html#label5632">fiesta-tomatillo</a>, <a class="jdocu" href="topic91.html#label5727">fourport</a>, <a class="jdocu" href="topic119.html#label6713">i82468GX_0</a>, <a class="jdocu" href="topic121.html#label6755">i8259x2</a>, <a class="jdocu" href="topic123.html#label6794">ia64-itanium</a>, <a class="jdocu" href="topic124.html#label6853">ia64-itanium2</a>, <a class="jdocu" href="topic141.html#label7428">leon2</a>, <a class="jdocu" href="topic145.html#label7553">leon2_irq</a>, <a class="jdocu" href="topic168.html#label7886">mips-4kc</a>, <a class="jdocu" href="topic169.html#label7982">mips-5kc</a>, <a class="jdocu" href="topic171.html#label8101">msp430</a>, <a class="jdocu" href="topic254.html#label9330">ppc405gp</a>, <a class="jdocu" href="topic263.html#label9690">ppc405gp-uic</a>, <a class="jdocu" href="topic264.html#label9716">ppc440gp</a>, <a class="jdocu" href="topic276.html#label10323">ppc440gp-uic</a>, <a class="jdocu" href="topic278.html#label10365">ppc440gx</a>, <a class="jdocu" href="topic295.html#label11058">ppc440gx-uic</a>, <a class="jdocu" href="topic297.html#label11100">ppc603e</a>, <a class="jdocu" href="topic299.html#label11254">ppc7400</a>, <a class="jdocu" href="topic300.html#label11410">ppc7447</a>, <a class="jdocu" href="topic301.html#label11589">ppc7450</a>, <a class="jdocu" href="topic302.html#label11750">ppc7457</a>, <a class="jdocu" href="topic303.html#label11936">ppc750</a>, <a class="jdocu" href="topic304.html#label12083">ppc750fx</a>, <a class="jdocu" href="topic305.html#label12247">ppc750gx</a>, <a class="jdocu" href="topic307.html#label12425">ppc970fx</a>, <a class="jdocu" href="topic418.html#label14531">sun4u-fhc</a>, <a class="jdocu" href="topic430.html#label14742">sunfire-psycho</a>, <a class="jdocu" href="topic432.html#label14798">sunfire-sysio</a>, <a class="jdocu" href="topic443.html#label15067">telos-sfr</a>, <a class="jdocu" href="topic445.html#label15109">telos-usart</a>, <a class="jdocu" href="topic467.html#label16223">wire</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   A device calls <b><i>interrupt()</i></b> to logically raise an interrupt and
+   <b><i>interrupt_clear()</i></b> to lower an interrupt.
+<p>
+   The first argument is the object to interrupt, usually a cpu. The
+   integer argument to both functions may indicate an interrupt level
+   or interrupt pin depending on the receiving device.
+<p>
+   On ARM the integer argument indicates whether the interrupt is normal or
+   fast, by being either ARM_INT_IRQ or ARM_INT_FIQ defined by the ARM API
+   (by including <tt>&lt;simics/arch/arm.h&gt;</tt>).
+<p>
+   <hr class="jdocu_note"><b>Note:</b> Obsoleted by the <tt>signal</tt> interface.<hr class="jdocu_note">
+<p>
+   <pre class="jdocu_small" style="color: black">typedef void (*device_interrupt_t)(conf_object_t *, int);
+typedef void (*device_interrupt_clear_t)
+        (conf_object_t *, int);
+
+typedef struct {
+        device_interrupt_t interrupt;
+        device_interrupt_clear_t interrupt_clear;
+} simple_interrupt_interface_t;
+
+#define SIMPLE_INTERRUPT_INTERFACE "simple-interrupt"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic529.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic531.html">Next</a></span></p>
+</body>
+</html>

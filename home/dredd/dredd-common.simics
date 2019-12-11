@@ -1,0 +1,17 @@
+# Dredd
+
+@sys.path += ['../scripts']
+@import x86_conf
+
+default-port-forward-target 10.10.0.13
+
+run-python-file dredd-common.py
+
+#################
+
+@if "lance0" in dir(conf):
+    eval_cli_line("lance0.connect -auto net0")
+elif "dec0_4" in dir(conf):
+    eval_cli_line("dec0_4.connect -auto net0")
+elif "bcm0_4" in dir(conf):
+    eval_cli_line("bcm0_4.connect -auto net0")

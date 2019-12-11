@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(84, true);
+</script>
+<a name="label187"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic33.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic35.html">Next</a></span></p>
+<h3 class="jdocu">7.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Commands in Simics are written in Python, and they access the internal state of
+Simics by using the Simics API, and by accessing configuration objects and
+their attributes. Since modules cannot add functions to the Simics API, all
+commands for devices and extensions use the configuration system.
+<p>
+There are several benefits of using Python to define commands: The code is
+forced to make its internal state visible, allowing other script users to
+access it. The module can be distributed in binary form, while the Python
+commands are still available with source, allowing a user to change them in a
+way he or she prefers.
+<p>
+The command can be declared in two files that should reside in the same
+directory as the source code of the module:
+<p>
+<dl><dt><b><tt>commands.py</tt></b></dt><dd>Contains commands that will be declared
+when the module is loaded. These are usually commands related to a specific
+class or interface. For example, <b>&lt;my_class&gt;.info</b> should be
+declared in this file.</dd><dt><b><tt>gcommands.py</tt></b></dt><dd>Contains global commands that will be
+declared when Simics is started, whether or not the module has been
+loaded. Commands placed here are often used to create new instances of a
+class. For example, <b>new-tracer</b> is declared in
+<tt>gcommands.py</tt> in the <tt>trace/</tt> module source
+directory.</dd></dl>
+<p>
+When the module is compiled, these two files (if they exist) are copied to the
+<tt>simics/</tt><em>host</em><tt>/lib/python</tt> directory; e.g.,
+<tt>simics/x86-linux/lib/python</tt>.  The resulting file will get the name
+<tt>mod_</tt><em>module-name</em><tt>_commands.py</tt> (respectively
+<tt>_gcommands.py</tt>) with any dash (<tt>-</tt>) characters replaced with
+underscore (<tt>_</tt>).
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic33.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic35.html">Next</a></span></p>
+</body>
+</html>

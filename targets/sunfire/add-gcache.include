@@ -1,0 +1,19 @@
+import-timing-components
+
+script-branch {
+    wait-for-variable machine_defined
+    local $id = 0
+    local $cpus_left = $num_cpus
+    while $id < $board {
+        if $cpubrd[$id] {
+            local $i = 0
+            while $i < (min $cpus_left 2) {
+                local $cache = (create-sample-gcache)
+                $cpubrd[$id].connect (cache-cpu + $i) $cache
+                $i += 1
+            }
+            $cpus_left -= 2
+        }
+        $id += 1
+    }
+}

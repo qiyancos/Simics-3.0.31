@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(21, true);
+</script>
+<a name="label23"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting Niagara Simple machines are located in the
+<tt>[workspace]/targets/niagara-simple/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/niagara-simple/</tt>.
+<p>
+
+<p>
+<a name="label24"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;niagara-simple-solaris</h3 class="jdocu">
+
+
+<p>
+The niagara-simple machine is the only configuration distributed. It has an
+UltraSPARC T1 processor running at 5 MHz, and 256 MB of memory. One, two or
+all 32 strands (virtual processors/hardware threads) can be enabled. The
+default configuration can be modified as described in section
+<a class="jdocu" href="#label26">3.2</a>. The reason that the memory size,
+processor frequency and number of strands cannot be changed is that they are
+hardcoded in binary files used by the OBP.
+<p>
+<a name="label25"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Niagara-simple Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>niagara-simple-solaris-common.simics</tt></b></dt><dd>Starts the Niagara-simple machine with the default configuration.</dd></dl>
+<p>
+
+<p>
+
+<a name="label26"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>niagara-simple-solaris-common.simics</tt>. Other <tt>.simics</tt>
+scripts may set some of the parameters unconditionally, and do not allow the
+user to override them.
+<p>
+<a name="label27"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;niagara-simple-solaris-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$do_boot</b></dt><dd>Set to <tt>no</tt> to stop at OBP prompt, without booting the OS.</dd><dt><b>$do_login</b></dt><dd>Set to <tt>no</tt> to prevent the script from logging in as root
+automatically when the operating system has reached the login prompt.</dd><dt><b>$freq_mhz</b></dt><dd>The clock frequency in MHz of the processors. This value can currently
+not be changed from 5 MHz.</dd><dt><b>$rtc_time</b></dt><dd>Date and time of the real-time clock at boot.</dd><dt><b>$num_cpus</b></dt><dd>The number of strands (virtual processors) in the machine. The supported
+values are currently 1, 2 and 32.</dd><dt><b>$use_simicsfs</b></dt><dd>when set to <tt>yes</tt> (default), a "diff" disk image is added
+to the default disk image files from Sun, providing SimicsFS support.</dd></dl>
+<p>
+
+<p>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

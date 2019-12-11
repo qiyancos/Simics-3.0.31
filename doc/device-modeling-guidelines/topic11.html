@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Abstraction of Hardware-Software Interfaces</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(25, true);
+</script>
+<a name="label39"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Abstraction of Hardware-Software Interfaces</h2 class="jdocu">
+
+<a name="label40"></a>
+
+<p>
+   Abstracting the hardware-software interface is more tricky, since
+   the simulator does not control the software the same way it
+   controls the hardware.  <a name="label41"></a>However, since the device
+   accuracy is defined relative to the driver software that accesses
+   it, there are quite a few things that can be done once the driver
+   and the usage pattern is known.
+<p>
+   The obvious thing to do is to abstract away all parts of the
+   interface that are never accessed by the driver.  Control registers
+   not used by the driver, states that are never entered, and
+   behaviors that are never triggered can well be left unimplemented.
+   For debugging reasons one should make sure to indicate to the user
+   whenever accesses to unimplemented parts of the model occur.  See
+   section <a class="jdocu" href="topic23.html#label69">9.3</a> for more on error reporting and user
+   interface issues.
+<p>
+   Another area where the hardware-software interface can be
+   abstracted is timing.  This is covered in more detail in section
+   <a class="jdocu" href="topic15.html#label49">7</a>.
+<p>
+   <p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic12.html#label42" target="main">6.1&nbsp;&nbsp;&nbsp;Fewer States</a></p>
+
+   <p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic13.html#label43" target="main">6.2&nbsp;&nbsp;&nbsp;Avoid Modeling Error States</a></p>
+
+   <p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic14.html#label45" target="main">6.3&nbsp;&nbsp;&nbsp;Approximate Performance Counters and Hardwire Diagnostics</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+</body>
+</html>

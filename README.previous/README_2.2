@@ -1,0 +1,254 @@
+
+NOTES ON 2.2
+============
+
+General
+-------
+
+This is the generic Simics 2.2 README file, containing release notes that are
+relevant for most Simics distributions. There may also be a package/customer
+specific README in the same directory.
+
+Major Changes
+-------------
+
+ * The modelling of Ethernet networks has changed:
+
+   Old checkpoints and scripts that use the 'central-include.simics' file to
+   create networks are supposed to work in Simics 2.2. Manually written
+   configuration files have to be updated.
+
+   The 'central' module is only needed when connecting multiple Simics sessions
+   together, and not when running Ethernet links in a single Simics.
+
+   The following classes have changed:
+   ethernet-central : removed, some features have moved to the new service-node
+   ethernet-network : replaced by ethernet-link
+   central          : replaced by central-server
+
+   New classes: ethernet-link, service-node, central-server and central-client
+
+ * Improved support for connecting a simulated network to the real network.
+
+   connect-real-network
+       Port forwarding and network address translation. This is the recommended
+       real network connection for most users and does not require any
+       administrator privileges to configure.
+
+   connect-real-network-host
+       Connect a TAP interface on the host to the simulated network.
+       (Linux only).
+
+   connect-real-network-router
+       Places a simulated router between the real network and the simulated
+       one. This setup corresponds to the <ethernet>.connect-real-network
+       command in Simics 2.0.
+
+   connect-real-network-bridge
+       Bridges the real and simulated networks on the Ethernet level.
+
+ * "Fast" versions of several x86 and x86-64 targets available on Linux and
+   Windows hosts.
+
+
+Minor Changes
+-------------
+
+ * The -fast CPU variant is default when starting Simics. Use -stall to get the
+   variant supporting memory access stalling.
+
+ * The Linux version of Simics is now compiled for Red Hat 7.3 instead of 6.2.
+
+ * A new tracer is created with 'new-tracer' instead of 'load-module trace'.
+
+ * Improved Reference Manuals and online help
+
+ * A new flash-memory model called generic-flash-memory is available. The old
+   flash-memory device is deprecated (but still provided).
+ 
+ * New branch arc iterator (both for C and Python). It can be used to iterate
+   over the branch arcs contained by a branch recorder.
+ 
+ * g-cache makes better use of STCs than before, allowing it to cache some
+   write misses and improve greatly write-through cache performance.
+ 
+ * AMD64 and x86 processors can now be used in heterogeneous sessions.
+
+ * Some deprecated commands were removed:
+     action
+     catch-exception
+     add-to-simics-path
+     debug-level
+
+ * Virtual-address instruction profiling has been fixed. (It used
+   to mix up statistics for memory mapped into the virtual
+   address space in two or more locations, such as a shared library
+   mapped to different addresses in different processes.)
+
+
+Minor Changes - Programming
+---------------------------
+
+ * The mm_id variable is no longer used and can be omitted. mm_new_group() is
+   deprecated; calling it has no effect.
+
+ * Modules can define global (non name-space) commands that are available even
+   if the module isn't loaded in Simics, by placing them in a 'gcommands.py'
+   file instead of 'commands.py'.
+
+ * API types only available with 2.0 compatibility API:
+     event_poster_interface_get_event_info_t
+     event_poster_interface_set_event_info_t
+     event_poster_interface_describe_event_t
+
+ * API functions changes:
+
+   New functions:
+     SIM_realtime_event
+     SIM_notify_on_descriptor
+     SIM_notify_on_object
+     SIM_notify_on_socket
+     SIM_hap_is_active
+
+   Deprecated (but still present) functions:
+     SIM_instruction_info
+
+   Functions only available with 2.0 compatibility API:
+     SIM_object_by_id
+     SIM_hap_install_callback
+     SIM_hap_install_callback_idx
+     SIM_hap_install_callback_range
+     SIM_hap_register_callback
+     SIM_hap_register_callback_idx
+     SIM_hap_register_callback_range
+     SIM_hap_remove_callback
+     SIM_hap_unregister_callback
+     SIM_hap_new_type
+
+   Functions removed as part of the new distributed simulation system:
+     SIM_register_central_device
+     SIM_get_central_module
+     SIM_central_connected
+     SIM_central_reply
+     SIM_central_request_blocked
+     SIM_central_request_meta
+     SIM_central_send
+     SIM_central_send_meta
+     SIM_connect_central
+     SIM_connect_local_central
+
+ * Haps:
+
+   New haps:
+     Core_Breakpoint_Memop
+     Core_Context_Change
+     Core_Cpu_Switch_Time_Changed
+     Core_Device_Access_Memop
+     Core_Processor_Schedule_Changed
+     Core_Sync_Instruction
+     PPC_TLB_Invalidate_Entry
+
+   Deprecated haps (still present):
+     Core_Device_Access_Read     
+     Core_Device_Access_Write
+     Core_Fence
+     Core_Memory_Barrier
+     Core_Profiling_Mode_Change
+
+   Deprecated haps removed:
+     Waiting_For_Command
+
+
+UltraSPARC targets only
+-----------------------
+
+ * The 'align_kind' field of the v9_memory_transaction_t was replaced by an
+   access_type field, giving more information about the access.
+
+ * A 'logical-memory-translator' object was added. It can be used to gather
+   information from the TLB to later access virtual addresses without direct
+   TLB translation.
+
+ * The instruction_info() function in the sparc-v9 interface returns dependency
+   information.
+
+X86 and X86-64 targets only
+---------------------------
+
+ * Attributes exception_error_code and exception_description allows
+   Core_Exception handlers to get more information about occurring exceptions.
+
+ * The Core_Exception hap is now triggered for each individual exception in
+   case of multiple exceptions during one simulation step.
+
+
+PPC targets only
+----------------
+
+ * dcbz instruction now issues stores with Instr_dcbz type instead of
+   Instr_Ignore. The dcbz dummy memory operation is not sent anymore.
+
+
+Known Problems & Limitations
+----------------------------
+
+All targets:
+
+ *  When a checkpoint is taken of several processes participating in a
+    distributed simulation, reloading those checkpoints will not
+    always restore the synchronization of the clocks in the
+    processes. This means that starting from the checkpoints may not
+    reproduce the simulation that would have happened if the
+    simulation had continued without taking the checkpoint.
+    Running the simulation from the checkpoints is still deterministic
+    in the sense that it can be reproduced by restarting from the same
+    checkpoints.
+
+ * The Simics event queue overflows if all processors are disabled.
+
+ * Some operating systems don't work. Not all devices in Simics implement all
+   possible features exactly like actual hardware. If an operating system you
+   are interested in does not run on Simics, please let us know.
+
+ * Weird output in the console window when running Simics on a remote desktop
+   (Windows XP). This problem can be worked around by adding the line
+
+      set SDL_VIDEODRIVER=windib
+
+   to the script that starts Simics (typically home/<machine>/simics.bat).
+
+ * Virtual-address execution breakpoints may not work reliably if instructions
+   on the same physical addresses are executed but with a different virtual
+   address, before code is executed on the virtual address the breakpoint is
+   set on.
+   In other words: If an execution breakpoint is set on virtual address X,
+   and then an instruction on virtual address Y is executed, before the same
+   physical instruction is executed on X for the first time, then the
+   breakpoint may not be triggered.
+
+ * The GTK frontend may encounter problems if started by a user who has $HOME
+   on an NFS-mounted volume without flock() support. The symptoms are a dialog
+   box popping up with the text:
+
+       An error occurred while loading or saving configuration information for
+       Virtutech Simics. Some of your configuration settings may not work
+       properly.
+
+   Pressing the "Details" button, shows the following message:
+
+       Adding client to server's list failed, CORBA error:
+       IDL:omg.org/CORBA/COMM_FAILURE:1.0"
+
+   This is actually not a problem with the GTK frontend itself, but rather
+   with GConf which needs to flock() the user's repository. A possible
+   workaround for this problem is to modify /etc/gconf/2/path to indicate
+   another location for the user's repository.
+
+
+PPC Targets:
+
+ * Running a machine configuration containing different PowerPC models causes
+   model specific commands not to be installed correctly. The PowerPC model
+   first loaded will cause a set of the following commands to be installed:
+   pregs-fpu, pregs-altivec, print-itlb, print-utlb, print-l2tlb, print-slb,
+   print-tlb

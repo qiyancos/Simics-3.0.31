@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Example of a new command</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(85, true);
+</script>
+<a name="label188"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic34.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic36.html">Next</a></span></p>
+<h3 class="jdocu">7.2&nbsp;&nbsp;&nbsp;Example of a new command</h3 class="jdocu">
+
+
+<p>
+This is an example on how to add a command in Python, as it would appear in
+the <tt>commands.py</tt> file of a module's source code subdirectory:
+<p>
+<pre class="jdocu_small" style="color: black">
+# this line imports definitions needed below
+from cli import *
+
+# this is my Python function that will be called when the
+# command is invoked from the Simics prompt.
+def my_command_fun(int_arg, str_arg, flag_arg):
+    print "My integer: %d" % int_arg
+    print "My string: %s" % str_arg
+    print "Flag is",
+    if flag_arg:
+        print "given"
+    else:
+        print "not given"
+    return int_arg
+
+# register our new command
+new_command("my-command", my_command_fun,
+            args  = [arg(int_t, "arg", "?", 10), arg(str_t, "name"),
+                     arg(flag_t, "-f")],
+            alias = "mc",
+            type  = "my-module-commands",
+            short = "my command does it",
+            doc_items = [("NOTE", "This command is best")],
+            see_also = ["my_other_command"],
+            doc = """
+&lt;b&gt;my-command&lt;/b&gt; is best.
+This is its documentation. &lt;i&gt;arg&lt;/i&gt;
+is the first argument...""")
+</pre>
+<p>
+The code above will define a command called <b>my-command</b>. When the
+command is invoked from the Simics command line interface, the function
+<b><i>my_command_fun()</i></b> will be called. The function must take exactly as
+many arguments as the command; in this case 3: an integer, a string, and a
+flag. The first command argument is called "<i>arg</i>" and is optional,
+ indicated by <tt>"?"</tt>. If omitted by the user, the command function will
+be called with the default value, 10. The second argument is called "name" and
+is required (since there is no <tt>"?"</tt>, there is no default value). The
+last argument is a flag and will have a value of 1 if the flag is given,
+otherwise 0. Flags are thus always optional.
+<p>
+If the command function returns a value (a string or an integer) Simics will
+print this value on the terminal or pass it on to other commands as input
+arguments, e.g., <b>print -x (my-command 15 foo)</b>.
+<p>
+Writing <b>help my-command</b> at the Simics prompt will display:
+<p>
+<pre class="jdocu_small" style="color: black">
+NAME
+   my-command - my command does it
+SYNOPSIS
+   my-command [arg] name [-f]
+ALIAS
+   mc
+DESCRIPTION
+   my-command is best. This is its documentation. <i>arg</i> is the first argument.
+NOTE
+   This command is best
+SEE ALSO
+   my_other_command
+</pre>
+<p>
+
+The command can be invoked in different ways, here are some examples:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>my-command 2 foo -f</b>
+My integer: 2
+My string: foo
+Flag is given
+2
+simics&gt; <b>my-command bar</b>
+My integer: 10
+My string: bar
+Flag is not given
+10
+simics&gt; <b>my-command 20 -f</b>
+Argument error: argument number 2 is missing in 'my-command', string expected.
+SYNOPSIS: my-command [arg] name [-f]
+simics&gt; <b>print -x (mc -f name="hello there!" arg = 23)</b>
+My integer: 23
+My string: hello there!
+Flag is given
+0x17
+</pre>
+<p>
+In the last case the alias is used and the command is passed to the
+print command that outputs the value in hexadecimal notation.
+<p>
+All the parameters of the <b><i>new_command()</i></b> function will be
+explained bellow. After the parameter name follows the type of the
+parameter and if the argument is required, recommended, or optional:
+<p>
+<dl><dt><b><b>name</b> &#8212; string (required)</b></dt><dd>First argument (no need to
+write name =) and the name of the command. May include digits and underscores
+as well as dashes. Must begin with a letter.</dd><dt><b><b>fun</b> &#8212; function (required)</b></dt><dd>The command handler
+function that will be called when the command is executed. The number of
+arguments must match the <tt><b>args</b></tt>-list(see below). Since
+new_command is executed when the <tt>commands.py</tt> file is loaded into
+Python the function must be defined before the new_command call, as in the
+example.</dd><dt><b><tt><b>args</b></tt> &#8212; list of argument specifiers (required)</b></dt><dd>This is a list of the arguments given to the command, and must match the
+arguments of the function described above. An argument specifier is created by
+calling the function <b><i>arg()</i></b>. This function takes as arguments a type
+(this is in fact also a function), that is called to handle the
+argument. Examples of available types are <tt>int_t</tt>,
+<tt>str_t</tt>, <tt>addr_t</tt>, <tt>filename_t()</tt>, and
+<tt>flag_t</tt>. See the next section for a discussion of these.
+<p>
+To create an argument list of an integer and a string, use:
+<p>
+<pre class="jdocu_small" style="color: black">
+..., args = [arg(int_t), arg(str_t)], ...
+</pre>
+<p>
+It is, however, recommended that names for the parameters are specified.
+This is done as a second argument for <b><i>arg()</i></b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+..., args = [arg(int_t, "value"), arg(str_t, "file")], ...
+</pre>
+<p>
+This way the documentation of the argument list (<b>help</b> command) will
+use these names and also makes it possible to enter the argument in any
+order at the command line, e.g.,
+<p>
+<pre class="jdocu_small" style="color: black">
+command file = "/tmp/bar" value = 17
+</pre>
+<p>
+The <b>flag</b> type requires the name to be specified and the name must begin
+with a hyphen, e.g., "&#8211;all". The corresponding value passed to the
+command handler function will be 1 if the flag is given on the command line or
+0 otherwise.
+<p>
+The <b>addr</b> type can be used for addresses. It understands argument of
+the form <tt>p:0xcf00</tt> (physical address), <tt>v:0xff00</tt> (virtual
+address), or <tt>0xffdc</tt> at the command line. The command handler
+function will receive a tuple of the prefix and the address, e.g.,
+<tt>("v",
+0xcff0)</tt>. If only the address is given, <tt>"v"</tt> will be used.
+<p>
+Sometimes it is convenient to have other arguments than flags optional. To
+indicate this, add <tt>"?"</tt> as the third argument to <b>arg()</b>, and
+the default value as the fourth; e.g.,
+<pre class="jdocu_small" style="color: black">
+..., args = [arg(int_t, "value", "?", 1),
+             arg(str_t, "file")], ...
+</pre>
+makes <tt>value</tt> an optional argument with 1 as its default value.
+<p>
+The <b><i>arg</i></b> function takes more parameters than those already mentioned:
+<pre class="jdocu_small" style="color: black">
+..., args = [arg(str_t, "cpu",
+             expander = exp_fun,
+             is_a = test_fun)], ...
+</pre>
+<p>
+will connect an argument completion (expander) function for the
+<i>cpu</i> arg, i.e., the function <b><i>exp_fun()</i></b> will be
+called when the user presses the TAB key while entering the argument
+value. The expander function takes an argument representing the text
+the user has written for the argument. For example, if the user
+presses TAB after typing <b>command cpu = ultr</b>, the
+<b><i>exp_fun()</i></b> will be passed <tt>"ultr"</tt> and should return
+a list of strings completing <tt>"ultr"</tt>. Here is an example of an
+expander function:
+<p>
+<pre class="jdocu_small" style="color: black">
+def exp_fun(comp):
+    return get_completions(comp, ["ultraI", "ultraII",
+                                  "ultraIII", "pentium"])
+</pre>
+<p>
+When called with <tt>"ultr"</tt>, it will return <tt>["ultraI", "ultraII",
+"ultraIII"]</tt>.  The get_completions function filters the list and keep
+elements with prefix comp. The expander functions only works for the
+string type for the moment.
+<p>
+The <i>is_a</i> argument takes a function that tests if the
+argument is valid. It should return 1 for valid values and 0
+otherwise. For example the read-reg command has as first argument a
+CPU (optional) and as second argument a register. If a user types
+<b>read-reg g7</b>, CLI will incorrectly interpret g7 as a CPU
+since g7 is a valid string and the command will fail. The
+<b><i>is_a</i></b> function could therefore return 0 for non-CPUs and
+pass the string to the next argument, which will match since
+<tt>g7</tt> is a register.
+<p>
+<b>Polyvalue</b>
+<p>
+A command argument can be of multiple types as well
+(<i>polyvalues</i>). For example,
+<p>
+<pre class="jdocu_small" style="color: black">...,
+args = [ arg((str_t, int_t, flag_t), ("cpu","value","-all"), "?",
+             (int_t, 0, "value"), expander = (exp1, exp2, None)) ],
+...</pre>
+<p>
+will create an argument that is either a string, an integer, or a
+flag. The argument passed to the command handler function is a tuple
+specifying the arg-type, the value, and the name of the
+argument. E.g., <b>command foo</b> will pass <tt>(str_t, "foo",
+"cpu")</tt> to the command handler function. This is why the default
+value looks the way it does. The corresponding expander function will
+also be used. <b>command cpu = abc&lt;tab&gt;</b> will use the
+<tt>exp1</tt> expander. </dd><dt><b><b>doc</b> &#8212; string (required if not doc_with is used)</b></dt><dd>
+<a name="label189"></a>
+This is the documentation of the command. Some simple, HTML-like formatting
+markup can be used, such as <tt>&lt;i&gt;</tt>, <tt>&lt;b&gt;</tt> and
+<tt>&lt;br/&gt;</tt> for
+italic, bold and line-break. A blank line separates paragraphs. Italic
+does not usually work in terminals so underlining will be used instead. Use
+italics when referring to arguments and bold for command names.
+</dd><dt><b><b>type</b> &#8212; string (default is "misc-commands")</b></dt><dd>
+This is the command category that the command belongs to. All
+categories will be listed when the <b>help</b> command is used.
+<b>help</b> <i>category</i> will list all command in that category.
+Any whitespace within this string will be replaced with dashes.
+</dd><dt><b><b>short</b> &#8212; string (recommended)</b></dt><dd>
+A short description of the command used when listing commands
+(e.g. <b>help</b> &#8211;all).
+</dd><dt><b><b>repeat</b> &#8212; function (optional)</b></dt><dd>If such a function is supplied, it will be called when the user
+enters an empty line (i.e., just presses enter) after this command has
+been run. The arguments passed to the <b>repeat</b> function will be
+the same as those of <b>fun</b> (see above). This is used to implement
+the behavior of commands like <b>disassemble</b>, where pressing
+enter after having run one <b>disassemble</b> command disassembles
+the instructions following the last one of the previous command.</dd><dt><b><b>namespace</b> &#8212; string (optional)</b></dt><dd>
+Makes the command a <i>namespace</i> command. Such commands are invoked as a
+method call of the form <tt></tt><em>object</em><tt>.</tt><em>command</em><tt></tt>, e.g.,
+<tt>rec0.playback-start</tt>. This means that the command handler function
+will get the namespace object as first argument (a recorder object) and
+then the rest of the arguments. The namespace string is either the class
+name of the object, e.g., <tt>"recorder"</tt>, or the name of a
+"superclass" of the object, or an interface that the object implements. For
+instance, the class name "processor" is a superclass of any processor,
+e.g., "ultrasparc-ii", and "breakpoint" is an interface that a memory-space
+object implements.
+<p>
+The full name of a namespace command will be &lt;class_or_interface&gt;.command
+(angle brackets included) and this is what is printed when command are
+listed, but as stated above the command is invoked with
+<b>object.command</b>.
+<p>
+Device commands are typically implemented using namespace commands.
+This is because they usually operate on a single configuration object,
+e.g., a MMU or cache object.
+</dd><dt><b><b>doc_with</b> &#8212; string (optional)</b></dt><dd> This argument
+can be specified if a command should be documented together with
+another one. For example the <b>disable</b> command is documented
+with the <b>enable</b> command since they are tightly coupled
+together. So the doc argument is missing for the disable command and
+all documentation is written in the enable command. Note:
+<b>doc_with</b> together with a namespace command  must be
+given as "&lt;class_or_interface&gt;.command" </dd><dt><b><b>alias</b> &#8212; string or list of strings (optional)</b></dt><dd>Specify aliases for this command. Does not work with namespace commands.</dd><dt><b><b>infix</b> &#8212; 0,1 (default 0)</b></dt><dd>Indicates that the command should be an infix command. For example the
+arithmetic command sets this argument to 1.
+</dd><dt><b><b>pri</b> &#8212; integer (default is 0)</b></dt><dd>Sets the priority for the commands, typically only relevant to
+infix commands. For example, <b>*</b> has higher priority than <b>+</b>
+(200 and 100, respectively).</dd><dt><b><b>left</b> &#8212; 0,1 (default 0)</b></dt><dd>If the command is left associative or not (right associative).</dd></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic34.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic36.html">Next</a></span></p>
+</body>
+</html>

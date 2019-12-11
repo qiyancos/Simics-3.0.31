@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Ethernet Links</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(117, true);
+</script>
+<a name="label256"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic39.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic41.html">Next</a></span></p>
+<h4 class="jdocu">9.1&nbsp;&nbsp;&nbsp;Ethernet Links</h4 class="jdocu">
+
+<a name="label257"></a>
+
+<p>
+Connecting simulated machines over a simulated <a name="label258">Ethernet</a>
+connection is done by creating an <b>ethernet-link</b> object
+that connects to the Ethernet devices in the machines.  The link
+object can be thought of as modeling an Ethernet cable that is plugged
+in to the connectors on the devices.
+<p>
+The <a name="label259">link object</a> models Ethernet at the frame level, in that
+it performs delivery of complete frames sent from one device to any
+other device connected to the link, and doesn't model collisions or
+lower-level signaling details.  This means that it can be used either
+to model point-to-point twisted-pair or fiber cables running at any
+speed, or even a 10BASE2 or 10BASE5 traditional coaxial bus, without
+any changes to the model.  Another way of viewing
+<b>ethernet-link</b> is to see it as an Ethernet hub or switch
+to which can be connected two or more devices.
+<p>
+Traffic sent over the link can be anything, including
+<a name="label260">TCP/IP</a> or any other protocol stack that works on top of
+Ethernet.  The link object doesn't need to be configured with any
+information about how it will be used.
+<p>
+New <b>ethernet-link</b> objects can be added with the
+<b>new-ethernet-link</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic39.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic41.html">Next</a></span></p>
+</body>
+</html>

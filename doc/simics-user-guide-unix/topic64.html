@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Data Profiling</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(183, true);
+</script>
+<a name="label437"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic63.html">Previous</a> - <a class="jdocu" href="topic62.html">Up</a> - <a class="jdocu" href="topic65.html">Next</a></span></p>
+<h4 class="jdocu">13.2&nbsp;&nbsp;&nbsp;Data Profiling</h4 class="jdocu">
+
+    
+<p>
+    In addition to recording branches, Simics can record memory reads and
+    writes by physical address&#8212;all of it simultaneously if you like.
+    Start it like this:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.add-memory-profiler read</b>
+    [cpu0] New read memory profiler added: cpu0_read_mem_prof
+    </pre>
+<p>
+    This creates a new data profiler called <b>cpu0_read_mem_prof</b>,
+    which will keep track of all reads performed by <b>cpu0</b> until you
+    detach it:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.remove-memory-profiler read</b>
+    </pre>
+<p>
+    Like branch recorders, data profilers retain their recorded data after
+    being detached, and may be reattached later. They may also be attached to
+    another processor, even while they are still attached to the first one.
+<p>
+    And, like branch recorders, data profilers are also address profilers. This
+    means that while they may be different under the hood, they present their
+    data the same way:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0_read_mem_prof.address-profile-info</b>
+    cpu0_read_mem_prof has 1 address profiler view:
+    View 0: data profiler
+       64-bit addresses, granularity 32 bytes
+    </pre>
+<p>
+    However, unlike branch recorders, data profilers can only record
+    physical addresses.
+<p>
+    Section <a class="jdocu" href="topic65.html#label438">13.3</a> explains how to access the
+    recorded data.
+<p>
+    Cache models provide profiling on cache hits and misses. See
+    chapter <a class="jdocu" href="topic86.html#label517">18</a> for more information.
+    <p>
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic63.html">Previous</a> - <a class="jdocu" href="topic62.html">Up</a> - <a class="jdocu" href="topic65.html">Next</a></span></p>
+</body>
+</html>

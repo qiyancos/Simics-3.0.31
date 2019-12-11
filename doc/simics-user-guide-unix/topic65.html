@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Examining the Profile</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(184, true);
+</script>
+<a name="label438"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic64.html">Previous</a> - <a class="jdocu" href="topic62.html">Up</a> - <a class="jdocu" href="topic66.html">Next</a></span></p>
+<h4 class="jdocu">13.3&nbsp;&nbsp;&nbsp;Examining the Profile</h4 class="jdocu">
+
+    
+<p>
+    Examining the collected profile is the same for any address profiler, no
+    matter if it is really a data profiler, a branch recorder, or something
+    else. For the examples, we use the branch recorder from section <a class="jdocu" href="topic63.html#label434">13.1</a>.
+<p>
+    Run a few million instructions or so with the branch profiler attached to
+    the processor to get some data to look at, and then type:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0_branch_recorder.address-profile-data</b>
+    View 0 of cpu0_branch_recorder: execution count
+    64-bit physical addresses, profiler granularity 4 bytes
+    Each cell covers 36 address bits (64 Gigabytes).
+
+    column offsets:
+          0x1000000000*    0x0    0x1    0x2    0x3    0x4    0x5    0x6    0x7
+    ---------------------------------------------------------------------------
+    0x0000000000000000: 17000k      .      .      .      .      .      .      .
+    0x0000008000000000:      .      .      .      .      .      .      .      .
+    0x0000010000000000:      .      .      .      .      .      .      .      .
+    0x0000018000000000:      .      .      .      .      .      .      .      .
+    0x0000020000000000:      .      .      .      .      .      .      .      .
+    0x0000028000000000:      .      .      .      .      .      .      .      .
+    0x0000030000000000:      .      .      .      .      .      .      .      .
+    0x0000038000000000:      .      .      .      .      .      .      .      .
+    0x0000040000000000:      .      .      .      .      .      .      .      .
+    0x0000048000000000:      .      .      .      .      .      .      .      .
+    0x0000050000000000:      .      .      .      .      .      .      .      .
+    0x0000058000000000:      .      .      .      .      .      .      .      .
+    0x0000060000000000:      .      .      .      .      .      .      .      .
+    0x0000068000000000:      .      .      .      .      .      .      .      .
+    0x0000070000000000:      .      .      .      .      .      .      .      .
+    0x0000078000000000:      .      .      .      .      .      .      .    141
+
+    16999781 (17000k) counts shown. 0 not shown.
+    </pre>
+<p>
+    (View 0 is the default, so we did not have to specify it explicitly.) This
+    gives us an overview of the address space. Since we did not specify what
+    address interval we wanted to see, we got the smallest interval that
+    contained all counts. By giving arguments to
+    <b>address-profile-data</b>, we can zoom in on the interesting part
+    where almost all the action is. A few orders of magnitude closer, it looks
+    like this:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0_branch_recorder.address-profile-data address = 0x1f800000 table-bits = 19</b>
+    View 0 of cpu0_branch_recorder: execution count
+    64-bit physical addresses, profiler granularity 4 bytes
+    Each cell covers 12 address bits (4 kilobytes).
+
+    column offsets:
+                0x1000*    0x0    0x1    0x2    0x3    0x4    0x5    0x6    0x7
+    ---------------------------------------------------------------------------
+    0x000000001f800000:     31    760      .      .      .      .  9472k 204633
+    0x000000001f808000:  14380  39728    420      1   2751  38226 119215 560668
+    0x000000001f810000:    375    301  5979k   1036      .      .      .      .
+    0x000000001f818000:      .      .    390      .      .      .      .      .
+    0x000000001f820000:      .      .      .      .      .      .      .      .
+    0x000000001f828000:      .      .      .      .      .      .      .      .
+    0x000000001f830000:      .      .      .      .      .      .      .      .
+    0x000000001f838000:     16      .      .      .      .      .      . 129960
+    0x000000001f840000:  16048 194576  12930      .      .      .      .      .
+    0x000000001f848000:      .   1264    152      .      .  18930  12338 174868
+    0x000000001f850000:   5736      .      .      .      .      .      .      6
+    0x000000001f858000:     52      .      .      .      .      .      .      .
+    0x000000001f860000:      .      .      .      .      .      .      .      .
+    0x000000001f868000:      .      .      .      .      .      .      .      .
+    0x000000001f870000:      .      .      .      .      .      .      .      .
+    0x000000001f878000:      .      .      .      .      .      .      .      .
+
+    16999640 (17000k) counts shown. 141 not shown.
+    </pre>
+<p>
+    Here, we have zoomed in on the 19 bits of address space containing the
+    address 0x1f800000. It is also possible to specify exactly what address
+    interval you are interested in; see the <em>Simics Reference
+    Manual</em> or the online help for <b>address-profile-data</b>.
+<p>
+    If you want to see the current numbers every time you disassemble code, use
+    the command <b>aprof-views</b> to select the views you want:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.aprof-views add = cpu0_branch_recorder view = 0</b>
+    simics&gt; <b>si 5</b>
+    [cpu0] &lt;v:0x00000000f00066b4&gt; &lt;p:0x000000001f8066b4&gt; 1183160 sllx %o1, 63, %o1
+    [cpu0] &lt;v:0x00000000f00066b8&gt; &lt;p:0x000000001f8066b8&gt; 1183160 jmpl [%o7 + 8], %g0
+    [cpu0] &lt;v:0x00000000f00066bc&gt; &lt;p:0x000000001f8066bc&gt; 1183160 andn %o0, %o1, %o0
+    [cpu0] &lt;v:0x00000000f0012358&gt; &lt;p:0x000000001f812358&gt; 1181028 cmp %o0, %i0
+    [cpu0] &lt;v:0x00000000f001235c&gt; &lt;p:0x000000001f81235c&gt; 1181028 bcs,pt %xcc, 0xf0012350
+    </pre>
+<p>
+    Note that since the disassembly printed by commands such as <b>c</b>
+    and <b>si</b> are the instruction just about to execute, the statistics
+    reflect the way things were immediately before that instruction executed.
+<p>
+    For most real-world profiling tasks, the above methods of looking at
+    profile data are inadequate. Unfortunately, Simics does not currently offer
+    a way to display large sets of profiling data in a user-friendly way; what
+    it does offer is a few primitive operations (such as accessing individual
+    counters and summing all counters in an interval) that users can call from
+    their own scripts. See the Profiling API section in the <em>Simics
+    Reference Manual</em> for details.
+<p>
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic64.html">Previous</a> - <a class="jdocu" href="topic62.html">Up</a> - <a class="jdocu" href="topic66.html">Next</a></span></p>
+</body>
+</html>

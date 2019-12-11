@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_handle_interrupt()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(68, true);
+</script>
+<a name="label350"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic38.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic40.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_handle_interrupt()</h4 class="jdocu">
+
+<a name="label351"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label352"></a><b>SIM_instruction_handle_interrupt</b> &#8212; handle interrupt</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_handle_interrupt(conf_object_t *cpu,
+                                 exception_type_t vector);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Interrupts are caught in the Micro Architectural Interface by
+   installing an callback handler on the Core_Asynchronous_Trap hap.
+   This callback will be called when an interrupt or an asynchronous
+   trap occurs. The callback gets the interrupted CPU and the trap
+   vector number associated with the interrupt as arguments (see the
+   hap documentation for details).
+<p>
+   To handle the interrupt <b><i>SIM_instruction_handle_interrupt</i></b> should
+   be called with the CPU and the trap vector as arguments.  The effect of this
+   call is to set the program counter to the first instruction in the
+   corresponding trap handler and to update other architectural state that are
+   affected when an interrupt occurs.
+<p>
+   Currently the instruction tree needs to be empty when an interrupt
+   is handled. This is achieved either by squashing all instructions
+   or letting all of them commit before
+   <b><i>SIM_instruction_handle_interrupt</i></b> is called.
+<p>
+   Interrupts may be disabled (by software or hardware) after the hap triggers
+   but before <b><i>SIM_instruction_handle_interrupt</i></b> is called, if this is
+   the case <tt>Sim_IE_Interrupts_Disabled</tt> will be returned. The
+   interrupts should then be handled as soon as the interrupts are enabled
+   again.</dd>
+
+<p>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+<tt>Sim_IE_OK</tt> on success,<br>
+                           <tt>Sim_IE_No_Exception</tt> if vector is <tt>No_Exception</tt>,<br>
+                           <tt>Sim_IE_Interrupts_Disabled</tt> if interrupts are disabled,<br>
+                           <tt>Sim_IE_Illegal_Interrupt_Point</tt> if trying to handle 
+                           an interrupt when the instruction queue is not empty.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic38.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic40.html">Next</a></span></p>
+</body>
+</html>

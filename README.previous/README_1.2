@@ -1,0 +1,1039 @@
+NOTES ON 1.2
+============
+
+General:
+--------
+
+This is Simics 1.2. It contains eight target architectures: Alpha, AMD x86-64,
+ARM, IA-64, MIPS, PowerPC, UltraSPARC, and x86.
+
+This file first includes a change list for 1.2 releases, then a change list
+relative 1.2.0 and the last release of the development branch (1.1) of Simics.
+Next follows a change list since the last stable Simics version, namely 1.0.
+This second list only contains items introduced during the 1.1 development.
+
+
+Changes between 1.2.11 and 1.2.12
+---------------------------------
+
+ * UltraSPARC targets only: Various floating point bugfixes.
+
+ * X86 targets only: Bugfix in the POPF instruction in V86 and EV86 mode.
+
+ * UltraSPARC targets only: Correct decoding of illegal 'rd' instruction.
+
+ * Generic-cache: 
+   - generic-cache will try to compute miss ratios even
+     when the STC is used to improve simulation speed.
+   - bugfix for write-back transactions passed to next cache
+     (cache generated transactions have an id != 0)
+   - bugfix for multiple blocking write-back transactions
+
+ * Sparc U3 Cache
+   - bugfix for instruction misses
+   
+
+Changes between 1.2.10 and 1.2.11
+---------------------------------
+
+ * Behavior changes in the 8259 interrupt controller and a few other devices
+   that are connected to such a controller. The 8259 is the classic interrupt
+   controller which is typically found in the south bridge of a PC system.
+
+ * Bugfix in the PIIX4 device.
+
+ * Fix in all VGA compatible devices, allowing larger sized accesses to/from
+   VGA video memory.
+
+ * ATAPI command 0xA8, Read (12), implemented in the ide-cdrom class.
+
+ * More cases of ATAPI command 0xBE, Read CD, implemented in the ide-cdrom
+   class.
+
+ * Updated x86 BIOS (rombios-2.34).
+
+
+Changes between 1.2.9 and 1.2.10
+--------------------------------
+
+ * New attribute 'send_delay' in the DEC21xxx network adapters.
+
+ * New attributes 'send_delay' and 'poll_delay' in the AM79C90 and AM79C960
+   network adapters.
+
+ * New commands '<image>.save-diff-file', and '<image>.add-file-file' that
+   simplify the process of saving modified disk contents, and adding the
+   changes to the configuration in future sessions. The same commands are also
+   available in the <scsi-disk> and <ide-disk> namespaces.
+
+ * The profiling commands 'print-profile', 'prof-page-details' and
+   'prof-page-map' are now  included for x86 targets also.
+
+ * UltraSPARC targets only: The 'control_registers' attribute in the cpu class
+   is now integer and string indexed.
+
+ * IA-64 target only: Bugfix in instruction fetching, where some
+   fetches would not be propagated to the snoop interface.
+
+ * IA-64 target only: The ia64-itanium model now uses 96 physical
+   stacked registers, to more closely model the Itanium.
+
+
+Changes between 1.2.8 and 1.2.9
+-------------------------------
+
+ * Support for user defined version numbers (or strings) in loadable modules.
+   A version number can be specified by setting the USER_VERSION define in
+   MODULE_CFLAGS in the module Makefile. The version number will be printed
+   by the 'list-modules' and 'list-failed-modules' commands.
+   Example: MODULE_CFLAGS = -DUSER_VERSION=1.1
+
+ * X86 targets only: the memory transaction structure now includes memory type
+   information in the pat_type, mtrr_type, and effective_type fields.
+
+ * X86 targets only: PAT and MTRR memory type info now stored in the
+   tlb attributes.
+
+ * UltraSPARC targets only: disassembling on physical addresses now works
+   correctly.
+
+ * Generic-cache: Fixed a bug where non-stallable memory transactions would
+   be blocked by the cache but never reissued so that old transactions would
+   stay in the queue.
+
+
+Changes between 1.2.7 and 1.2.8
+-------------------------------
+
+ * Updated x86 BIOS (rombios-2.33). Notable changes:
+    - INT 15h, subfunction 87h.
+    - A20 gate handling (now uses port 92h).
+    - Hyperthreading support.
+
+ * SunFire and Serengeti targets only: The Solaris 9 dumps are now default. To
+   use the new sarek or donut scripts with the old Solaris 8 dump, add the line
+   "@boot_sol8 = 1" before the "<machine>-common.simics" script is included.
+
+ * SunFire and Serengeti targets only: Updated scripts for installing
+   Solaris 9.
+
+ * SunFire and Serengeti targets only: The sarek and donut machines now support
+   booting with DHCP. Add the line "@use_dhcp = 1" before including the
+   "<machine>-common.simics" script. Requires new disk-diff files that can be
+   downloaded from www.simics.net.
+
+ * SunFire target only: The pgx64 graphics device was updated to work with
+   Solaris 9.
+
+ * UltraSPARC III target only: Demap bugfix in the MMU.
+
+ * UltraSPARC targets only: Bugfix in MMU inquiry commands.
+
+ * UltraSPARC targets only: Clear fp exception bugfix.
+
+ * IA-64 target only: Fixed a bug where entries were missing in instruction
+   traces.
+
+ * X86 targets only: legacy floating point (x87) bugfixes.
+
+ * X86 targets only: Bugfix in the AM79C960 device on big-endian (SPARC) hosts.
+
+ * Generic-cache: Fixed a bug where some instruction fetches could be
+   hidden from the cache if ISTC was enabled.
+
+
+Changes between 1.2.6 and 1.2.7
+-------------------------------
+
+ * The SYM53C810/875 SCSI controllers will no longer stall the script core
+   when executing "select" instructions. This should fix compatibility issues
+   with Linux's new sym53c8xx_2 driver.
+
+ * IA-64 target only: The Vasa configuration scripts have been updated to
+   support target configurations with more than 4 GB of RAM.
+
+ * IA-64 target only: The ia64-fakeprom has been updated to support target
+   configurations with more than 4 GB of RAM.
+
+ * IA-64 target only: BSPSTORE is now updated when RNAT is written to backing
+   store.
+
+ * IA-64 target only: The IA64 processor class now implements an
+   "execute-snoop" interface to track slot execution.
+
+ * IA-64 target only: The trace module has been updated to track slot execution
+   (using the new "execute-snoop" interface above). (This is enabled by
+   defining the PATCH_41_EXECUTION_SNOOPER macro and recompiling the trace
+   module).
+
+ * IA-64 target only: Fixed a bug where an internal optimization mechanism
+   (for runs of nop instructions) was used, even when instruction profiling was
+   enabled.
+
+ * IA-64 target only: The control-register-read and control-register-write haps
+   are now implemented for AR and CR registers.
+
+ * IA-64 target only: Fixed a bug where the snoop interface sometimes
+   registered multiple i-transactions related to the first slot of an istc line
+   (if this slot contained a move-to/from-ar or branch instruction).
+
+ * IA-64 target only: Fixed a bug where the most significant and the least
+   significant word of an IA64 bundle was presented in the wrong order.
+
+ * IA-64 target only: Fixed an internal buffer overflow (this problem
+   arise from the 16 byte bundle size).
+
+ * SunFire and Serengeti targets only: The Solaris 9 scripts and dumps
+   described in the target guides are not yet included.
+
+ * UltraSPARC targets only: New set_error() function in the MMU interface used
+   by the Simics cpu core to set MMU error registers.
+
+ * UltraSPARC targets only: The 'ldqf', 'ldqfa', 'stqf', 'stqfa' instructions
+   never generate Fp_Disabled trap anymore.
+
+ * UltraSPARC targets only: Reserved FP opcodes generate the 'Fp_Disabled' trap
+   when floating point is disabled, instead of 'Fp_Exception_Other' (ftt=
+   unimplemented_FPop).
+
+ * UltraSPARC targets only: FMOVcc with opf_cc=101 now generates the
+   'Fp_Exception_Other' (ftt=unimplemented_FPop) trap correctly.
+
+ * UltraSPARC targets only: Bugfix: The %fsr.ftt and %fsr.cexc fields were not
+   cleared correctly after some non-trapping FPop instructions.
+
+ * UltraSPARC targets only: Changes to the handling of floating point
+   exceptions for scalar floating point operations. The fp_follow_errata_69
+   attribute now also applies to the overflow case, and an IEEE_754_exception
+   trap will now occur in the cases when fp_follow_errata_69 is applicable.
+
+ * UltraSPARC targets only: Bugfix: Stalling prefetch instructions could
+   trigger an assertion in Simics.
+
+ * New attribute in all SCSI units: "vendor_specific_id" that is often used as
+   a serial id of a unit, and returned by the SCSI command 'INQUIRY'.
+
+ * New module "id-splitter" included with sources.
+
+ * Support for special files (e.g. /dev/fd0) in the '<i82077>.insert-floppy'
+   command.
+
+ * New flag '-rw' added to the '<i82077>.insert-floppy' command.
+
+ * New attribute 'kbd_type' in the x11-console class, allowing users to
+   override the automatic keyboard detection.
+
+ * Fixed keyboard bug that caused the 'y' key to produce 'z' on some hosts.
+
+ * X86 target only: A bug was fixed with stalling memory operations that
+   caused older operations to be re-sent to timing models.
+
+ * Bugfix in craff compression for files with holes.
+
+ * generic-cache now also gathers statistics about memory operations with the
+   may_stall bit cleared.
+
+
+Changes between 1.2.5 and 1.2.6
+-------------------------------
+
+ * SunFire and Serengeti targets only: Updated Target Guides.
+
+ * Support for some Sun Vendor specific DHCP options in Simics Central,
+   allowing Solaris to boot over a network using DHCP instead of
+   RARP/bootparam. The 'bootparam-root' command was changed to 'root-server',
+   and a new command 'install-server' was added.
+
+ * Bugfix in the whoami bootparam (Sun RPC) handling in Simics Central. This
+   is used by the network installation in Solaris.
+
+ * X86 targets only: CPU bugfixes (iretd, far call, interrupt handling, expand
+   down segments, segmentation checks in real and v86 mode, fwait, disp32[ebp]
+   addressing mode).
+
+ * Support for different floppy sizes in the '<i82077>.insert-floppy' command.
+
+ * Bugfixes in the 82077 device, allowing WinXP to use a floppy.
+
+ * Initialization bugfix in the 8259x2 device.
+
+ * Bugfix in <ide-cdrom>.eject command.
+
+ * SPARC targets only: The fsr.ftt field is now read-only.
+
+ * SPARC targets only: Bugfix: fsr.ftt wasn't cleared by some fp instructions.
+
+ * SPARC targets only: 'prefetcha' never traps in non-privileged mode anymore.
+
+ * SPARC targets only: New cpu object (pseudo) attribute 'extra_irq_enable'
+   that is used together with pstate.ie to enable/disable interrupts.
+
+ * IA-64 target only: The fakeprom has been updated for compatibility with the
+   latest kernel (2.4.18 with the ia64-020508 patch).
+
+ * IA-64 target only: More instructions are now implemented.
+
+
+Changes between 1.2.4 and 1.2.5
+-------------------------------
+
+ * Checkpointing bug in the Voodoo3 devices fixed.
+
+ * The 'symtable' module is now supported on Win32 host.
+
+ * Serengeti target only: Support for UltraSPARC III+.
+
+ * SunFire and Serengeti targets only: New scripts for installing Solaris 9
+   from CD-ROM. Tested with the "Early Access" version of Solaris.
+
+ * SPARC targets only: Prefetch operations are always visible to memory
+   hierarchies. The 'simulate-prefetch' command has been removed.
+
+ * SPARC targets only: New cpu object attribute 'impl_dep_125_no_clear'.
+
+ * SPARC targets only: Alignment check bugfix in the following instructions:
+   'ldd','ldda', 'std' and 'stda'.
+
+ * SPARC targets only: Large page demap bugfix.
+
+ * UltraSPARC III target only: Strong and weak prefetch is handled correctly.
+
+ * Bugfix in the SCSI command 'MODE SENSE'.
+
+ * 64-bit hosts only: Bugfix in the 'os_time' functions.
+
+ * IA-64 target only: TC size is increased to 512 entries.
+
+
+Changes between 1.2.3 and 1.2.4
+-------------------------------
+
+ * Text-console support on Win32 host.
+
+ * New targets on Win32 host: MIPS, PM-PPC, Serengeti, SunFire.
+
+ * Correct handling of the simics_path attribute when moving configuration
+   files from Unix hosts to Windows.
+
+ * The Simics makefiles have been changed to allow compiling using the "-j"
+   option (for parallel make).
+
+ * New command added: '<i82077>.insert-floppy <drive-letter> <image-file>'
+
+ * IA-64 target only: Bugfix in the 'fmax' instruction.
+
+ * IA-64 target only: Bugfix in the 'fcmp.eq' instruction.
+
+ * IA-64 target only: lfetch will no longer incorrectly (regardless of the
+   ".fault" completer) signal faults.
+
+ * SunFire and Serengeti targets only: Updated scripts for running with the new
+   generic-cache. 'donut-[1|4]p-cache.simics' 'sarek-[1|4]p-cache.simics'.
+
+ * Serengeti target only: New module 'sparc-u3-cache'.
+
+ * SunFire target only: The PCI board contains the correct on-board devices.
+   More information is available in the "SunFire Target Guide".
+
+ * SPARC targets only: 'bpn', 'bpa' causes 'Illegal_Instruction' trap for
+   illegal values of the 'cc' field.
+
+ * SPARC targets only: The 'rdpr %fq' instruction triggers 'Privileged_Opcode'
+   instead of 'Illegal_Instruction' when pstate.priv = 0.
+
+ * SPARC targets only: Attribute 'fp_follow_errata_69' added to the cpu class.
+
+ * SPARC targets only: Multiple bits in fsr.cexc for 'fp_exception_IEEE_754'
+   trap bug fixed.
+
+ * SPARC targets only: 'LDFA' instruction bugfix.
+
+ * 3D support enabled (again) in the Voodoo3 device. (Not yet on Win32 host).
+
+ * Remote debugging support with eXdi now included in all Win32 hosted
+   x86-64 packages (see README.eXdi).
+
+ * The gdb-remote module now supports changing which TCP/IP port it should
+   listen to. Instead of loading the gdb-remote module explicitly, use the
+   "gdb-remote" command-line command. See the Simics User Guide, chapter
+   "Debugging Tools"/"Using GDB with Simics".
+
+ * Simics Central doesn't quit when the last Simics exits, unless when running
+   in 'batch-mode'.
+
+ * The NS16450 serial device doesn't stop the simulation on non-supported
+   accesses anymore.
+
+
+Changes between 1.2.2 and 1.2.3
+-------------------------------
+
+ * IA-64 target only: Improved support for floating-point instructions.
+
+ * New command 'grab-setup' in the graphic consoles, that can be used to select
+   what mouse button, and key modifier that is used to toggle input grabbing.
+
+ * Simics will look for license files in the directory 'simics-1.2.x/licenses'.
+
+ * New 'batch_mode' attribute in the 'sim' object.
+
+ * Initial 64-bit addressing support in the ISP1040 SCSI controller.
+
+ * Bugfixes in proxy object handling.
+
+ * The "Address Decode Enable" bit in "Expansion ROM Base" register for PCI
+   devices is correctly checked before creating memory mappings.
+
+ * 0-sized operations will now be sent to snoop devices as well as timing
+   models.
+
+ * SPARC targets only: gdb-remote will now "fake" RAM contents to match
+   register window contents to trick GDB into believing all register windows
+   have been spilled to memory, which makes stack traces work correctly.
+
+ * Some commands have got their output columnized, and Simics will now utilize
+   the whole terminal width (for such tabular data). Cf. the
+   SIM_set_screen_size() API function.
+
+ * Added support for the 'scsi-target' and 'scsi-bus' interfaces in the
+   proxy-server and proxy-class modules.
+
+ * New target/host combinations: PPC on Solaris 8 and x86-64 on Solaris 8.
+
+ * IA-64 target only: Several bugfixes in the snoop interface.
+   Instruction fetches are now issued when execution crosses
+   instruction profile lines.
+
+ * IA-64 target only: The new trace module is rewritten to reflect
+   IA-64 bundles correctly.
+
+ * Missing file "mod_trace_old_commands.py" is now included.
+
+ * IA-64 target only: Fixed bug related to execution breakpoints at
+   instruction profile line crossings.
+
+
+Changes between 1.2.1 and 1.2.2
+-------------------------------
+
+ * Updated User Guide, with several new sections.
+
+ * Some more commands and registers implemented in the ISP1040 SCSI controller.
+
+ * New Simics installation script for Linux and Solaris hosts, that remembers
+   tf128 keys between runs.
+
+ * SPARC targets only: 0-sized atomic-last memory operations of the cas[x]a
+   instructions now have the may_stall bit cleared.
+
+ * FGCC now sends ASI numbers as well for Simics-initiated loads and stores.
+
+ * The command "plain-symbols" was added to the symtable module, to read
+   symbols from text files.
+
+ * Python memory corruption bug when using Nil values fixed. Pseudo
+   attributes implemented in python should therefore work again (used
+   by cdrom installation script cdrom_install.simics).
+
+ * New haps for x86 targets: Core_Misplaced_Rex, Core_Pseudo_Exception.
+
+ * X86 targets only: Attribute catch_misplaced_rex_prefix removed. Use
+   the Core_Misplaced_Rex hap instead.
+
+ * SPARC targets only: Window traps causing RED_state entry correctly sets cwp.
+
+ * SPARC targets only: The %ver register reports the correct value of MAXTL.
+
+ * X86 targets only: The parameter copy bug that was triggered by a
+   far call through a gall gate (with parameter copy) has been fixed.
+
+
+Changes between 1.2.0 and 1.2.1
+-------------------------------
+
+ * The SCSI commands 'RESERV' and 'RELEASE' were implemented for SCSI devices.
+
+ * The EXTRA_VPATH, when compiling modules in a 'user-install' environment, is
+   now also set to directories in the master source tree.
+
+ * Support for distributed 'quit' in a simulation was added to simics-central.
+
+ * FGCC's simics_connect_ext_mem_bus() function was changed. You now have to
+   specify the communication mode (semaphores for single processor machines,
+   or spinlocks for multiprocessor machines), and the maximum number of
+   concurrently outstanding operations.
+
+ * A "disconnect" command was added to external-memory-bus objects.
+
+ * Sparc-V9 targets only: Widening floating point multiplication bugfix.
+
+ * SunFire target only: The clock-board is now mapped into the local space for
+   all boards, allowing linux to boot with more that 2 processors.
+ 
+ * The middle mouse button can now be used in the graphics-console by setting a
+   modifier key that must be pressed for input grab toggling. The modifier is
+   set with the 'grab_modifier' attribute. One of 'shift', 'alt' and 'control'
+   can be used.
+
+ * Logical destination FFh on the APIC bus now matches all APICs indedendent of
+   their destination format and logical destination register settings.
+
+ * X86 targets only: Bug in PSHUFHW and PSHUFLW fixed.
+
+ * A bug which caused Simics to print disassembly of lines whenever
+   returning from a SIM_continue() was fixed.
+
+ * The graphics-console will stop grabbing input if Simics returns to prompt.
+
+Simics 1.2.0
+============
+
+Changes between 1.1.9 (last 1.1 version) and 1.2
+------------------------------------------------
+
+ * The IA-64 target has received a number of improvements to make it more
+   complete and to improve performance.
+
+ * Simics' output handling has been rewritten to allow multiple output
+   listeners. To support this, a number of C library functions have been
+   #define:d to call Simics internal output handlers. See the SIM_write(),
+   SIM_add_output_handler(), and SIM_BC_NO_STDOUT_REDEFINE entries in the
+   Reference Manual for the details.
+
+ * Sparc target only: The number of register windows in a processor can be set
+   to any value between 3 and 32.
+
+ * New options to the user-install.sh script -f (force) and -b (batch). The
+   script now also accepts an absolute path as destination.
+
+ * Sparc target only: Accesses to ASIs without any handler installed are now
+   sent to the MMU using a new function in the mmu-interface.
+
+ * Sparc target only: Better privilege check when accessing memory ASIs.
+
+ * SunFire and Serengeti: A python function "user_config" can be defined before
+   including the common scripts for sarek, donut and bagle. This function will
+   be called after the configuration is created in python, but before it is set
+   in Simics. Example of this can be found in 'donut-1p-fb.simics'.
+
+ * Sparc target only: The maximum number of trap levels for a cpu can be set
+   with the 'max-trap-levels' attribute. Values between 4 and 10 are accepted.
+
+ * Sparc target only: The two API functions: SIM_get_control_register_name()
+   and SIM_get_control_register_number() now takes a processor pointer as first
+   argument.
+
+ * Sparc target only: external-memory-bus objects will now cause an
+   ExtMemBus_Lost_Connection hap if it looses connection to the connected
+   external program.
+
+ * SunFire and Serengeti targets: Simics script for the second part of the
+   Solaris 8 CD installation added. The install scripts have also been tested
+   with Solaris 8 2/02.
+
+ * Unix host only: The "pipe" CLI command was added, which lets you pipe the
+   output of a Simics command through another process.
+
+ * New haps: "Core_Write_Configuration" and "Core_Simulation_Stopped". Also,
+   the description of the "Core_Back_To_Front" was corrected (cf. its entry in
+   the "Simics Reference Manual").
+
+ * The memory_transaction generated by a flush instruction on UltraSPARC II now
+   has the flushed data associated with it.
+
+ * stepi and step-cycle with a supplied "count" argument will now stop if the
+   simulation is requested to stop by hitting a breakpoint or similar.
+
+ * The struct map_list definition was exported in the Simics header files; see
+   the "Simics Reference Manual" for its layout.
+
+ * UltraSPARC II target only: jmpl/return to "VA hole" sets tpc, tpnc
+   correctly. The size of the virtual address space can be set with the
+   'va_bits' attribute.
+
+ * X86 targets only: The FXRSTOR bug and the read/modify/write exception bug
+   fixed (both introduced in the 1.1 series)
+
+ * Cross-page instruction handling bugfix (for all x86 targets).
+
+ * The API function SIM_infinite_loop() was removed.
+
+ * FGCC now has support for external PCI devices.
+
+ * The return value from CLI commands will no longer be printed on the console
+   when executing commands from a file; i.e., when !SIM_is_interactive().
+
+Changes between 1.0 and 1.2
+---------------------------
+
+Incompatibilities:
+------------------
+
+ * The list of classes that a user-written modules implements should be
+   specified in the make variable MODULE_CLASSES instead of the pre-processor
+   define MODULE_CONF_CLASSES.
+
+ * The module make environment has changed slightly. Modules must now be
+   listed in the simics/config/modules.list.<dist> file. Also some of the make
+   variables are now obsolete such as MODULE_ARCHS, FILENAME, MODULE_HOST and
+   MODULE_HOST_UNAVAIL. Any target defines (TARGET_...) should not be set in
+   the MODULE_CFLAGS anymore. They are set correctly based on the entry in the
+   modules.list file. All this is documented in the User Guide.
+
+ * The 'init_local' and 'fini_local' functions in user-written modules should
+   not be static anymore.
+
+ * The Simics environment variables cannot be used to set values in Simics
+   anymore. Instead they are local to CLI but can be accessed from Python via
+   a name-space called simenv. Thus setting the variables
+   $sim_icode_dump_freq, $sim_no_magic_breakpoint or, $simerrmax will not
+   change the behaviour of Simics. The environment variables should be used to
+   store temporally values in CLI and/or pass them to/from Python.
+
+ * The weighted sum variables are replaced by SIM_set_profile_weight and
+   SIM_get_profile_weight.
+
+ * The int, str, flag and addr types used when creating new commands has been
+   replaced by int_t, str_t, flag_t and addr_t due to name clashes in
+   Python. Old code should work but Simics will print an error message.
+
+ * SIM_hap_new_type() takes different arguments to give better support for
+   unified help texts about haps.
+
+ * SIM_load_kernel() has been removed. It has been replaced with
+   SIM_load_binary().
+
+ * The since long obsolete SIM_cpu_local_time() was removed. SIM_cycle_count()
+   should be used instead.
+
+ * The 64-bit Sun/Workshop compiled version now requires Solaris 8 to run.
+
+ * SIM_gmtime() and SIM_timegm() have been removed and replaced by the
+   might-be-deprecated functions os_gmtime() and os_timegm().
+
+ * An initiator argument was added to the access_simple() method of the
+   "lookup" interface (used by the memory-space class). To get the old
+   behavior, use NULL.
+
+ * The new '-batch-mode' startup flag replaces '-quit-on-error' (that will
+   continue to work for some time). With -batch-mode set, Simics will quit
+   with a non-zero value on errors or if the simics-script returns too
+   early. It will quit with zero as return value when returning to prompt and
+   the full script has run.
+
+ * Simics in batch-mode will quit with an error if a Python exception occurs
+   that is not caught by the the frontend script.
+
+ * New Simics API function SIM_log_constructor() should be used instead of
+   log_constructor().
+
+ * The following haps are called with a processor pointer as first argument:
+   + Core_Exception
+   + Core_Exception_Return
+   + Core_Software_Trap
+   + Core_Control_Register_Read
+   + Core_Control_Register_Write
+   + Core_Step_Count
+   + Core_Cycle_Count
+   + Core_Periodic_Event
+   + Core_Magic_Instruction
+
+ * The generic_transaction struct fields "type", "read_or_write", and
+   "data_or_instr" are now deprecated. Instead of reading these, use the
+   predicate functions SIM_mem_op_is_data(), SIM_mem_op_is_instruction(),
+   SIM_mem_op_is_read(), SIM_mem_op_is_write(), and SIM_get_mem_op_type(). The
+   latter returns a mem_op_type_t (which is what the "type" field contains) -
+   an enum containing the following transaction types:
+
+        Sim_Trans_Load,
+        Sim_Trans_Load_Unsigned,
+        Sim_Trans_Prefetch,                     /* Do not affect any register
+                                                 * or memory, just change cache
+                                                 * contents */
+        Sim_Trans_Instr_Decode                  /* Load performed by the simics
+                                                 * decoder, this should really
+                                                 * be an inquiry, but currently
+                                                 * it isn't */
+        Sim_Trans_Cache_Flush
+        Sim_Trans_Instr_Fetch
+        Sim_Trans_Store
+
+   Instead of assigning values to the three deprecated fields, use the
+   SIM_set_mem_op_type() function, which also takes a mem_op_type_t.
+
+   For now, the three fields will remain in the generic_transaction struct,
+   but they will be removed in future versions of Simics, so you should
+   convert your code to using the predicate functions and
+   SIM_set_mem_op_type() instead.
+
+ * Simics is not linked statically with external libraries anymore since this
+   has caused some problems for user written modules that use the same
+   libraries. The shared object versions of the libraries are supplied with
+   simics in the simics/<host>/sys/lib directory. The 'simics-start' script
+   automatically sets LD_LIBRARY_PATH to point to that directory, but users
+   running Simics without the 'start-simics' script may have to handle this
+   themselves.
+
+ * A lot of enumeration constants' names have changed. The new names start
+   with the "Sim_" prefix. If you #define SIM_BC_OLD_ENUMS before including
+   simics_api.h in a module you've written, the old enum names will be
+   #defined to the new ones. See the section "API"/"Backwards Compatibility"
+   in the "Simics Reference Manual".
+
+ * The 'vtmemgen' tool is no longer used when compiling modules.
+
+Major Changes:
+--------------
+
+ * New targets in this version of Simics:
+   + ARM  (armv5te)
+   + IA64 (Itanium)
+   + MIPS (MIPS-4kc)
+
+ * Initial support for a read-only master install of Simics for multiple
+   users. The per-user installed files require less that a megabyte of disk
+   space. Users can compile modules locally with sources from the master
+   installation, and also add their own modules. Default environment settings
+   are read from the master installation thus eliminating the need for all
+   users to set up and run configure.
+
+ * All SunFire targets (donut, bagle) now use a real prom for booting. This
+   makes machine configuration much simpler.
+
+ * First version of the new proxy-object mechanism. (At this time only
+   available for selected customers).
+
+ * Simics now uses Python 2.2. As a result, long integers don't need the 'L'
+   suffix anymore. For Windows host, Python 2.2 must be installed before
+   Simics can run.
+
+Minor Changes:
+-------------
+
+All targets:
+
+ * The SIM_load_binary function (used by the load-binary command) command can
+   load PE32 and PE32+ binaries.
+
+ * New command line option '-c <file>' that loads a configuration file.
+
+ * It is now supported to write PCI devices in C (instead of C++) by using the
+   new file pci-device-c.c
+
+ * New commands '<memory-space>.load-binary' and '<processor>.set-pc' that
+   replaces the 'load-kernel' command. 'load-kernel' is still supported, but
+   scripts should be updated to use the new commands.
+
+ * Python data can now more easily be added to a configuration object by
+   putting it as conf.<object>._local.<attribute>
+
+ * The Simscrit frontend is no longer supported.
+
+ * The 'module_info.h' and 'init-local.h' files do not have to be included in
+   the source of modules.
+
+ * The image class now accepts "ro" and "rw" for the read-only flag in the
+   'files' attribute instead of 1 and 0 (that are still supported).
+
+ * Tab completion has been slightly improved. It doesn't do filename
+   completion by default anymore, only when a filename is expected as
+   argument. It also supports ~-expansion in filenames.
+
+ * If the gfx-console cannot identify the X server, cooked key-symbols are
+   used instead of raw ones. This is useful when running Simics over VNC or
+   when using X servers on Windows.
+
+ * A bug was fixed with magic instructions on MP systems, that made magic
+   instructions occurring on the same clock cycle but on different processors
+   to only cause one magic instruction hap.
+ 
+ * Compile dependency on Makefile added to the module build environment.
+
+ * The symtable module contains the new commands "list", "pos", "whereis".
+
+ * New commands "new-file-cdrom" and "new-host-cdrom" added, for easy creation
+   of CD-ROM objects from ISO images and CD-ROM devices on the fly.
+
+ * The "decoder" module changed name to "sample-user-decoder".
+
+ * PCI configuration spaces are now visible as memory-spaces in Simics. As a
+   result of this all pci-bus objects need a 'conf_space' attribute set. This
+   can point to an empty object of the type 'memory-space'.
+
+ * The generic pci-device-c.c base class can handle memory/io space mappings
+   automatically. This makes the writing of user PCI devices slightly simpler.
+   A new function 'handle_pci_mapping()' should be used for this. Check
+   sources to the sample-pci-device for more info.
+
+ * The i21554 device model is now more complete. Old configuration files will
+   not work with the new module.
+
+ * A new helper function, SIM_ascanf(), has been added to make it easier to
+   parse attribute lists.
+
+ * Several attributes that previously returned a string with the name of a
+   configuration object will now return a pointer to the object instead.
+
+ * New 'attr_value_t' kind: 'Sim_Val_Object', containing a pointer to a
+   configuration object. For compatibility with previous Simics versions,
+   conversion between string and object attr_value_t kinds will automatically
+   take place.
+
+ * The trace module is rewritten and uses the timing model interface to trace
+   instruction fetches. It works only for targets that implements the
+   instruction profile mode "instruction-cache-access-trace" or
+   "instruction-fetch-trace" (sparc and x86). The old trace module is
+   available under the name trace_old.
+
+Sparc target only:
+
+ * New configuration scripts for both SunFire and Serengeti architectures.
+
+ * New documentation:
+   + Simics/SunFire Target Guide
+   + Simics/Serengeti Target Guide
+
+ * CV and CP bits in the DCU Control register implemented in U-III.
+
+ * New script to install Solaris 8 from a CD for both SunFire and Serengeti
+   architectures included. Tested with the free Solaris 8 from Sun's web-site.
+
+ * New Simics API functions:
+   + SIM_install_user_ASI_handler()
+   + SIM_install_default_ASI_handler()
+
+ * The shutdown instruction on UltraSPARC II (and III) was properly
+   implemented, and an 'epd' attribute added to the processor object (U-II
+   only).
+
+* New "bagle5-suse73.craff" dump for the "bagle" virtual machine (SunFire with
+  Linux). This is a linux 2.4.14 kernel with read-only hostfs installed. There
+  is also a "bagle5.1-pgx64.craff" diff file with a graphics card configured.
+  The new "bagle-1p-fb.simics" script starts bagle with a graphical console.
+
+ * The following modules are obsolete and new configurations should use the
+   sunfire-sysio module instead:
+   + sun4u-confloader
+   + sun4u-interrupt
+   + sun4u-iommu
+   + sun4u-port-id
+   + sun4u-sbus
+   + sun4u-streambuf
+   + sun4u-sysio
+   + sun4u-trans
+
+ * The new 'sunfire-sysio' class replaces the sun4u-sysio, sun4u-sbus,
+   sun4u-iommu, sun4u-interrupt, sun4u-counter, sun4u-streambuf
+   classes. Configurations with the replaced classes will continue to work.
+   Commands: <sunfire-sysio>.info
+             <sunfire-sysio>.irq-info
+             <sunfire-sysio>.sbus-info
+
+ * New class 'sunfire-psycho' implementing the PCI controller on SunFire
+   systems.
+   Commands: <sunfire-psycho>.info
+             <sunfire-psycho>.irq-info
+             <sunfire-psycho>.pci-info
+
+ * Several PCI devices added to the SunFire distribution. E.g.,
+   + cheerio-hme (Ethernet controller)
+   + ISP1040, SYM53C810, SYM53C875 (SCSI controllers)
+   + ISP2200 (Fibre-Channel SCSI controller)
+   + i21152 (PCI-to-PCI bridge)
+
+ * The membar and stbar instructions now generate Core_Memory_Barrier haps.
+
+ * The connect command of the external-memory-bus class now takes either a
+   path or a shmkey; cf. ftok(3). In the same way, ext-mem-bus-demo now takes
+   a -k <path> option which lets you specifiy a path. If you use the same path
+   (unique to concurrent users) to both ext-mem-bus0.connect and
+   ext-mem-bus-demo -k, they should connect to eachother automatically.
+
+ * A simics_bus_was_disconnnected user-changeable callback function was added
+   to the FGCC external program API.
+
+ * More registers implemented in UltraSPARC: Asynchronous Fault Status
+   Register and Asynchronous Fault Address Register and their corresponding
+   ASI:s has been added.
+
+ * New method in the sparc_interrupt_interface: async_trap allows defered and
+   distrupting traps to be injected.
+
+ * Precise traps can be injected for memory operations by setting the
+   exception field in a memory transaction in a timing model.
+
+ * Objects of the serengeti-console class need an io_spaces attribute. In most
+   cases it is enough to add the following line to the sc0 object:
+
+     io_spaces: ((0, phys_io0))
+
+ * Memory inquiry functions now work again from SIM_for_all_processors()
+   callbacks on Sparc targets.
+
+ * The 'lynx' machine scripts were updated to work with the new io mappings.
+
+ * RED_state and reset vectors implemented for UltraSPARC II, III
+
+ * Floating point bugfixes for UltraSPARC II/III
+   + IEEE 754 exceptions supported
+   + Correct trap type for fmovr with illegal rcond.
+   + Fp-disabled trap for fbn, fbn,pt.
+   + 'invalid' bit set correctly in the cexc/aexc fields of the fsr register
+   + stxfsr now clears the ftt field in fsr, ldxfsr does not anymore
+   + Inexact trap
+
+ * Simics (UltraSPARC II/III) will break the simulation when entering
+   error_state unless the 'break_on_error_state' attribute is set to 0 in the
+   'sim' class.
+
+ * Out-of-order version of UltraSPARC II.
+
+ * Pass-through mode implemented in serengeti-schizo device.
+
+ * The 'system_tick_frequency' attribute in the 'ultrasparc-iii' class
+   replaces the following API functions:
+   + SIM_system_tick_counter()
+   + SIM_system_tick_compare()
+   + SIM_trigger_stick_compare()
+
+ * Several UltraSPARC II/III bugfixes:
+   + The FT field in SFSR is more correctly set on errors.
+   + FP Underflow is flagged correctly.
+   + prefetch, prefetcha instructions generates illegal instruction trap for
+     reserved fcn values.
+   + read from %set_softint, %clear_softint generates illegal instruction trap.
+   + FP -> int conversions return correct value for NaN input.
+   + Reset traps (including SIR) handled correctly in RED_state.
+   + flush instruction for UltraSPARC II now generates
+     Fast_Data_Access_MMU_Miss or Data_Access_Exception on failed MMU
+     lookup. (not on UltraSPARC III)
+
+ * Cache flushes on UltraSPARC II are communicated using the memory-system and
+   not with the "Flush_Cache" hap. The memory-transaction used is of the type
+   Sim_Trans_Cache_Flush, (Sim_DI_Write and Sim_SW_Write).
+
+ * Haps and breakpoint on control register accesses for UltraSPARC II/III now
+   works on all control registers in the processor, i.e. also ASI mapped regs.
+
+ * New attribute 'workaound_linux_bug' in the sun4u-fhc device. Setting this
+   to 1 will prevent the serial interrupt to be disabled, since Linux 2.4
+   kernels don't enable it correctly during boot. (Bug verified on real HW).
+
+ * It is now possible to stall the instruction fetch of the first instruction
+   in a trap handler on sparc targets.
+
+ * Although the sun4u-openprom64 file is obsolete, the new version must be
+   used for old configuration since the old won't work with the spitfire-mmu
+   anymore.
+
+ * Updated target guides for SunFire and Serengeti.
+
+ * New hap for sparc targets: "Core_External_Interrupt".
+
+ * Asi numbers in the sparc disassembly are now printed in hex.
+
+ * Simics UltraSPARC II/III can now execute from io space without any mirroring
+   mapping in cachable space. (The I-STC is still not used for io space.)
+
+ * Simics/SunFire now supports the pgx64 graphics card. The simics script
+   'donut-1p-fb.simics' will start the donut machine with a graphics console.
+   The new dump diff "donut4.1.1-pgx64.craff" is needed by this script. Both
+   mouse and keyboard input in supported when running with a graphics console.
+   Note: The driver in XFree86 doesn't work yet with the pgx64 device.
+
+x86 target only:
+
+ * x86 fpu bugfixes on sparc host.
+
+ * Floating point (both x87 and sse) bugfixes for all x86 targets when running
+   on big endian hosts.
+
+ * x86 targets now features the instruction profile modes
+   "instruction-cache-access-trace" and "instruction-fetch-trace".
+
+Alpha target only:
+
+ *
+
+PPC target only:
+
+ *
+
+IA64 target only:
+
+ *
+
+Known Problems & Limitations:
+-----------------------------
+
+All targets:
+
+ * When running with memory hierarchy that is active for both instructions and
+   data, and data is stalled, Simics sometimes reissues the instruction fetch.
+   The workaround is to ignore instruction fetches for a processor that is
+   stalling on data.
+
+ * Some commands will not work until a configuration has been loaded.
+   Example: 'list-haps'.
+
+ * Simics-central communication does not work when central and Simics are
+   running on hosts with different endianess.
+
+ * Simics doesn't honor Ctrl-C when running with all processors disabled.
+
+ * Craff sometimes produces corrupt output files on Linux over NFS. We have
+   found problems running craff on Red Hat 6.2 when the output file is mounted
+   over NFS. This is a problem with Linux and might have been solved in newer
+   distributions (kernels). Note that craff is used when a checkpoint is
+   saved.
+
+ * Operating system XXX does not work. Not all devices in Simics implement all
+   possible features exactly like typical hardware. If an operating system you
+   are interested in does not run on Simics, please let us know.
+
+ * Weird output in the console window when running Simics on a remote desktop
+   (WindowsXP). This problem can be worked around by adding the line
+
+      set SDL_VIDEODRIVER=windib
+
+   to the script that starts Simics (typically home/x86-test-machine/simics.bat
+   or x86-win32-gcc/bin/simics-x86-hammer.bat).
+
+Sparc target only:
+
+ * The following UltraSPARC registers are not implemented:
+   + The ECC error registers.
+   + Cache diagnostic registers.
+   + Performance control registers, and counters.
+   + The AFAR and AFSR registers are not correctly updated on errors.
+
+ * The Solaris version of hostfs does not support truncating files.
+
+Alpha target only:
+
+ * Only limited support for VAX floating-point instructions.
+
+X86 and X86-64 targets only:
+
+ * Protected mode virtual interrupts (PVI) not implemented.
+
+ * System management mode (SMM) not implemented.
+
+ * Physical address extension (PAE) paging not supported in the 32-bit
+   (non x86-64) targets.
+
+IA-64 target only:
+
+ * The IA-32 mode is not implemented.
+
+ * Floating-point exceptions are not fully supported
+
+ * The VHPT walker is not implemented.
+
+ * The boot process does not use a real EFI layer, and the only supported OS
+   is Linux.  Only a subset of the PAL and SAL calls is implemented.
+
+ * The ALAT is not implemented, which means that data speculation always
+   fails.
+
+ * Parts of the instruction set are still missing.

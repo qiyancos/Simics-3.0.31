@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Instruction Profiling</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(181, true);
+</script>
+<a name="label434"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic62.html">Previous</a> - <a class="jdocu" href="topic62.html">Up</a> - <a class="jdocu" href="topic64.html">Next</a></span></p>
+<h4 class="jdocu">13.1&nbsp;&nbsp;&nbsp;Instruction Profiling</h4 class="jdocu">
+
+    
+<p>
+    <hr class="jdocu_note"><b>Note:</b> Instruction profiling is not yet implemented for targets
+    other than SPARC, PowerPC, x86, and MIPS, and is only available
+    when Simics is started with <i>-stall</i>.<hr class="jdocu_note">
+<p>
+    Simics can maintain an exact execution profile: every single taken branch
+    is counted, showing you exactly what code was executed and how often branches
+    were taken.
+<p>
+    To get started with instruction profiling, type
+    <b>cpu0.start-instruction-profiling</b> at the prompt (assuming the
+    machine you are simulating has a processor called <b>cpu0</b>). This
+    has the same effect as if you had executed the following two commands:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>new-branch-recorder cpu0_branch_recorder physical</b>
+    simics&gt; <b>cpu0.attach-branch-recorder cpu0_branch_recorder</b>
+    </pre>
+<p>
+    These commands create a <a name="label435">branch recorder</a> and attach it to the
+    <b>cpu0</b> processor. All branches taken by <b>cpu0</b> will now
+    be recorder in <b>cpu0_branch_recorder</b>.
+<p>
+    You need to use these separate commands instead of
+    <b>start-instruction-profiling</b> if you want a branch recorder with a
+    particular name, or if you want to record virtual instead of physical
+    addresses.
+<p>
+    A branch recorder remembers the source and destination address of each
+    branch, as well as the number of times the branch has been taken. It does
+    <em>not</em> remember in which order the branches happened, so it cannot be
+    used to reconstruct an execution trace (if you want that, you have to use
+    the <b>trace</b> module, which is slower and generates much more
+    profiling data).  There is however enough information to compute a number
+    of interesting statistics. To get a list of what the branch recorder can
+    do, type:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0_branch_recorder.address-profile-info</b>
+    cpu0_branch_recorder has 6 address profiler views:
+    View 0: execution count
+       64-bit addresses, granularity 4 bytes
+    View 1: branches from
+       64-bit addresses, granularity 4 bytes
+    View 2: branches to
+       64-bit addresses, granularity 4 bytes
+    View 3: interrupted execution count
+       64-bit addresses, granularity 4 bytes
+    View 4: exceptions from
+       64-bit addresses, granularity 4 bytes
+    View 5: exceptions to
+       64-bit addresses, granularity 4 bytes
+    </pre>
+<p>
+    An address profiler is an object whose data can be meaningfully displayed
+    as a count for each address interval. The output of the last command
+    indicates that <b>cpu0_branch_recorder</b> is an address profiler with
+    six separate <em>views</em>; i.e., there are six separate ways of displaying
+    its data as counts for each four-byte interval.
+<p>
+    View 0 is the execution count per instruction, conveniently represented as
+    one count per four-byte address interval since the instructions of the
+    simulated machine (a SPARC in this case) are all four bytes long and
+    aligned on four-byte boundaries. Views 1 and 2 count the number of times
+    the processor has branched from and to each instruction, except when the
+    branch is caused by an exception (or exception return); those
+    branches are counted separately by views 4 and 5. View 3, finally, counts
+    the number of times an instruction was started but not completed because an
+    exception occurred.
+<p>
+    When you are done recording for the moment, type:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.detach-branch-recorder cpu0_branch_recorder</b>
+    </pre>
+<p>
+    to detach the branch recorder; it will stop recording new branches,
+    but the already collected branches will remain in the branch recorder
+    (until you type <b>cpu0_branch_recorder.clean</b> at the prompt). You
+    can reattach it again at any time:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.attach-branch-recorder cpu0_branch_recorder</b>
+    </pre>
+<p>
+    Section <a class="jdocu" href="topic65.html#label438">13.3</a> explains how to access the
+    recorded data.
+<p>
+    <a name="label436"></a><h5 class="jdocu">13.1.1&nbsp;&nbsp;&nbsp;Virtual Instruction Profiling</h5 class="jdocu">
+
+    
+<p>
+    Branch recorders can record virtual instead of physical addresses;
+    just say so when you create them:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; <b>new-branch-recorder ls_profile virtual</b>
+    </pre>
+<p>
+    Once it has been created, the new branch recorder object behaves just the
+    same as a physical profiler would, except for one thing: when you want a
+    physical profile, you typically expect the profiler to collect statistics
+    from the whole system, but when you want a virtual profile, you probably
+    are interested in one process (or the kernel) only.
+<p>
+    To be consistent with the name of the branch recorder we just
+    created, let us collect a virtual profile of a run of the
+    <tt>ls</tt> program. The problem is to have the branch recorder
+    attached when <tt>ls</tt> is running, and detached when other
+    processes are running. This is the same problem that we had in
+    chapter <a class="jdocu" href="topic61.html#label396">12.3</a>, when we wanted a
+    <b>context</b> object to be active precisely when a given
+    process was active.
+<p>
+    Unfortunately, we cannot use the same convenient tools for branch
+    recorders as we did for contexts, since Simics does not yet
+    support that. We can use the process tracker directly, though,
+    with Python scripts very similar to those in section <a class="jdocu" href="topic113.html#label566">21.2</a>:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    def exec_hap(user_arg, tracker, tid, cpu, binary):
+        if binary.endswith("ls"):
+            def set_profiler(user_arg, tracker, tid, cpu, active):
+                if active:
+                    cpu.branch_recorders = [conf.ls_profile]
+                else:
+                    cpu.branch_recorders = []
+            SIM_hap_add_callback_obj_index("Core_Trackee_Active", tracker,
+                                           0, set_profiler, None, tid)
+    SIM_hap_add_callback_obj("Core_Trackee_Exec", conf.tracker0,
+                             0, exec_hap, None)
+    </pre>
+<p>
+    This script assumes the existence of a process tracker called
+    <b>tracker0</b>, and the branch recorder <b>ls_profile</b>
+    that we created above.
+<p>
+    <hr class="jdocu_note"><b>Note:</b> Remember to use the CLI command
+    <b>&lt;tracker&gt;.activate</b> (or, equivalently, call the
+    <b><i>activate</i></b> function of the <tt>tracker</tt>
+    interface) before trying to use a tracker.<hr class="jdocu_note">
+<p>
+    First, it listens for the
+    <tt>Core_Trackee_Exec</tt> hap, which is triggered when any
+    process in the system calls the <tt>exec</tt> system call. When that
+    happens, and the binary being executed is called "ls", the script
+    starts listening for the <tt>Core_Trackee_Active</tt> hap for that
+    process, attaching the branch recorder <b>ls_profile</b> to
+    the processor when the process becomes active, and detaching it
+    when the process becomes inactive.
+<p>
+    
+<p>
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic62.html">Previous</a> - <a class="jdocu" href="topic62.html">Up</a> - <a class="jdocu" href="topic64.html">Next</a></span></p>
+</body>
+</html>

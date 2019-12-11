@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>voodoo3</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2147, true);
+</script>
+<a name="label16063"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic464.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic466.html">Next</a></span></p>
+<h3 class="jdocu">voodoo3</h3 class="jdocu">
+
+
+<a name="label16064"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2972">voodoo3</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>voodoo3</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The voodoo3 device implements the graphics device Voodoo3 (Avenger) from <i>3Dfx Interactive, Inc</i>. The device supports accelerated 2D and 3D graphics in multiple resolutions and color depths. The VGA core for this device is inherited from the VGA-PCI device.
+
+</dd>
+
+</dl>
+<a name="label16065"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>additional_pci_config_regs</i></b></dt><a name="label16066"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<i>Soon to be deprecated.</i></dd></dl>
+<dl><dt><b><i>attrib_next_index</i></b></dt><a name="label16067"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Decides whether the next next access to an attribute controller register (through port 0x3C0) will contain an address or data.</dd></dl>
+<dl><dt><b><i>attrib_next_reg</i></b></dt><a name="label16068"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The address of the attribute controller register designated for the next access.</dd></dl>
+<dl><dt><b><i>attrib_regs</i></b></dt><a name="label16069"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-20</i>) is a list of attribute registers.</dd></dl>
+<dl><dt><b><i>attrib_video_enable</i></b></dt><a name="label16070"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Decides whether video is enabled or not.</dd></dl>
+<dl><dt><b><i>clut</i></b></dt><a name="label16071"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>i0</i><tt>, </tt><i>i1</i><tt>, ..., </tt><i>i511</i><tt>)</tt>. The Color Lookup Table.</dd></dl>
+<dl><dt><b><i>config_register_info</i></b></dt><a name="label16072"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[isii]*]</b>.
+<p>
+Register info for all registered configuration registers. The format for each entry is (offset, name, size, write-mask).</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label16073"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size.</dd></dl>
+<dl><dt><b><i>console</i></b></dt><a name="label16074"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Console object that must implement either gfx-console or both the serial-device and extended-serial interfaces.</dd></dl>
+<dl><dt><b><i>crtc_next</i></b></dt><a name="label16075"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Integer register representing the next CRTC address.</dd></dl>
+<dl><dt><b><i>crtc_regs</i></b></dt><a name="label16076"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-24</i>) is a list of CRTC registers.</dd></dl>
+<dl><dt><b><i>depth_buffer</i></b></dt><a name="label16077"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Current Mesa depth buffer.</dd></dl>
+<dl><dt><b><i>dump_charset</i></b></dt><a name="label16078"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Write-only pseudo attribute. A write operation will print the current character map to the console if the vga device is in alpha-numeric mode.</dd></dl>
+<dl><dt><b><i>expansion_rom</i></b></dt><a name="label16079"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oii]</b>.
+<p>
+ROM object, map size, and map function number for the Expansion ROM.</dd></dl>
+<dl><dt><b><i>fbdump</i></b></dt><a name="label16080"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>[i{5}]</b>.
+<p>
+Frame buffer dump command. See command help for more info</dd></dl>
+<dl><dt><b><i>fifobp</i></b></dt><a name="label16081"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Set to 0 to disable fifo breakpoints, or to nonzero to enable them.</dd></dl>
+<dl><dt><b><i>frame_buffer</i></b></dt><a name="label16082"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+This is the Voodoo3's on-board 16 MB RAM.</dd></dl>
+<dl><dt><b><i>gfx_latch</i></b></dt><a name="label16083"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Latch-0</i> ... <i>Latch-4</i>) List of four graphics data controller latches.</dd></dl>
+<dl><dt><b><i>gfx_next</i></b></dt><a name="label16084"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Represents the address of the graphics controller register designated for the next read/write access.</dd></dl>
+<dl><dt><b><i>gfx_regs</i></b></dt><a name="label16085"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-8</i>) is a list of the nine graphics controller registers found in an VGA adapter.</dd></dl>
+<dl><dt><b><i>h_cnt</i></b></dt><a name="label16086"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Horizontal counter (used for generating retrace signals).</dd></dl>
+<dl><dt><b><i>image</i></b></dt><a name="label16087"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Image object containing the VRAM.</dd></dl>
+<dl><dt><b><i>info</i></b></dt><a name="label16088"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>a</b>.
+<p>
+Prints some info about the voodoo3 device when written to.</dd></dl>
+<dl><dt><b><i>internal_status</i></b></dt><a name="label16089"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Voodoo3 internal status variables.</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label16090"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiii]</b>.
+<p>
+State of the interrupt pin.</dd></dl>
+<dl><dt><b><i>io_base_regs</i></b></dt><a name="label16091"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>i0</i><tt>, </tt><i>i1</i><tt>, ..., </tt><i>i63</i><tt>)</tt>. The IO/Init registers.</dd></dl>
+<dl><dt><b><i>mappings</i></b></dt><a name="label16092"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{5:8}]|[iiiiiiiio|nii]*]</b>.
+<p>
+List of all current PCI IO and memory mappings.</dd></dl>
+<dl><dt><b><i>mem_base_2d_regs</i></b></dt><a name="label16093"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>i0</i><tt>, </tt><i>i1</i><tt>, ..., </tt><i>i127</i><tt>)</tt>. The 2D Registers.</dd></dl>
+<dl><dt><b><i>mem_base_3d_regs</i></b></dt><a name="label16094"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>i0</i><tt>, </tt><i>i1</i><tt>, ..., </tt><i>i255</i><tt>)</tt>. The 3D Registers.</dd></dl>
+<dl><dt><b><i>mem_base_cmd_regs</i></b></dt><a name="label16095"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>i0</i><tt>, </tt><i>i1</i><tt>, ..., </tt><i>i63</i><tt>)</tt>. The AGP/CMD Transfer/Misc Registers.</dd></dl>
+<dl><dt><b><i>memory_space</i></b></dt><a name="label16096"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Memory space to which the device is mapped. Needed for dynamic remapping.</dd></dl>
+<dl><dt><b><i>misc_reg</i></b></dt><a name="label16097"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Miscellaneous output register.</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label16098"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>pel_addr</i></b></dt><a name="label16099"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+PEL address register.</dd></dl>
+<dl><dt><b><i>pel_mask</i></b></dt><a name="label16100"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+PEL mask register.</dd></dl>
+<dl><dt><b><i>pel_next_color</i></b></dt><a name="label16101"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Next color in access to PEL data register (read, green, or blue).</dd></dl>
+<dl><dt><b><i>pel_pal</i></b></dt><a name="label16102"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+((<i>red</i>, <i>green</i>, <i>blue</i>) ... (<i>red</i>, <i>green</i>, <i>blue</i>)) List of 256 colors, each a tuple of red, green, and blue.</dd></dl>
+<dl><dt><b><i>ramdac_rw_state</i></b></dt><a name="label16103"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+RAMDAC read/write state.</dd></dl>
+<dl><dt><b><i>redraw</i></b></dt><a name="label16104"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>a</b>.
+<p>
+Forces a complete update when set.</dd></dl>
+<dl><dt><b><i>refresh_rate</i></b></dt><a name="label16105"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Refresh rate (in Hertz).</dd></dl>
+<dl><dt><b><i>render</i></b></dt><a name="label16106"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Set to 0 to disable 3d rendering, or to nonzero to enable it.</dd></dl>
+<dl><dt><b><i>seq_next</i></b></dt><a name="label16107"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Represents the address of the sequence register designated for the next read/write access.</dd></dl>
+<dl><dt><b><i>seq_regs</i></b></dt><a name="label16108"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-4</i>) is a list of sequence registers found in the VGA adapter.</dd></dl>
+<dl><dt><b><i>status</i></b></dt><a name="label16109"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>a</b>.
+<p>
+Prints current status of the voodoo3 device when written to.</dd></dl>
+<dl><dt><b><i>status_read</i></b></dt><a name="label16110"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of times the PCI status register has been read.</dd></dl>
+<dl><dt><b><i>text_page</i></b></dt><a name="label16111"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>.
+<p>
+A list representation (one line per element) of the text mode contents.</dd></dl>
+<dl><dt><b><i>tmu0_status</i></b></dt><a name="label16112"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Voodoo3 TMU 0 status variables.</dd></dl>
+<dl><dt><b><i>tmu1_status</i></b></dt><a name="label16113"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Voodoo3 TMU 1 status variables.</dd></dl>
+<dl><dt><b><i>v_cnt</i></b></dt><a name="label16114"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Vertical counter (used for generating retrace signals).</dd></dl>
+<dl><dt><b><i>vertex_status</i></b></dt><a name="label16115"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Buffered vertex data + misc 3d status.</dd></dl>
+<dl><dt><b><i>vga_crtc_ext_regs</i></b></dt><a name="label16116"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{10}]</b>.
+<p>
+VGA CRTC regs</dd></dl>
+<dl><dt><b><i>vga_memory</i></b></dt><a name="label16117"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+Contains the VGA memory (256 KB of data).</dd></dl>
+<dl><dt><b><i>view_size_x</i></b></dt><a name="label16118"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+With of the internal cache.</dd></dl>
+<dl><dt><b><i>view_size_y</i></b></dt><a name="label16119"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Height of the internal cache.</dd></dl>
+<dl><dt><b><i>write_masks</i></b></dt><a name="label16120"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Write masks for all registered configuration registers. The format for each entry is (offset, mask).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label16121"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16123">disable-fifo-break</a></b></td><td class="jdocu_noborder">disable fifo breakpoints</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16125">enable-fifo-break</a></b></td><td class="jdocu_noborder">enable fifo breakpoints</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16127">fbdump</a></b></td><td class="jdocu_noborder">show part of voodoo3 framebuffer</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16129">info</a></b></td><td class="jdocu_noborder">show voodoo3 info</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16131">ioreg</a></b></td><td class="jdocu_noborder">print IO register</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16133">redraw</a></b></td><td class="jdocu_noborder">Redraw display</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16135">refresh-rate</a></b></td><td class="jdocu_noborder">Set rate at which voodoo3 updated display</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16137">reg2d</a></b></td><td class="jdocu_noborder">print 2D register</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16139">reg3d</a></b></td><td class="jdocu_noborder">print 3D register</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16141">render</a></b></td><td class="jdocu_noborder">toggle 3d rendering on/off</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16143">status</a></b></td><td class="jdocu_noborder">show voodoo3 status</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16145">text-dump</a></b></td><td class="jdocu_noborder">Print text contents of display</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label16122"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label16123"></a><a name="label16124"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.disable-fifo-break</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.disable-fifo-break</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+When enabled, fifo breakpoints halts simics execution whenever a
+                  complete fifo command packet has been sent to and executed by the
+                  voodoo3 card.</dd>
+
+</dl>
+
+
+
+<a name="label16125"></a><a name="label16126"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.enable-fifo-break</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.enable-fifo-break</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+When enabled, fifo breakpoints halts simics execution whenever a
+                  complete fifo command packet has been sent to and executed by the
+                  voodoo3 card.</dd>
+
+</dl>
+
+
+
+<a name="label16127"></a><a name="label16128"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.fbdump</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.fbdump</b> <i>fboffs</i> <i>width</i> <i>height</i> [<i>bpp</i>] [<i>stride</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Display part of the voodoo3 framebuffer in the console window. <i>fboffs</i> is the starting offset into the
+16 MB voodoo3 framebuffer. <i>width</i> and <i>height</i> are the pixel dimensions of the area to be shown. 
+<i>bpp</i> (bits per pixel) specifies the format of the pixel data and can be one of 8, 16, 24 or 32 (defaults to
+current desktop color depth). <i>stride</i> is
+the byte offset between adjacent lines (defaults to width * bpp / 8).</dd>
+
+</dl>
+
+
+
+<a name="label16129"></a><a name="label16130"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.info</b> [<i>verbose</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Show some information about the voodoo3 card.</dd>
+
+</dl>
+
+
+
+<a name="label16131"></a><a name="label16132"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.ioreg</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.ioreg</b> <i>register</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print value in an IO register.</dd>
+
+</dl>
+
+
+
+<a name="label16133"></a><a name="label16134"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.redraw</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.redraw</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command sends the current frame buffer contents of the simulated
+                video device to the graphics console. If a simulated cursor is active,
+                it is updated as well.<br></dd>
+
+</dl>
+
+
+
+<a name="label16135"></a><a name="label16136"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.refresh-rate</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.refresh-rate</b> [<i>rate</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the rate at which the voodoo3 device updates the display.<br>
+                The default is 1000 Hz (simulated). NOTE: The rate is currently
+                the same for all voodoo3 devices.</dd>
+
+</dl>
+
+
+
+<a name="label16137"></a><a name="label16138"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.reg2d</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.reg2d</b> <i>register</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print value in a 2D command register.</dd>
+
+</dl>
+
+
+
+<a name="label16139"></a><a name="label16140"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.reg3d</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.reg3d</b> <i>register</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print value in a 3D register.</dd>
+
+</dl>
+
+
+
+<a name="label16141"></a><a name="label16142"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.render</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.render</b> [<i>bool</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+toggle 3d rendering</dd>
+
+</dl>
+
+
+
+<a name="label16143"></a><a name="label16144"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.status</b> [<i>verbose</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Show information about the current voodoo3 state, for example the current resolution,
+color depth, desktop image offset etc. Currently the <i>verbose</i> flag has no function.</dd>
+
+</dl>
+
+
+
+<a name="label16145"></a><a name="label16146"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;voodoo3&gt;.text-dump</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;voodoo3&gt;.text-dump</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the contents of the display in text mode.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic464.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic466.html">Next</a></span></p>
+</body>
+</html>

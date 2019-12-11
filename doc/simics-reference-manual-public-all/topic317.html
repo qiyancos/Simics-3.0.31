@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>rn-eth-bridge-tap</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1593, true);
+</script>
+<a name="label12754"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic316.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic318.html">Next</a></span></p>
+<h3 class="jdocu">rn-eth-bridge-tap</h3 class="jdocu">
+
+
+<a name="label12755"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2828">real-network</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>rn-eth-bridge-tap</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic495.html#label17725">ethernet_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+Ethernet bridge using a TAP interface.
+
+</dd>
+
+</dl>
+<a name="label12756"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>close_iface</i></b></dt><a name="label12757"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>write-only</b> access; type: <b>String</b>.
+<p>
+A persistent TUN/TAP interface from a previous session can be closed by giving its name to this attribute. This attribute is not applicable on Windows platforms.</dd></dl>
+<dl><dt><b><i>connected</i></b></dt><a name="label12758"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 if the object is connected to the real network and configured properly. Also used to initiate a new connection. If the object successfully opened the TUN/TAP device but failed to read the IP address and netmask (or MAC address), this attribute has to be set to 1 again after the TUN/TAP device has been configured.</dd></dl>
+<dl><dt><b><i>gateway_ip</i></b></dt><a name="label12759"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The IP address of the gateway in the real network.</dd></dl>
+<dl><dt><b><i>host_ip</i></b></dt><a name="label12760"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+The IP address of the network device connected to the real network.</dd></dl>
+<dl><dt><b><i>host_mac</i></b></dt><a name="label12761"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+The MAC address of the network device connected to the real network.</dd></dl>
+<dl><dt><b><i>host_netmask</i></b></dt><a name="label12762"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+Network address mask of the host ethernet network.</dd></dl>
+<dl><dt><b><i>host_network</i></b></dt><a name="label12763"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+Network address of the host ethernet network.</dd></dl>
+<dl><dt><b><i>interface</i></b></dt><a name="label12764"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The name that the router should use for the TUN/TAP interface on the host. Useful if the interface already exists, i.e. for persistent interfaces. if not set, a name for the interface will be selected automatically.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label12765"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Simulated Ethernet link to connect to.</dd></dl>
+<dl><dt><b><i>link_status_devices</i></b></dt><a name="label12766"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of devices that should be notified of link status changes (on the host interface). The devices must implement the link-status interface.</dd></dl>
+<dl><dt><b><i>link_status_enabled</i></b></dt><a name="label12767"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Enables host link status propagation. Note that disabling is not supported.</dd></dl>
+<dl><dt><b><i>link_status_inject</i></b></dt><a name="label12768"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Generates a link-status change event. Used for testing of host link status propagation. The value written should be a ieee_802_3_link_status_t value.</dd></dl>
+<dl><dt><b><i>persistent</i></b></dt><a name="label12769"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 if the TUN/TAP interface opened should be persistent, i.e. if it shouldn't be removed when Simics exists. A persistent interface is useful to avoid reconfiguration of it everytime a new simulation session is started. Setting this attribute has no effect on Windows; all TAP-Win32 devices are persistent.</dd></dl>
+<dl><dt><b><i>tap_bridge</i></b></dt><a name="label12770"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Should be set to 1 if the TAP interface is used to setup an Ethernet bridge.</dd></dl>
+<dl><dt><b><i>tun_tap_device</i></b></dt><a name="label12771"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The name of the host TUN/TAP device to use to connect to the real network. A TUN/TAP device supports IP packet tunneling and Ethernet frame bridging between the host that Simics is running on and the simulated network. Default is /dev/net/tun. This attribute is not applicable on Windows platforms.</dd></dl>
+<dl><dt><b><i>tx_bandwidth</i></b></dt><a name="label12772"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The transmit bandwidth of the network interface in bits per second. The network interface will limit the rate at which it sends packets to remain below this bandwidth. Set to 0 for unlimited bandwidth. Default limit is 10Mbit/s.</dd></dl>
+<dl><dt><b><i>tx_packet_rate</i></b></dt><a name="label12773"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The maximum transmit rate of the network interface in packets per second. The network interface will limit the rate at which it sends packets to remain below this rate. Set to 0 for unlimited rate, which is the default.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label12774"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label12776">finish-connection</a></b></td><td class="jdocu_noborder">Finalize a real network connection</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label12778">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label12780">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label12775"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label12776"></a><a name="label12777"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;rn-eth-bridge-tap&gt;.finish-connection</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;rn-eth-bridge-tap&gt;.finish-connection</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Finish the connection to the real network once the TUN/TAP
+interface has been assigned an IP address and network mask
+ethat the real-network object has to read. This command
+usually isn't needed since Simics will retry getting the
+interface configuration when it receives a packet from or
+to the real network.</dd>
+
+</dl>
+
+
+
+<a name="label12778"></a><a name="label12779"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;rn-eth-bridge-tap&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;rn-eth-bridge-tap&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label12780"></a><a name="label12781"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;rn-eth-bridge-tap&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;rn-eth-bridge-tap&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic316.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic318.html">Next</a></span></p>
+</body>
+</html>

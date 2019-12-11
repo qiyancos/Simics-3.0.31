@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulating a Simple Cache</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(220, true);
+</script>
+<a name="label522"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic87.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic89.html">Next</a></span></p>
+<h4 class="jdocu">18.2&nbsp;&nbsp;&nbsp;Simulating a Simple Cache</h4 class="jdocu">
+
+
+<p>
+Adding a <b>g-cache</b> to a system is pretty straightforward. You can
+append the following code to the script creating your simulated machine:
+<p>
+<pre class="jdocu_small" style="color: black">
+@cache = pre_conf_object('cache', 'g-cache')
+@cache.cpus = conf.cpu0
+@cache.config_line_number = 256
+@cache.config_line_size = 32
+@cache.config_assoc = 1
+@cache.config_virtual_index = 0
+@cache.config_virtual_tag = 0
+@cache.config_replacement_policy = 'random'
+@cache.penalty_read = 0
+@cache.penalty_write = 0
+@cache.penalty_read_next = 0
+@cache.penalty_write_next = 0
+
+@SIM_add_configuration([cache], None)
+</pre>
+<p>
+This command will tell Simics to create a new object called <b>cache</b>,
+of type <b>g-cache</b>. It also sets some parameters to describe the
+cache (number of lines, size, associativity, type of index and tag, replacement
+policy, and stall penalties).
+<p>
+Now start Simics with the <tt>-stall</tt> flag to load the configuration with
+the cache in a mode where cache simulation is working properly. The only thing
+left is to connect the cache somewhere so that it will receive memory
+accesses. To connect it to the main memory, execute:
+<p>
+<pre class="jdocu_small" style="color: black">
+@conf.phys_mem0.timing_model = conf.cache
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The name of the main physical memory space can be different from one
+simulated machine to another, but the names <tt>phys_mem</tt> and
+<tt>phys_mem0</tt> are the most commonly used.<hr class="jdocu_note">
+<p>
+From now on, accesses to main memory will go through the cache and cache
+hits/misses will be simulated. If you run the simulation for a while, you will
+get information about the cache with the <b>cache.status</b> and
+<b>cache.statistics</b> commands.
+<p>
+<hr class="jdocu_note"><b>Note:</b> For performance reasons, instruction fetches are not sent to the caches
+unless you explicitly ask for it. Refer to section <a class="jdocu" href="topic79.html#label480">16.3</a>
+for more information.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic87.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic89.html">Next</a></span></p>
+</body>
+</html>

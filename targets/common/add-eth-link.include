@@ -1,0 +1,13 @@
+if $create_network == "yes" {
+    if not $eth_link {
+        $eth_link = (new-std-ethernet-link)
+    }
+    $eth_link.connect $eth_comp $eth_cnt
+    if not $service_node {
+        $service_node = (new-std-service-node)
+        local $cnt = ($service_node.add-connector 10.10.0.1)
+        $service_node.connect $cnt $eth_link
+    }
+}
+
+unset eth_comp eth_cnt

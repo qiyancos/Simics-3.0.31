@@ -1,0 +1,41 @@
+#
+# Common file for machine with 128 MB or RAM, 32 MB initrd disk
+# -- Requires special fakesetup, initrd, vmlinux files
+#    These are postfixed "32MB", as that is the size of the initrd
+
+if not defined do_mount    {$do_mount = "yes"}
+if not defined do_netsetup {$do_netsetup = "yes"}
+$memory_megs = 128
+$initrd    = "initrd.32MB"
+$vmlinux   = "vmlinux.32MB"
+$fakesetup = "fakesetup.32MB"
+
+###
+
+run-command-file "%script%/arm-sa1110-system.include"
+
+instantiate-components
+
+run-command-file "%script%/sa1110-linux-setup.include"
+
+#$startup_complete = "not yet"
+
+#
+# Run some post-boot commands
+#
+script-branch {
+    local $con = ($console.get-component-object con)
+    $con.wait-for-string "/ # "
+    if($do_netsetup == "yes") {
+	    $con.input "ifconfig lo 127.0.0.1 netmask=255.255.255.0\n"
+	    $con.wait-for-string "/ #"
+    }
+    if($do_mount == "yes") {
+	    $con.input "mount /proc\n"
+	    $con.wait-for-string "/ # "
+	    $con.input "mount /host\n"
+    }
+    $con.wait-for-string "/ # "
+    $startup_complete = "ready"
+}
+

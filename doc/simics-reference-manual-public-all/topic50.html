@@ -1,0 +1,652 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>context</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(609, true);
+</script>
+<a name="label4610"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+<h3 class="jdocu">context</h3 class="jdocu">
+
+
+<a name="label4611"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2886">Simics Core</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <b>context</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic491.html#label17703">breakpoint</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+This is an abstraction of a virtual address space. It handles virtual-address breakpoints and may have symbol tables attached to it. Note that there is no automatic correspondence to any hardware or operating-system context, although such a mapping may be set up by the user.
+
+</dd>
+
+</dl>
+<a name="label4612"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>active</i></b></dt><a name="label4613"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Context currently active.</dd></dl>
+<dl><dt><b><i>breakpoints</i></b></dt><a name="label4614"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[i+]*]</b>; <b>integer</b> indexed;  indexed type: <b>[i*]</b>.
+<p>
+((<i>id</i>, <i>start</i>, <i>stop</i>)*) Tells which breakpoints (identified by their <i>id</i>) are set for the space object. <i>start</i> and <i>stop</i> specifies the interval for the breakpoint.</dd></dl>
+<dl><dt><b><i>gdb_remote_variant</i></b></dt><a name="label4615"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>s|n</b>.
+<p>
+Preferred gdb-remote variant.</dd></dl>
+<dl><dt><b><i>symtable</i></b></dt><a name="label4616"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Symbol table for the context.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label4617"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic491.html#label17703">breakpoint</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic491.html#label17715">break</a>, <a class="jdocu" href="topic491.html#label17717">tbreak</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4619">finish-function</a></b></td><td class="jdocu_noborder">finish the current function</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4623">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4625">next-instruction</a></b></td><td class="jdocu_noborder">run to the next instruction, skipping subroutine calls</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4629">next-line</a></b></td><td class="jdocu_noborder">run to the next source line, skipping subroutine calls</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4633">off</a></b></td><td class="jdocu_noborder">switch off context object</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4635">on</a></b></td><td class="jdocu_noborder">switch on context object</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4637">reverse-next-instruction</a></b></td><td class="jdocu_noborder">back to the previous instruction, skipping subroutine calls</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4641">reverse-next-line</a></b></td><td class="jdocu_noborder">back to the previous source line, skipping subroutine calls</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4645">reverse-step-instruction</a></b></td><td class="jdocu_noborder">back to the previous instruction</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4651">reverse-step-line</a></b></td><td class="jdocu_noborder">back to the previous source line</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4655">reverse-until-active</a></b></td><td class="jdocu_noborder">reverse until context becomes active</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4657">run-until-active</a></b></td><td class="jdocu_noborder">run until context becomes active</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4659">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4661">step-instruction</a></b></td><td class="jdocu_noborder">run to the next instruction</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4665">step-line</a></b></td><td class="jdocu_noborder">run to the next source line</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4669">symtable</a></b></td><td class="jdocu_noborder">set the symbol table of a context</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4671">uncall-function</a></b></td><td class="jdocu_noborder">go back to when the current function was called</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label4618"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label4619"></a><a name="label4620"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.finish-function</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4621"></a><a name="label4622"></a>&lt;context&gt;.finish, &lt;context&gt;.fin</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.finish-function</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4623"></a><a name="label4624"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label4625"></a><a name="label4626"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.next-instruction</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4627"></a><a name="label4628"></a>&lt;context&gt;.nexti, &lt;context&gt;.ni</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.next-instruction</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4629"></a><a name="label4630"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.next-line</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4631"></a><a name="label4632"></a>&lt;context&gt;.next, &lt;context&gt;.n</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.next-line</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4633"></a><a name="label4634"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.off</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.off</b><br><b>&lt;context&gt;.on</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>&lt;context&gt;.on</b> activates the effects of a context object,
+i.e., breakpoints on virtual addresses.  <b>&lt;context&gt;.off</b> deactivates a
+context object.</dd>
+
+</dl>
+
+
+
+<a name="label4635"></a><a name="label4636"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.on</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.on</b><br><b>&lt;context&gt;.off</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>&lt;context&gt;.on</b> activates the effects of a context object,
+i.e., breakpoints on virtual addresses.  <b>&lt;context&gt;.off</b> deactivates a
+context object.</dd>
+
+</dl>
+
+
+
+<a name="label4637"></a><a name="label4638"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.reverse-next-instruction</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4639"></a><a name="label4640"></a>&lt;context&gt;.rnexti, &lt;context&gt;.rni</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.reverse-next-instruction</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4641"></a><a name="label4642"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.reverse-next-line</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4643"></a><a name="label4644"></a>&lt;context&gt;.rnext, &lt;context&gt;.rn</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.reverse-next-line</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4645"></a><a name="label4646"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.reverse-step-instruction</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4647"></a><a name="label4648"></a><a name="label4649"></a><a name="label4650"></a>&lt;context&gt;.rstepi, &lt;context&gt;.rsi, &lt;context&gt;.unstep-instruction, &lt;context&gt;.ui</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.reverse-step-instruction</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4651"></a><a name="label4652"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.reverse-step-line</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4653"></a><a name="label4654"></a>&lt;context&gt;.rstep, &lt;context&gt;.rs</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.reverse-step-line</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4655"></a><a name="label4656"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.reverse-until-active</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.reverse-until-active</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Reverse until context become active.</dd>
+
+</dl>
+
+
+
+<a name="label4657"></a><a name="label4658"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.run-until-active</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.run-until-active</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Run until context become active.</dd>
+
+</dl>
+
+
+
+<a name="label4659"></a><a name="label4660"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+
+<a name="label4661"></a><a name="label4662"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.step-instruction</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4663"></a><a name="label4664"></a>&lt;context&gt;.stepi, &lt;context&gt;.si</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.step-instruction</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4665"></a><a name="label4666"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.step-line</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4667"></a><a name="label4668"></a>&lt;context&gt;.step, &lt;context&gt;.s</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.step-line</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a>, <a class="jdocu" href="#label4671">&lt;context&gt;.uncall-function</a></dd>
+
+</dl>
+
+
+
+<a name="label4669"></a><a name="label4670"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.symtable</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.symtable</b> [<i>"symtable"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Sets the symbol table of the context to <i>symtable</i>, or displays the name
+of the symtable currently bound to the context. The symbol table is created
+if it does not already exist.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2342">set-context</a>, <a class="jdocu" href="topic13.html#label2155">new-symtable</a></dd>
+
+</dl>
+
+
+
+<a name="label4671"></a><a name="label4672"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context&gt;.uncall-function</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label4673"></a>&lt;context&gt;.uncall</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context&gt;.uncall-function</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+<b>step-line</b> causes the simulation to run until it reaches another
+source line. <b>reverse-step-line</b> does the same thing, except for
+running backwards.
+<p>
+<b>next-line</b> causes the simulation to run until it reaches another
+source line, but will not stop in subroutine calls.
+<b>reverse-next-line</b> is the same as <b>next-line</b>, except for
+running backwards. <b>next-instruction</b> and
+<b>reverse-next-instruction</b> are like <b>next-line</b> and
+<b>reverse-next-line</b>, respectively, except for stepping just one
+instruction instead of an entire source line.
+<p>
+<b>finish-function</b> causes the simulation to run until the current
+function has returned. <b>uncall-function</b> causes the simulation to
+run backwards until just before the current function was called.
+<p>
+These commands can either be called as context namespace commands,
+e.g., <i>context</i><tt>.step-line</tt>, in which case the command
+will apply to that context; or not, e.g., <tt>step-line</tt>, in which
+case the command will operate on the current context of the current
+processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4665">&lt;context&gt;.step-line</a>, <a class="jdocu" href="#label4661">&lt;context&gt;.step-instruction</a>, <a class="jdocu" href="#label4651">&lt;context&gt;.reverse-step-line</a>, <a class="jdocu" href="#label4645">&lt;context&gt;.reverse-step-instruction</a>, <a class="jdocu" href="#label4629">&lt;context&gt;.next-line</a>, <a class="jdocu" href="#label4625">&lt;context&gt;.next-instruction</a>, <a class="jdocu" href="#label4641">&lt;context&gt;.reverse-next-line</a>, <a class="jdocu" href="#label4637">&lt;context&gt;.reverse-next-instruction</a>, <a class="jdocu" href="#label4619">&lt;context&gt;.finish-function</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+</body>
+</html>

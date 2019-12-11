@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Installing the Network Interface Helper</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(29, true);
+</script>
+<a name="label35"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h2 class="jdocu">7&nbsp;&nbsp;&nbsp;Installing the Network Interface Helper</h2 class="jdocu">
+
+
+   <a name="label36"></a>
+   <a name="label37"></a>
+<p>
+   Simics provides many ways to connect the simulated network to the real
+   network. They are listed in the network chapter of <em>Simics User
+   Guide</em>. For some of them a small helper program, <b>openif</b>,
+   needs to be installed.  <b>openif</b> must run with super-user
+   privileges. There are several ways of accomplishing this:
+<p>
+   <ul>
+<p>
+    <li> Install <b>openif</b> as setuid root. This usually the easiest
+         way. In the simplest case, it is just a matter of running these shell
+         commands, replacing <em>host</em> with the host type you are
+         running Simics on, for example, x86-linux:
+<p>
+<pre class="jdocu_small" style="color: black">
+# <b>cd [simics]</b>
+# <b>chown root <em>host</em>/bin/openif</b>
+# <b>chmod u+s <em>host</em>/bin/openif</b>
+</pre>
+<p>
+         If the file system where Simics is installed does not allow setuid
+         binaries, then it can be moved to some other location and either
+         a symbolic link to the new location be made, or the Simics command
+         <b>network-helper</b> be used to point out the new location.
+<p>
+         To verify that <b>openif</b> has been installed properly, try
+         executing it directly from the shell as an ordinary user.
+         If it complains about root privileges, it does not have the correct
+         permission flags set and you may need to move it, perhaps to a
+         directory on a local (not networked) file system.
+<p>
+         Since the <b>openif</b> program allows an unprivileged program
+         to read and send raw packets from the network interface, you may
+         want to restrict access to it. In this case, it can be put in a
+         directory to which access is restricted using the standard Unix
+         mechanisms. Its location then has to be indicated as above. </li>
+<p>
+    <li> If you have the common Unix utility <b>sudo</b> installed, it
+         can be used to run <b>openif</b> from Simics by the means of
+         a small wrapper script. This script would look like:
+<p>
+<pre class="jdocu_small" style="color: black">
+#!/bin/sh
+exec sudo /path/to/openif $*
+</pre>
+<p>
+         Then use either a symbolic link or the <b>network-helper</b>
+         command to tell Simics where to find the script. Note that
+         <b>sudo</b> must be configured to allow the user to run <b>openif</b>
+         as root, without giving a password.</li>
+<p>
+    <li> You can also run the entire Simics Central process as root.
+         This alternative is not recommended, and may cause problems
+         depending on the license model chosen.</li>
+   </ul>
+<p>
+   The source code of <b>openif</b> is available as part of the Simics
+   distribution, open to inspection and modification as needed.
+<p>
+   Note that allowing unprivileged users to access the raw network device
+   may cause security problems. Therefore it is not recommended to use
+   the real-network connection in an untrusted network environment. A safer
+   solution is to use the port forwarding feature in Simics instead.
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

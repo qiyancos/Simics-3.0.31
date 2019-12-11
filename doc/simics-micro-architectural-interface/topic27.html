@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Checkpointing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(56, true);
+</script>
+<a name="label314"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+<h3 class="jdocu">8.5&nbsp;&nbsp;&nbsp;Checkpointing</h3 class="jdocu">
+
+
+<a name="label315"></a>
+The recommended way of working with MAI is to first position the
+workload by running standard in-order Simics. Using in-order
+simulation is magnitudes faster than running in micro-architectural
+mode.
+<p>
+We recommend the following steps for your simulation setup:
+<p>
+<ol>
+<p>
+<li>Boot the machine in in-order Simics. Use one of the provided scripts in the
+target directory. Most of the machines will log in automatically.</li>
+<p>
+<li>Import your workload by using SimicsFS for example. Take a
+checkpoint.</li>
+<p>
+<li>Add caches to the configuration using a script. Warm the caches by running
+up to the point where your actual workload starts. If you are using other
+components that needs warming this may be done in this phase too. I branch
+predictor could for example be warmed up by using the tracing facilities in
+Simics. This time run with the <em>-stall</em> option. Cache simulation is not
+supported by the normal execution mode. Take another checkpoint.</li>
+<p>
+<li>Start Simics in MAI mode from the second checkpoint:
+<p>
+<pre class="jdocu_small" style="color: black">
+# ./simics -ma -c checkpoint2
+</pre>
+<p>
+Use a script to add your micro-architectural model and possibly
+consistency controllers to the configuration. Now you can start
+simulating.</li>
+<p>
+</ol>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+</body>
+</html>

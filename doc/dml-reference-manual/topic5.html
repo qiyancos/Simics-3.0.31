@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Device Structure</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(6, true);
+</script>
+<a name="label17"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Device Structure</h3 class="jdocu">
+
+
+<p>
+A device is made up of a number of member objects and methods, where any
+object may contain further objects and methods of its own. Although some
+object types, such as <b>events</b>, are generic and can appear
+almost anywhere, many object types only make sense in a particular
+context and are not allowed elsewhere:
+<p>
+<ul>
+<p>
+<li>Objects of type <b><a name="label18">attribute</a></b>,
+<b><a name="label19">bank</a></b>, <b><a name="label20">implement</a></b>, or
+<b><a name="label21">connect</a></b> (or <b>array of
+connect<a name="label22"></a></b>), may only appear as
+components of a <b><a name="label23">device</a></b>.</li>
+<p>
+<li>Objects of type <b><a name="label24">register</a></b> (or <b>array
+of register<a name="label25"></a></b>) may only appear as
+components of a <b><a name="label26">bank</a></b>, or indirectly as a
+component of a <b><a name="label27">group</a></b> or <b>array of
+group<a name="label28"></a></b> that is (directly or indirectly)
+a component of a <b>bank</b>.</li>
+<p>
+<li>Objects of type <b><a name="label29">field</a></b> may only appear
+as components of a <b>register</b>.</li>
+<p>
+<li>Objects of type <b><a name="label30">interface</a></b> may only appear
+as components of a <b><a name="label31">connect</a></b>.</li>
+<p>
+</ul>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>translate</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2284, true);
+</script>
+<a name="label17994"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic540.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic542.html">Next</a></span></p>
+<h3 class="jdocu">translate</h3 class="jdocu">
+
+
+<a name="label17995"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic35.html#label3977">bitmask-translator</a>, <a class="jdocu" href="topic89.html#label5681">flash-memory</a>, <a class="jdocu" href="topic97.html#label5887">generic-flash-memory</a>, <a class="jdocu" href="topic118.html#label6703">i82461GX</a>, <a class="jdocu" href="topic149.html#label7604">local-space-mapper</a>, <a class="jdocu" href="topic164.html#label7795">memory-space</a>, <a class="jdocu" href="topic195.html#label8594">pc-shadow</a>, <a class="jdocu" href="topic262.html#label9659">ppc405gp-pci</a>, <a class="jdocu" href="topic273.html#label10204">ppc440gp-pci</a>, <a class="jdocu" href="topic289.html#label10863">ppc440gx-pci</a>, <a class="jdocu" href="topic311.html#label12601">pyxis</a>, <a class="jdocu" href="topic423.html#label14596">sun4u-trans2</a>, <a class="jdocu" href="topic432.html#label14798">sunfire-sysio</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The <tt>translate</tt> interface is implemented by objects
+   that bridge between memory spaces. <b><i>translate()</i></b> can
+   change fields like <i>size</i> and <i>physical_address</i>
+   in the <i>mem_op</i>. The return value from
+   <b><i>translate()</i></b> can be a target memory space or
+   <tt>NULL</tt> in which case the space provided in the
+   configuration is used.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        conf_object_t *(*translate)(conf_object_t *NOTNULL obj,
+                                    generic_transaction_t *NOTNULL mem_op,
+                                    map_info_t mapinfo);
+} translate_interface_t;
+
+#define TRANSLATE_INTERFACE "translate"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic540.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic542.html">Next</a></span></p>
+</body>
+</html>

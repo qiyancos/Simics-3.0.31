@@ -1,0 +1,60 @@
+dml 1.0;
+
+/*
+ * simics/core/control.h
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+extern notify_mode_t Sim_NM_Read;
+extern notify_mode_t Sim_NM_Write;
+typedef int notify_mode_t;
+
+// How do we expose this to DML?
+// #ifdef _WIN32
+// void SIM_notify_on_object(HANDLE obj, int run_in_thread,
+//                           void (*callback)(void *data), void *data);
+// #else
+// void SIM_notify_on_descriptor(int fd, notify_mode_t mode, int run_in_thread,
+//                               void (*callback)(void *data),
+//                               void *data);
+// #endif
+extern void SIM_notify_on_socket(int sock, notify_mode_t mode, int run_in_thread,
+                                 void (*callback)(void *data),
+                                 void *data);
+extern void SIM_thread_safe_callback(void (*f)(void *data), void *data);
+
+extern void SIM_post_command(void (*f)(void *data), void *data);
+
+extern integer_t SIM_realtime_event(uint32 delay, void (*callback)(void *data),
+                                    void *data, int run_in_thread,
+                                    const char *desc);
+extern int SIM_cancel_realtime_event(integer_t id);
+
+extern int SIM_postponing_continue();
+extern pc_step_t SIM_continue(integer_t steps);
+
+extern int VT_get_pending_sim_continue();
+
+extern const char *VT_get_current_command_file();
+extern int VT_get_current_line_number();
+
+extern int SIM_simics_is_running();
+
+extern void SIM_break_simulation(const char *msg);
+extern void SIM_break_message(const char *msg);
+extern void VT_user_interrupt(const char *msg, int break_script);
+
+extern void VT_clear_break_message();
+extern const char *VT_get_break_message();
+extern void VT_break_simulation();

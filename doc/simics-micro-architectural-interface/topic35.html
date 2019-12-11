@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_get_field_value()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(64, true);
+</script>
+<a name="label336"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic34.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic36.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_get_field_value()</h4 class="jdocu">
+
+<a name="label337"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label338"></a><b>SIM_instruction_get_field_value</b> &#8212; read value of format field</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">integer_t
+SIM_instruction_get_field_value(instruction_id_t ii,
+                                const char *field_name);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function is deprecated. Use <b><i>SIM_instruction_opcode</i></b>
+   instead.
+<p>
+   Reads the value of a format field. Fields that represent signed
+   constants will automatically be sign extended. <i>ii</i>
+   is the instruction to on CPU <i>cpu</i> to extract the
+   field from.
+<p>
+   Supported fields for the SPARC v9 target are (see the SPARC
+   Architecture Manual, Version 9): <tt>a</tt>, <tt>cc0</tt>,
+   <tt>cc1</tt>, <tt>cc2</tt>, <tt>cmask</tt>, <tt>cond</tt>,
+   <tt>d16hi</tt>, <tt>d16lo</tt>, <tt>disp19</tt>, <tt>disp22</tt>,
+   <tt>disp30</tt>, <tt>fcn</tt>, <tt>i</tt>, <tt>imm22</tt>,
+   <tt>imm_asi</tt>, <tt>mmask</tt>, <tt>op</tt>, <tt>op2</tt>,
+   <tt>op3</tt>, <tt>opf</tt>, <tt>opf_low</tt>, <tt>p</tt>,
+   <tt>rcond</tt>, <tt>rd</tt>, <tt>rs1</tt>, <tt>rs2</tt>,
+   <tt>shcnt32</tt>, <tt>shcnt64</tt>, <tt>simm10</tt>,
+   <tt>simm11</tt>, <tt>simm13</tt>, <tt>sw_trap</tt>, <tt>x</tt>.
+<p>
+   The only supported field for the x86 target is <tt>prefix</tt> which is a
+   bit field that can be tested with the following constants: 
+   <tt>SIM_DI_PREFIX_F0_BIT</tt>, <tt>SIM_DI_PREFIX_F2_BIT</tt>,
+   <tt>SIM_DI_PREFIX_F3_BIT</tt>, <tt>SIM_DI_PREFIX_CS_BIT</tt>,
+   <tt>SIM_DI_PREFIX_SS_BIT</tt>, <tt>SIM_DI_PREFIX_DS_BIT</tt>,
+   <tt>SIM_DI_PREFIX_ES_BIT</tt>, <tt>SIM_DI_PREFIX_FS_BIT</tt>,
+   <tt>SIM_DI_PREFIX_GS_BIT</tt>, <tt>SIM_DI_PREFIX_OPERAND_SIZE_BIT</tt>,
+   <tt>SIM_DI_PREFIX_ADDRESS_SIZE_BIT</tt> and <tt>SIM_DI_PREFIX_SSE_BIT</tt>.
+<p>
+   Note that certain fields are only available for certain
+   instructions, thus accessing <tt>simm13</tt> when <tt>i</tt> is 0
+   will be illegal.
+<p>
+   The instruction has to be decoded in order to use this
+   function. See <b><i>SIM_instruction_proceed</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>General</b> Thrown if the instruction is not
+                         decoded.<br> <b>Index</b> Thrown if <i>ii</i>
+                         is illegal, or if the field is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The value of the field.</dd>
+<dt class="jdocu_descitem">DISCLAIMER</dt><dd>
+This function may be changed in future and be replaced
+                         by an alternative mechanism for reading the
+                         fields.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic34.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic36.html">Next</a></span></p>
+</body>
+</html>

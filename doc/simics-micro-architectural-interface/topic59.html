@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>x86 Instructions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(88, true);
+</script>
+<a name="label417"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic58.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic60.html">Next</a></span></p>
+<h2 class="jdocu">Appendix C -&nbsp;&nbsp;&nbsp;x86 Instructions</h2 class="jdocu">
+
+
+<p>
+Synchronized instructions of type 1:
+<p>
+<table>
+<tr><td class="jdocu_noborder">ENTER</td><td class="jdocu_noborder">allocate stack space when entering procedure</td></tr>
+<tr><td class="jdocu_noborder">POPA(D)</td><td class="jdocu_noborder">pop all registers from stack</td></tr>
+<tr><td class="jdocu_noborder">PUSHA(D)</td><td class="jdocu_noborder">push all registers onto the stack</td></tr>
+</table>
+<p>
+Synchronized instructions of type 2:
+<p>
+<table>
+<tr><td class="jdocu_noborder">CALL</td><td class="jdocu_noborder">call procedure (in other seg.)</td></tr>
+<tr><td class="jdocu_noborder">CLFLUSH</td><td class="jdocu_noborder">Flushes cache lines</td></tr>
+<tr><td class="jdocu_noborder">CLI</td><td class="jdocu_noborder">clear interrupt flag</td></tr>
+<tr><td class="jdocu_noborder">CLTS</td><td class="jdocu_noborder">clear task-switched flag in CR0</td></tr>
+<tr><td class="jdocu_noborder">CPUID</td><td class="jdocu_noborder">returns processor identification information</td></tr>
+<tr><td class="jdocu_noborder">EMMS</td><td class="jdocu_noborder">empty MMX state</td></tr>
+<tr><td class="jdocu_noborder">FP instr.</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">FXRSTOR</td><td class="jdocu_noborder">restore x87 FPU, MMX, XMM, and MXCSR state</td></tr>
+<tr><td class="jdocu_noborder">HLT</td><td class="jdocu_noborder">halt</td></tr>
+<tr><td class="jdocu_noborder">IN</td><td class="jdocu_noborder">input from port; fixed port</td></tr>
+<tr><td class="jdocu_noborder">IN</td><td class="jdocu_noborder">nput from port; variable port</td></tr>
+<tr><td class="jdocu_noborder">(REP) INS</td><td class="jdocu_noborder">input from DX port</td></tr>
+<tr><td class="jdocu_noborder">INT1</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">INT n</td><td class="jdocu_noborder">interrupt type n</td></tr>
+<tr><td class="jdocu_noborder">INTO</td><td class="jdocu_noborder">interrupt 4 on overflow</td></tr>
+<tr><td class="jdocu_noborder">INT</td><td class="jdocu_noborder">single step interrupt 3</td></tr>
+<tr><td class="jdocu_noborder">INVD</td><td class="jdocu_noborder">invalidate cache</td></tr>
+<tr><td class="jdocu_noborder">INVLPG</td><td class="jdocu_noborder">Invalidate TLB Entry</td></tr>
+<tr><td class="jdocu_noborder">IRET/IRETD</td><td class="jdocu_noborder">interrupt return</td></tr>
+<tr><td class="jdocu_noborder">JMP</td><td class="jdocu_noborder">unconditional jump (to other seg.)</td></tr>
+<tr><td class="jdocu_noborder">JMP</td><td class="jdocu_noborder">unconditional jump (to other seg.)</td></tr>
+<tr><td class="jdocu_noborder">LDMXCSR</td><td class="jdocu_noborder">Load MXCSR</td></tr>
+<tr><td class="jdocu_noborder">LDS</td><td class="jdocu_noborder">load pointer to DS</td></tr>
+<tr><td class="jdocu_noborder">LES</td><td class="jdocu_noborder">load pointer to ES</td></tr>
+<tr><td class="jdocu_noborder">LFENCE</td><td class="jdocu_noborder">Serializes load operations</td></tr>
+<tr><td class="jdocu_noborder">LFS</td><td class="jdocu_noborder">load pointer to FS</td></tr>
+<tr><td class="jdocu_noborder">LGDT</td><td class="jdocu_noborder">Load Global Descriptor Table Register</td></tr>
+<tr><td class="jdocu_noborder">LGS</td><td class="jdocu_noborder">load pointer to GS</td></tr>
+<tr><td class="jdocu_noborder">LLDT</td><td class="jdocu_noborder">Load Local Descriptor Table Register</td></tr>
+<tr><td class="jdocu_noborder">LMSW</td><td class="jdocu_noborder">Load Machine Status Word</td></tr>
+<tr><td class="jdocu_noborder">LOCK prefixed instr.</td></tr>
+<tr><td class="jdocu_noborder">LSS</td><td class="jdocu_noborder">load pointer to SS</td></tr>
+<tr><td class="jdocu_noborder">LTR</td><td class="jdocu_noborder">Load Task Register</td></tr>
+<tr><td class="jdocu_noborder">MFENCE</td><td class="jdocu_noborder">Serializes load and store operations</td></tr>
+<tr><td class="jdocu_noborder">MOV</td><td class="jdocu_noborder">data to segment register</td></tr>
+<tr><td class="jdocu_noborder">MOV</td><td class="jdocu_noborder">move to control register</td></tr>
+<tr><td class="jdocu_noborder">MOV</td><td class="jdocu_noborder">move to debug register</td></tr>
+<tr><td class="jdocu_noborder">OUT</td><td class="jdocu_noborder">output to port; fixed port</td></tr>
+<tr><td class="jdocu_noborder">OUT</td><td class="jdocu_noborder">output to port; variable port</td></tr>
+<tr><td class="jdocu_noborder">OUTS</td><td class="jdocu_noborder">output to DX port</td></tr>
+<tr><td class="jdocu_noborder">POP</td><td class="jdocu_noborder">pop top of stack into DS</td></tr>
+<tr><td class="jdocu_noborder">POP</td><td class="jdocu_noborder">pop top of stack into FS</td></tr>
+<tr><td class="jdocu_noborder">POP</td><td class="jdocu_noborder">pop top of stack into GS</td></tr>
+<tr><td class="jdocu_noborder">PUSH</td><td class="jdocu_noborder">push CS onto the stack</td></tr>
+<tr><td class="jdocu_noborder">PUSH</td><td class="jdocu_noborder">push DS word onto the stack</td></tr>
+<tr><td class="jdocu_noborder">PUSH</td><td class="jdocu_noborder">push ES onto stack</td></tr>
+<tr><td class="jdocu_noborder">PUSH</td><td class="jdocu_noborder">push SS onto stack</td></tr>
+<tr><td class="jdocu_noborder">RET</td><td class="jdocu_noborder">return from procedure (to other seg)</td></tr>
+<tr><td class="jdocu_noborder">RSM</td><td class="jdocu_noborder">resume from system management mode</td></tr>
+<tr><td class="jdocu_noborder">SFENCE</td><td class="jdocu_noborder">Serializes store operations</td></tr>
+<tr><td class="jdocu_noborder">STI</td><td class="jdocu_noborder">set interrupt flag</td></tr>
+<tr><td class="jdocu_noborder">SYSENTER</td><td class="jdocu_noborder">fast call to pl 0 system procedures</td></tr>
+<tr><td class="jdocu_noborder">SYSEXIT</td><td class="jdocu_noborder">fast return from fast system call</td></tr>
+<tr><td class="jdocu_noborder">WAIT</td><td class="jdocu_noborder">wait</td></tr>
+<tr><td class="jdocu_noborder">WBINVD</td><td class="jdocu_noborder">write-back and invalidate data cache</td></tr>
+<tr><td class="jdocu_noborder">WRMSR</td><td class="jdocu_noborder">write to model-specific register</td></tr>
+</table>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic58.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic60.html">Next</a></span></p>
+</body>
+</html>

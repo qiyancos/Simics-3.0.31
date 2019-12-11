@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>interrupt_cpu</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2243, true);
+</script>
+<a name="label17756"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic504.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic506.html">Next</a></span></p>
+<h3 class="jdocu">interrupt_cpu</h3 class="jdocu">
+
+
+<a name="label17757"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic24.html#label3340">apic</a>, <a class="jdocu" href="topic121.html#label6755">i8259x2</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The <tt>interrupt_ack_fn_t</tt> function is called by an interrupt target
+   to ack an interrupt. Returns the interrupt vector.
+   <a name="label17758"></a>
+   
+<pre class="jdocu_small" style="color: black">typedef int (*interrupt_ack_fn_t)(conf_object_t *NOTNULL);</pre>
+
+   Interface that must be implemented by an interrupt source that
+   sends interrupts through the interrupt_ack interface. Used to
+   reestablish the ack function when loading a checkpoint.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct interrupt_cpu_interface {
+        interrupt_ack_fn_t ack;
+} interrupt_cpu_interface_t;
+
+#define INTERRUPT_CPU_INTERFACE "interrupt_cpu"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic504.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic506.html">Next</a></span></p>
+</body>
+</html>

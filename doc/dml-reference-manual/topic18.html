@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Lexical Structure</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(27, true);
+</script>
+<a name="label103"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+<h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;Lexical Structure</h3 class="jdocu">
+
+
+<a name="label104"></a>
+<p>
+For the most part, the lexical structure of DML resembles that of C.
+However, DML distinguishes between "object context" and "C context", so
+that some C keywords such as <tt>register</tt>, <tt>signed</tt> and
+<tt>unsigned</tt>, are allowed as identifiers in object context, while
+on the other hand many words that look like keywords in the object
+context, such as <tt>bank</tt>, <tt>event</tt> and <tt>data</tt>, are in
+fact allowed as identifiers in all contexts.
+<p>
+Another major difference from C is that names do not generally need to
+be defined before their first use. This is quite useful, but might
+sometimes appear confusing to C programmers.
+<p>
+<dl><dt><b>Reserved words</b></dt><dd>All ISO/ANSI C reserved words are reserved words in DML (even if
+currently unused). In addition, the C99 and C++ reserved words
+<tt>restrict</tt>, <tt>inline</tt>, <tt>this</tt>, <tt>new</tt>,
+<tt>delete</tt>, <tt>throw</tt>, <tt>try</tt>, <tt>catch</tt>, and
+<tt>template</tt> are also reserved in DML. The C++ reserved words
+<tt>class</tt>, <tt>namespace</tt>, <tt>private</tt>,
+<tt>protected</tt>, <tt>public</tt>, <tt>using</tt>, and
+<tt>virtual</tt>, are reserved in DML for future use.
+<p>
+The following words are reserved specially by DML: <tt>after</tt>,
+<tt>assert</tt>, <tt>call</tt>, <tt>cast</tt>, <tt>defined</tt>,
+<tt>error</tt>, <tt>foreach</tt>, <tt>in</tt>, <tt>is</tt>,
+<tt>local</tt>, <tt>log</tt>, <tt>parameter</tt>, <tt>select</tt>,
+<tt>sizeoftype</tt>, <tt>typeof</tt>, <tt>undefined</tt>, <tt>vect</tt>,
+and <tt>where</tt>.
+<p>
+</dd><dt><b>Identifiers</b></dt><dd>Identifiers in DML are defined as in C; an identifier may begin with
+a letter or underscore, followed by any number of letters, numbers, or
+underscores. Within C context, object-context identifiers are always
+prefixed by a <tt>$</tt> character. </dd><dt><b>Constant Literals</b></dt><dd>DML does not support octal constants (written with a leading
+<tt>0</tt> in C); however, DML adds binary constants, written
+"<tt>0b...</tt>", as in <tt>0b1111</tt> or <tt>0b11000011</tt>.</dd><dt><b>Comments</b></dt><dd>Both ordinary C-style (<tt>/</tt><tt>*</tt>...<tt>*</tt><tt>/</tt>)
+comments and C++/C99 (<tt>//</tt>...) comments are allowed in DML.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+</body>
+</html>

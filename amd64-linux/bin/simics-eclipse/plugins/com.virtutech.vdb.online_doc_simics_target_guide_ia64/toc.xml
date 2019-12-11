@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Simics/IA64-460GX Target Guide" topic="html/index.html">
+ <topic label="1 About Simics Documentation" href="html/topic0.html">
+  <topic label="1.1 Conventions" href="html/topic1.html">
+  </topic>
+  <topic label="1.2 Simics Guides and Manuals" href="html/topic2.html">
+   <topic label="Simics Installation Guide for Unix and for Windows" href="html/topic3.html">
+   </topic>
+   <topic label="Simics User Guide for Unix and for Windows" href="html/topic4.html">
+   </topic>
+   <topic label="Simics Eclipse User Guide" href="html/topic5.html">
+   </topic>
+   <topic label="Simics Target Guides" href="html/topic6.html">
+   </topic>
+   <topic label="Simics Programming Guide" href="html/topic7.html">
+   </topic>
+   <topic label="DML Tutorial" href="html/topic8.html">
+   </topic>
+   <topic label="DML Reference Manual" href="html/topic9.html">
+   </topic>
+   <topic label="Simics Reference Manual" href="html/topic10.html">
+   </topic>
+   <topic label="Simics Micro-Architectural Interface" href="html/topic11.html">
+   </topic>
+   <topic label="RELEASENOTES and LIMITATIONS files" href="html/topic12.html">
+   </topic>
+   <topic label="Simics Technical FAQ" href="html/topic13.html">
+   </topic>
+   <topic label="Simics Support Forum" href="html/topic14.html">
+   </topic>
+   <topic label="Other Interesting Documents" href="html/topic15.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="2 Simics/IA64-460GX Overview" href="html/topic16.html">
+  <topic label="2.1 Introduction" href="html/topic17.html">
+  </topic>
+  <topic label="2.2 Supported Hardware" href="html/topic18.html">
+  </topic>
+ </topic>
+ <topic label="3 Simulated Machines" href="html/topic19.html">
+  <topic label="3.1 Vasa" href="html/topic20.html">
+   <topic label="3.1.1 Vasa Scripts" href="html/topic21.html">
+   </topic>
+  </topic>
+  <topic label="3.2 Parameters for Machine Scripts" href="html/topic22.html">
+   <topic label="3.2.1 vasa-common" href="html/topic23.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="4 Supported Components" href="html/topic24.html">
+  <topic label="4.1 Ia64 Components" href="html/topic25.html">
+   <topic label="4.1.1 ia64-460gx-system" href="html/topic26.html">
+   </topic>
+   <topic label="4.1.2 itanium-cpu" href="html/topic27.html">
+   </topic>
+  </topic>
+  <topic label="4.2 PCI Device Components" href="html/topic28.html">
+   <topic label="4.2.1 pci-sym53c810" href="html/topic29.html">
+   </topic>
+   <topic label="4.2.2 pci-sym53c875" href="html/topic30.html">
+   </topic>
+   <topic label="4.2.3 pci-dec21143" href="html/topic31.html">
+   </topic>
+   <topic label="4.2.4 pci-ragexl" href="html/topic32.html">
+   </topic>
+  </topic>
+  <topic label="4.3 PC Legacy Components" href="html/topic33.html">
+   <topic label="4.3.1 ps2-keyboard-mouse" href="html/topic34.html">
+   </topic>
+   <topic label="4.3.2 pc-dual-serial-ports" href="html/topic35.html">
+   </topic>
+   <topic label="4.3.3 isa-vga" href="html/topic36.html">
+   </topic>
+  </topic>
+  <topic label="4.4 Standard Components" href="html/topic37.html">
+   <topic label="4.4.1 std-ethernet-link" href="html/topic38.html">
+   </topic>
+   <topic label="4.4.2 std-service-node" href="html/topic39.html">
+   </topic>
+   <topic label="4.4.3 std-scsi-bus" href="html/topic40.html">
+   </topic>
+   <topic label="4.4.4 std-scsi-disk" href="html/topic41.html">
+   </topic>
+   <topic label="4.4.5 std-scsi-cdrom" href="html/topic42.html">
+   </topic>
+   <topic label="4.4.6 std-text-console" href="html/topic43.html">
+   </topic>
+   <topic label="4.4.7 std-server-console" href="html/topic44.html">
+   </topic>
+   <topic label="4.4.8 std-graphics-console" href="html/topic45.html">
+   </topic>
+   <topic label="4.4.9 std-text-graphics-console" href="html/topic46.html">
+   </topic>
+  </topic>
+  <topic label="4.5 Base Components" href="html/topic47.html">
+   <topic label="4.5.1 component" href="html/topic48.html">
+   </topic>
+   <topic label="4.5.2 top-component" href="html/topic49.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="5 Miscellaneous Notes" href="html/topic50.html">
+  <topic label="5.1 The Firmware (ia64-fakeprom)" href="html/topic51.html">
+   <topic label="5.1.1 Firmware Interface" href="html/topic52.html">
+   </topic>
+  </topic>
+  <topic label="5.2 Bundles and instruction addresses" href="html/topic53.html">
+  </topic>
+  <topic label="5.3 Changing the Processor Clock Frequency" href="html/topic54.html">
+  </topic>
+ </topic>
+ <topic label="6 Limitations" href="html/topic55.html">
+  <topic label="6.1 Limitations of the Simulated Model" href="html/topic56.html">
+  </topic>
+ </topic>
+</toc>

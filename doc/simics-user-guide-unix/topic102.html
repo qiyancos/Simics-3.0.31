@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Avoiding Circular Mappings</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(234, true);
+</script>
+<a name="label539"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic101.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic103.html">Next</a></span></p>
+<h4 class="jdocu">19.4&nbsp;&nbsp;&nbsp;Avoiding Circular Mappings</h4 class="jdocu">
+
+
+<p>
+Since memory-spaces can be mapped in other memory-spaces, it is possible to
+create loops where accesses never reach any target device. One typical case
+is a PCI memory-space with bridges that has both downstream and upstream
+mappings. In a real system, the bridge typically doesn't snoop its own
+transactions and there will be no loop. But in Simics there are usually n
+bridge devices mapped between different memory-spaces. Instead the bridge
+will create space-to-space mappings. To avoid loops in this case, bridges
+should be careful when setting up memory-space mappings. Simics will make
+sure that an access does not loop by terminating it after 512 memory-space
+transitions. If this limit is reached, it is considered a configuration error
+and Simics will stop.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic101.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic103.html">Next</a></span></p>
+</body>
+</html>

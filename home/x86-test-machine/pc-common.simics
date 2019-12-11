@@ -1,0 +1,6 @@
+# Standard Simics PC
+# Highly customizable
+
+@sys.path += ['../scripts']
+@import x86_conf
+run-python-file "../x86-test-machine/pc-common.py"

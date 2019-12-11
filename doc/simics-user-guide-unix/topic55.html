@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Running distributed</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(155, true);
+</script>
+<a name="label347"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic54.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic56.html">Next</a></span></p>
+<h4 class="jdocu">11.3&nbsp;&nbsp;&nbsp;Running distributed</h4 class="jdocu">
+
+
+<p>
+To create a central server object in a Simics instance, the
+<b>new-central-server</b> can be used:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-central-server</b>
+[central_server info] Listening to port 1909
+[central_server info] Listening to unix socket /tmp/simics-central.<i>user</i>
+Created central_server
+</pre>
+<p>
+Without arguments, this command will listen for TCP connections on the
+standard port (1909), and on the standard file socket name.
+This can be changed by specifying on the command line where it should
+listen for connections. 
+<p>
+The minimum <a name="label348">latency</a> is by default set to 10 milliseconds,
+but this can also be changed when creating the central server object.
+It is not possible to change the minimum latency after the server is
+created.
+<p>
+Creating a central server like this does not automatically make the
+Simics instance in which the server runs part of the distributed
+simulation.  If any simulation is to be done in the Simics instance
+acting as a central server, a central client is required in the same
+Simics, and can be added with the <b>connect-central</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-central obj=central_server</b>
+Created central_client
+[central_server info] New connection with id 0
+Connected to Simics Central
+</pre>
+<p>
+Other Simics instances can be connected using TCP connections.  This
+works both for instances on the same host or over the host network:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-central <i>hostname</i></b>
+Created central_client
+[central_client info] Connected to server
+Connected to Simics Central
+</pre>
+<p>
+When running a client Simics on the same host as the server, it is
+better to use file sockets.  This can be done by specifying the socket
+file name to the <b>connect-central</b>, but if the server uses
+the default socket file name, and runs as the same user as the client,
+it is simpler to specify <tt>localhost</tt> as the server.  This will
+automatically be changed to a file socket if the socket is found,
+otherwise a TCP connection to local host is tried.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-central localhost</b>
+Created central_client
+[central_client info] Connected to server
+Connected to Simics Central
+simics&gt; <b>central_client.info</b>
+Information about central_client [class central-client]
+=======================================================
+
+                Identification : <i>a string</i>
+                        Server : /tmp/simics-central.<i>user</i>
+</pre>
+<p>
+Another way to specify that a Simics instance should connect to a
+Central server is to use the <tt>-central</tt> flag to start Simics.
+This makes it very simple to use the same Simics script without
+modification even when running with different servers.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic54.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic56.html">Next</a></span></p>
+</body>
+</html>

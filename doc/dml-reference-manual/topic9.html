@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Devices</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(11, true);
+</script>
+<a name="label69"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+<h3 class="jdocu">3.5&nbsp;&nbsp;&nbsp;Devices</h3 class="jdocu">
+
+
+<p>
+A <em><a name="label70">device</a></em> defined by a DML program corresponds
+directly to a Simics <em>configuration object</em>, i.e., a component
+that can be included in a Simics configuration. Typically, the device
+object will make its functionality available by implementing one or more
+Simics API <em>interfaces</em> (sets of methods).
+<p>
+A configuration object can also contain <em>state</em> (data), and can
+have any number of <em>attributes</em>, which are a specialized form of
+interfaces with a pair of <b><i>get</i></b>/<b><i>set</i></b> methods used for
+inspecting and manipulating some part of the state. (See the
+<em>Simics User Guide</em> and <em>Simics Programming Guide</em>
+for further details about configuration objects, interfaces and
+attributes.)
+<p>
+<a name="label71"></a><h4 class="jdocu">3.5.1&nbsp;&nbsp;&nbsp;Memory-mapped I/O</h4 class="jdocu">
+
+
+<p>
+The most common interface that a device might implement is the
+<tt>io_memory</tt> interface, which allows the device to be mapped into
+a Simics memory space.
+<p>
+To use the standard implementation of the <tt>io_memory</tt> interface
+in a DML file, include the following line:
+<pre class="jdocu_small" style="color: black">
+    import "io-memory.dml";
+</pre>
+<p>
+The standard library file <tt>io-memory.dml</tt> provides the default
+implementation of the <tt>io_memory</tt> interface, in such a way that
+each register bank of the device for which the <em>function</em>
+parameter is set (to a nonnegative integer), can be easily mapped into a
+memory space in a Simics configuration by specifying the device object
+and the function number. Accesses to the mapped addresses are
+automatically translated into calls to the <b><i>access</i></b> method of the
+corresponding bank.
+<p>
+<a name="label72"></a><h4 class="jdocu">3.5.2&nbsp;&nbsp;&nbsp;Connections to other objects</h4 class="jdocu">
+
+
+<p>
+Interaction with other Simics configuration objects from within a device
+model is made easy through <b>connect</b> objects in DML, which
+literally serve as connectors, and can be initialized from outside the
+device - typically in a configuration file. Connected objects are
+generally expected to implement some particular interface so that the
+device can communicate with them.
+<p>
+A device can also implement Simics interfaces on its own, in addition to
+the standard <tt>io_memory</tt> interface described above. This can be
+done by defining an <b>implement</b> object containing the
+necessary methods. The device will be automatically be registered in
+Simics as implementing the interface.
+<p>
+<a name="label73"></a><h4 class="jdocu">3.5.3&nbsp;&nbsp;&nbsp;Attributes</h4 class="jdocu">
+
+
+<p>
+The Simics configuration object attributes that are automatically added
+to the device object for components such as connects and registers are
+often sufficient, but is also possible to define arbitrary additional
+attributes of the device, represented by <b>attribute</b>
+objects.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+</body>
+</html>

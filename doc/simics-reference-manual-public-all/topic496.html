@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ethernet_link</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2234, true);
+</script>
+<a name="label17728"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic495.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic497.html">Next</a></span></p>
+<h3 class="jdocu">ethernet_link</h3 class="jdocu">
+
+
+<a name="label17729"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic83.html#label5477">ethernet-link</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        int  (*connect_device)(conf_object_t *_obj, conf_object_t *dev,
+                               int *new_connection);
+        void (*disconnect_device)(conf_object_t *_obj,
+                                  conf_object_t *dev);
+        void (*send_frame)(conf_object_t *_obj, int id,
+                           dbuffer_t *frame,
+                           int crc_calculated, nano_secs_t delay);
+        void (*auto_negotiate)(conf_object_t *_obj, int id,
+                               phy_speed_t speed);
+        void (*add_mac)(conf_object_t *_obj, int id,
+                        byte_string_t addr);
+        void (*add_mac_mask)(conf_object_t *_obj, int id,
+                             byte_string_t addr, byte_string_t mask);
+        void (*delete_mac)(conf_object_t *_obj, int id,
+                           byte_string_t addr);
+        void (*delete_mac_mask)(conf_object_t *_obj, int id,
+                                byte_string_t addr, byte_string_t mask);
+        void (*clear_macs)(conf_object_t *_obj, int id);
+        void (*promiscuous_mode)(conf_object_t *_obj, int id, int enable);
+} ethernet_link_interface_t;
+#define ETHERNET_LINK_INTERFACE "ethernet_link"
+</pre>
+<p>
+
+   This interface is implemented by Ethernet link objects that provide
+   a data link layer interface for Ethernet frame delivery.
+<p>
+   An Ethernet device calls the <b><i>connect_device</i></b> device
+   function to attach itself to the link, and
+   <b><i>disconnect_device</i></b> to detach itself.  The device must
+   implement the <tt>ethernet_device</tt> interface.
+<p>
+   The <b><i>connect_device</i></b> function attaches an Ethernet
+   device to the link.  The device must implement the
+   <tt>ethernet_device</tt> interface.  The return value is an
+   identification number that should be used in subsequent calls to
+   the link to identify the device.
+<p>
+   The <b><i>disconnect_device</i></b> function detaches an Ethernet
+   device from the link.  It will not receive any more frames from the
+   link and may not call any functions in the interface, except
+   <b><i>connect_device</i></b>.
+<p>
+   The <b><i>send_frame</i></b> function is used by a device to send an
+   Ethernet frame onto the link to be delivered to the other devices
+   connected to the same link.  The frame should be a
+   <tt><a name="label17730">dbuffer_t</a></tt> containing a complete Ethernet frame,
+   excluding the preamble and SFD, but including the CRC.  The
+   crc_calculated flag indicates whether the CRC is
+   actually calculated.  In many cases, the CRC will not be checked by
+   the receiver, which makes it more efficient to skip the CRC
+   calculation an set this flag to 0.  If needed, Simics will
+   calculate a valid CRC for the frame.  The delay makes
+   it possible to add a small delay to the frame.  This can be used
+   when a device wants to send multiple frames at once, but want them
+   to be delivered in a specific sequence.  Instead of using an event
+   handler to send each frame, they can be sent at once, with an
+   increasing delay for each frame. The delay is given in nanoseconds.
+<p>
+   The <b><i>auto_negotiate</i></b> is used to do auto-negotiation of
+   speed.  An Ethernet device should call this function with the
+   speed argument set to a value where all the bits that
+   corresponds to speeds that the device can handle set.  The device
+   should call this function after it connects to the link the very
+   first time (i.e. not after restarting from a checkpoint), or
+   whenever the <b><i>auto_neg_request</i></b> function in its
+   <tt>ethernet_device</tt> is called.
+<p>
+   The <b><i>add_mac</i></b> function registers a MAC address that the
+   device will accept frames for.  By default, the device will receive
+   no frames at all, but by calling this function, the device can inform
+   the link that it will receive frames that match any of the MAC
+   addresses it has registered.
+   The device is not guaranteed to receive any frames not
+   addressed to one of the registered addresses. The address is given as
+   a string of six bytes in a <tt>byte_string_t</tt> structure.
+<p>
+   The <b><i>add_mac_mask</i></b> is similar to <b><i>add_mac</i></b>,
+   but in addition to the MAC address, a six byte bit mask is also be
+   provided.  This mask will be used to mask addresses when checking
+   if they should be delivered to the device.  Only bits in the
+   address that has the corresponding bit in the mask set to 1 will be
+   considered a match.  If the bit mask is zero bytes, it will be
+   handled as if it had been all ones, only an exact match will be
+   accepted.
+<p>
+   Most network cards listen to the broadcast address (ff:ff:ff:ff:ff:ff)
+   or multicast addresses (01:00:00:00:00:00/01:00:00:00:00:00) in
+   addition to the configured MAC address. Such models need to call
+   <b><i>add_mac_mask</i></b> with appropriate arguments after being
+   connected to a link.
+<p>
+   The <b><i>delete_mac</i></b> and <b><i>delete_mac_mask</i></b> functions
+   unregisters a MAC address previously registered with
+   <b><i>add_mac</i></b> or <b><i>add_mac_mask</i></b>.
+<p>
+   The <b><i>clear_macs</i></b> unregisters all previously registered
+   MAC addresses.
+<p>
+   The <b><i>promiscuous_mode</i></b> function sets the promiscuous
+   flag that indicates that the device is listening to all MAC
+   addresses.  Setting this to true (non-zero) has a similar effect as
+   <b><i>clear_macs</i></b> in that the link will start sending all
+   frames to the device, but when the flag is set to false (zero) the
+   MAC addresses filtering will resume with the previously registered
+   MAC addresses.
+<p>
+   The functions <b><i>auto_negotiate</i></b>, <b><i>add_mac</i></b>,
+   <b><i>add_mac_mask</i></b>, <b><i>delete_mac</i></b>,
+   <b><i>clear_macs</i></b>, and <b><i>promiscuous</i></b> behave
+   slightly differently when called during initialization and during
+   simulation.  When loading a configuration, the devices may call
+   these functions to set the initial configuration, but after the
+   configuration has been set, the effect of these calls will be
+   delayed by at least the latency of the link, since it is a change
+   in the simulated state that needs to be propagated in a
+   deterministic way.
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic495.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic497.html">Next</a></span></p>
+</body>
+</html>

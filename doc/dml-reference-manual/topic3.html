@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Command-line Options</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(4, true);
+</script>
+<a name="label10"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="topic2.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Command-line Options</h3 class="jdocu">
+
+ 
+ The following are the available command-line options to
+ <tt>dmlc</tt>:
+ <dl><dt><b>-I <i>path</i></b></dt><dd>Add <i>path</i> to the search path for imported
+ modules.</dd><dt><b>-D <i>name</i>=<i>definition</i></b></dt><dd>Define a compile-time parameter.</dd><dt><b>-M</b></dt><dd>Output makefile rules describing dependencies.</dd><dt><b>-m</b></dt><dd>Build a Simics module.  This makes dmlc include the
+ necessary glue code in the generated C file to be able
+ to compile it as a Simics module.</dd><dt><b>-T</b></dt><dd>Show tags on warning messages. The tags can be used with
+ the <tt>--nowarn</tt> and <tt>--warn</tt> options.</dd><dt><b>--help</b></dt><dd>Print a short help text and exit.</dd><dt><b>--nowarn=<i>tag</i></b></dt><dd>Suppress selected warnings. The tags can be found using
+ the <tt>-T</tt> option.</dd><dt><b>--warn=<i>tag</i></b></dt><dd>Enable selected warnings. The tags can be found using
+ the <tt>-T</tt> option.</dd><dt><b>--noline</b></dt><dd>Suppress line directives for the C preprocessor so
+ that the C code can be debugged.</dd><dt><b>--make-syntax={native, cygwin}</b></dt><dd>Windows only. Specify path syntax to be used when generating
+ makefile rules (using the -M) flag. The default is "cygwin",
+ which generates makefile rules are to be used with Cygwin's
+ GNU make. If the syntax is set to "native", paths will be
+ converted to native form, suitable for use with MinGW's make.
+<p>
+ The flag is ignored on non-Windows hosts.</dd><dt><b>--html</b></dt><dd>Enable the output of an HTML file describing register layout.</dd><dt><b>--dump</b></dt><dd>Enable the output of an dump file describing the
+ structure of the device model.</dd><dt><b>--version</b></dt><dd>Print the version of dmlc and exit.</dd></dl>
+ <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="topic2.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

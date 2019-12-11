@@ -1,0 +1,5 @@
+run-command-file "%script%/niagara-simple-system.include"
+
+instantiate-components
+
+run-command-file "%script%/niagara-simple-solaris-setup.include"

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>i8254</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(872, true);
+</script>
+<a name="label6720"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic119.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic121.html">Next</a></span></p>
+<h3 class="jdocu">i8254</h3 class="jdocu">
+
+
+<a name="label6721"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2510">8254</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>i8254</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+
+<dt class="jdocu_di"><b>Ports</b></dt><dd class="jdocu_di">
+Gate2 (<a class="jdocu" href="topic529.html#label17946">signal</a>), Gate1 (<a class="jdocu" href="topic529.html#label17946">signal</a>), Gate0 (<a class="jdocu" href="topic529.html#label17946">signal</a>)</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The i8254 device implements the functionality of the PIT (Programmable Interval Timer) counter device found in most PCs. In a real system it is used to generate interval signals for the TOD clock, DMA refresh, and the speaker. The simulated device is only connected to the interrupt device; it counts internally, and the value can be read and written from the processor. The 8254 device also implements <i>Port B</i> in the 8255 PPI (Programmable Peripheral Interface). This port is used to control the builtin PC speaker. Counting mode 1, and BCD counting is not implemented.
+
+</dd>
+
+</dl>
+<a name="label6722"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bcd</i></b></dt><a name="label6723"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+The counting format for each counter (0 or 1).</dd></dl>
+<dl><dt><b><i>beep</i></b></dt><a name="label6724"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 if a beep is currently playing in the speaker. Only valid if the have_speaker attribute is 1.</dd></dl>
+<dl><dt><b><i>clock_freq_hz</i></b></dt><a name="label6725"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[fff]|[ffff]</b>.
+<p>
+Clock input frequencies for the counters, in Hz. Defaults to 1193180.0 Hz for all counters. The frequency should be set before simulation starts.</dd></dl>
+<dl><dt><b><i>cmd</i></b></dt><a name="label6726"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+The RW command for each counter.</dd></dl>
+<dl><dt><b><i>cmd_names</i></b></dt><a name="label6727"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ssss]</b>.
+<p>
+List of all command names.</dd></dl>
+<dl><dt><b><i>count</i></b></dt><a name="label6728"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+A list of four count values, one for each counter.</dd></dl>
+<dl><dt><b><i>counting</i></b></dt><a name="label6729"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+For each of the four counters, a flag indicating whether it is running.</dd></dl>
+<dl><dt><b><i>gate</i></b></dt><a name="label6730"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+Four gate signals (1 or 0], one for each counter.</dd></dl>
+<dl><dt><b><i>have_speaker</i></b></dt><a name="label6731"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 (default) if counter 2 is connected to a standard PC speaker.</dd></dl>
+<dl><dt><b><i>initial_count</i></b></dt><a name="label6732"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+A list of four initial count values, one for each counter.</dd></dl>
+<dl><dt><b><i>initial_time</i></b></dt><a name="label6733"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[fff]|[ffff]</b>.
+<p>
+For each of the four counters, a time stamp indicating when the counter was last restarted (in floating-point format)</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label6734"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt request status.</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label6735"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Device to send interrupts to, that implements the <tt>simple-interrupt</tt>.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label6736"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt level for the interrupt device.</dd></dl>
+<dl><dt><b><i>latched</i></b></dt><a name="label6737"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+A list of four flags, each set to 1 if the corresponding counter has a latched value.</dd></dl>
+<dl><dt><b><i>latched_count</i></b></dt><a name="label6738"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+A list of four latched values, one for each counter.</dd></dl>
+<dl><dt><b><i>latched_s</i></b></dt><a name="label6739"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+A list of four flags, each set to 1 if the corresponding counter has a latched status.</dd></dl>
+<dl><dt><b><i>latched_status</i></b></dt><a name="label6740"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+A list of four latched status bytes, one for each counter.</dd></dl>
+<dl><dt><b><i>mode</i></b></dt><a name="label6741"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+The PIT counting mode for each counter (0 - 5).</dd></dl>
+<dl><dt><b><i>mode_names</i></b></dt><a name="label6742"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ssssss]</b>.
+<p>
+List of all mode names.</dd></dl>
+<dl><dt><b><i>next_read_high</i></b></dt><a name="label6743"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+For each of the four counters, a flag indicating if the next read access is for the high byte.</dd></dl>
+<dl><dt><b><i>next_write_high</i></b></dt><a name="label6744"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+For each of the four counters, a flag indicating if the next write access is for the high byte.</dd></dl>
+<dl><dt><b><i>null_count</i></b></dt><a name="label6745"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+The 'null count' status bit.</dd></dl>
+<dl><dt><b><i>out</i></b></dt><a name="label6746"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]|[iiii]</b>.
+<p>
+Output values (0 or 1], one for each counter.</dd></dl>
+<dl><dt><b><i>refresh_clock</i></b></dt><a name="label6747"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Bit 4 when reading from port B.</dd></dl>
+<dl><dt><b><i>speaker</i></b></dt><a name="label6748"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Enable flag for speaker, only valid if the have_speaker attribute is 1.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label6749"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6751">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6753">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label6750"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label6751"></a><a name="label6752"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8254&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8254&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label6753"></a><a name="label6754"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8254&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8254&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic119.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic121.html">Next</a></span></p>
+</body>
+</html>

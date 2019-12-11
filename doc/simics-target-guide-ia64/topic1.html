@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/IA64-460GX Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/IA64-460GX Overview</h2 class="jdocu">
+
+
+<p>
+<a name="label20"></a><h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics/IA64-460GX models machines based on the Itanium processor (from the
+<i>Intel Itanium</i> processor family, also known as <i>IPF</i>. The machines
+are based on the Intel 460GX chipset, and may be configured with up to 32
+processors. Only Linux is supported as target operating system.
+<p>
+
+<a name="label21"></a><h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Supported Hardware</h3 class="jdocu">
+
+
+<p>
+The Simics/IA64-460GX machine is somewhat similar to the HP i2000 workstation,
+also known as "BigSur"). Unlike the HP i2000 workstation, the machine in
+Simics can be configured with more than two processors (as long as this is
+supported by the target operating system).
+<p>
+The Intel 460GX chipset supports up to 4-way multiprocessor configurations.
+The simulated model of this chipset, however, supports an arbitrary number of
+processors. In this case, Linux will support configurations with up to 32
+processors.
+<p>
+The 460GX chipset can be divided into several components, and the simulated
+model supports a subset of these components (that will allow Linux to run
+unmodified). In particular, parts of the following components are simulated:
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Chipset Components</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">System Address Controller</td><td class="jdocu_noborder">(SAC)</td><td class="jdocu_noborder">82461GX</td></tr>
+<tr><td class="jdocu_noborder">I/O and Firmware Bridge</td><td class="jdocu_noborder">(IFB)</td><td class="jdocu_noborder">82468GX</td></tr>
+<tr><td class="jdocu_noborder">Programmable Interrupt Device</td><td class="jdocu_noborder">(PID)</td><td class="jdocu_noborder">UPD66566S1</td></tr>
+</table>
+<p>
+<hr class="jdocu_note"><b>Note:</b> 
+The chipset compontents included with Simics/IA64-460GX is only a small subset
+of the real 460GX chipset. 
+<hr class="jdocu_note">
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

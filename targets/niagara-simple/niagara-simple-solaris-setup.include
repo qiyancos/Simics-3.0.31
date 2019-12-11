@@ -1,0 +1,26 @@
+if not defined do_boot      {$do_boot      = "yes"}
+if not defined do_login     {$do_login     = "yes"}
+if not defined use_simicsfs {$use_simicsfs = "yes"}
+
+####
+
+$system.set-prom-defaults
+$system.set-prom-env diag-switch? true
+
+$image = ($system.get-component-object disk_image)
+@image = sim.objects[simenv.image]
+@image.files = [['disk.s10hw2', 'ro', 0, 536870912]]
+if $use_simicsfs == "yes" {
+   python "image.files += [['disk.s10hw2-simicsfs.craff', 'ro', 0, 536870912]]"
+}
+
+if $do_boot != "yes" {
+    $system.set-prom-env auto-boot? false
+}
+
+if $do_login == "yes" {
+    script-branch {
+        con0.wait-for-string "ogin: "
+        con0.input "root\n"
+    }
+}

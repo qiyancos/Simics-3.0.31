@@ -1,0 +1,1470 @@
+dml 1.0;
+
+import "utility.dml";
+import "io-memory.dml";
+import "pci.dml";
+
+loggroup PCI_config;
+loggroup PCI_DMA;
+
+// Useful constants
+constant IRQ_PIN_A = 0;
+constant IRQ_PIN_B = 1;
+constant IRQ_PIN_C = 2;
+constant IRQ_PIN_D = 3;
+
+/* Set the pci_hotplug parameter to true if the device should support
+   hot-plugging. Setting pci_hotplug to true changes the configuration
+   parameter of the pci_bus from required to optional */
+parameter pci_hotplug default false;
+
+/* Should be set to true for PCI Express devices */
+parameter pcie_device default false;
+
+method require_pci_bus() {
+    if ($pci_hotplug && !$pci_bus) {
+        log "error", 1, PCI_config: 
+        "Trying to access the PCI bus of a hot-pluggable object that has %s",
+            "not yet been plugged in";
+        throw;
+    }
+}
+
+method pci_bus_connected() default {}
+
+// Template to connect the device to a PCI bus
+template pci_bus_connect {
+        parameter configuration = $pci_hotplug ? "optional" : "required";
+    interface pci_bus {
+        parameter required = true;
+        parameter c_name = "pci-bus-interface";
+    }
+    interface io_memory;
+
+    method after_set() {
+        call $pci_bus_connected();
+    }
+}
+
+// Define the main PCI bus
+connect pci_bus {
+    is pci_bus_connect;
+    parameter documentation = "The PCI bus this device is connected to, "
+        + "implementing the <tt>pci-bus</tt> interface.";
+    interface pci_express { parameter required = $pcie_device ? true : false; }
+}
+
+// Expansion ROM
+connect expansion_rom {
+    parameter configuration = "optional";
+    interface rom;
+}
+
+template pci_status_register {
+    field mhz [5:5]   is (read_write)     "66 Mhz Capable";
+    field fbb [7:7]                       "Fast Back-to-Back Capable";
+    field pe  [8:8]   is (write_1_clears) "Master Data Parity Error";
+    field ds  [10:9]                      "DEVSEL timing";
+    field sta [11:11] is (write_1_clears) "Signaled Target Abort";
+    field rta [12:12] is (write_1_clears) "Received Target Abort";
+    field rma [13:13] is (write_1_clears) "Received Master Abort";
+    field ssa [14:14] is (write_1_clears) "Signaled System Abort";
+    field dpe [15:15] is (write_1_clears) "Detected Parity Error";
+}
+
+template rw_if_enabled {
+    method read() -> (value) {
+        if ($enabled)
+            value = $this;
+        else
+            value = 0;
+    }
+    method write(value) {
+        if ($enabled)
+            $this = value;
+    }
+    method get() -> (value) {
+        if ($enabled)
+            value = $this;
+        else
+            value = 0;
+    }
+    method set(value) {
+        if ($enabled)
+            $this = value;
+    }
+}
+
+// Configuration register bank
+template pci_config_generic {
+    parameter documentation = "The PCI configuration space.";
+    parameter overlapping = true;
+    parameter partial = true;
+
+    parameter function = 255;
+    parameter byte_order = "little-endian";
+
+    // Override if the device is not a busmaster
+    parameter busmaster           default true;
+
+    // Override with correct list of enabled address base registers
+    parameter base_address_registers default [];
+
+    register vendor_id           size 2 @ 0x00;
+    register device_id           size 2 @ 0x02;
+    register command             size 2 @ 0x04;
+    register status              size 2 @ 0x06;
+    register revision_id         size 1 @ 0x08;
+    register class_code          size 3 @ 0x09;
+    register cache_line_size     size 1 @ 0x0C is (read_write);
+    register latency_timer       size 1 @ 0x0D is (read_write);
+    register header_type         size 1 @ 0x0E;
+    register bist                size 1 @ 0x0F;
+
+    register capabilities_ptr    size 1 @ 0x34 is (constant);
+
+    register reserved1           size 3 @ 0x35 is (reserved);
+
+    register interrupt_line      size 1 @ 0x3C is (read_write);
+    register interrupt_pin       size 1 @ 0x3D is (read_write);
+
+    // raised interrupts
+    register interrupts size 1;
+
+    // Topological device ID used for memory transactions
+    register bus_address size 4 {
+        parameter signed = true;
+        parameter configuration = "pseudo";
+        parameter hard_reset_value = -1;
+
+        method update() {
+            // Set if not already set
+            if ($this == -1) {
+                inline $require_pci_bus();
+                $this = $pci_bus.pci_bus.get_bus_address($pci_bus, $dev.obj);
+            }
+        }
+    }
+
+    method remove_mappings(space_type) default {
+        log "info", 2, PCI_config: "Removing %s mappings", space_type;
+        foreach reg in ($mapped_registers) {
+            foreach name in ($base_address_registers) {
+                if (reg.name == name)
+                    if (reg.map_type == space_type)
+                        call reg.remove_map();
+            }
+        }
+    }
+
+    method update_mappings(space_type) default {
+        log "info", 2, PCI_config: "Updating %s mappings", space_type;
+        foreach reg in ($mapped_registers) {
+            foreach name in ($base_address_registers) {
+                if (reg.name == name)
+                    if (reg.map_type == space_type)
+                        call reg.update_mapping();
+            }
+        }
+    }
+
+    method remove_all_mappings() default {
+        inline $remove_mappings("I/O");
+        inline $remove_mappings("memory");
+    }
+
+    method update_all_mappings() default {
+        inline $update_mappings("I/O");
+        inline $update_mappings("memory");
+    }
+
+    method interrupt_ack() default {
+        // Override this with something useful
+        log "info", 1, PCI_config: "Interrupt acknowledged";
+    }
+
+    method bus_reset() default {
+        log "info", 2, PCI_config: "Bus reset";
+        call $dev.soft_reset;
+        inline $update_all_mappings();
+    }
+
+    // register implementation
+    register vendor_id is (maybe_constant) {
+        parameter documentation = "The Vendor ID of the PCI device";
+    }
+
+    register device_id is (maybe_constant) {
+        parameter documentation = "The Device ID of the PCI device";
+    }
+
+    register command {
+        parameter documentation = "The PCI command register.";
+        parameter allocate = true;
+        field io [0:0] "I/O Access Enable" {
+            method read -> (enabled) {
+                enabled = $this;
+            }
+            method write(enable) {
+                if ($this != enable) {
+                    $this = enable;
+                    inline $bank.update_mappings("I/O");
+                }
+            }
+        }
+        field mem [1:1] "Memory Access Enable" {
+            method read -> (enabled) {
+                enabled = $this;
+            }
+            method write(enable) {
+                if ($this != enable) {
+                    $this = enable;
+                    inline $bank.update_mappings("memory");
+                }
+            }
+        }
+        field m [2:2] "Master Enable" {
+            method write(enable) {
+                if (!$busmaster && enable) {
+                    log "info", 1, PCI_config: 
+                        "Enabling bus master, but this device doesn't support it";
+                }
+                $this = enable;
+            }
+        }
+        field sc  [3:3] is (silent_unimplemented) "Special Cycle Recognition";
+        field mwi [4:4] is (silent_unimplemented) "Memory Write and Invalidate Enable";
+        field vga [5:5] is (silent_unimplemented) "VGA Palette Snoop Enable";
+        field pe  [6:6] is (silent_unimplemented) "Parity Error Response";
+        field wc  [7:7] is (silent_unimplemented) "Wait Cycle Enable";
+        field se  [8:8] is (silent_unimplemented) "System Error Enable";
+        field fb  [9:9] is (silent_unimplemented) "Fast Back-to-Back Enable";
+        field id[10:10] is (read_write)          "Interrupt Disable" {
+            method write(value) {
+                if ($pcie_device) {
+                    if ($this != value) {
+                        if (value == 1) {
+                            /* INTx interrupts disabled */
+                            inline $pci_lower_interrupt_pin(IRQ_PIN_A);
+                            inline $pci_lower_interrupt_pin(IRQ_PIN_B);
+                            inline $pci_lower_interrupt_pin(IRQ_PIN_C);
+                            inline $pci_lower_interrupt_pin(IRQ_PIN_D);
+                        }
+                        $this = value;
+                    }
+                } else {
+                    $this = value;
+                }
+            }
+        }
+    }
+
+    register status {
+        field ins [3:3]                       "Interrupt Status" {
+            method write(value) {
+                /* This bit is not implemented in older PCI devices */
+                if (!$pcie_device)
+                    $this = value;
+            }
+        }
+        field c   [4:4]   is (read_write)     "Capabilities List";
+        is pci_status_register;
+    }
+
+    register revision_id is (maybe_constant);
+    register class_code is (maybe_constant);
+
+    register header_type {
+        field type [6:0] is (constant);
+        field mf   [7:7] is (constant);
+    }
+
+    register bist {
+        parameter allocate = false;
+        method get -> (value) {
+            value = 0;
+        }
+        method set(value) {
+            if (value != 0)
+                log "unimplemented", 1, PCI_config: "BIST is not implemented";
+        }
+        method read -> (value) {
+            value = 0;
+        }
+        method write(value) {
+            if (value != 0)
+                log "unimplemented", 1, PCI_config: "BIST is not implemented";
+        }
+    }
+    
+    register expansion_rom_base is (base_address) "Expansion ROM base address" {
+        parameter min_size_bits default 11;
+        parameter size = 4;
+        parameter map_type = "memory";
+        field base [31:$size_bits] is (rw_if_enabled);
+        field e [0:0] is (rw_if_enabled) "Address decode enable";
+
+        method pci_mapping_object() -> (conf_object_t *obj) {
+            obj = $expansion_rom;
+        }
+
+        method after_write(memop) {
+            if ($enabled && $expansion_rom) {
+                // remove map
+                inline $remove_map;
+
+                // re-add it
+                if ($e && $command.mem) {
+                    inline $add_map;
+                }
+            }
+        }
+    }
+
+    method get_bytes(uint32 offset, uint32 size) -> (uint64 value) {
+        inline $get(offset, size) -> (value);
+    }
+
+    method pci_raise_interrupt() default {
+        call $pci_raise_interrupt_pin($interrupt_pin - 1);
+    }
+
+    method pci_lower_interrupt() default {
+        call $pci_lower_interrupt_pin($interrupt_pin - 1);
+    }
+
+    method pci_system_error() default {
+        /* only if SERR# enable in the command register */
+        if ($command.se == 1) {
+            inline $require_pci_bus();
+            $pci_bus.pci_bus.system_error($pci_bus);
+            $status.ssa = 1;
+        }
+    }
+}
+
+template config_registers_attribute {
+    parameter documentation = "The PCI configuration registers, each" +
+        " 32 bits in size.";
+    parameter type = "[i*]";
+    parameter configuration = "pseudo";
+    parameter pci_config_size default 64;    /* not valid for PCI Express */
+    parameter pci_config_bank default undefined;
+
+    method get -> (attr_value_t value) {
+        local uint64 val;
+        local int i;
+
+        value = SIM_alloc_attr_list($pci_config_size);
+        
+        for(i = 0; i < $pci_config_size; i++) {
+            inline $pci_config_bank.get(i * 4, 4) ->  (val);
+            value.u.list.vector[i] = SIM_make_attr_integer(val);
+        }
+    }
+}
+
+/* Type 0 Configuration */
+template pci_config_type_0 {
+    is pci_config_generic;
+
+    register cardbus_cis_ptr     size 4 @ 0x28 is (read_write);
+    register subsystem_vendor_id size 2 @ 0x2C;
+    register subsystem_id        size 2 @ 0x2E;
+
+    register expansion_rom_base         @ 0x30;
+
+    register reserved2           size 4 @ 0x38 is (reserved);
+
+    register min_gnt             size 1 @ 0x3E is (read_only);
+    register max_lat             size 1 @ 0x3F is (read_only);
+
+    register subsystem_vendor_id is (maybe_constant);
+    register subsystem_id is (maybe_constant);
+}
+
+template base_address {
+    parameter enabled default false;         /* is this register used? */
+    parameter base_msb = $size == 8 ? 63 : 31;
+    parameter size_bits default $min_size_bits;
+    parameter map_type default undefined;
+    parameter map_bit = $map_type == "memory" ? 0 : 1;
+    parameter map_func default undefined;
+    parameter map_size = 1 << $size_bits;
+    parameter allocate = $enabled;
+    parameter configuration = $enabled ? "optional" : "pseudo";
+
+    method pci_bar_size_bits() -> (int bits) default {
+        /* default is the hard coded value */
+        bits = $size_bits;
+    }
+
+    method pci_mapping_enabled() -> (bool enabled) default {
+        // default is always enabled
+        enabled = true;
+    }
+
+    method pci_mapping_object() -> (conf_object_t *obj) default {
+        // default is the PCI object itself
+        obj = $dev.obj;
+    }
+
+    method pci_mapping_target() -> (conf_object_t *target) default {
+        // default target is NULL
+        target = NULL;
+    }
+
+    method pci_mapping_customize(map_info_t *info) default {
+        // default is not to change anything
+    }
+
+    method pci_mapping_base() -> (map_base) default {
+        inline $get_base() -> (map_base);
+        map_base <<= $base.lsb;
+    }
+
+    method pci_mapping_length() -> (map_length) default {
+        local int size_bits;
+
+        inline $pci_bar_size_bits() -> (size_bits);
+        map_length = 1 << size_bits;
+    }
+
+    /* Calculates the value of the base field, taking into account current
+       setting of size-bits */
+    method get_base() -> (base_val) {
+        local int size_bits;
+
+        inline $pci_bar_size_bits() -> (size_bits);
+        base_val = $base & ~((1 << (size_bits - $base.lsb)) - 1);
+    }
+
+    method remove_map() default {
+        if (!defined $map_func) {
+            log "info", 2, PCI_config: 
+                "Removing mapping for unknown base address %s", $qname;
+        } else {
+            local conf_object_t *map_obj;
+            inline $pci_mapping_object() -> (map_obj);
+            if ($pci_bus) {
+                log "info", 2, PCI_config: 
+                    "Removing %s space mapping for %s (function %d)",
+                    $map_type, $qname, $map_func;
+                $pci_bus.pci_bus->remove_map($pci_bus, map_obj,
+                                             $map_type == "memory"
+                                              ? Sim_Addr_Space_Memory
+                                              : Sim_Addr_Space_IO,
+                                             $map_func);
+            }
+        }
+    }
+
+    method add_map() default {
+
+        if (!defined $map_func) {
+            log "error", 1, PCI_config: 
+                "Adding mapping for unknown base address %s", $qname;
+            throw;
+        } else {
+            local map_info_t info;
+            local conf_object_t *map_obj;
+            local conf_object_t *map_target;
+            inline $require_pci_bus();
+
+            // add this new mapping
+            memset(&info, 0, sizeoftype(map_info_t));
+            inline $pci_mapping_base() -> (info.base);
+            inline $pci_mapping_length() -> (info.length);
+            info.function = $map_func;
+
+            // let the implementer customize the mapping as necessary
+            inline $pci_mapping_object() -> (map_obj);
+            inline $pci_mapping_target() -> (map_target);
+            inline $pci_mapping_customize(&info);
+
+            // but prevent the function number from being changed
+            if (info.function != $map_func) {
+                log "error", PCI_config:
+                "Function number should not be changed when mapping %s", 
+                    $qname;
+                info.function = $map_func;
+            }
+
+            if (info.base == 0)
+                log "info", 2, PCI_config: "Zero %s mapping", $qname;
+
+            log "info", 2, PCI_config:
+            "New %s space mapping for %s (obj %s, target %s, fn %d): base = %#x, length = %#x",
+                $map_type, $name, map_obj->name, 
+                map_target ? map_target->name : "(none)",
+                info.function, info.base, info.length;
+
+            $pci_bus.pci_bus->add_map(
+                $pci_bus, map_obj,
+                $map_type == "memory" ? Sim_Addr_Space_Memory 
+                                      : Sim_Addr_Space_IO,
+                map_target, info);
+        }
+    }
+}
+
+template memory_base_address_generic {
+    parameter enabled = true;
+    parameter map_type = "memory";
+    parameter min_size_bits default 4;
+    is base_address;
+
+    method update_mapping() default {
+        local bool enabled;
+
+        inline $this.remove_map;
+
+        inline $pci_mapping_enabled() -> (enabled);
+        if ($command.mem && enabled) {
+            inline $this.add_map;
+        }
+    }
+
+    field p [3:3] {
+        parameter documentation = "Prefetchable";
+        method write(value) {
+            // silent read-only
+        }
+    }
+
+    field type [2:1] {
+        parameter documentation = "Type";
+        // 00 - anywhere in 32-bit space
+        // 01 - below 1MB
+        // 10 - anywhere in 64-bit space
+        // 11 - reserved
+
+        method write(value) {
+            // silent read-only
+        }
+    }
+
+    field s [0:0] {
+        parameter documentation = "Space type";
+        parameter override_map_bit default undefined;
+        parameter hard_reset_value = (defined $override_map_bit)
+            ? $override_map_bit : $map_bit;
+        method write(value) {
+            // Silent read-only field.
+        }
+    }
+}
+
+template memory_base_address {
+    parameter size = 4;
+    is memory_base_address_generic;
+
+    field base[$base_msb:$min_size_bits] {
+        parameter documentation = "The base address";
+        method read() -> (value) {
+            inline $get_base() -> (value);
+        }
+        method write(value) {
+            $this = value;
+            inline $update_mapping();
+        }
+    }
+
+}
+
+template memory_base_address_64 {
+    parameter size = 8;
+    is memory_base_address_generic;
+
+    method pci_bar_is_64() -> (bool is_bar_64) default {
+        /* default is that all 64-bits are enabled */
+        is_bar_64 = true;
+    }
+
+    /* Overrided from base_address; needed to handle 64-bit BARs configured
+       as 32-bit BAR */
+    method pci_mapping_base() -> (map_base) {
+        local bool is_bar_64;
+
+        inline $pci_bar_is_64() -> (is_bar_64);
+        inline $get_base() -> (map_base);
+
+        map_base <<= $base.lsb;
+
+        if (!is_bar_64)
+            map_base &= 0xffffffff;
+    }
+
+    field base[$base_msb:$min_size_bits] {
+        parameter documentation = "The base address";
+        method read() -> (value) {
+            local bool is_bar_64;
+
+            inline $pci_bar_is_64() -> (is_bar_64);
+            inline $get_base() -> (value);
+
+            if (!is_bar_64)
+                value &= 0xffffffff >> $base.lsb;
+
+        }
+        method write(value) {
+            $this = value;
+            inline $update_mapping();
+        }
+    }
+}
+
+
+template io_base_address {
+    parameter enabled = true;
+    parameter map_type = "I/O";
+    parameter min_size_bits default 2;
+    parameter size = 4;
+    is base_address;
+
+    method update_mapping() default {
+        local bool enabled;
+
+        inline $this.remove_map;
+
+        inline $pci_mapping_enabled() -> (enabled);
+        if ($command.io && enabled) {
+            inline $this.add_map;
+        }
+    }
+
+    field base [31:$min_size_bits] {
+        parameter documentation = "The base address";
+        method read() -> (value) {
+            inline $get_base() -> (value);
+        }
+        method write(value) {
+            $this = value;
+            inline $update_mapping();
+        }
+    }
+
+    field p [1:1] is (silent_constant) "Reserved" {
+        parameter value = 0;
+    }
+
+    field s [0:0] {
+        parameter documentation = "Space type";
+        parameter override_map_bit default undefined;
+        parameter hard_reset_value = (defined $override_map_bit)
+            ? $override_map_bit : $map_bit;
+        method write(value) {
+            // Silent read-only field.
+        }
+    }
+}
+
+template no_base_address {
+    parameter map_type = "none";
+    parameter size = 4;
+    field ignore [31:0] is (silent_constant) {
+        parameter value = 0;
+    }
+}
+
+// Some models hard-code vendor-id etc, and some load it from firmware
+template maybe_constant {
+    parameter value default undefined;
+    parameter allocate = !defined $value;
+    method get() -> (value) {
+        if ($allocate)
+            value = $this;
+        else
+            value = $value;
+    }
+    method set(value) {
+        if ($allocate)
+            $this = value;
+        else
+            if (value != $value)
+                throw;
+    }
+
+    method read() -> (value) {
+        if ($allocate)
+            value = $this;
+        else
+            value = $value;
+    }
+
+    method write(value) {
+        if ($allocate)
+            $this = value;
+        else
+            log "spec_violation", 1, PCI_config:
+                "Write to read-only register %s", $name;
+    }
+}
+
+
+// DMA methods
+method pci_data_from_memory(addr_space_t space, void *buffer, uint64 address, 
+                            uint64 size)
+        -> (exception_type_t ex) default
+{
+    local pci_memory_transaction_t trans;
+    local map_info_t info;
+    inline $require_pci_bus();
+
+    if (!$pci_config.command.m) {
+        log "info", 2, PCI_DMA:
+            "Trying to access PCI bus, but not a master.";
+        throw;
+    }
+
+    memset(&trans, 0, sizeof(trans));
+
+    trans.s.physical_address = address;
+    SIM_set_mem_op_type(&trans.s, Sim_Trans_Load);
+    trans.s.size = size;
+    trans.s.block_STC = 1;
+    trans.s.may_stall = 0;
+
+    trans.s.ini_type = Sim_Initiator_PCI_Device;
+    trans.s.ini_ptr = $dev.obj;
+    trans.s.real_address = buffer;
+
+    inline $pci_config.bus_address.update;
+    trans.bus_address = $pci_config.bus_address;
+
+    memset(&info, 0, sizeoftype(map_info_t));
+    info.function = space;
+
+    ex = $pci_bus.io_memory.operation($pci_bus, &trans.s, info);
+
+    if (ex == Sim_PE_IO_Not_Taken) {
+        // master abort
+        log "info", 2, PCI_DMA: "Master Abort received";
+        $pci_config.status.rma = 1;
+    } else if (ex == Sim_PE_IO_Error) {
+        // target abort
+        log "info", 2, PCI_DMA: "Target Abort received";
+        $pci_config.status.rta = 1;
+    } else if (ex != Sim_PE_No_Exception) {
+        log "error", 1, PCI_DMA:
+            "Unknown exception received on PCI bus: %s",
+            SIM_get_exception_name(NULL, ex);
+    } else {
+        log "info", 4, PCI_DMA: "Reading %d bytes from address 0x%x", 
+            size, address;
+    }
+}
+
+method pci_value_from_memory(addr_space_t space, uint64 address, uint8 size)
+    -> (uint64 value, exception_type_t ex) default
+{
+    local uint64 buf = 0;
+
+    if (size > 8)
+        log "error", 1, PCI_DMA: "Too large size of DMA access";
+
+    call $pci_data_from_memory(space, &buf, address, size) -> (ex);
+    value = CONVERT_LE64(buf);
+}
+
+method pci_data_to_memory(addr_space_t space, void *buffer, uint64 address, 
+                          uint64 size)
+    -> (exception_type_t ex) default
+{
+    local pci_memory_transaction_t trans;
+    local map_info_t info;
+    inline $require_pci_bus();
+
+    if (!$pci_config.command.m) {
+        log "info", 2, PCI_DMA:
+            "Trying to access PCI bus, but not a master.";
+        throw;
+    }
+
+    memset(&trans, 0, sizeof(trans));
+
+    trans.s.physical_address = address;
+    SIM_set_mem_op_type(&trans.s, Sim_Trans_Store);
+    trans.s.size = size;
+    trans.s.block_STC = 1;
+    trans.s.may_stall = 0;
+
+    trans.s.ini_type = Sim_Initiator_PCI_Device;
+    trans.s.ini_ptr = $dev.obj;
+    trans.s.real_address = buffer;
+
+    inline $pci_config.bus_address.update;
+    trans.bus_address = $pci_config.bus_address;
+
+    memset(&info, 0, sizeoftype(map_info_t));
+    info.function = space;
+
+    ex = $pci_bus.io_memory.operation($pci_bus, &trans.s, info);
+
+    if (ex == Sim_PE_IO_Not_Taken) {
+        // master abort
+        log "info", 2, PCI_DMA: "Master Abort received";
+        $pci_config.status.rma = 1;
+    } else if (ex == Sim_PE_IO_Error) {
+        // target abort
+        log "info", 2, PCI_DMA: "Target Abort received";
+        $pci_config.status.rta = 1;
+    } else if (ex != Sim_PE_No_Exception) {
+        log "error", 1, PCI_DMA:
+            "Unknown exception received on PCI bus: %s",
+            SIM_get_exception_name(NULL, ex);
+    } else {
+        log "info", 4, PCI_DMA: "Writing %d bytes to address 0x%x", 
+            size, address;
+    }
+}
+
+method pci_value_to_memory(addr_space_t space, uint64 value, uint64 address, 
+                           uint8 size)
+    -> (exception_type_t ex) default
+{
+    local uint64 buf;
+
+    if (size > 8)
+        log "error", 1, PCI_DMA: "Too large size of DMA access";
+
+    buf = value;
+    buf = CONVERT_LE64(buf);
+    call $pci_data_to_memory(space, &buf, address, size) -> (ex);
+}
+
+// Interrupts
+method pci_raise_interrupt_pin(int pin) default {
+    if (!$pci_config.interrupts[pin]
+        && ($pci_config.command.id == 0 || !$pcie_device)) {
+
+        inline $require_pci_bus();
+        log "info", 4, PCI_config: "Raising interrupt pin %d", pin;
+        $pci_bus.pci_bus->raise_interrupt($pci_bus, $dev.obj, pin);
+        $pci_config.interrupts[pin] = 1;
+
+        if ($pcie_device)
+            $pci_config.status.ins = 1;
+    }
+}
+
+method pci_lower_interrupt_pin(int pin) default {
+    if ($pci_config.interrupts[pin]) {
+        inline $require_pci_bus();
+        log "info", 4, PCI_config: "Lowering interrupt pin %d", pin;
+        $pci_bus.pci_bus->lower_interrupt($pci_bus, $dev.obj, pin);
+        $pci_config.interrupts[pin] = 0;
+
+        if ($pci_config.interrupts == 0 && $pcie_device)
+            $pci_config.status.ins = 0;
+    }
+}
+
+implement pci_device {
+    method interrupt_acknowledge() -> (int i) default {
+        inline $pci_config.interrupt_ack;
+        i = 0;
+    }
+    method bus_reset() default {
+        inline $pci_config.bus_reset;
+    }
+}
+
+//
+// Additional capabilites
+//
+
+// Power Management
+template defining_pci_power_management_capability {
+    parameter pm_offset default undefined;
+    parameter pm_next_ptr default undefined;
+
+    register pm_capability_id  size 1 @  $pm_offset      "Capability ID";
+    register pm_next_ptr_r     size 1 @ ($pm_offset + 1) "Next PTR";
+    register pm_capabilities   size 2 @ ($pm_offset + 2) "PM Capabilities";
+    register pm_status_control size 2 @ ($pm_offset + 4) "PM Status/Control";
+    register pm_sc_bridge      size 1 @ ($pm_offset + 6) "PM Bridge S/C";
+    register pm_data           size 1 @ ($pm_offset + 7) "PM Data";
+
+    register pm_capability_id is (constant) {
+        parameter value = 0x1;
+    }
+    
+    register pm_next_ptr_r is (constant) {
+        parameter value = $pm_next_ptr;
+    }
+
+    register pm_capabilities {
+        field version    [2:0]  is (read_only) {
+            parameter value = 2;
+        }
+        field pme_clock  [3:3]  is (read_only);
+        field ds_init    [5:5]  is (read_only);
+        field aux_curr   [8:6]  is (read_only);
+        field ds1_supp   [9:9]  is (read_only);
+        field ds2_supp  [10:10] is (read_only);
+        field pme_supp  [15:11] is (read_only);
+    }
+
+    register pm_status_control {
+        field power_state  [1:0]  is (read_write);
+        field pme_enable   [8:8]  is (read_write);
+        field data_select [12:9]  is (read_write);
+        field data_scale  [14:13] is (read_only);
+        field pme_status  [15:15] is (write_1_clears);
+    }
+
+    register pm_sc_bridge {
+        field b2_b3_supp [6:6] is (read_only);
+        field bpcce      [7:7] is (read_only);
+    }
+
+    register pm_data is (read_only);
+}
+
+// PCI-X
+template defining_pcix_capability {
+    parameter pcix_offset default undefined;
+    parameter pcix_next_ptr default undefined;
+
+    register pcix_capability_id size 1 @  $pcix_offset "Capability ID";
+    register pcix_next_ptr_r    size 1 @ ($pcix_offset + 1) "Next PTR";
+    register pcix_command       size 2 @ ($pcix_offset + 2) "Command";
+    register pcix_status        size 4 @ ($pcix_offset + 4) "Status";
+
+    register pcix_capability_id is (constant) {
+        parameter value = 0x7;
+    }
+
+    register pcix_next_ptr_r is (constant) {
+        parameter value = $pcix_next_ptr;
+    }
+
+    register pcix_command {
+        field dpre[0] is (silent_unimplemented) {
+            parameter documentation = "Data parity error recovery enable";
+        }
+        field ero[1] is (silent_unimplemented) {
+            parameter documentation = "Enable relax ordering";
+        }
+        field mmrbc[3:2] is (silent_unimplemented) {
+            parameter documentation = "Maximum memory read byte count";
+        }
+        field most[6:4] is (silent_unimplemented) {
+            parameter documentation = "Maximum outstanding split transactions";
+        }
+    }
+
+    register pcix_status {
+        field dfn[2:0] is (silent_unimplemented) {
+            parameter documentation = "Function number";
+        }
+        field ddn[7:3] is (silent_unimplemented) {
+            parameter documentation = "Device number";
+        }
+        field dbn[15:8] is (silent_unimplemented) {
+            parameter documentation = "Bus number";
+        }
+        field sbd[16] is (silent_unimplemented) {
+            parameter documentation = "64-bit device";
+        }
+        field mc[17] is (silent_unimplemented) {
+            parameter documentation = "133-MHz capability";
+        }
+        field scd[18] is (write_1_clears) {
+            parameter documentation = "Split completion discarded";
+        }
+        field usc[19] is (write_1_clears) {
+            parameter documentation = "Unexpected split completion";
+        }
+        field dc[20] is (silent_unimplemented) {
+            parameter documentation = "Device complexity";
+        }
+        field dmrbc[22:21] is (silent_unimplemented) {
+            parameter documentation = "Designed maximum read byte count";
+        }
+        field dmost[25:23] is (silent_unimplemented) {
+            parameter documentation = "Designed maximum outstanding split "
+                + "transactions";
+        }
+        field dmcrs[28:26] is (silent_unimplemented) {
+            parameter documentation = "Designed maximum cumulative read size";
+        }
+        field rsm[29] is (write_1_clears) {
+            parameter documentation = "Receive split completion error message";
+        }
+    }
+}
+
+// MSI
+template _msi_capability_common {
+    parameter msi_offset default undefined;
+    parameter msi_next_ptr default undefined;
+
+    register msi_capability_id size 1 @  $msi_offset       "Capability ID";
+    register msi_next_ptr_r    size 1 @ ($msi_offset + 1)  "Next PTR";
+    register msi_capabilities  size 2 @ ($msi_offset + 2)  "Message Control";
+    register msi_msg_address   size 4 @ ($msi_offset + 4)  "Message Address";
+    
+    register msi_msg_data      size 2                      "Message Data";
+
+    register msi_capability_id is (constant) {
+        parameter value = 0x05;
+    }
+    register msi_next_ptr_r is (constant) {
+        parameter value = $msi_next_ptr;
+    }
+    register msi_capabilities {
+        field msi_enable  [0:0]  is (read_write);
+        field mm_capable  [3:1]  is (read_only);
+        field mm_enable   [6:4]  is (read_write);
+        field sf_capable  [7:7]  is (read_only);
+    }
+    register msi_msg_address is (read_write);
+    register msi_msg_data is (read_write);
+}
+
+template defining_msi_capability {
+    is _msi_capability_common;
+    register msi_msg_data @ ($msi_offset + 8);
+}
+
+template defining_msi64_capability {
+    is _msi_capability_common;
+    register msi_msg_addr_upp size 4 @ ($msi_offset + 8) "Message Addr. Upper";
+    register msi_msg_data            @ ($msi_offset + 12);
+
+    register msi_capabilities {
+        field sf_capable { parameter hard_reset_value = 1; }
+    }
+    register msi_msg_addr_upp is (read_write);
+}
+
+// PCI Express
+template defining_pci_express_capability {
+    parameter exp_offset default undefined;
+    parameter exp_next_ptr default undefined;
+
+    register exp_capability_id size 1 @  $exp_offset       "Capability ID";
+    register exp_next_ptr_r    size 1 @ ($exp_offset + 1)  "Next PTR";
+    register exp_capabilities  size 2 @ ($exp_offset + 2)  "MSI Capabilities";
+    register exp_dev_cap       size 4 @ ($exp_offset + 4)  "Device Cap.";
+    register exp_dev_control   size 2 @ ($exp_offset + 8)  "Device Control";
+    register exp_dev_status    size 2 @ ($exp_offset + 10) "Device Status";
+    register exp_link_cap      size 4 @ ($exp_offset + 12) "Link Cap.";
+    register exp_link_control  size 2 @ ($exp_offset + 16) "Link Control";
+    register exp_link_status   size 2 @ ($exp_offset + 18) "Link Status";
+    register exp_slot_cap      size 4 @ ($exp_offset + 20) "Slot Cap.";
+    register exp_slot_control  size 2 @ ($exp_offset + 24) "Slot Control";
+    register exp_slot_status   size 2 @ ($exp_offset + 26) "Slot Status";
+    register exp_root_control  size 2 @ ($exp_offset + 28) "Root Control";
+    register exp_reserved      size 2 @ ($exp_offset + 30) "Reserved";
+    register exp_root_status   size 4 @ ($exp_offset + 32) "Root Status";
+
+    register exp_capability_id is (constant) {
+        parameter value = 0x10;
+    }
+    register exp_next_ptr_r is (constant) {
+        parameter value = $exp_next_ptr;
+    }
+    register exp_capabilities {
+        field version  [3:0]  is (read_only) "Capability Version" {
+            parameter value = 1;
+        }
+        field type     [7:4]  is (read_only) "Device/Port Type";
+        field slot     [8:8]  is (read_only) "Slot Implemented";
+        field imn     [13:9]  is (read_only) "Interrupt Message Number";
+    }
+    register exp_dev_cap {
+        field max_payload  [2:0]  is (read_only) "Max Payload Supported";
+        field phantom      [4:3]  is (read_only) "Phantom Functions Supported";
+        field ext_tag      [5:5]  is (read_only) "Extended Tag Field Supported";
+        field el0_al       [8:6]  is (read_only) "Endpoint L0 Acceptable Latency";
+        field el1_al      [11:9]  is (read_only) "Endpoint L1 Acceptable Latency";
+        field abp         [12:12] is (read_only) "Attention Button Present";
+        field aip         [13:13] is (read_only) "Attention Indicator Present";
+        field pip         [14:14] is (read_only) "Power Indicator Present";
+        field csplv       [25:18] is (read_only) "Captured Slot Power Limit Value";
+        field cspls       [27:26] is (read_only) "Captured Slot Power Limit Scale";
+    }
+    register exp_dev_control {
+        field cere  [0:0]  is (read_write) "Correctable Error Reporting Enable";
+        field nere  [1:1]  is (read_write) "Non-Fatal Error Reporting Enable";
+        field fere  [2:2]  is (read_write) "Fatal Error Reporting Enable";
+        field urre  [3:3]  is (read_write) "Unsupported Request Reporting Enable";
+        field ero   [4:4]  is (read_write) "Enabled Relaxed Ordering";
+        field mps   [7:5]  is (read_write) "Max Payload Size";
+        field etfe  [8:8]  is (read_write) "Extended Tag Field Enable";
+        field pfe   [9:9]  is (read_write) "Phantom Functions Enable";
+        field ape  [10:10] is (read_write) "AUX Power PM Enable";
+        field ens  [11:11] is (read_write) "Enabled No Snoop";
+        field mrrs [14:12] is (read_write) "Max Read Request Size";
+    }
+    register exp_dev_status {
+        field ced   [0:0]  is (write_1_clears) "Correctable Error Detected";
+        field ned   [1:1]  is (write_1_clears) "Non-Fatal Error Detected";
+        field fed   [2:2]  is (write_1_clears) "Fatal Error Detected";
+        field urd   [3:3]  is (write_1_clears) "Unsupported Request Detected";
+        field apd   [4:4]  is (read_only) "AUX Power Detected";
+        field tp    [5:5]  is (read_only) "Transactions Pending";
+    }
+    register exp_link_cap {
+        field mls   [3:0]  is (read_only) "Max Link Speed";
+        field mlw   [9:4]  is (read_only) "Max Link Width";
+        field aspm [11:10] is (read_only) "Active State Power Management  Support";
+        field l0el [14:12] is (read_only) "L0 Exit Latency";
+        field l1el [17:15] is (read_only) "L1 Exit Latency";
+        field pn   [31:24] is (read_only) "Port Number";
+    }
+    register exp_link_control {
+        field aspm  [1:0]  is (read_write) "ASPM Control";
+        field rcb   [3:3]  is (read_write) "Read Completion Boundary";
+        field ldis  [4:4]  is (read_write) "Link Disable";
+        field rlnk  [5:5]  is (read_only)  "Retrain Link";
+        field ccc   [6:6]  is (read_write) "Common Clock Configuration";
+        field es    [7:7]  is (read_write) "Extended Synch";
+    }
+    register exp_link_status {
+        field ls    [3:0]  is (read_only) "Link Speed";
+        field nlw   [9:4]  is (read_only) "Negociated Link Width";
+        field te   [10:10] is (read_only) "Training Error";
+        field lt   [11:11] is (read_only) "Link Training";
+        field scc  [12:12] is (read_only) "Slot Clock Configuration";
+    }
+    register exp_slot_cap {
+        field abp   [0:0]  is (read_only) "Attention Button Present";
+        field pcp   [1:1]  is (read_only) "Power Controller Present";
+        field msp   [2:2]  is (read_only) "MRL Sensor Present";
+        field aip   [3:3]  is (read_only) "Attention Indicator Present";
+        field pip   [4:4]  is (read_only) "Power Indicator Present";
+        field hps   [5:5]  is (read_only) "Hot-Plug Surprise";
+        field hpc   [6:6]  is (read_only) "Hot Plug Capable";
+        field splw [14:7]  is (read_only) "Slot Power Limit Value";
+        field spls [16:15] is (read_only) "Slot Power Limit Scale";
+        field fsn  [31:19] is (read_only) "Physical Slot Number";
+    }
+    register exp_slot_control {
+        field abpe  [0:0]  is (read_write) "Attention Button Pressed Enable";
+        field pfde  [1:1]  is (read_write) "Power Fault Detected Enable";
+        field msce  [2:2]  is (read_write) "MRL Sensor Changed Enabled";
+        field pdce  [3:3]  is (read_write) "Present Detected Change Enabled";
+        field ccie  [4:4]  is (read_write) "Command Completed Interrupt Enable";
+        field hpie  [5:5]  is (read_write) "Hot-Plug Interrupt Enable";
+        field aic   [7:6]  is (read_write) "Attention Indicator Control";
+        field pic   [9:8]  is (read_write) "Power Indicator Control";
+        field pcc  [10:10] is (read_write) "Power Controller Control";
+    }
+    register exp_slot_status {
+        field abp   [0:0]  is (write_1_clears) "Attention Button Pressed";
+        field pfd   [1:1]  is (write_1_clears) "Power Fault Detected";
+        field msc   [2:2]  is (write_1_clears) "MRL Sensor Changed";
+        field pdc   [3:3]  is (write_1_clears) "Presence Detect Changed";
+        field cc    [4:4]  is (write_1_clears) "Command Completed";
+        field mss   [5:5]  is (read_only) "MRL Sensor State";
+        field pds   [6:6]  is (read_only) "Presence Detect State";
+    }
+    register exp_root_control {
+        field sece  [0:0]  is (read_write) "System Error on Correctable Error Enable";
+        field sene  [1:1]  is (read_write) "System Error on Non-Fatal Error Enable";
+        field sefe  [2:2]  is (read_write) "System Error on Fatal Error Enable";
+        field pie   [3:3]  is (read_write) "PME Interrupt Enable";
+    }
+    register exp_root_status {
+        field pri  [15:0]  is (read_only) "PME Requestor ID";
+        field ps   [16:16] is (write_1_clears) "PME Status";
+        field pp   [17:17] is (read_only) "PME Pending";
+    }
+}
+
+
+template defining_pcie_advanced_error_reporting_capability {
+    parameter aer_offset default undefined;
+    parameter aer_next_ptr default undefined;
+
+    register aer_capability_header  size 4 @  $aer_offset       "Capability Header";
+    register aer_unc_error_status   size 4 @ ($aer_offset + 4)  "Uncorrectable Error Status";
+    register aer_unc_error_mask     size 4 @ ($aer_offset + 8)  "Uncorrectable Error Mask";
+    register aer_unc_error_severity size 4 @ ($aer_offset + 12) "Uncorrectable Error Severity";
+    register aer_corr_error_status  size 4 @ ($aer_offset + 16) "Correctable Error Status";
+    register aer_corr_error_mask    size 4 @ ($aer_offset + 20) "Correctable Error Mask";
+    register aer_cap_control        size 4 @ ($aer_offset + 24) "Correctable Error Mask";
+    register aer_header_log_1       size 4 @ ($aer_offset + 28) "Header Log (1st DW)";
+    register aer_header_log_2       size 4 @ ($aer_offset + 32) "Header Log (2nd DW)";
+    register aer_header_log_3       size 4 @ ($aer_offset + 36) "Header Log (3rd DW)";
+    register aer_header_log_4       size 4 @ ($aer_offset + 40) "Header Log (4th DW)";
+    register aer_root_error_cmd     size 4 @ ($aer_offset + 44) "Root Error Command";
+    register aer_root_error_status  size 4 @ ($aer_offset + 48) "Root Error Status";
+    register aer_error_source_id    size 4 @ ($aer_offset + 52) "Error Source Identification";
+
+    register aer_capability_header {
+        field id       [15:0]  is (constant) "Capability ID" {
+            parameter value = 0x0001;
+        }
+        field version  [19:16] is (constant) "Capability Version" {
+            parameter value = 1;
+        }
+        field next_ptr [31:20] is (constant) {
+            parameter value = $aer_next_ptr;
+        }
+    }
+
+    register aer_unc_error_status is (sticky) {
+        field tes    [0:0]  is (write_1_clears) "Training Error Status";
+        field dlpes  [4:4]  is (write_1_clears) "Data Link Protocol Error Status";
+        field ptlps [12:12] is (write_1_clears) "Poisoned TLP Status";
+        field fcpes [13:13] is (write_1_clears) "Flow Control Protocol Error Status";
+        field cts   [14:14] is (write_1_clears) "Completion Time-out Status";
+        field cas   [15:15] is (write_1_clears) "Completer Abort Status";
+        field ucs   [16:16] is (write_1_clears) "Unexpected Completion Status";
+        field ros   [17:17] is (write_1_clears) "Receiver Overflow Status";
+        field mtlps [18:18] is (write_1_clears) "Malformed TLP Status";
+        field ees   [19:19] is (write_1_clears) "ECRC Error Status";
+        field ures  [20:20] is (write_1_clears) "Unsupported Request Error Status";
+    }
+
+    register aer_unc_error_mask is (sticky) {
+        field tes    [0:0]  is (read_write) "Training Error Mask";
+        field dlpes  [4:4]  is (read_write) "Data Link Protocol Error Mask";
+        field ptlps [12:12] is (read_write) "Poisoned TLP Mask";
+        field fcpes [13:13] is (read_write) "Flow Control Protocol Error Mask";
+        field cts   [14:14] is (read_write) "Completion Time-out Mask";
+        field cas   [15:15] is (read_write) "Completer Abort Mask";
+        field ucs   [16:16] is (read_write) "Unexpected Completion Mask";
+        field ros   [17:17] is (read_write) "Receiver Overflow Mask";
+        field mtlps [18:18] is (read_write) "Malformed TLP Mask";
+        field ees   [19:19] is (read_write) "ECRC Error Mask";
+        field ures  [20:20] is (read_write) "Unsupported Request Error Mask";
+    }
+
+    register aer_unc_error_severity is (sticky) {
+        field tes    [0:0]  is (read_write) "Training Error Severity";
+        field dlpes  [4:4]  is (read_write) "Data Link Protocol Error Severity";
+        field ptlps [12:12] is (read_write) "Poisoned TLP Severity";
+        field fcpes [13:13] is (read_write) "Flow Control Protocol Error Severity";
+        field cts   [14:14] is (read_write) "Completion Time-out Severity";
+        field cas   [15:15] is (read_write) "Completer Abort Severity";
+        field ucs   [16:16] is (read_write) "Unexpected Completion Severity";
+        field ros   [17:17] is (read_write) "Receiver Overflow Severity";
+        field mtlps [18:18] is (read_write) "Malformed TLP Severity";
+        field ees   [19:19] is (read_write) "ECRC Error Severity";
+        field ures  [20:20] is (read_write) "Unsupported Request Error Severity";
+    }
+
+    register aer_corr_error_status is (sticky)  {
+        field res    [0:0]  is (write_1_clears) "Receiver Error Status";
+        field btlps  [6:6]  is (write_1_clears) "Bad TLP Status";
+        field bdllps [7:7]  is (write_1_clears) "Bad DLLP Status";
+        field rnrs   [8:8]  is (write_1_clears) "REPLAY_NUM Rollover Status";
+        field rtts  [12:12] is (write_1_clears) "Replay Timer Timeout Status";
+    }
+
+    register aer_corr_error_mask is (sticky) {
+        field res    [0:0]  is (read_write) "Receiver Error Mask";
+        field btlps  [6:6]  is (read_write) "Bad TLP Mask";
+        field bdllps [7:7]  is (read_write) "Bad DLLP Mask";
+        field rnrs   [8:8]  is (read_write) "REPLAY_NUM Rollover Mask";
+        field rtts  [12:12] is (read_write) "Replay Timer Timeout Mask";
+    }
+
+    register aer_cap_control is (sticky) {
+        field fep    [4:0]  is (read_only)  "First Error Pointer";
+        field egc    [5:5]  is (constant)   "ECRC Generation Capable";
+        field ege    [6:6]  is (read_write) "ECRC Generation Enable";
+        field ecc    [7:7]  is (constant)   "ECRC Check Capable";
+        field ece    [8:8]  is (read_only)  "ECRC Check Enable";
+    }
+
+    register aer_header_log_1 is (read_only, sticky);
+    register aer_header_log_2 is (read_only, sticky);
+    register aer_header_log_3 is (read_only, sticky);
+    register aer_header_log_4 is (read_only, sticky);
+
+    register aer_root_error_cmd {
+        field cere  [0:0]  is (read_write) "Correctable Error Reporting Enable";
+        field nfere [1:1]  is (read_write) "Non-Fatal Error Reporting Enable";
+        field fere  [2:2]  is (read_write) "Fatal Error Reporting Enable";
+    }
+
+    register aer_root_error_status {
+        field ecr    [0:0]  is (write_1_clears, sticky) "ERR_COR Received";
+        field mecr   [1:1]  is (write_1_clears, sticky) "Multiple ERR_COR Received";
+        field efnr   [2:2]  is (write_1_clears, sticky) "ERR_FATAL/NONFATAL Received";
+        field mefnr  [3:3]  is (write_1_clears, sticky) "Multiple ERR_FATAL/NONFATAL Received";
+        field fuf    [4:4]  is (write_1_clears, sticky) "First Uncorrectable Fatal";
+        field nfemr  [5:5]  is (write_1_clears, sticky) "Non-Fatal Error Messages Received";
+        field femr   [6:6]  is (write_1_clears, sticky) "Fatal Error Messages Received";
+        field aeimn [31:27] is (read_only)              "Advanced Error Interrupt Message Number";
+    }
+
+    register aer_error_source_id {
+        is sticky;
+        field ecsi [15:0]  is (read_only) "ERR_COR Source Identification";
+        field efsi [31:16] is (read_only) "ERR_FATAL/NONFATAL Source Identification";
+    }
+}
+
+template defining_pci_device_serial_number_extended_capability {
+    parameter dsn_offset default undefined;
+    parameter dsn_next_ptr default undefined;
+
+    register dsn_capability_header size 4 @ ($dsn_offset + 0x0);
+    register dsn_serial_number_low size 4 @ ($dsn_offset + 0x4);
+    register dsn_serial_number_high size 4 @ ($dsn_offset + 0x8);
+
+    register dsn_capability_header {
+        field id[15:0] is (constant) "Capability ID" {
+            parameter value = 0x3;
+        }
+        field version[19:16] is (constant) "Capability version" {
+            parameter value = 0x1;
+        }
+        field next_ptr[31:20] is (constant) "Next capability offset" {
+            parameter value = $dsn_next_ptr;
+        }
+    }
+
+    register dsn_serial_number_low is (constant) "Serial number (low)";
+    register dsn_serial_number_high is (constant) "Serial number (high)";
+}
+
+template defining_pci_device_power_budgeting_extended_capability {
+    parameter dpb_offset default undefined;
+    parameter dpb_next_ptr default undefined;
+
+    register dpb_capability_header size 4 @ ($dpb_offset + 0x0);
+    register dpb_data_select size 1 @ ($dpb_offset + 0x4);
+    register dpb_power_data size 4 @ ($dpb_offset + 0x8);
+    register dpb_capability size 1 @ ($dpb_offset + 0xc);
+
+    register dpb_capability_header {
+        field id[15:0] is (constant) "Capability ID" {
+            parameter value = 0x4;
+        }
+        field version[19:16] is (constant) "Capability version" {
+            parameter value = 0x1;
+        }
+        field next_ptr[31:20] is (constant) "Next capability offset" {
+            parameter value = $dpb_next_ptr;
+        }
+    }
+
+    register dpb_data_select is (read_write) "Data select";
+    register dpb_power_data {
+        field base_power[7:0] is (constant) "Base power";
+        field data_scale[9:8] is (constant) "Data scale";
+        field pm_sub_state[12:10] is (constant) "PM sub-state";
+        field pm_state[14:13] is (constant) "PM state";
+        field type[17:15] is (constant) "Type";
+        field power_rail[20:18] is (constant) "Power rail";
+    }
+    register dpb_capability {
+        field system_allocated[0] is (constant) "System allocated";
+    }
+}
+
+template defining_pci_virtual_channel_extended_capability {
+    parameter vce_offset default undefined;
+    parameter vce_next_ptr default undefined;
+
+    register vce_capability_header size 4 @ ($vce_offset + 0x0);
+    register vce_port_vc_capability1 size 4 @ ($vce_offset + 0x4);
+    register vce_port_vc_capability2 size 4 @ ($vce_offset + 0x8);
+    register vce_port_vc_control size 2 @ ($vce_offset + 0xc);
+    register vce_port_vc_status size 2 @ ($vce_offset + 0xe);
+    register vce_vc_resource_capability[2] size 4 @ ($vce_offset +0x10+$i*0xc);
+    register vce_vc_resource_control[2] size 4 @ ($vce_offset + 0x14 + $i*0xc);
+    register vce_vc_resource_status[2] size 2 @ ($vce_offset + 0x1a + $i*0xc);
+    register vce_vc_arbitration_table[4] size 4 @ ($vce_offset + 0x70 + $i*4);
+
+    register vce_capability_header {
+        field id[15:0] is (constant) "Capability ID" {
+            parameter value = 0x2;
+        }
+        field version[19:16] is (constant) "Capability version" {
+            parameter value = 0x1;
+        }
+        field next_ptr[31:20] is (constant) "Next capability offset" {
+            parameter value = $vce_next_ptr;
+        }
+    }
+
+    register vce_port_vc_capability1 {
+        field extended_vc_count[0] is (constant) {
+            parameter documenation = "Extended VC count";
+        }
+        field low_prio_extended_vc_count[4] is (constant) {
+            parameter documentation = "Low priority extended VC count";
+        }
+        field reference_clocks[9:8] is (constant) "Reference clocks";
+        field port_arbitration_entry_size[11:10] is (constant) {
+            parameter documentation = "Port arbitration table-entry size";
+        }
+    }
+
+    register vce_port_vc_capability2 {
+        field vc_arbitration_capabilities[1:0] is (constant) {
+            parameter documentation = "VC arbitration capabilities";
+        }
+        field vc_arbitration_table_offset[31:24] is (constant) {
+            parameter documentation = "VC arbitration table offset";
+        }
+    }
+
+    register vce_port_vc_control {
+        field load_vc_arbitration_table[0] is (read_write) {
+            parameter documentation = "Load VC arbitration table";
+        }
+        field vc_arbitration_select[1] is (read_write) {
+            parameter documentation = "VC arbitration select";
+        }
+    }
+
+    register vce_port_vc_status {
+        field vc_arbitration_table_status[0] is (read_only) {
+            parameter documentation = "VC arbitration table status";
+        }
+    }
+
+    register vce_vc_resource_capability[2] {
+        field port_arbitration_capability[0] is (constant) {
+            parameter documentation = "Port arbitration capability";
+        }
+        field advanced_packet_switching[14] is (constant) {
+            parameter documentation = "Advanced packet switching";
+        }
+        field reject_snoop_transactions[15] is (constant) {
+            parameter documentation = "Reject snoop transactions";
+        }
+        field maximum_time_slots[22:16] is (constant) {
+            parameter documentation = "Maximum time slots";
+        }
+        field port_arbitration_table_offset[31:24] is (constant) {
+            parameter documentation = "Port arbitration table offset";
+        }
+    }
+
+    register vce_vc_resource_control[2] {
+        field tc_vc_map[7:0] is (read_write) "TC/VC map";
+        field load_port_arbitration_table[16] is (constant) {
+            parameter documentation = "Load port arbitration table";
+        }
+        field port_arbitration_select[19:17] is (constant) {
+            parameter documentation = "Port arbitration select";
+        }
+        field vc_id[26:24] is (constant) "VC ID";
+        field vc_enable[31] is (constant) "VC enable";
+    }
+
+    register vce_vc_resource_status[2] {
+        field port_arbitration_table_status[0] is (constant) {
+            parameter documentation = "Port arbitration table status";
+        }
+        field vc_negotiation_pending[1] is (constant) {
+            parameter documentation = "VC negotiation pending";
+        }
+    }
+
+    register vce_vc_arbitration_table[4] is (read_write) {
+        parameter documentation = "Virtual channel arbitration table";
+    }
+}

@@ -1,0 +1,138 @@
+@if not "do_login"          in dir(): do_login = 1
+@if not "cdrom_path"        in dir(): cdrom_path = ""
+@if not "central_host"      in dir(): central_host = "localhost"
+# one of: none, local, exported and remote
+@if not "central_setup"     in dir(): central_setup = "none"
+@if not "real_network"      in dir(): real_network = 0
+@if not "cpu_spaces"        in dir(): cpu_spaces = 0
+@if not "use_dhcp"          in dir(): use_dhcp = 0
+@if not "ethernet"          in dir(): ethernet = "10:10:10:10:10:12"
+@if not "solaris_version"   in dir(): solaris_version = 9
+@if not "use_generic_cache" in dir(): use_generic_cache = 0
+@if not "use_fb"	    in dir(): use_fb = 0
+@if not "use_ttyb_console"  in dir(): use_ttyb_console = 0
+
+@from text_console_common import wait_for_string
+
+@if not "force_reconfigure" in dir(): force_reconfigure = 0
+@def do_reconfigure(msg):
+    global force_reconfigure
+    force_reconfigure = 1
+    print
+    print "Warning: Need to boot machine with reconfigure (-r)"
+    print "         %s" % msg
+    print
+
+@if use_generic_cache: 
+    cpu_spaces = 1
+
+# handle the extra_simics_path variable
+run-python-file ../scripts/extrapath.py
+
+add-directory "%simics%/import/sunfire"
+
+run-python-file ../scripts/sunfire_conf.py
+
+@if not "boards" in dir(): boards = [[0, 1, 256]]
+
+@if use_fb and use_dhcp:
+    do_reconfigure("Using DHCP and a graphics card requires reconfigure.")
+
+@set_global_config(slots = 16,
+                   hostid = 0x80804a6c,
+                   cpu_freq = 168,
+                   mac_address = ethernet,
+                   tod = "2002-06-02 11:00:00 UTC",
+                   ttyb_console = use_ttyb_console)
+
+# the io board includes one onboard 'hme' ethernet adapter, and
+# one 'fas' SCSI controller on sbus slot 3.
+@add_sbus_board(board_no = 1, mac_address = ethernet)
+
+@for brd in boards:
+    add_cpu_board(board_no = brd[0], num_cpus = brd[1], mb = brd[2])
+
+@if "donut_files" in dir(): 
+    print "Using user-specified disk files"
+    pass  # name of install disk in given in variable donut_files
+          # already. Do not setup special files!
+elif solaris_version == 9:
+    donut_files = [["donut5-solaris9.craff", "ro", 0, 2128486400],
+                   ["donut5.1-extras.craff", "ro", 0, 2128486400]]
+    if use_dhcp:
+        donut_files += [["donut5.1.1-dhcp.craff", "ro", 0, 2128486400]]
+    elif use_fb:
+        donut_files += [["donut5.1.2-pgx64.craff", "ro", 0, 2128486400]]
+elif solaris_version == 8:
+    donut_files = [["donut4-solaris8.craff", "ro", 0, 2128486400],
+                   ["donut4.1-extras.craff", "ro", 0, 2128486400]]
+    if use_dhcp:
+        donut_files += [["donut4.1.2-dhcp.craff", "ro", 0, 2128486400]]
+    elif use_fb:
+        donut_files += [["donut4.1.1-pgx64.craff", "ro", 0, 2128486400]]
+else:
+    print "Unsupported Solaris version %d" % solaris_version
+    SIM_command_has_problem()
+
+@if not "donut_disk_size"  in dir(): donut_disk_size = 2128486400
+
+# create a disk on the on-board 'fas' controller.
+@add_scsi_disk(board_no = 1, slot_no = 3, scsi_target = 1,
+               size = donut_disk_size, files = donut_files)
+
+@add_scsi_cdrom(board_no = 1, slot_no = 3, scsi_target = 6, file = cdrom_path)
+
+@if use_fb:
+    pci_board = get_free_board()
+    if pci_board == None:
+        handle_error("No free slot to add PCI board for framebuffer device")
+        SIM_quit(1)
+    if pci_board != 2:
+        do_reconfigure("PCI board for the graphics card was added on a different slot than 2.")
+    add_pci_board(board_no = pci_board, mac_address = "10:10:10:10:10:14")
+    add_pci_pgx64(board_no = pci_board, slot_no = 0)
+
+default-port-forward-target 10.10.0.5
+
+run-command-file ../central/central-include.simics
+
+# call the user configuration function before finishing
+@if "user_config" in dir(): user_config()
+
+# simplify some object names
+@rename_object(conf_list, "cd3_3_6",   "cd0")
+@rename_object(conf_list, "sd3_3_1",   "sd0")
+@rename_object(conf_list, "sb3_3",     "sb0")
+@rename_object(conf_list, "hme3_3",    "hme0")
+@rename_object(conf_list, "fas3_3",    "fas0")
+@rename_object(conf_list, "fasdma3_3", "fasdma0")
+
+@if cpu_spaces == 1:
+    create_cpu_spaces()
+
+@finish_configuration()
+
+# only auto-connect on one interface
+hme0.connect -auto net0
+
+# use this to get a copy of the configuration
+# @write_configuration(conf_list, "donut.conf")
+
+# override some default values
+# system.set-prom-env "auto-boot?"   "false"  # stop at the OBP prompt
+
+@if force_reconfigure:
+    # reconfigure devices and enable verbose mode during boot
+    eval_cli_line('system.set-prom-env "boot-command" "boot disk1 -rv"')
+
+@if use_generic_cache:
+    eval_cli_line("run-python-file ../scripts/cache.py")
+    add_g_caches()
+
+@def do_boot():
+    wait_for_string(conf.con0, "ogin: ")
+    conf.con0.input = "root\n"
+
+# set do_login to 0 to avoid the automatic login
+@if do_login == 1:
+    start_branch(do_boot)

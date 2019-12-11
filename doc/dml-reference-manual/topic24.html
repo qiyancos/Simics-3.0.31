@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Object Declarations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(40, true);
+</script>
+<a name="label131"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic23.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic25.html">Next</a></span></p>
+<h3 class="jdocu">4.8&nbsp;&nbsp;&nbsp;Object Declarations</h3 class="jdocu">
+
+
+<a name="label132"></a>
+<p>
+The general form of an object declaration is "<tt></tt><i>type</i><tt>
+</tt><i>name</i><tt> </tt><i>extras</i><tt> </tt><i>desc</i><tt> { ... }</tt>" or "<tt></tt><i>type</i><tt>
+</tt><i>name</i><tt> </tt><i>extras</i><tt> </tt><i>desc</i><tt>;</tt>", where <tt></tt><i>type</i><tt></tt>
+is an object type such as <tt>bank</tt>, <tt></tt><i>name</i><tt></tt> is an
+identifier naming the object, and <tt></tt><i>extras</i><tt></tt> is optional
+special notation which depends on the object type. <tt></tt><i>desc</i><tt></tt>
+is an optional string constant giving a very short summary of the object.
+Ending the declaration with a semicolon is equivalent to ending with an
+empty pair of braces. The <em>body</em> (the section within the braces)
+may contain <em>parameter declarations</em>, <em>methods</em>, <em>data
+fields</em>, and <em>object declarations</em>.
+<p>
+For example, a <tt>register</tt> object may be declared as
+<pre class="jdocu_small" style="color: black">
+    register r0 @ 0x0100 "general-purpose register 0";
+</pre>
+where the "<tt>@ </tt><i>offset</i><tt></tt>" notation is particular for the
+<b>register</b> object type; see below for details.
+<p>
+An object declaration with a <tt></tt><i>desc</i><tt></tt> section, on the form
+<pre class="jdocu_small" style="color: black">
+    <i>type</i> <i>name</i> ... <i>desc</i> { ... }
+</pre>
+is equivalent to defining the parameter <tt>desc</tt>, as in
+<pre class="jdocu_small" style="color: black">
+    <i>type</i> <i>name</i> ... {
+        parameter desc = <i>desc</i>;
+        ...
+    }
+</pre>
+In the following sections, we will leave out <tt></tt><i>desc</i><tt></tt> from
+the object declarations, since it is always optional. Another parameter,
+<tt>documentation</tt> (for which there is no short-hand), may also be
+defined for each object, and is used to give a more detailed
+description. See Section <a class="jdocu" href="topic30.html#label251">5.1.1</a> for details.)
+<p>
+If two object declarations with the same name occur within the same
+containing object, and they specify the same object type, then the
+declarations are concatenated; e.g.,
+<pre class="jdocu_small" style="color: black">
+    bank b {
+        register r size 4 { ...<i>body1</i>... }
+        ...
+        register r @ 0x0100 { ...<i>body2</i>... }
+        ...
+    }
+</pre>
+is equivalent to
+<pre class="jdocu_small" style="color: black">
+    bank b {
+        register r size 4 @ 0x0100  {
+            ...<i>body1</i>...
+            ...<i>body2</i>...
+        }
+        ...
+    }
+</pre>
+However, it is an error if the object types should differ.
+<p>
+Some object types (<b>register</b>, <b>group</b>,
+<b>attribute</b>, and <b>connect</b>) may be used in
+<em>arrays</em>. The general form of an object array declaration is
+<pre class="jdocu_small" style="color: black">
+    <i>type</i> <i>name</i> [<i>size</i>] <i>extras</i> { ... }
+</pre>
+where <tt></tt><i>size</i><tt></tt> is the number of elements in the array. The
+size must be a compile time constant. For instance,
+<pre class="jdocu_small" style="color: black">
+    register regs[16] size 2 {
+        parameter offset = 0x0100 + 2 * $i;
+        ...
+    }
+</pre>
+or written more compactly
+<pre class="jdocu_small" style="color: black">
+    register regs[16] size 2 @ 0x0100 + 2 * $i;
+</pre>
+defines an array named <tt>regs</tt> of 16 registers (numbered from 0 to
+15) of 2 bytes each, whose offsets start at 0x0100. There is also a
+special syntax "<tt></tt><i>type</i><tt> </tt><i>name</i><tt> [</tt><i>variable</i><tt> in
+0..</tt><i>max</i><tt>] ...</tt>", where <tt></tt><i>max</i><tt></tt> = <tt></tt><i>size</i><tt> -
+1</tt>. See Section <a class="jdocu" href="topic30.html#label274">5.1.2</a> for details about
+arrays and index parameters.
+<p>
+The following sections give further details on declarations for object
+types that have special conventions.
+<p>
+<a name="label133"></a><h4 class="jdocu">4.8.1&nbsp;&nbsp;&nbsp;Bank Declarations</h4 class="jdocu">
+
+
+<a name="label134"></a>
+<p>
+The general form of a <b>bank</b> declaration is
+<pre class="jdocu_small" style="color: black">
+    bank <i>name</i> { ... }
+</pre>
+where <tt></tt><i>name</i><tt></tt> may be omitted. The elements (e.g., registers)
+of a bank that has no name belong to the namespace of the parent object,
+i.e., the device. There is at most one such anonymous bank object per
+device; multiple "<tt>bank { ... }</tt>" declarations are concatenated.
+<p>
+
+<a name="label135"></a><h4 class="jdocu">4.8.2&nbsp;&nbsp;&nbsp;Register Declarations</h4 class="jdocu">
+
+
+<a name="label136"></a>
+<p>
+The general form of a <b>register</b> declaration is
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i> size <i>n</i> @ <i>d</i> is (<i>templates</i>) { ... }
+</pre>
+<p>
+Each of the "<tt>size </tt><i>n</i><tt></tt>", "<tt>@ </tt><i>d</i><tt></tt>", and "<tt>is
+(</tt><i>templates</i><tt>)</tt>" sections is optional, but if present, they must
+be specified in the above order.
+<p>
+<ul>
+<p>
+<li>
+A declaration
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i> size <i>n</i> ... { ... }
+</pre>
+is equivalent to
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i> ... { parameter size = <i>n</i>; ... }
+</pre>
+</li>
+<p>
+<li>
+A declaration
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i> ... @ <i>d</i> ... { ... }
+</pre>
+is equivalent to
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i>  ... { parameter offset = <i>d</i>; ... }
+</pre>
+</li>
+<p>
+<li>
+A declaration
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i> ... is (<i>t1</i>,...,<i>tN</i>) { ... }
+</pre>
+is equivalent to
+<pre class="jdocu_small" style="color: black">
+    register <i>name</i>  ... { is <i>t1</i>; ... is <i>tN</i>; ... }
+</pre>
+</li>
+<p>
+</ul>
+Templates are further described in Section <a class="jdocu" href="topic25.html#label144">4.9.2</a>.
+<p>
+
+<a name="label137"></a><h4 class="jdocu">4.8.3&nbsp;&nbsp;&nbsp;Field Declarations</h4 class="jdocu">
+
+
+<a name="label138"></a>
+<p>
+The general form of a <b>field</b> declaration is
+<pre class="jdocu_small" style="color: black">
+    field <i>name</i> [<i>highbit</i>:<i>lowbit</i>] is (<i>templates</i>) { ... }
+</pre>
+or simply
+<pre class="jdocu_small" style="color: black">
+    field <i>name</i> [<i>bit</i>] ... { ... }
+</pre>
+specifying a range of bits of the containing register, where the syntax
+<tt>[</tt><i>bit</i><tt>]</tt> is short for <tt>[</tt><i>bit</i><tt>:</tt><i>bit</i><tt>]</tt>.
+Both the "<tt>[...]</tt>" and the <tt>is (</tt><i>templates</i><tt>)</tt>
+sections are optional; in fact, the "<tt>[...]</tt>" syntax is merely a
+much more convenient way of defining the (required) field parameters
+<tt>lsb</tt> and <tt>msb</tt> (cf. Section <a class="jdocu" href="topic30.html#label366">5.1.7</a>).
+<p>
+<ul>
+<p>
+<li>
+A declaration
+<pre class="jdocu_small" style="color: black">
+    field <i>name</i> [<i>high</i>:<i>low</i>] is (<i>t1</i>,...,<i>tN</i>) { ... }
+</pre>
+is equivalent to
+<pre class="jdocu_small" style="color: black">
+    field <i>name</i> [<i>high</i>:<i>low</i>] { is <i>t1</i>; ... is <i>tN</i>; ... }
+</pre>
+</li>
+<p>
+</ul>
+<p>
+For a range of two or more bits, the first (leftmost) number always
+indicates the <em>most significant bit</em>, regardless of the bit
+numbering scheme used in the file. This corresponds to how bit fields
+are usually visualized, with the most significant bit to the left.
+<p>
+The bits of a register are always numbered from zero to <i>n</i> - 1,
+where <i>n</i> is the width of the register. If the default
+little-endian bit numbering is used, the least significant bit has index
+zero, and the most significant bit has index <i>n</i> - 1. In this case,
+a 32-bit register with two fields corresponding to the high and low
+half-words may be declared as
+<pre class="jdocu_small" style="color: black">
+    register HL size 4 ... {
+        field H [31:16];
+        field L [15:0];
+    }
+</pre>
+<p>
+If instead big-endian bit numbering is selected in the file, e.g., with a
+"<tt>bitorder be32;</tt>" declaration, the most significant bit has index
+zero, and the least significant bit has the highest index. In that case,
+the register above may be written as
+<pre class="jdocu_small" style="color: black">
+    register HL size 4 ... {
+        field H [0:15];
+        field L [16:31];
+    }
+</pre>
+This is useful when modeling a system where the documentation uses
+big-endian bit numbering, so it can be compared directly to the model.
+<p>
+Note that for a bit field declaration, only the "endianism" selected by
+a <tt>bitorder</tt> declaration in the file has any effect; the base
+width is always that of the containing register, so in a 16-bit
+register, big-endian bit 0 corresponds to little-endian bit 15, but in a
+32-bit register, big-endian bit 0 corresponds to little-endian bit 31.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic23.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic25.html">Next</a></span></p>
+</body>
+</html>

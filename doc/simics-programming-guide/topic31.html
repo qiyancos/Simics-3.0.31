@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Events</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(77, true);
+</script>
+<a name="label161"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+<h3 class="jdocu">6.7&nbsp;&nbsp;&nbsp;Events</h3 class="jdocu">
+
+
+<p>
+<a name="label162"></a>
+<a name="label163"></a>
+<p>
+For events, the API is identical for Python and C/C++. To post an event in the
+future, based on time, the <b><i><a name="label164">SIM_time_post</a>()</i></b> and
+<b><i><a name="label165">SIM_time_post_cycles</a>()</i></b> function is used. It has the
+following declaration:
+<p>
+<pre class="jdocu_small" style="color: black">
+void 
+SIM_time_post(conf_object_t *obj,
+              double seconds,
+              sync_t sync,
+              event_handler_t func,
+              lang_void *user_data);
+
+void 
+SIM_time_post_cycle(conf_object_t *obj,
+                    cycles_t cycles,
+                    sync_t sync,
+                    event_handler_t func,
+                    lang_void *user_data);
+</pre>
+<p>
+They take five arguments specifying the object whose time queue should be used
+(<i>obj</i>), the amount of time until the event occurs&#8212;in
+seconds or in cycles&#8212;(<i>seconds</i>), whether just the processor
+or the whole machine should be synchronized when the event occurs
+(<i>sync</i>), the callback function that should be called
+(<i>func</i>) and the parameter for the callback function
+(<i>user_data</i>).
+<p>
+If for some reason you do want to remove a posted but not yet handled event,
+you can cancel it with a call to <b><i><a name="label166">SIM_time_clean</a>()</i></b>,
+specifying the object, callback function and parameter.
+<p>
+You can also check how long time is left until an event occurs using
+<b><i><a name="label167">SIM_time_next_occurrence</a>()</i></b>, again specifying the object,
+callback function and parameter. The time left to the event is returned in
+cycles.
+<p>
+If you want to post an event a number of simulated steps into the future
+it should instead post to the step queue. Posting to the step queue
+is very similar to posting to the time queue, but the functions
+<b><i><a name="label168">SIM_step_post</a>()</i></b>, <b><i><a name="label169">SIM_step_clean</a>()</i></b>
+and <b><i><a name="label170">SIM_step_next_occurrence</a>()</i></b> should be used instead.
+<p>
+Refer to the <em>Simics Reference Manual</em> for more information on the
+functions available and their parameters.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+</body>
+</html>

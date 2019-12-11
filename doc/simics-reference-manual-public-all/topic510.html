@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>memory_space</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2249, true);
+</script>
+<a name="label17782"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic509.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic511.html">Next</a></span></p>
+<h3 class="jdocu">memory_space</h3 class="jdocu">
+
+
+<a name="label17783"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic164.html#label7795">memory-space</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <a name="label17784"></a>
+   This interface is implemented by classes that provide linear address
+   spaces. Other objects may perform accesses in the address space using
+   the <b><i>access()</i></b> function or one of the simplified access functions,
+   or may ask for mapped objects using <b><i>space_lookup()</i></b>. Typical usage
+   of this interface would be memory accesses from devices or processors.
+<p>
+   The <b><i>access_simple()</i></b> function is similar to <b><i>access()</i></b>
+   but takes some additional arguments instead of a complete
+   <tt>generic_transaction_t</tt> structure. An inquiry version of this
+   function is available as <b><i>access_simple_inq()</i></b>. Both these
+   functions can perform endian conversion if the buffer pointed to by
+   <i>buf</i> contains a value in host endian byte-order. To avoid endian
+   conversion, <tt>Sim_Endian_Target</tt> should be specified as
+   <i>endian</i>.
+   These two functions are not available from Python.
+<p>
+   The functions <b><i>read()</i></b> and <b><i>write()</i></b> operate on data in
+   an <tt>attr_value_t</tt> format. This is useful for accesses from
+   Python, but they can also be used from C/C++. The value returned by
+   <b><i>read()</i></b> is statically allocated and should be copied to a
+   destination buffer directly after the call. The largest amount of data that
+   can be transferred in a single <b><i>read()</i></b> call is 1024 bytes. If the
+   <b><i>write()</i></b> function fails, the pseudo exception is returned as an
+   integer.
+<p>
+   
+   
+<pre class="jdocu_small" style="color: black">#define MEMORY_SPACE_INTERFACE "memory_space"
+struct memory_space_interface {
+        map_list_t *(*space_lookup)(conf_object_t *NOTNULL obj,
+                                    generic_transaction_t *NOTNULL mop,
+                                    map_info_t mapinfo);
+        exception_type_t (*access)(conf_object_t *NOTNULL obj,
+                                   generic_transaction_t *NOTNULL mop);
+        exception_type_t (*access_simple)(conf_object_t *obj,
+                                          conf_object_t *initiator,
+                                          physical_address_t addr,
+                                          char *buf,
+                                          physical_address_t len,
+                                          read_or_write_t type,
+                                          endianness_t endian);
+        exception_type_t (*access_simple_inq)(conf_object_t *obj,
+                                              conf_object_t *initiator,
+                                              physical_address_t addr,
+                                              char *buf,
+                                              physical_address_t len,
+                                              read_or_write_t type,
+                                              endianness_t endian);
+        attr_value_t (*read)(conf_object_t *NOTNULL obj,
+                             conf_object_t *initiator,
+                             physical_address_t addr,
+                             int length,
+                             int inquiry);
+        exception_type_t (*write)(conf_object_t *NOTNULL obj,
+                                  conf_object_t *initiator,
+                                  physical_address_t addr,
+                                  attr_value_t data,
+                                  int inquiry);
+        cycles_t (*timing_model_operate)(conf_object_t *NOTNULL space,
+                                         generic_transaction_t *NOTNULL mop);
+};</pre>
+
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic509.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic511.html">Next</a></span></p>
+</body>
+</html>

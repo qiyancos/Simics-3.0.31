@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Generic Cache OOO</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(47, true);
+</script>
+<a name="label238"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+<h3 class="jdocu">5.4&nbsp;&nbsp;&nbsp;Generic Cache OOO</h3 class="jdocu">
+
+
+<p>
+A special cache model called <b><a name="label239">g-cache-ooo</a></b> is provided with Simics
+MAI to handle <a name="label240">multiple outstanding transactions</a> and out-of-order execution. It
+is very similar to <b><a name="label241">g-cache</a></b> described in <em>Simics User
+Guide</em> so we describe here only the differences that are introduced by
+the special MAI requirements.
+<p>
+Although <b><a name="label242">g-cache</a></b> and <b>g-cache-ooo</b> have a very
+similar interface (in terms of attributes and commands), they do not handle
+transactions in the same way. Whereas <b>g-cache</b> takes care of a
+transactions in one pass, computing all the penalties and performing all the
+state changes as the transaction goes through its different phases,
+<b>g-cache-ooo</b> tries to present a more credible model for
+out-of-order execution. Each phase of a transaction in the cache is considered
+and handled separately. A transaction may trigger a copy-back that will last
+some cycles, then a fetch will be sent to the next level stalling the cache for
+some more cycles, and finally the result will be returned. During these phases,
+<b>g-cache-ooo</b> ensures that other transactions behave in a sensible
+manner: for example, if two transactions want to fetch the same cache line, the
+second transaction is considered as a delayed hit and its value will be
+returned when the first (missing) transaction is completed; cache lines are
+locked as long as the transaction using them is on-going.
+<p>
+<b>g-cache-ooo</b> supports the same options as <b>g-cache</b>
+except:
+<p>
+<ul>
+<p>
+<li><a name="label243">MESI</a> is not implemented.</li>
+<p>
+<li>There is no <i>penalty_read_next</i> and
+<i>penalty_write_next</i> attributes. You should connect a next level
+memory hierarchy if you want transactions to the next level to stall
+longer. The <b>trans-staller</b> module can be used to set a simple
+delay.</li>
+<p>
+<li><b>g-cache-ooo</b> can not use the STCs <a name="label244"></a>to
+get improve the speed of the simulation.</li>
+<p>
+</ul>
+<p>
+Some new, MAI specific features have been introduced:
+<p>
+<ul>
+<p>
+<li>The attributes <i><a name="label245">config_read_per_cycle</a></i> and
+<i><a name="label246">config_write_per_cycle</a></i> limit the number of read and write
+transactions that can be initiated in the cache for a given cycle.</li>
+<p>
+<li>The attributes <i><a name="label247">config_max_out_trans</a></i> limits the number of
+outstanding transactions that can be present in the cache.</li>
+<p>
+</ul>
+<p>
+<b>g-cache-ooo</b> can be used with any Simics configuration, even
+without MAI. However, since it relies quite heavily on the ability to stall
+transactions to handle state changes, only stallable transactions are
+considered cacheable. If you want to warm-up your caches with a normal run and
+wish to include transactions that are normally not stallable (and thus not
+cacheable) like x86 instruction fetches, you should:
+<p>
+<ol>
+<p>
+<li>Set all penalties in your memory hierarchy to 0.</li>
+<p>
+<li>Set the attribute <i><a name="label248">config_accept_no_stall</a></i> to 1 to tell the
+cache to accept non-stallable transactions.</li>
+<p>
+</ol>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+</body>
+</html>

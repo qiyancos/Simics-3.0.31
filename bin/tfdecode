@@ -1,0 +1,7 @@
+#!/bin/sh
+
+bindir=`dirname "$0"`
+SIMICS_BASE=`cd "$bindir/.."; pwd`
+HOST_TYPE=`sh "$SIMICS_BASE/scripts/host-type.sh"`
+
+"$SIMICS_BASE/$HOST_TYPE/bin/tfdecode" "$@"

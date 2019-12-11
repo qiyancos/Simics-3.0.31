@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Interfaces and Objects</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(16, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Interfaces and Objects</h2 class="jdocu">
+
+
+<p>
+In addition to attributes, Simics configuration objects can have
+<em>interfaces</em>, which are named groups of methods. In fact, an
+attribute can be viewed as a very simple interface with two methods
+(<b><i>get</i></b> and <b><i>set</i></b>).
+<p>
+A Simics configuration consists of a number of interacting configuration
+objects; for example, the machine <tt>vacuum</tt> consists of a clock, a
+memory space, and a RAM. (The clock acts as a pseudo-CPU and is needed
+to drive the execution.) Each of these is represented as a separate
+configuration object, and the interaction between the objects is done
+through interfaces.
+<p>
+To take a concrete example: when a CPU wants to make a memory access,
+it will call the <b><i>access</i></b> method that is part of the
+<tt>memory_space</tt> interface implemented by the memory space object.
+If the memory space then finds some object (e.g., our device) mapped at
+the accessed address, it will call the <b><i>operation</i></b> method in the
+<tt>io_memory</tt> interface implemented by the mapped object. (If the
+mapped object was our DML device, and we had included the standard
+library file <tt>io-memory.dml</tt>, the device will automatically
+contain an implementation of the <tt>io_memory</tt> interface, which
+uses the function number of the mapping to pass on the operation to the
+<b><i>access</i></b> method of the correct register bank in the DML program.)
+<p>
+A very basic question in this context is "how does one object find
+another object?" Usually, objects are connected through attributes;
+e.g., a CPU object could have an attribute that holds a reference to a
+memory space object, and the memory space object has an attribute that
+contains mapping information (which includes references to the mapped
+objects), and so on. Such bindings are typically set up in the
+configuration scripts for a simulated machine, and are not changed after
+the initialization is done.
+<p>
+DML has built-in support both for letting your device implement any
+number of interfaces, and for connecting other objects to your device
+that implement particular interfaces.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic14.html#label20" target="main">5.1&nbsp;&nbsp;&nbsp;Implementing an Interface</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic15.html#label21" target="main">5.2&nbsp;&nbsp;&nbsp;Connecting Objects</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Link Object Timing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(118, true);
+</script>
+<a name="label261"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic40.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic42.html">Next</a></span></p>
+<h4 class="jdocu">9.2&nbsp;&nbsp;&nbsp;Link Object Timing</h4 class="jdocu">
+
+<a name="label262"></a>
+
+<p>
+All frames that are sent over a link are delivered to the receiving
+device/devices at a point in simulated time after the time when it was
+sent.  The delay is the same for every frame, and is called the
+<em><a name="label263">latency</a></em> of the link.  The latency is a
+configuration parameter that can be set individually for each link
+object.
+<p>
+Link objects are most often used to communicate between network
+devices using separate clocks, and because of how Simics handles
+simulated time, the clocks are not always completely synchronized.  To
+avoid strange causality effects and indeterministic simulation, the
+latency of any link must not be set so low that data sent over it
+might reach the recipient at a point in time that it has already
+passed.  This imposes a lower boundary on the latency, called the
+<a name="label264">min-latency</a> of the link.  The value of the min-latency
+depends on the simulation setup, in particular whether the simulation
+is distributed between several Simics processes or not.  See Chapter <a class="jdocu" href="topic52.html#label340">11</a> for information about distributing the
+simulation.
+<p>
+The latency of a link can be displayed by the
+<b>&lt;ethernet-link&gt;.info</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>ethlink0.info</b>
+Information about ethlink0 [class ethernet-link]
+================================================
+
+                       Latency : 1 us
+                  Distribution : local
+                     Filtering : enabled
+
+Devices:
+                 Local devices : none
+                Remote devices : none
+
+Real network connection:
+                     Connected : No
+</pre>
+<p>
+As can be seen from the example above, the default latency for an
+Ethernet link object is one microsecond.
+<p>
+The latency of a link can be specified in the
+<b>new-ethernet-link</b> command as a number of nanoseconds.  If
+the latency of a link is set too low, it will be automatically
+adjusted to the lowest value allowed by the setup. For example, if you
+launch a new multi machine setup, such as <i>ebony-linux-multi</i>,
+and try to create a link with too low latency, Simics will adjust the
+latency automatically:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link latency = 100</b>
+[ethlink0 info] Adjusting latency to 1e-005 s because the <img src="nextline.png">
+min-latency changed
+Created ethernet-link ethlink0
+simics&gt; <b>ethlink0.info</b>
+Information about ethlink0 [class ethernet-link]
+================================================
+
+                       Latency : 10 us
+...
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic40.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic42.html">Next</a></span></p>
+</body>
+</html>

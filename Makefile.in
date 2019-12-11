@@ -1,0 +1,129 @@
+# -*- makefile -*-
+# Top-level Makefile for Virtutech Simics.
+
+IN_HOST_DIR:=yes
+
+# HOST_DIR is the absolute path of the build directory. We should only use
+# it to get the host-config, and then use BUILD_DIR instead. (this avoids
+# path problems when doing rsh)
+HOST_DIR:=$(shell pwd)
+include config/host-config
+
+.NOTPARALLEL: .DEFAULT
+.SILENT: default
+.PHONY: default
+
+ifeq ($(SIMICS_DISTRIB),yes)
+
+default:
+	echo
+	echo "Running make from here is not supported."
+	echo
+	echo "If you intend to build modules, you should be"
+	echo "running 'make' in the 'lib/' subdirectory."
+	echo
+	echo "For further info, see the Simics User Guide."
+	echo
+
+.DEFAULT:
+	$(MAKE) default
+
+else # !SIMICS_DISTRIB
+
+
+SUPPORT:= dep-clean help reconf list
+
+.SILENT: $(SUPPORT)
+
+.PHONY: $(SUPPORT)
+
+default: help 
+	echo "Please select make target: ";		\
+	echo;						\
+	( export PS3="-> " ;				\
+	  select tgt in $(TARGETS) $(SUPPORT); do	\
+	  echo "Selected target: $$tgt" ;		\
+	  $(MAKE) $$tgt ;				\
+	  break ;					\
+	done )
+
+lib/modules.cache:
+	$(MAKE) -C lib modules.cache
+
+-include lib/modules.cache
+TARGETS := $(LIB_GROUPS)
+
+default: SHELL=$(BASH)
+
+# Build everything MP builds. This takes several hours, even on multipro hosts.
+mp-all:
+        host=$$($(SIMICS_BASE)/scripts/host-type.sh) &&                            \
+        distlist=$(SIMICS_BASE)/config/distribution.list &&                        \
+        for d in $$($(PYTHON) $(SIMICS_BASE)/scripts/dist/makelist.py --dir-list   \
+                    --host=$$host $$distlist); do                                  \
+            $(MAKE) -k -C $$d $$($(PYTHON) $(SIMICS_BASE)/scripts/dist/makelist.py \
+                                 --directory=$$d --host=$$host $$distlist);        \
+        done
+
+help:
+	echo;								\
+	echo "This is the top-level Simics Makefile.";			\
+	echo;								\
+	echo "From here you can do the following:";			\
+	echo;								\
+	echo "- Build a Simics target:               make <target>";	\
+	echo "- Show all available targets:          make list";	\
+	echo;								\
+	echo "- Build all targets MP builds:         make mp-all";      \
+	echo;								\
+	echo "- Remove all dependencies:             make dep-clean";	\
+	echo "- Rerun configure:                     make reconf";	\
+	echo "- Show this help                       make help";	\
+	echo;								\
+	echo "To add flags to sub-makes, use FLG='...'";		\
+	echo
+
+list:
+	echo;						\
+	echo "Available targets in this directory:";	\
+	echo;						\
+	echo $(TARGETS) | tr ' ' '\012' | $(COLUMN);	\
+	echo ;
+
+
+# TODO: remove -k from make invocations below; should probably be set at
+# by the user instead.
+.DEFAULT:
+	if echo $(TARGETS) | grep $@ >/dev/null; then		\
+		$(MAKE) -k -C bin $@ ;				\
+		$(MAKE) -k -C lib $@ ;				\
+	else							\
+		echo ;						\
+		echo "There is no target called '$@' here." ;	\
+		echo "You may want to try in the bin/"		\
+			"or lib/ directories.";			\
+		$(MAKE) list ;					\
+	fi
+
+# TODO: move dep-clean (and maybe others) to a separate makefile
+dep-clean:
+	echo "Removing all dependency files."
+	find . -name '*.d' -exec rm -f {} \;
+	find . -name '*.dmldep' -exec rm -f {} \;
+	find . -name '*.ddldep' -exec rm -f {} \;
+	echo "Done."
+
+reconf:
+	echo "Running 'autoreconf' in $(SIMICS_BASE)..."
+	(cd $(SIMICS_BASE); autoreconf)
+	echo "Running configure..."
+	./config.status --recheck && ./config.status
+	echo "Done."
+
+clean clobber:
+	@echo "Cleaning bin/...";		\
+	(cd bin; $(MAKE) $@) ;			\
+	echo "Cleaning lib/...";		\
+	(cd lib; $(MAKE) $@)
+
+endif # !SIMICS_DISTRIB

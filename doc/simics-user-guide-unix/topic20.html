@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Scripting</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(45, true);
+</script>
+<a name="label81"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+<h4 class="jdocu">4.8&nbsp;&nbsp;&nbsp;Scripting</h4 class="jdocu">
+
+
+<p>
+The Simics <i>command line interface</i> (CLI) has some built-in
+scripting capabilities. When that is not enough, Python can be used instead.
+<p>
+We will use a <b>trace</b> object as our example object:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>new-tracer</b>
+Trace object 'trace0' created. Enable tracing with 'trace0.start'.
+simics&gt; 
+</pre>
+<p>
+There are two <em>commands</em> available for this object:
+<b>&lt;trace&gt;.start</b> and <b>&lt;trace&gt;.stop</b>.
+<p>
+For example, to start tracing:
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>trace0.start</b>
+Tracing enabled. Writing text output to standard output.
+simics&gt; 
+</pre>
+<p>
+It is also possible to access an object's <em>attributes</em> using
+CLI. The state of an object is contained in its attributes.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>trace0-&gt;classname</b>
+base-trace-mem-hier
+simics&gt;  <b>trace0-&gt;enabled</b>
+1
+simics&gt; 
+</pre>
+<p>
+Variables in CLI are prefixed with <tt>$</tt>, and can hold a string,
+a number, or an object reference.
+In the following example the
+variable <i>my_tracer</i> references our <b>trace0</b> object
+(i.e. it is <em>not</em> a copy).
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>$my_tracer = trace0</b>
+simics&gt;  <b>$my_tracer-&gt;enabled</b>
+1
+simics&gt; 
+</pre>
+<p>
+It is also possible to access the tracer from Python.
+All lines begin with a <tt>@</tt> are evaluated as a Python statement.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>@trace_obj = SIM_get_object("trace0")</b>
+simics&gt;  <b>@trace_obj</b>
+&lt;the base-trace-mem-hier 'trace0'&gt;
+simics&gt;  <b>@trace_obj.enabled</b>
+1
+simics&gt; 
+</pre>
+<p>
+The Simics API is directly accessible from Python. The script below
+counts the number of instructions that are executed until the register
+<tt>msr</tt> is modified. It imitates the functionality of
+<b>break-cr</b> <tt>msr</tt>.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>@start_cycle = SIM_cycle_count(conf.cpu0)</b>
+simics&gt;  <b>@msr = conf.cpu0.msr</b>
+simics&gt;  <b>@while conf.cpu0.msr == msr: SIM_continue(1)</b>
+[...]
+simics&gt;  <b>@end_cycle = SIM_cycle_count(conf.cpu0)</b>
+simics&gt;  <b>@print "Executed", end_cycle - start_cycle, "instructions"</b>
+Executed 56 instructions
+simics&gt; 
+</pre>
+<p>
+After you enter <b>@while conf.cpu0.msr [...]</b> command, the
+simulation starts, and continues until the <tt>msr</tt> register is
+modified. When that happens (which should not take any noticeable time), the
+simulation stops and the rest of the commands can be entered.
+<p>
+You can read more about scripting in chapter
+<a class="jdocu" href="topic35.html#label187">8</a>. The full description of
+the Simics API is available in the Reference Manual.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+</body>
+</html>

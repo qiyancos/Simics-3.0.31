@@ -1,0 +1,4 @@
+$create_network = "yes"
+
+@linux_diffs = [["bagle5.2-dhcp.craff", "ro", 0, 2128486400]]
+run-command-file "%script%/bagle-common.simics"

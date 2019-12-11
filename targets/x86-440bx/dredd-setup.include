@@ -1,0 +1,24 @@
+if not defined ip_address   {$ip_address   = "10.10.0.12"}
+if not defined host_name    {$host_name    = "dredd"}
+if not defined service_node {}
+if not defined disk_files   {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+if (not $disk_image) and (not `"disk_files" in dir()`) {
+    echo "Warning: Starting machine with no disk image."
+}
+
+if `"disk_files" in dir()` {
+    python "image = sim.objects[simenv.disk].object_list['hd_image']"
+    python "image.files = disk_files"
+}

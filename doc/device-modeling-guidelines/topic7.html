@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>General Concepts</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(21, true);
+</script>
+<a name="label26"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;General Concepts</h2 class="jdocu">
+
+
+<p>
+   There are three main <a name="label27">goals</a> when writing a device for
+   Simics: accuracy, efficiency, and simplicity.
+<p>
+   <a name="label28"></a>Every device should be <i>accurate</i> enough
+   that the software that executes within Simics does not notice that
+   it is running in a simulator rather than on real hardware.  Note
+   that the accuracy is thus defined relative to some particular piece
+   of software: the device is accurate enough if the given software
+   cannot tell the difference between the model and reality.
+<p>
+   <a name="label29"></a>We want our simulations to run as fast as
+   possible.  Devices that are used frequently should therefore be as
+   <i>efficient</i> as possible. General programming
+   principles of course apply, but it is even more important to understand
+   how the device is being accessed during simulation, in order to optimize
+   its performance.
+<p>
+   <a name="label30"></a><i>Simplicity</i> is always an important goal
+   in software development, since it leads to reduced development
+   time, reduced bug count, and easier debugging.  Device modeling is
+   no exception to this rule.  Often, simplicity and efficiency go
+   hand in hand, so that a simpler device model is also faster.
+<p>
+   <a name="label31"></a>There is a conflict between the accuracy and
+   efficiency goals: more accuracy typically leads to reduced
+   efficiency.  To maximize this trade-off, one should strive to model
+   as little as possible of the real behavior of the device.  The process
+   of simplifying the behavior of the device in the model compared to the
+   real world is called <i>abstraction</i>.  Later sections
+   will show different kinds of abstraction that can be used to make
+   your device model both simpler and more efficient.
+   In order to know how much abstraction is permissible, it is
+   essential to look at the behavior of the particular software that
+   will access the device, typically a device driver in the operating system.
+<p>
+   Of course, there are situations where additional requirements
+   affect the level of detail in your model.  For most models it is only
+   necessary that the software runs correctly on top of them, but the models are not of
+   further interest in themselves.  However, if you for example want to
+   study disk accesses, you may need to build a more detailed model of
+   the disks than you would in order to simply run a system that contains a disk.
+<p>
+   <p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic8.html#label32" target="main">3.1&nbsp;&nbsp;&nbsp;Optimization</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

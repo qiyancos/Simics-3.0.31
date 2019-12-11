@@ -1,0 +1,286 @@
+# -*- makefile -*-
+# Common host-flags. Included before host-flags.<host-dir>
+
+# IMPORTANT: Do not remove the "disable mktosh" and "enable mktosh"
+# lines. 
+
+# do not change print-directory if it is already given
+ifeq ($(EMACS),t)
+ifeq ($(findstring print-directory, $(MAKEFLAGS)),)
+ifneq ($(SILENT),yes)
+  MAKEFLAGS += --print-directory
+endif
+endif
+endif
+
+# default is to *not* print directories
+ifeq ($(findstring print-directory, $(MAKEFLAGS)),)
+  MAKEFLAGS += --no-print-directory
+endif
+
+ifneq ($(VERBOSE),yes)
+  MAKEFLAGS += --silent
+endif
+
+ifeq ($(SILENT),yes)
+  MAKEFLAGS += --silent
+endif
+
+ifdef $(PAR)
+  MAKEFLAGS += --jobs=$(PAR)
+endif
+
+-include $(SIMICS_BASE)/config/werror-exceptions.mk
+
+OVERRIDE_COMPILER_VERSION_CHECK=yes
+
+ifndef OVERRIDE_COMPILER_VERSION_CHECK
+verify_script=$(SIMICS_BASE)/scripts/required-cc-version.sh 
+REQUIRED_VERSION:=$(shell $(verify_script) -display $(HOST_TYPE) $(CC))
+COMPILER_VERSION_IS_OK:=$(shell $(verify_script) -verify $(HOST_TYPE) $(CC) && echo yes)
+
+ifneq ($(COMPILER_VERSION_IS_OK),yes)
+$(error $(shell $(verify_script) -showmsg $(HOST_TYPE) $(CC) >&2))
+endif
+endif
+
+# This is to make COLORIZE work, but on some platforms (like Windows, for
+# example), we set SHELL=/bin/sh to get better performance.
+# Set to "no" if you want to keep make's output monochrome.
+COLORIZED_MAKE=yes
+
+# set to yes to keep a copy with symbols
+DO_SYMBACKUP=no
+
+# ------------------------------------------------------------
+# CFLAGS definitions common to *all* platforms.
+# ------------------------------------------------------------
+
+# CFLAGS_COMMON should *ONLY* contain options which are common to all
+# C-compilers, including preprocessors (such as cpp). In practise this 
+# means that it should only contain -I and -D options.
+CFLAGS_COMMON= -I. -I$(BUILD_DIR)/config $(DEFS) $(CFLAGS_INCLUDE)
+
+CFLAGS= $(WARN_CFLAGS) $(CFLAGS_MODE) $(CFLAGS_HOST) $(CFLAGS_COMMON) $(CFLAGS_USER) $(LANG_CFLAGS)
+CXXFLAGS= $(WARN_CXXFLAGS) $(CXXFLAGS_MODE) $(CXXFLAGS_HOST) $(CFLAGS_COMMON) $(CXXFLAGS_USER)
+
+CFLAGS_NO_OPT= $(WARN_CFLAGS) $(NO_OPT_CFLAGS) $(CFLAGS_HOST)     \
+               $(CFLAGS_COMMON) $(CFLAGS_USER) $(LANG_CFLAGS)
+CFLAGS_MODE= $(OPT_CFLAGS)
+CPPFLAGS= $(CFLAGS_COMMON)
+
+# default values for the c++ compiler
+WARN_CXXFLAGS=$(WARN_CFLAGS)
+OPT_CXXFLAGS=$(OPT_CFLAGS)
+DEBUG_CXXFLAGS=$(DEBUG_CFLAGS)
+PROF_CXXFLAGS=$(PROF_CFLAGS)
+CXXFLAGS_MODE=$(OPT_CXXFLAGS)
+CXXFLAGS_HOST=$(CFLAGS_HOST)
+CXXFLAGS_USER=$(CFLAGS_USER)
+
+# ------------------------------------------------------------
+# Common simulator defines
+# ------------------------------------------------------------
+SIM_DEFS += 
+
+# ------------------------------------------------------------
+# SimGen
+# ------------------------------------------------------------
+
+SIMGEN=$(HOST_DIR)/bin/simgen
+# Common flags passed to *all* SimGen invokations. Nothing 
+# target or host-specific stuff in here.
+# SIMGEN_COMMON_FLAGS=-q
+
+# disable mktosh
+#SIMGEN_PLAYGROUND=$(BUILD_DIR)/obj/core/$(TARGET-ARCH)
+# This might not work if pwd returns a path with an automounter prefix
+# which doesn't exist on the remote machine.  Then we have to mangle
+# the path name.  The olde playground variable can't be used since we
+# don't know if we're in core or a module.
+REMOTE_SIMGEN_INVOCATION=				\
+	(						\
+         rsh hal 'cd $(shell pwd) &&			\
+                 $(SIMGEN) $< $(SIMGEN_FLAGS)' &&	\
+         echo "Sleeping to let NFS sync things" &&	\
+         sleep 5 &&					\
+         (ls -la > /dev/null || true) &&		\
+         [ -f $@ ]					\
+        )
+SIMGEN_INVOCATION=$(SIMGEN) $< $(SIMGEN_FLAGS) $(SIMGEN_COMMON_FLAGS)
+
+TURBO_REMOTE_SIMGEN_INVOCATION=				\
+	(						\
+         rsh hal 'cd $(shell pwd) &&			\
+                 $(SIMGEN) $< $(TURBO_SIMGEN_FLAGS)' &&	\
+         echo "Sleeping to let NFS sync things" &&	\
+         sleep 5 &&					\
+         (ls -la > /dev/null || true) &&		\
+         [ -f $@ ]					\
+        )
+TURBO_SIMGEN_INVOCATION=$(SIMGEN) $< $(TURBO_SIMGEN_FLAGS) $(SIMGEN_COMMON_FLAGS)
+# enable mktosh
+
+# ------------------------------------------------------------
+# Misc.
+# ------------------------------------------------------------
+
+# default console type is X11
+CONSOLE_TYPE= x11
+SDL_INCLUDE_PATH=/home/packages/sdl/include
+
+# Use to enable/disable simgen statistics.
+IGNORE_SIMGEN_STATISTICS=no
+
+USE_DEPENDENCIES=yes
+
+# Post-processing filter for dependencies
+ifeq ($(OBJEXT),o)
+DEP_PP_FILTER= | sed -e 's,$*\.o,& $@,g'
+else
+DEP_PP_FILTER= | sed -e 's,$*\.$(OBJEXT),& $@,g' -e 's/\.o\b/\.$(OBJEXT)/g'
+endif
+
+
+# Licensing 
+# (jojo) Now determined by configure, set to "yes", if for
+# example FlexLM cannot be found.  
+# DISABLE_SIMICS_LICENSE=no
+
+LIB_SFX=a
+
+GULP=$(BUILD_DIR)/bin/gulp$(EXEEXT)
+GULP_CMD=$(GULP)
+GULP_FLAGS=
+
+ifeq ($(CC_TYPE),gcc2)
+GULP_FLAGS=-g
+endif
+ifeq ($(CC_TYPE),gcc3)
+GULP_FLAGS=-g
+endif
+
+ifeq (gcc,$(findstring gcc,$(CC_TYPE)))
+CPP_LANG=-x c
+endif
+
+PLAIN_CPP=$(CPP) $(CPPFLAGS) $(CPP_LANG) -C -P
+
+# ------------------------------------------------------------
+# Default Python variables.
+# ------------------------------------------------------------
+# PYTHON_OBJ is used in python-frontend's MODULE_LDFLAGS
+PYTHON_OBJ=-lpython$(PYTHON_VERSION)
+
+# ------------------------------------------------------------
+# Include host-specific and optional configuration files
+# ------------------------------------------------------------
+include $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE)
+
+# disable mktosh
+ifneq ($(wildcard $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE).$(CC_TYPE)),)
+include $(SIMICS_BASE)/config/host-flags.$(HOST_TYPE).$(CC_TYPE)
+endif
+# enable mktosh
+
+include $(SIMICS_BASE)/config/host-flags.optional
+
+# Workaround for bug in GCC 3.4
+# (http://gcc.gnu.org/bugzilla/show_bug.cgi?id=14481) See bug 2791. This
+# eliminates the problem of "right-hand operand of comma has no effect".
+ifeq ($(shell ($(CXX) -dumpversion 2>&1 | grep ^3.4  >/dev/null) && echo yes), yes)
+WARN_CXXFLAGS += -Wno-unused
+endif
+
+# ------------------------------------------------------------
+# Add defines which are triggered by the values of make-variables
+# ------------------------------------------------------------
+
+DEFS += -D_REENTRANT
+
+# Simics license
+ifneq ($(DISABLE_SIMICS_LICENSE),yes)
+DEFS += -DSIMICS_LICENSE
+endif
+
+# Internal build
+ifneq ($(SIMICS_DISTRIB),yes)
+DEFS += -DVT_BUILD
+endif
+
+ifeq ($(VERBOSE),yes)
+BASH_VERBOSE=set -x;
+VERBOSE_ECHO=echo
+TIME=time
+else
+VERBOSE_ECHO=:
+endif
+
+# ------------------------------------------------------------
+# Set color options for make output.
+# ------------------------------------------------------------
+
+# disable mktosh
+
+ifeq ($(COLORIZED_MAKE),yes)
+COLOR_STYLE=none
+FILE_COLOR=
+ERR_COLOR=
+WARN_COLOR=
+HEAD_COLOR=
+NO_COLOR=
+
+# TODO: recognize different terminals.
+ifneq ($(EMACS),t)
+	FILE_COLOR=[1;34m
+	ERR_COLOR=[1;31m
+	WARN_COLOR=[1;35m
+	HEAD_COLOR=[7;34m
+	NO_COLOR=[0m
+
+# The 'cygwin' terminal does not know what the default color is, so ^[[0m
+# as NO_COLOR doesn't work. We have to explicitly set the default color to
+# something. Currently set to 'light gray', which matches the default
+# foreground color for cmd.exe.
+ifeq ($(TERM),cygwin)
+	NO_COLOR=[0;37m
+endif # CYGWIN
+
+endif # EMACS 
+endif # COLORIZED_MAKE
+
+# enable mktosh
+
+# Remove all default make rules.  E.g. the rule that overwrites
+# configuration.c with bison output from configuration.y.
+.SUFFIXES:
+
+#.SUFFIXES: .c .cc .sg .h .py .i .d .$(OBJEXT)
+# FAST_MAKE=-r
+
+#disable mktosh
+
+ifeq ($(VERBOSE),yes)
+COLORIZE :=
+else
+COLORIZE := @
+endif
+
+ifneq ($(shell echo $$BASH),)
+ifneq ($(ERR_COLOR),)
+
+COLORIZE :=								\
+	@__c() {							\
+		$(VERBOSE_ECHO) $${1+"$$@"};				\
+		($${1+"$$@"} 2>&1 || echo fAiLeD) |			\
+			while read -r l; do				\
+				[ "$$l" = fAiLeD ] && exit 1;		\
+				echo "$(ERR_COLOR)$$l$(NO_COLOR)";	\
+			done;						\
+	}; __c  
+
+endif # ! ERR_COLOR
+
+endif # ! BASH
+
+#enable mktosh

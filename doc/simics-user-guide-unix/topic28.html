@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Components</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(59, true);
+</script>
+<a name="label135"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+<h4 class="jdocu">6.4&nbsp;&nbsp;&nbsp;Components</h4 class="jdocu">
+
+
+<p>
+All machines in
+<tt>[simics]/targets/</tt><i>architecture</i><tt></tt> use
+components to create configurations. A component is typically the
+smallest hardware unit that can be used when configuring a real
+machine, and examples include motherboards, PCI cards, hard disks, and
+backplanes. Components are usually implemented in Simics using several
+configuration objects.
+<p>
+Components are intended to reduce the large configuration space provided by
+Simics's objects and attributes, by only allowing combinations that match real
+hardware. This greatly simplifies the creation of different systems by catching
+many misconfigurations.
+<p>
+Components themselves are also configuration objects in Simics. But to avoid
+confusion, they will always be referred to as components and the objects
+implementing the actual functionality will be called objects.
+<p>
+<a name="label136"></a><h5 class="jdocu">6.4.1&nbsp;&nbsp;&nbsp;Component Definitions</h5 class="jdocu">
+
+
+<a name="label137"></a>
+<p>
+All machines are based on a <em>top-level</em> component. The top-level
+component is the root of the component hierarchy and is often a motherboard,
+backplane, or system chassis.
+<p>
+When a component is created, it is in a <em>non-instantiated</em> state. At
+this stage only the component itself exists, not the configuration objects
+that will implement the actual functionality. Once a complete configuration
+has been created, all included components can be <em>instantiated</em>. When
+this happens, all objects are created and their attributes are set.
+<p>
+A <em>standalone</em> component is a component that can be instantiated without
+being connected to a component hierarchy. A typical example is a hotplug
+device, such as a PC Card (PCMCIA) or an Ethernet link.
+
+<a name="label138"></a><h5 class="jdocu">6.4.2&nbsp;&nbsp;&nbsp;Importing Component Commands</h5 class="jdocu">
+
+
+Components in Simics are grouped by machine architecture, or by type, into
+several collections. Before a component can be used in Simics, the
+corresponding component collection has to be imported. What the import actually
+does, is to add CLI commands for creating components in the collection. The
+most common collections, that are not architecture specific, are
+<tt>memory</tt>, <tt>pci</tt>, <tt>std</tt> and <tt>timing.</tt> To import all
+collections that are used by the <i>Ebony</i> machine for example,
+issue the following commands:
+<pre class="jdocu_small" style="color: black">
+simics&gt; import-pci-components
+simics&gt; import-std-components
+simics&gt; import-memory-components
+simics&gt; import-ppc440gp-components
+</pre>
+
+<a name="label139"></a><h5 class="jdocu">6.4.3&nbsp;&nbsp;&nbsp;Creating Components</h5 class="jdocu">
+
+
+<p>
+The <b>create-&lt;component&gt;</b> command is used to create
+non-instantiated components. There is one create command for each component class.
+The arguments to the create command represent attributes in the component.
+Standalone components can be created both non-instantiated and instantiated.
+To create instantiated components, there are <b>new-</b> commands, similar
+to the <b>create-</b> commands.
+<p>
+The following code creates a non-instantiated 'ebony-board' component
+representing an <em>Ebony Reference Board</em>, called 'board'
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; (create-ebony-board board cpu_frequency = 100
+.......                           mac_address0 = "00:04:ac:00:50:00"
+.......                           mac_address1 = "00:04:ac:00:50:01"
+.......                           rtc_time = "2003-09-03 11:17:00 UTC")
+.......
+</pre>
+The parentheses are needed to allow multi-line input. The command arguments
+set the processor frequency, the MAC addresses of the on-board network
+adapters, and the time and date of the real-time clock.
+<p>
+In multi machine configurations it is often useful to separate objects from the
+different machines by name. The command <b>set-component-prefix
+<i>str</i></b> causes all following <b>create-</b> commands to
+prefix all created object names&#8212;including the names
+of the components themselves&#8212;with the string <i>str</i>.
+<p>
+
+<a name="label140"></a><h5 class="jdocu">6.4.4&nbsp;&nbsp;&nbsp;Connectors</h5 class="jdocu">
+
+
+<a name="label141"></a><a name="label142"></a>
+<p>
+A connector provides a means for a component to connect to other components.
+Connectors have a defined direction: <i>up</i>, <i>down</i>, or <i>any</i>.
+The direction is <i>up</i> if it needs an existing hierarchy to connect to;
+for example, the PCI-bus connector in a PCI device must connect to a PCI slot.
+A connector has a <i>down</i> direction if it extends the hierarchy downwards;
+for example, a PCI slot is a connection downward from a board to a PCI device.
+There are also non-directed connectors, with direction <i>any</i>. You can
+only connect an <em>up</em> to a <em>down</em> connector or to an <em>any</em>
+connector, and similar for <em>down</em> connectors. Connectors with the
+<em>any</em> direction can not be connected together.
+<p>
+Many connectors have to be connected before the component is instantiated,
+while others can be empty. A standalone component, as described above,
+may have all connectors empty.
+<p>
+A <em>hotplug</em> connector supports connect and disconnect after
+instantiation. Other connectors can only be connected, or left unconnected,
+when the configuration is created and may not be modified after that point.
+A <em>multi</em> connector supports connections to several other connectors.
+A typical example of a <em>hotplug</em> <em>multi</em> connector is the Ethernet
+link.
+<p>
+It is not possible to connect instantiated components with non-instantiated
+ones. The reason is that the instantiated component expects the other to have
+all objects already created, and need to access some of them to finish the
+connection.
+<p>
+The <b>info</b> command of a component lists all connectors and some
+information about them:
+<pre class="jdocu_small" style="color: black">
+simics&gt; board.info 
+Information about board [class ebony-board]
+===========================================
+
+Implementing objects:
+
+Connectors:
+                     ddr-slot0 : mem-bus              down
+                     ddr-slot1 : mem-bus              down
+                         emac0 : ethernet-link        down  hotplug
+                         emac1 : ethernet-link        down  hotplug
+                     pci-slot0 : pci-bus              down
+                     pci-slot1 : pci-bus              down
+                     pci-slot2 : pci-bus              down
+                     pci-slot3 : pci-bus              down
+                         uart0 : serial               down  hotplug
+                         uart1 : serial               down  hotplug
+</pre>
+Since the component in the example isn't instantiated yet, the list of
+implementing objects is empty. The ebony-board has two slots for DDR SDRAM
+modules, four PCI slots, two serial ports and two Ethernet ports. The memory
+slot is not listed as <em>hotplug</em> since DDR modules have to be inserted
+when the machine is configured initially, while serial and Ethernet ports
+support connect and disconnect in run-time. As the ebony-board is a top-level
+component, there are no <em>up</em> connectors.
+<p>
+To enable input and output for the simulated machine, the following commands
+create a serial text console and connects it to the <tt>uart0</tt> connector of
+the Ebony board. Since the text console only has a single connector, it does
+not have to be specified in the connect command.
+<pre class="jdocu_small" style="color: black">
+simics&gt; board.connect uart0 (create-std-text-console)
+Created non-instantiated 'std-text-console' component 'text_console_cmp0'.
+</pre>
+Since no name is given the console component, a unique name will be assigned
+to it by the configuration system. The <b>create-</b> command returns
+the name of the newly created component, allowing it to be used as in the
+example above.
+<p>
+If the board only had a single serial connector, the <tt>uart0</tt> connector
+name could have been left out as well.
+<p>
+Since the machine needs some memory to run, we also add a DDR memory module to
+our example. A CLI variable is used to hold the name of the memory component.
+<pre class="jdocu_small" style="color: black">
+simics&gt; $ddr = (create-ddr-memory-module rank_density = 128 module_data_width = 64)
+Created non-instantiated 'ddr-memory-module' component 'ddr_memory_module_cmp0'.
+simics&gt; board.connect ddr-slot0 $ddr
+</pre>
+
+<a name="label143"></a><h5 class="jdocu">6.4.5&nbsp;&nbsp;&nbsp;Instantiation</h5 class="jdocu">
+
+
+When a component hierarchy has been created, it can be instantiated using the
+<b>instantiate-components</b> command. This command will look for all
+non-instantiated top-level components and instantiate all components below
+them. The <b>instantiate-components</b> command can also be given
+a specific component as argument. Then only that component will be
+instantiated, including its hierarchy if it is a top-level component.
+<pre class="jdocu_small" style="color: black">
+simics&gt; instantiate-components
+</pre>
+<p>
+If there are unconnected connectors left that may not be empty, the command
+will return with an error.
+<p>
+When the instantiation is ready, all object and attributes have been created
+and initialized. In our example, a text console window should have opened.
+The hardware of the simulated Ebony board is now properly configured, but since
+no software is loaded, it will not show any output on the console if the
+machine is started.
+
+<a name="label144"></a><h5 class="jdocu">6.4.6&nbsp;&nbsp;&nbsp;Inspecting Component Configurations</h5 class="jdocu">
+
+
+<p>
+The <b>list-components</b> command prints a list of all components in the
+system. All connectors are included, and information about existing
+connections between them.
+<p>
+The <b>info</b> name-space command provides static information about a
+component, such as the implementing objects and a list of connectors.
+<p>
+The <b>status</b> name-space command provides dynamic information about a
+component, such as attribute values and a list of all current connections. The
+output from status in the Ebony example:
+<pre class="jdocu_small" style="color: black">
+simics&gt; board.status 
+Status of board [class ebony-board]
+===================================
+
+Attributes:
+                      rtc_time : 2003-09-03 11:17:00 UTC
+                 cpu_frequency : 100
+                  mac_address0 : 00:04:ac:00:50:00
+                  mac_address1 : 00:04:ac:00:50:01
+
+Connections:
+                         uart0 : text_console_cmp0
+                     ddr-slot0 : ddr_memory_module_cmp0
+</pre>
+<p>
+The Eclipse-based User Interface includes a <em>Configuration Browser</em>
+where the configuration can be browsed visually.
+
+<a name="label145"></a><h5 class="jdocu">6.4.7&nbsp;&nbsp;&nbsp;Accessing Objects from Components</h5 class="jdocu">
+
+
+When doing more advanced configuration of a machine, it may be necessary to
+access configuration objects and their attributes directly. Since the objects
+are created by the component system automatically during instantiation, the
+names of the implementing objects are not known in advance. For this reason it
+is possible to query a component about what configuration objects are used to
+implement it, using <b>get-component-object</b>. The argument is a name
+for the object that is the same for all components of the same class. A list
+of such names, and their mapping to actual configuration object names, is
+available in the output from the <b>info</b> command. The next example
+prints the <i>pc</i> attribute from the <i>cpu</i> object.
+<pre class="jdocu_small" style="color: black">
+simics&gt; p -x (board.get-component-object cpu)-&gt;pc
+</pre>
+The <b>get-component-object</b> is mainly useful in scripts, when running
+interactively it is easy to find object names using the <b>info</b>
+command, or <b>list-objects</b>.
+<p>
+The <b>get-component-object</b> command does not work for non-instantiated
+components since they do not have any associated configuration objects. But it
+is possible to access the <tt>pre_conf_object</tt>s of the non-instantiated
+component from Python using the <tt>get_component_object()</tt> function.
+This functions works for both instantiated and non-instantiated components,
+and Python code as in the following example works in both cases:
+<pre class="jdocu_small" style="color: black">
+@print "0x%x" % get_component_object(conf.board, 'cpu').pc
+</pre>
+<p>
+
+<a name="label146"></a><h5 class="jdocu">6.4.8&nbsp;&nbsp;&nbsp;Available Components</h5 class="jdocu">
+
+
+<a name="label147"></a>
+The <em>Simics Target Guide</em> for each architecture lists and describes
+all components that are available.
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,168 @@
+Changes from 1.0.1 to 1.0.2
+---------------------------
+
+* os_fopen() and os_open() handle 64-bit files (if supported by the host).
+
+* Bug fix in the "hme" devices, allowing Sunfire/Serengeti to boot from
+  network using OBP. Also some undocumented register mappings added that were
+  used by newer linux kernels.
+
+* The argument for event queue callbackss was changed from void * to
+  lang_void *, allowing python objects to be handled correctly.
+
+* Renamed dumps: donut4-extras.craff -> donut4.1-extras.craff
+                 sarek1-extras.craff -> sarek1.1-extras.craff
+
+
+Changes from 1.0 to 1.0.1
+-------------------------
+
+* Craff files larger than 2GB are correctly identified by Simics.
+
+* Minor bug-fixes in the ISP1040 and ISP2200 devices.
+
+* "Extended character set" correctly displayed in VGA text-mode.
+
+* Correct alignment check for 128 bit ldda on UltraSPARC targets.
+
+* Bug fix: swap and swapa could clobber %g0 on UltraSPARC targets.
+
+* The following UltraSPARC-II VIS instructions were implemented:
+  'Partial Store', Short FP Load/Store'
+
+* The following UltraSPARC-III VIS instructions were implemented:
+  'siam', 'edgen', 'bmask' and 'bshuffle'.
+
+* The modules 'scsi-bus', 'scsi-disk', 'scsi-cdrom' and 'SYM53C810' were added
+  to the x86 target distributions.
+
+* Fixed bug that sometimes caused Simics to crash when flushing user installed
+  instruction data.
+
+* A bug was fixed with magic instructions on MP systems, that made magic
+  instructions occurring on the same clock cycle but on different processors to
+  only cause one magic instruction hap.
+
+* Made the new 'donut4' and 'sarek1' dumps default for the donut and sarek
+  targets machines.
+
+
+NOTES ON Simics 1.0
+===================
+
+General:
+--------
+
+This is the first non-beta distribution of Simics 1.0. It contains five target
+architectures: Sun UltraSPARC, Intel x86, PowerPC, AMD x86-64, and Alpha.
+
+The changes below are relative the last beta release of 1.0. Changes compared
+to earlier versions of Simics can be found in readme files in the
+README.previous directory.
+
+
+Incompatibilities:
+------------------
+
+* The sim-break command has changed name to step-break.
+  (There is an alias named sim-break)
+
+* The following Simics environment variables are obsolete:
+
+  $sim_icode_dump_freq     (replaced by the 'icode_dump_freq' attribute in
+                            the sim object)
+  $sim_no_magic_breakpoint (the hap handler installed for a magic instruction
+                            is responsible for breaking the simulation)
+  $simerrmax
+
+
+Minor Changes:
+-------------
+
+* Vastly improved and updated documentation.
+
+* The responsiveness of TAB completion was greatly improved.
+
+* The 486sx target version runs correctly on Solaris/SPARC hosts again.
+
+Alpha target only:
+
+* Support for Alpha 21264 (EV6) targets.
+
+* Support for dual processor EV6 models.
+
+
+Known Problems & Limitations:
+-----------------------------
+
+All targets:
+
+* When running with memory hierarchy that is active for both instructions and
+  data, and data is stalled, Simics sometimes reissues the instruction fetch.
+  The workaround is to ignore instruction fetches for a processor that is
+  stalling on data.
+
+* Some commands will not work until a configuration has been loaded.
+  Example: 'source', 'list-haps'.
+
+* Simics-central communication does not work when central and Simics are
+  running on hosts with different endianess.
+
+* Simics doesn't honor ctrl-C when running with all processors disabled.
+
+* Craff sometimes produces corrupt output files on Linux over NFS. We have
+  found problems running craff on Red Hat 6.2 when the output file is mounted
+  over NFS. This is a problem with Linux and might have been solved in newer
+  distributions (kernels). Note that craff is used when a checkpoint is saved.
+
+* Operating system XXX does not work. Not all devices in Simics implement all
+  possible features exactly like typical hardware. If an operating system you
+  are interested in does not run on Simics, please let us know.
+
+* Weird output in the console window when running Simics on a remote desktop
+  (WindowsXP). This problem can be worked around by adding the line
+
+    set SDL_VIDEODRIVER=windib
+
+  to the script that starts Simics (typically home/x86-test-machine/simics.bat
+  or x86-win32-gcc/bin/simics-x86-hammer.bat).
+
+Sparc target only:
+
+* RED state is not implemented.
+
+* The following UltraSPARC registers are not implemented:
+  + The ECC error registers.
+  + Watchpoint registers.
+  + Cache diagnostic registers.
+  + Performance control registers, and counters.
+  + The AFAR and AFSR registers are not correctly updated on errors.
+
+* The fake boot prom can not handle more than 4GB of physical memory. The
+  workaround is to use the real OBP.
+ 
+* Checkpointing does not work until the (first) processor has left the fake
+  bootprom. This usually takes about 3-5 million cycles. The workaround is to
+  use the real OBP.
+ 
+* The Solaris version of hostfs does not support truncating files.
+
+Alpha target only:
+
+* Only limited support for VAX floating-point instructions.
+
+X86 and X86-64 targets only:
+
+* Access to non-existing floppy crashes Simics.
+
+* Protected mode virtual interrupts (PVI) not implemented.
+
+* System management mode (SMM) not implemented.
+
+* Incorrect x87 floating point behavior. Version 1.1.x will include our new
+  x87 emulation code, which fixes lots of minor problems with the old code.
+
+* Physical address extension (PAE) paging not supported in the 32-bit
+  (non x86-64) targets.
+
+* Local APIC disable through the IA32_APIC_BASE register is not supported.

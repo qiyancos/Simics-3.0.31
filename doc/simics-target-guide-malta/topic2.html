@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting Malta machines are located in the
+<tt>[workspace]/targets/malta/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/malta/</tt>.
+<p>
+
+<p>
+<a name="label21"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Malta</h3 class="jdocu">
+
+
+The default configuration can be modified as described in section 
+<a class="jdocu" href="#label23">3.2</a>.
+<a name="label22"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Malta Scripts</h4 class="jdocu">
+
+
+This chapter explains the files used to boot Linux on Malta.
+<dl><dt><b><tt>malta-linux-common.simics</tt></b></dt><dd>Starts the Malta machine with the default configuration to boot linux.</dd></dl>
+<p>
+
+<p>
+
+<a name="label23"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>malta-linux-common.simics</tt> scripts. 
+Other <tt>*-linux-*.simics</tt> scripts may set some of the parameters
+unconditionally, and do not allow the user to override them. 
+<a name="label24"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;malta-linux-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$cpu_class<a name="label25"></a></b></dt><dd>MIPS processor to use (default mips-4kc).</dd><dt><b>$freq_mhz<a name="label26"></a></b></dt><dd>The clock frequency in MHz for the processor.</dd><dt><b>$rtc_time<a name="label27"></a></b></dt><dd>Date and time of the real-time clock at boot.</dd></dl>
+
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

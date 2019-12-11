@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Miscellaneous Notes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(94, true);
+</script>
+<a name="label615"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h2 class="jdocu">7&nbsp;&nbsp;&nbsp;Miscellaneous Notes</h2 class="jdocu">
+
+    
+<p>
+    <a name="label616"></a><h3 class="jdocu">7.1&nbsp;&nbsp;&nbsp;Timing problems</h3 class="jdocu">
+
+    
+    If you have problems typing in the password when logging in
+    because the simulated machine times out too quickly you can issue the 
+    Simics command:
+<pre class="jdocu_small" style="color: black">
+simics&gt; enable-real-time-mode
+</pre>
+    This will cause Simics not to run faster then the the wall clock.
+    Normally this is not a problem and it will only happens when the x86 processor
+    is sitting idle on a HLT instruction.
+<p>
+    For NetBSD, you will also need to lower the check interval to
+    avoid repeated keystrokes:
+<pre class="jdocu_small" style="color: black">
+simics&gt; enable-real-time-mode check_interval=100
+</pre>
+<p>
+    To run as fast as possible again you simply run the command:
+<pre class="jdocu_small" style="color: black">
+simics&gt; disable-real-time-mode
+</pre>
+    See the Reference Manual for further information.
+    <a name="label617"></a><h3 class="jdocu">7.2&nbsp;&nbsp;&nbsp;Console input</h3 class="jdocu">
+
+    
+<p>
+    Certain key combinations are normally caught by the host operating
+    system or the window manager and may have dangerous side effects. An
+    example is the ctrl + alt + del combination used to bring up the task
+    manager on Windows and to reboot Linux systems. Such key combinations
+    can be safely inserted using Simics commands instead.
+<p>
+    For example to send ctrl + alt + del:
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; con0.input -e "C-A-Del"
+    </pre>
+<p>
+    Regular strings can also be issued:
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; con0.input "mkdir foo\n"
+    </pre>
+<p>
+    There are also some functions written in Python available in the
+    <tt>home/scripts/expect.py</tt> file. They can be used to wait for
+    certain output to appear on the simulated screen. Similar functionality is
+    also available through the console if the <tt>use_video_text_console</tt> option
+    has been activated.
+<p>
+    <a name="label618"></a><h3 class="jdocu">7.3&nbsp;&nbsp;&nbsp;BIOS Timer Error</h3 class="jdocu">
+
+    
+<p>
+    The firmware will most likely pause, complaining about a <tt>Timer
+    Error</tt>. At that point F1 must be pressed to continue the boot
+    process. To send F1 to the system issue:
+<p>
+    <pre class="jdocu_small" style="color: black">
+    simics&gt; con0.input -e "F1"
+    </pre>
+<p>
+    The halt on system error can also be disabled through the firmware
+    configuration menues.
+<p>
+    
+    <a name="label619"></a><h3 class="jdocu">7.4&nbsp;&nbsp;&nbsp;Changing the Processor Clock Frequency</h3 class="jdocu">
+
+
+<a name="label620"></a> 
+<a name="label621"></a>
+<a name="label622"></a>
+<p>
+The clock frequency of a simulated processor can be set arbitrarily in
+Simics.  This will not affect the actual speed of simulation, but it
+will affect the number of instructions that need to be executed for a
+certain amount of simulated time to pass.  If your execution only
+depends on executing a certain number of instructions, increasing the clock frequency will take
+the same amount of host time (but a shorter amount of target
+time). However, if there are time based delays of some kind in the simulation,
+these will take  longer to execute. 
+<p>
+At a simulated 1 MHz, one million target instructions will correspond to a
+simulated second (assuming the simple default timing of one cycle per
+instruction). At 100 MHz, on the other hand, it will take 100 million
+target instructions to complete a simulated second. So with a higher clock
+frequency, less simulated target time is going to pass for a certain
+period of host execution time.
+<p>
+If Simics is used to emulate an interactive system (especially one
+with a graphical user interface) it is a good idea to set the clock
+frequency quite low.  Keyboard and mouse inputs events are handled by
+periodic interrupts in most operating systems, using a higher clock
+frequency will result in longer delays between invocations of periodic
+interrupts.  Thus, the simulated system will feel slower in its user
+response, and update the mouse cursor position etc. less frequently.
+If this is a problem, the best technique for running experiments at a
+high clock frequency is to first complete the configuration of the
+machine using a low clock frequency.  Save all configuration changes
+to a disk diff (like when installing operating systems).  Then change
+the configuration to use a higher a clock frequency and reboot the
+target machine.
+<p>
+Note that for a lightly-loaded machine (for example, working at an
+interactive prompt on a serial console to an embedded Linux system),
+Simics will often execute quickly enough at the real target clock
+frequency that there is no need to artifically lower it.
+<p>
+
+    <p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

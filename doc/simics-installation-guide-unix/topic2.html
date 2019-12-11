@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Installing Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Installing Simics</h2 class="jdocu">
+
+
+<p>
+Simics is provided as one or several <tt>tar</tt> archive files, for
+example <tt>simics-pkg-00-3.0.0-linux.tar</tt> where 00 is a customer
+specific package number, and 3.0.0 is the Simics version number. It is
+recommended that Simics is installed by <tt>root</tt> in a read-only location,
+such as <tt>/opt/virtutech/</tt>. Once Simics is installed, each user can
+create a Simics workspace as described in section
+<a class="jdocu" href="topic3.html#label26">4</a>.
+<p>
+<a name="label21"></a><h3 class="jdocu">Installing a Simics Package</h3 class="jdocu">
+
+
+<p>
+<ol>
+<p>
+<li>Download the appropriate Simics packages from the download site. (The
+download URL and package numbers are distributed separately).</li>
+<p>
+<li>Unpack all package files by running <tt>tar</tt>.
+<pre class="jdocu_small" style="color: black">
+$ <b>tar xf simics-pkg-00-3.0.0-linux.tar</b>
+</pre>
+This will create a temporary installation directory called
+<tt>simics-3.0-install</tt>. One Simics base package and several add-on
+packages can be installed at the same time, by unpacking them with
+<tt>tar</tt> before continuing with the next step, running the install
+script. It is possible to install multiple base packages of the same package
+type, where only the host type differs, at the same time.
+</li>
+<p>
+<li>Change to the temporary installation directory and run the install script.
+<pre class="jdocu_small" style="color: black">
+$ <b>su</b>
+Password:
+# <b>cd simics-3.0-install</b>
+# <b>sh install-simics.sh</b>
+</pre>
+</li>
+<p>
+<li>The install script will search the current directory for packages to
+install and ask for an alternative directory to install Simics in instead of
+the default one. It will also ask for the decryption key for each package.
+If packages have been unpacked earlier with the same package number and the
+same Simics version number, then the decode key has been cached in
+<tt>$HOME/.simics-tfkeys</tt>.</li>
+<p>
+<hr class="jdocu_note"><b>Note:</b> It is not possible to install several Simics base packages in the same
+directory.<hr class="jdocu_note">
+<p>
+<li>When the install script finishes, Simics has been installed in
+<tt>/opt/virtutech/simics-&lt;version&gt;/</tt>. This path is referred to as
+<tt>[simics]</tt> in all Simics documentation. The <tt>/opt/virtutech/</tt>
+path may differ if an alternative installation directory was specified when the
+install script was run.</li>
+<p>
+<li>The temporary installation directory may be removed when Simics has been
+successfully installed.</li>
+<p>
+</ol>
+<p>
+
+<a name="label22"></a><h3 class="jdocu">Installing the License</h3 class="jdocu">
+
+
+<p>
+If you have a node-locked license file, simply copy it to the
+<tt>[simics]/licenses/</tt> directory. To install floating licenses, refer
+to section <a class="jdocu" href="topic4.html#label29">5</a>.
+<p>
+
+<hr class="jdocu_note"><b>Note:</b> Once FLEXlm has successfully checked out a license it will add the path
+to the license search path (if it is not already present) in the
+<tt>.flexlmrc</tt> file in the user's home directory. If it takes a long
+time when Simics checks out the license, check this file for old incorrect
+paths to remove.
+<hr class="jdocu_note">
+
+<p>
+
+<a name="label23"></a><h3 class="jdocu">Installing Disk Images</h3 class="jdocu">
+
+
+<p>
+A disk image, also called <em>disk dump</em> represents the contents of a hard
+disk, usually in a compressed form. Since images can be quite big, they are
+not provided in the standard Simics packages, but have to be downloaded
+separately. Publicly available image files can be downloaded from the Simics
+web site, <a class="jdocu" href="https://www.simics.net/" target="_top">https://www.simics.net/</a>.
+<p>
+
+<a name="label24"></a><h4 class="jdocu">3.0.1&nbsp;&nbsp;&nbsp;Single User Environment</h4 class="jdocu">
+
+
+In single user environments it is usually easiest to keep image files in
+the corresponding <tt>[workspace]/targets/&lt;architecture&gt;/</tt> directory.
+Simics will automatically look for files in this directory, and images do not
+have to be moved when Simics is upgraded.
+
+<a name="label25"></a><h4 class="jdocu">3.0.2&nbsp;&nbsp;&nbsp;Multi User Environment</h4 class="jdocu">
+
+
+To allow several users to share the same image files, it is recommended that
+images are placed in a shared directory in the file-system, for example in
+<tt>/opt/virtutech/images/</tt>. After installing Simics, a reference to this
+directory should be added in the installation wide startup file
+<tt>[simics]/config/startup-commands</tt>:
+<pre class="jdocu_small" style="color: black">
+add-directory /opt/virtutech/images/
+</pre>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

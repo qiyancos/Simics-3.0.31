@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Breakpoints</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(55, true);
+</script>
+<a name="label308"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+<h3 class="jdocu">8.4&nbsp;&nbsp;&nbsp;Breakpoints</h3 class="jdocu">
+
+
+<p>
+Code <a name="label309">breakpoints</a> and <a name="label310">magic breakpoints</a> will trigger just before the
+instruction is committed or an exception is
+handled. <b><i><a name="label311">SIM_instruction_proceed</a></i></b>,
+<b><i><a name="label312">SIM_instruction_commit</a></i></b>, and
+<b><i><a name="label313">SIM_instruction_handle_exception</a></i></b> will signal this by
+returning a special value and it is up to the processor module to exit
+the cycle.
+<p>
+Time breakpoints will work fine and the preferred way of breaking
+Simics in MAI. Step breakpoints may break inside a cycle as described
+in the previous section. 
+<p>
+Pressing control-C will always break at an even cycle boundary.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+</body>
+</html>

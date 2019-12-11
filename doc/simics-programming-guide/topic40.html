@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Text Output</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(108, true);
+</script>
+<a name="label221"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic39.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic41.html">Next</a></span></p>
+<h3 class="jdocu">8.2&nbsp;&nbsp;&nbsp;Text Output</h3 class="jdocu">
+
+
+<p>
+<a name="label222"></a>Since Simics has its own handling of text output, which
+allows users to redirect output to several recipients, the standard C library
+output routines should not be used from within a Simics module. However, by
+including the <tt>simics/api.h</tt> header file, some C library function
+names are redefined as preprocessor macros, which call the Simics versions of
+these functions instead. E.g., <b><i>vprintf</i></b> is redefined as:
+<p>
+<pre class="jdocu_small" style="color: black">
+    #undef vprintf
+    #define vprintf(str, ap) SIM_printf_vararg(str, ap)
+</pre>
+<p>
+This should work just fine for most applications, but if you, for some reason,
+need to call the actual C library functions, you can either <tt>#undef</tt>
+the replacement definition of that function, or insert <tt>#define
+<a name="label223">SIM_BC_NO_STDOUT_REDEFINE</a></tt> before including
+<tt>simics/api.h</tt>. See the section about
+<tt>SIM_BC_NO_STDOUT_REDEFINE</tt> in the Simics
+<em>Reference Manual</em> for details about these macro definitions.
+<p>
+Whenever Simics is requested to write output using the
+<b><i><a name="label224">SIM_write</a>()</i></b> family of functions (see the Simics
+<em>Reference Manual</em> description of <b><i>SIM_write</i></b> for a list
+of these), that text is written to <i><a name="label225">stdout</a></i>, and a call
+to each previously registered output handler is made. You can register new
+output handlers using the <b><i><a name="label226">SIM_add_output_handler</a>()</i></b>
+function.
+<p>
+Here is a pseudo-code example of how a module could get Simics to
+write a copy of all its text output to a log file:
+<p>
+<pre class="jdocu_small" style="color: black">
+static void
+output_handler(void *file, const void *buf, size_t count)
+{
+    fwrite(buf, 1, count, (FILE *)file);
+}
+
+static void
+init_local(void)
+{
+    SIM_add_output_handler(output_handler,
+                           (void *)fopen("my-log.txt", "w+"));
+}
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic39.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic41.html">Next</a></span></p>
+</body>
+</html>

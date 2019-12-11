@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>rom</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2266, true);
+</script>
+<a name="label17938"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic524.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic526.html">Next</a></span></p>
+<h3 class="jdocu">rom</h3 class="jdocu">
+
+
+<a name="label17939"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic322.html#label12896">rom</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The <tt>ram</tt> interface is implemented by classes that provide
+   random access read/write memory. The <tt>rom</tt> interface is
+   identical to <tt>ram</tt> but provides read only memory (writes are
+   dropped by the memory system).
+<p>
+   Both the ram and rom interfaces are Simics internal, and should not be used
+   by user-defined classes.
+<p>
+   The <b><i>phys_to_real_p</i></b> function returns the page
+   associated with the given address. <b><i>get_page</i></b> does the same thing
+   but also returns the corresponding tag page in <i>tags_ret</i>.
+   
+<pre class="jdocu_small" style="color: black">typedef struct ram_interface {
+        page_t *(*phys_to_real_p)(conf_object_t *obj, physical_address_t addr);
+        page_t *(*get_page)(conf_object_t *obj, physical_address_t addr,
+                            page_t **tags_ret, unsigned *tag_ofs_ret);
+} ram_interface_t;</pre>
+
+   <pre class="jdocu_small" style="color: black">#define ROM_INTERFACE "rom"</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic524.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic526.html">Next</a></span></p>
+</body>
+</html>

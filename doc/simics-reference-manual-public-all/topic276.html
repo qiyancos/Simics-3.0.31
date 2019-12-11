@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ppc440gp-uic</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1442, true);
+</script>
+<a name="label10323"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic275.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic277.html">Next</a></span></p>
+<h3 class="jdocu">ppc440gp-uic</h3 class="jdocu">
+
+
+<a name="label10324"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2496">440gp-devices</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ppc440gp-uic</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic519.html#label17810">pci_interrupt</a>, <a class="jdocu" href="topic530.html#label17948">simple_interrupt</a></dd>
+
+
+<dt class="jdocu_di"><b>Ports</b></dt><dd class="jdocu_di">
+Reset (<a class="jdocu" href="topic529.html#label17946">signal</a>)</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The ppc440gp-uic device implements the functionality of the Universal Interrupt Controller on the ppc440gp chip.
+
+</dd>
+
+</dl>
+<a name="label10325"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>UICx_CR</i></b></dt><a name="label10326"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Value of the critical register. Note that this attribute is obsolete. Please use "cr" instead.</dd></dl>
+<dl><dt><b><i>UICx_ER</i></b></dt><a name="label10327"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Value of the enable register. Note that this attribute is obsolete. Please use "er" instead.</dd></dl>
+<dl><dt><b><i>UICx_PR</i></b></dt><a name="label10328"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Value of the polarity register. Note that this attribute is obsolete. Please use "pr" instead.</dd></dl>
+<dl><dt><b><i>UICx_SR</i></b></dt><a name="label10329"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Value of the status register. Note that this attribute is obsolete. Please use "sr" instead.</dd></dl>
+<dl><dt><b><i>UICx_TR</i></b></dt><a name="label10330"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Value of the trigger register. Note that this attribute is obsolete. Please use "tr" instead.</dd></dl>
+<dl><dt><b><i>UICx_VCR</i></b></dt><a name="label10331"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Value of the vector configuration register. Note that this attribute is obsolete. Please use "vcr" instead.</dd></dl>
+<dl><dt><b><i>cr</i></b></dt><a name="label10332"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+critical</dd></dl>
+<dl><dt><b><i>critical_interrupt_pending</i></b></dt><a name="label10333"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 when the outgoing critical interrupt signal is asserted.</dd></dl>
+<dl><dt><b><i>critical_target</i></b></dt><a name="label10334"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>o|s</b>.
+<p>
+Target object to receive critical interrupts.</dd></dl>
+<dl><dt><b><i>critical_target_level</i></b></dt><a name="label10335"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The interrupt level sent to the target of critical interrupts.</dd></dl>
+<dl><dt><b><i>er</i></b></dt><a name="label10336"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+enable</dd></dl>
+<dl><dt><b><i>external_irq_levels</i></b></dt><a name="label10337"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Similar to the SR register but reflects the current level from the irq source.</dd></dl>
+<dl><dt><b><i>interrupt_pending</i></b></dt><a name="label10338"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 when the outgoing interrupt signal is asserted.</dd></dl>
+<dl><dt><b><i>msr</i></b></dt><a name="label10339"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+masked status</dd></dl>
+<dl><dt><b><i>pr</i></b></dt><a name="label10340"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+polarity</dd></dl>
+<dl><dt><b><i>sr</i></b></dt><a name="label10341"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+status</dd></dl>
+<dl><dt><b><i>srs</i></b></dt><a name="label10342"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+status</dd></dl>
+<dl><dt><b><i>target</i></b></dt><a name="label10343"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>o|s</b>.
+<p>
+Target object to receive non-critical interrupts.</dd></dl>
+<dl><dt><b><i>target_level</i></b></dt><a name="label10344"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The interrupt level sent to the target of non-critical interrupts.</dd></dl>
+<dl><dt><b><i>tr</i></b></dt><a name="label10345"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+trigger</dd></dl>
+<dl><dt><b><i>vcr</i></b></dt><a name="label10346"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+vector configuration</dd></dl>
+<dl><dt><b><i>vr</i></b></dt><a name="label10347"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+vector</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label10348"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label10350">status</a></b></td><td class="jdocu_noborder">print dynamic information about device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label10349"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label10350"></a><a name="label10351"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp-uic&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp-uic&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed dynamic information about the simulated device.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic275.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic277.html">Next</a></span></p>
+</body>
+</html>

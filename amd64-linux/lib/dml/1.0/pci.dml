@@ -1,0 +1,132 @@
+// -*- mode: c; c-basic-offset: 4 -*-
+
+dml 1.0;
+
+header %{
+#ifndef PCI_EXPRESS
+#define PCI_EXPRESS
+#endif
+#include <simics/devs/pci.h>
+%}
+
+typedef struct {
+        void (*bus_reset)(conf_object_t *obj);
+        int (*interrupt_acknowledge)(conf_object_t *obj);
+        void (*special_cycle)(conf_object_t *obj, uint32 value);
+        void (*system_error)(conf_object_t *obj);
+        void (*interrupt_raised)(conf_object_t *obj, int pin);
+        void (*interrupt_lowered)(conf_object_t *obj, int pin);
+} pci_device_interface_t;
+
+constant PCI_DEVICE_INTERFACE = "pci-device";
+
+typedef struct {
+        exception_type_t (*memory_access)(conf_object_t *obj,
+                                          generic_transaction_t *mem_op);
+        void (*raise_interrupt)(conf_object_t *obj, conf_object_t *dev,
+                                int pin);
+        void (*lower_interrupt)(conf_object_t *obj, conf_object_t *dev,
+                                int pin);
+        int (*interrupt_acknowledge)(conf_object_t *obj);
+        int (*add_map)(conf_object_t *obj, conf_object_t *dev,
+                       addr_space_t space, conf_object_t *target,
+                       map_info_t info);
+        int (*remove_map)(conf_object_t *obj, conf_object_t *dev,
+                          addr_space_t space, int function);
+	void (*set_bus_number)(conf_object_t *obj, int bus_id);
+	void (*set_sub_bus_number)(conf_object_t *obj, int bus_id);
+        void (*add_default)(conf_object_t *obj, conf_object_t *dev,
+                            addr_space_t space, conf_object_t *target,
+                            map_info_t info);
+        void (*remove_default)(conf_object_t *obj, addr_space_t space);
+        void (*bus_reset)(conf_object_t *obj);
+        void (*special_cycle)(conf_object_t *obj, uint32 value);
+        void (*system_error)(conf_object_t *obj);
+
+        int (*get_bus_address)(conf_object_t *obj, conf_object_t *dev);
+
+        void (*set_device_timing_model)(conf_object_t *obj,
+                                        conf_object_t *dev,
+                                        conf_object_t *timing_model);
+        // Only available since build XXXX
+        void (*set_device_status)(conf_object_t *obj, int device, int function,
+                                  int enabled);
+} pci_bus_interface_t;
+
+constant PCI_BUS_INTERFACE = "pci-bus";
+
+typedef struct {
+        void (*system_error)(conf_object_t *obj);
+        void (*raise_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+        void (*lower_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+} pci_bridge_interface_t;
+
+constant PCI_BRIDGE_INTERFACE = "pci-bridge";
+
+typedef struct {
+        void (*raise_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+        void (*lower_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+} pci_interrupt_interface_t;
+
+constant PCI_INTERRUPT_INTERFACE = "pci-interrupt";
+
+/* INTx emulation */
+constant PCIE_Msg_Assert_INTA       = 0x20;
+constant PCIE_Msg_Assert_INTB       = 0x21;
+constant PCIE_Msg_Assert_INTC       = 0x22;
+constant PCIE_Msg_Assert_INTD       = 0x23;
+constant PCIE_Msg_Deassert_INTA     = 0x24;
+constant PCIE_Msg_Deassert_INTB     = 0x25;
+constant PCIE_Msg_Deassert_INTC     = 0x26;
+constant PCIE_Msg_Deassert_INTD     = 0x27;
+
+/* Power Management */
+constant PCIE_PM_Active_State_Nak   = 0x14;
+constant PCIE_PM_PME                = 0x18;
+constant PCIE_PM_Turn_Off           = 0x19;
+constant PCIE_PM_PME_TO_Ack         = 0x1B;
+
+/* Error Messages */
+constant PCIE_ERR_COR               = 0x30;
+constant PCIE_ERR_NONFATAL          = 0x31;
+constant PCIE_ERR_FATAL             = 0x33;
+
+/* Locked Transaction */
+constant PCIE_Locked_Transaction    = 0x00;
+
+/* Slot Power Limit */
+constant PCIE_Set_Slot_Power_Limit  = 0x90;
+
+/* Hot Plug Messages */
+constant PCIE_HP_Power_Indicator_On        = 0x45;
+constant PCIE_HP_Power_Indicator_Blink     = 0x47;
+constant PCIE_HP_Power_Indicator_Off       = 0x44;
+constant PCIE_HP_Attention_Button_Pressed  = 0x48;
+constant PCIE_HP_Attention_Indicator_On    = 0x41;
+constant PCIE_HP_Attention_Indicator_Blink = 0x43;
+constant PCIE_HP_Attention_Indicator_Off   = 0x40;
+
+typedef int pcie_message_type_t;
+
+typedef struct {
+        int (*send_message)(conf_object_t *dst, conf_object_t *src,
+                            pcie_message_type_t type, byte_string_t payload);
+} pci_express_interface_t;
+constant PCI_EXPRESS_INTERFACE = "pci-express";
+
+typedef struct {
+    void (*presence_change)(conf_object_t *dst, conf_object_t *src,
+                            int is_present);
+    void (*inject_power_fault)(conf_object_t *obj);
+    void (*press_attention_button)(conf_object_t *obj);
+    void (*set_mrl_state)(conf_object_t *obj, int locked);
+    int  (*get_mrl_state)(conf_object_t *obj);
+} pci_express_hotplug_interface_t;
+constant PCI_EXPRESS_HOTPLUG_INTERFACE = "pci-express-hotplug";
+
+
+constant DEVICE_CONF_FUNC = 0xff;

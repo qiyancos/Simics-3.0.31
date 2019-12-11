@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ethernet_device</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2233, true);
+</script>
+<a name="label17725"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic494.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic496.html">Next</a></span></p>
+<h3 class="jdocu">ethernet_device</h3 class="jdocu">
+
+
+<a name="label17726"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic21.html#label3134">AM79C960</a>, <a class="jdocu" href="topic22.html#label3181">AM79C960-dml</a>, <a class="jdocu" href="topic33.html#label3549">BCM5703C</a>, <a class="jdocu" href="topic34.html#label3762">BCM5704C</a>, <a class="jdocu" href="topic60.html#label4834">CS8900A</a>, <a class="jdocu" href="topic67.html#label4946">DEC21041</a>, <a class="jdocu" href="topic68.html#label5001">DEC21140A</a>, <a class="jdocu" href="topic70.html#label5114">DEC21143</a>, <a class="jdocu" href="topic37.html#label4005">cassini</a>, <a class="jdocu" href="topic42.html#label4282">cheerio-hme</a>, <a class="jdocu" href="topic81.html#label5405">etg</a>, <a class="jdocu" href="topic167.html#label7848">mii-transceiver</a>, <a class="jdocu" href="topic257.html#label9508">ppc405gp-emac</a>, <a class="jdocu" href="topic268.html#label10026">ppc440gp-emac</a>, <a class="jdocu" href="topic283.html#label10692">ppc440gx-emac</a>, <a class="jdocu" href="topic316.html#label12733">rn-eth-bridge-raw</a>, <a class="jdocu" href="topic317.html#label12754">rn-eth-bridge-tap</a>, <a class="jdocu" href="topic318.html#label12782">rn-eth-proxy-raw</a>, <a class="jdocu" href="topic319.html#label12811">rn-eth-proxy-tap</a>, <a class="jdocu" href="topic320.html#label12843">rn-ip-router-raw</a>, <a class="jdocu" href="topic321.html#label12870">rn-ip-tunnel-tun</a>, <a class="jdocu" href="topic339.html#label13085">sbus-hme</a>, <a class="jdocu" href="topic363.html#label13812">service-node-device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        void (*receive_frame)(conf_object_t *dev,
+                              conf_object_t *link,
+                              dbuffer_t *frame);
+        phy_speed_t (*auto_neg_request)(conf_object_t *dev,
+                                        phy_speed_t speed);
+        void (*auto_neg_reply)(conf_object_t *dev,
+                               phy_speed_t speed);
+} ethernet_device_interface_t;
+#define ETHERNET_DEVICE_INTERFACE "ethernet_device"
+</pre>
+<p>
+
+   This interface is implemented by Ethernet device objects that
+   connect to <b>ethernet-link</b> objects.  It is used by the
+   link object to send messages to the device object.
+<p>
+   The <b><i>receive_frame</i></b> function is called when a frame has
+   been sent by another device on the link.  The frame is passed as a
+   <tt><a name="label17727">dbuffer_t</a></tt> pointer that may not be modified without
+   cloning it first.
+<p>
+   The frame may be addressed to another device, which means that the
+   device must be prepared to drop frames addressed to other devices,
+   even if it has registered a MAC address.  Also, the frame must not
+   assume that it will receive all frames on the link if it has
+   registered a MAC address, unless it tells the link it is running in
+   promiscuous mode.
+<p>
+   The <b><i>auto_neg_request</i></b> might be called when another device
+   has requested auto-negotiation.  The speed parameter
+   contains the connection speeds that the other device supports.  The
+   return value should result of clearing the bits in
+   speed that the device doesn't support.
+<p>
+   The <b><i>auto_neg_reply</i></b> is called to return the result of a
+   previous call to <b><i>auto_negotiate</i></b> in the
+   <tt>ethernet_link</tt> interface.
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic494.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic496.html">Next</a></span></p>
+</body>
+</html>

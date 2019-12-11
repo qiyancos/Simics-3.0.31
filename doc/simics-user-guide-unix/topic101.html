@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Memory Mapping Types</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(233, true);
+</script>
+<a name="label538"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic100.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic102.html">Next</a></span></p>
+<h4 class="jdocu">19.3&nbsp;&nbsp;&nbsp;Memory Mapping Types</h4 class="jdocu">
+
+
+<p>
+There are a few different kinds of mappings that can be specified in the map
+attribute. All use the format described in the previous section.
+<p>
+<dl><dt><b>Device Mapping</b></dt><dd>The most common kind of mapping. It is used for
+devices, RAM and ROM objects. The <i>target</i> field is not set.
+</dd><dt><b>Translator Mapping</b></dt><dd>Sometimes the address has to be modified between memory-spaces, or the
+destination memory-space depends on the address or some other aspect of
+the access such as the initiating processor. In these cases a <i>translator</i>
+can be used. A translator mapping is specified with the translator in the
+<i>object</i> field, and the default target as <i>target</i>. The translator
+has to implement the <tt>TRANSLATE</tt> interface. When an access reaches
+a translator mapping, the <b><i>translate</i></b> function in the
+<tt>TRANSLATE</tt> interface is called. The translator can then modify
+the address if necessary, and specify what destination memory-space to use.
+If it doesn't specify any new memory-space, the default one from the configuration
+is used. The following fields can be changed by the translator:
+<tt>physical_address</tt>, <tt>ignore</tt>, <tt>block_STC</tt>,
+<tt>inverse_endian</tt> and <tt>user_ptr</tt>.
+</dd><dt><b>Translate to RAM/ROM Mapping</b></dt><dd>Used to map RAM and ROM objects with a translator first. The <i>object</i>
+field is set to the translator, and <i>target</i> is set to the RAM/ROM object.
+</dd><dt><b>Space-to-space Mapping</b></dt><dd>Map one memory-space in another. Both <i>object</i> and <i>target</i>
+should be set to the destination memory-space object.
+</dd><dt><b>Bridge Mapping</b></dt><dd>A bridge mapping is typically used for mappings that are setup by some
+kind of bridge device. The purpose of a bridge mapping is to handle accesses
+where nothing is mapped, in a way that corresponds to the bus architecture.
+For a bridge mapping, the <i>object</i> field is set to the bridge device,
+implementing the <tt>BRIDGE</tt> interface. The <i>target</i> field is
+set to the destination memory-space. If both a translator and bridge is needed,
+they must be implemented by the same object. If an access is made where nothing
+is mapped, the memory-space by default returns the <tt>Sim_PE_IO_Not_Taken</tt>
+pseudo exception. But if the access was made through a bridge mapping, the
+bridge device will be called to notify it about the unmapped access. It can
+then update any internal status registers, specify a new return exception,
+and set the data that should be returned in the case of a read access. Since
+the bridge is associated with the mapping and not the memory-space itself,
+several bridges can exist for one space, and devices doing accesses directly
+to the memory-space in question will not affect the bridge for non-mapped
+addresses. In the latter case, the device itself has to interpret the
+<tt>Sim_PE_IO_Not_Taken</tt> exception. The <tt>Sim_PE_IO_Error</tt> exception,
+indicating that a device returned an error is also sent to the bridge. Finally,
+bridges are called for accesses that generate <tt>Sim_PE_Inquiry_Outside_Memory</tt>,
+i.e. an inquiry access where nothing is mapped. In this case the bridge may have
+to set a default return value, such as &minus;1.
+</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic100.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic102.html">Next</a></span></p>
+</body>
+</html>

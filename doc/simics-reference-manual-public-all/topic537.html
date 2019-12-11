@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>timing_model</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2279, true);
+</script>
+<a name="label17976"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic536.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic538.html">Next</a></span></p>
+<h3 class="jdocu">timing_model</h3 class="jdocu">
+
+
+<a name="label17977"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic49.html#label4600">consistency-controller</a>, <a class="jdocu" href="topic94.html#label5752">g-cache</a>, <a class="jdocu" href="topic95.html#label5810">g-cache-ooo</a>, <a class="jdocu" href="topic126.html#label6922">id-splitter</a>, <a class="jdocu" href="topic204.html#label8688">pci-bus</a>, <a class="jdocu" href="topic226.html#label8913">pcie-switch</a>, <a class="jdocu" href="topic237.html#label9059">perfanalyze</a>, <a class="jdocu" href="topic330.html#label12980">sample-memhier</a>, <a class="jdocu" href="topic380.html#label14080">state-assertion</a>, <a class="jdocu" href="topic448.html#label15255">trace-mem-hier</a>, <a class="jdocu" href="topic449.html#label15261">trans-sorter</a>, <a class="jdocu" href="topic450.html#label15279">trans-splitter</a>, <a class="jdocu" href="topic451.html#label15288">trans-splitter-ooo</a>, <a class="jdocu" href="topic452.html#label15304">trans-staller</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <a name="label17978"></a>
+   The <tt>timing-model</tt> interface is used to communicate
+   stall times for memory accesses. It is typically exported by cache
+   models. The <b><i>operate()</i></b> function is then called on every
+   memory access that misses in the STC, and the return value from the
+   call is the number of cycles to stall.
+<p>
+   The <tt>snoop-memory</tt> interface has the exact same layout
+   as the <tt>timing-model</tt> interface, but its
+   <b><i>operate()</i></b> function is called after the memory access has
+   been performed. The return value from the <b><i>operate()</i></b>
+   function of a <tt>snoop-memory</tt> interface is ignored.
+   <p>
+   See the Creating a Timing Model chapter in the <i>Simics User
+   Guide</i> for more information on how to use these interfaces.
+  <p>
+   <pre class="jdocu_small" style="color: black">typedef cycles_t (*operate_func_t)(conf_object_t *NOTNULL mem_hier,
+                                   conf_object_t *NOTNULL space,
+                                   map_list_t *NOTNULL map_list,
+                                   generic_transaction_t *NOTNULL mem_op);
+
+typedef struct timing_model_interface {
+        operate_func_t operate;
+} timing_model_interface_t;
+
+typedef struct snoop_memory_interface {
+        operate_func_t operate;
+} snoop_memory_interface_t;
+
+#define TIMING_MODEL_INTERFACE "timing_model"
+#define SNOOP_MEMORY_INTERFACE "snoop_memory"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic536.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic538.html">Next</a></span></p>
+</body>
+</html>

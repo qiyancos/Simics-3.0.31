@@ -1,0 +1,32 @@
+#
+# Create a number of OSE machines in a network
+# Based on the hard-wired 00:00:12:34:56:78 MAC addressses
+# in the polo_X, rtose_X binaries
+#
+if not defined machine_count {$machine_count = 3}
+if not defined id            {$id = 0}
+if not defined host_name    {$host_name    = "ebony"}
+
+$host = $host_name
+$create_network = "yes"
+
+if not defined eth_link {
+    import-std-components
+    $eth_link = (create-std-ethernet-link)
+    $service_node = (create-std-service-node)
+    $sn_cnt = ($service_node.add-connector 10.10.0.1)
+    $service_node.connect $sn_cnt $eth_link
+}
+
+$count = 0
+$base_mac = 78
+while $count < $machine_count {
+    set-component-prefix "ebony" + $id + "_"
+    $host_name = $host + $id
+    run-command-file "%script%/ebony-ose-common.simics"
+    $id += 1			# count up ebonyX number
+    $count += 1			# count up # of machines
+    $base_mac += 1		# count up base mac
+}
+
+sim->cpus_may_share_memory = 0

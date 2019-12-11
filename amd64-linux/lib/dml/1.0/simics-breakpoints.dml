@@ -1,0 +1,80 @@
+dml 1.0;
+
+/*
+ * simics-breakpoints.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+typedef struct {
+} breakpoint_t;
+
+typedef struct {
+    int             size;
+    breakpoint_t  **vector;
+} breakpoint_vector_t;
+
+
+extern int Sim_Breakpoint_Temporary;
+extern int Sim_Breakpoint_Simulation;
+extern int Sim_Breakpoint_Private;
+
+extern breakpoint_id_t SIM_breakpoint(conf_object_t *obj,
+                                      breakpoint_kind_t type,
+                                      access_t access,
+                                      uint64 address,
+                                      uint64 length,
+                                      uint32 flags);
+extern void SIM_delete_breakpoint(breakpoint_id_t id);
+
+extern void SIM_breakpoint_remove(int id, access_t access,
+                                  generic_address_t address,
+                                  generic_address_t length);
+
+typedef struct {
+    generic_address_t lower;
+    generic_address_t upper;
+    breakpoint_range_t *next;
+} breakpoint_range_t;
+
+typedef void (*insert_bp_func_t)
+        (conf_object_t *object, breakpoint_t *bp, 
+         generic_address_t start, generic_address_t end);
+typedef void (*remove_bp_func_t)
+        (conf_object_t *object, breakpoint_t *bp);
+typedef void (*remove_bp_range_func_t)
+        (conf_object_t *object, breakpoint_id_t bp_id,
+         access_t access, 
+         generic_address_t start, generic_address_t end);
+typedef breakpoint_range_t *(*get_bp_ranges_func_t)
+        (conf_object_t *object, 
+         breakpoint_t *bp);
+typedef breakpoint_vector_t (*get_bp_func_t)
+        (conf_object_t *object, 
+         access_t access, 
+         breakpoint_kind_t type, 
+         generic_address_t start, 
+         generic_address_t end);
+
+typedef struct {
+    insert_bp_func_t       insert_breakpoint;
+    remove_bp_func_t       remove_breakpoint;
+    remove_bp_range_func_t remove_breakpoint_range;
+    get_bp_ranges_func_t   get_breakpoint_ranges;
+    get_bp_func_t          get_breakpoints;
+} breakpoint_interface_t;
+
+constant BREAKPOINT_INTERFACE = "breakpoint";
+
+extern int VT_magic_break_query();
+extern int VT_magic_break_enable(int enable);

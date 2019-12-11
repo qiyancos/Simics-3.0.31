@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Events</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(54, true);
+</script>
+<a name="label107"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+<h3 class="jdocu">5.5&nbsp;&nbsp;&nbsp;Events</h3 class="jdocu">
+
+
+<a name="label108"></a>
+<p>
+The callbacks and posting is handled by declared <em>event objects</em>. The
+declaration typically looks as follows:
+<p>
+<pre class="jdocu_small" style="color: black">
+event future {
+        parameter timebase = "seconds";
+
+        method event(void *data) {
+                log "info", 1, 1 : "The future is here";
+        }
+}
+</pre>
+<p>
+The <em>timebase</em> parameter selects which queue to post on:
+<dl><dt><b>"seconds"</b></dt><dd>use the time queue with seconds as units;</dd><dt><b>"cycles"</b></dt><dd>use the time queue with cycles as units;</dd><dt><b>"steps"</b></dt><dd>use the step queue.</dd></dl>
+<p>
+The method <b><i>event()</i></b> is called when the event is picked from the
+queue. It takes an optional <i>data</i> argument that is set when the
+event is posted.
+<p>
+To post an event, you can use the <b><i>post()</i></b> method, or the
+<b><i>post_on_queue()</i></b> method on the event object.
+<p>
+<pre class="jdocu_small" style="color: black">
+method post(when, data)
+method post_on_queue(queue, when, data)
+
+# post an event 100s in the future with the optional argument some_data
+inline $future.post(100, some_data);
+
+# post an event 10s in the future on cpu2
+inline $future.post(SIM_get_object("cpu2), 10, NULL);
+</pre>
+<p>
+If you changed your mind and a posted, but not yet handled, event is no longer
+valid, it can be canceled by calling the <b><i>remove()</i></b> method on the
+event object.
+<p>
+<pre class="jdocu_small" style="color: black">
+method remove(data)
+
+inline $future.remove(some_data);
+</pre>
+<p>
+To find out if there is an event posted but not yet handled, the method
+<b><i>posted()</i></b> can be called, and to get the time remaining until the
+event will be handled, the method <b><i>next()</i></b> will return the time as
+specified by <tt>timebase</tt>.
+<p>
+<pre class="jdocu_small" style="color: black">
+method posted(data) -&gt; (truth)
+method next(data) -&gt; (when)
+
+local bool is_this_event_posted;
+local double when_is_this_event_posted;
+inline $future.posted(some_data) -&gt; (is_this_event_posted)
+inline $future.next(some_data) -&gt; (when_is_this_event_posted)
+</pre>
+<p>
+DML also provides a convenient shortcut with the <tt>after</tt> statement. An
+<tt>after</tt> statement is used to call a DML method some time (always in
+simulated seconds) in the future. It is not possible to cancel pending calls
+from <em>after</em> statements.
+<p>
+<pre class="jdocu_small" style="color: black">
+# call my_method() after 10.5s
+after (10.5) call my_method();
+</pre>
+<p>
+Refer to the <em>DML Reference Manual</em> for more information.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+</body>
+</html>

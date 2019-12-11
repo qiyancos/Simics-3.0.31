@@ -1,0 +1,67 @@
+if not defined ebony_u_boot {$ebony_u_boot = "u-boot-1.1.2"}
+if not defined do_login     {$do_login = "yes"}
+if not defined do_boot      {$do_boot  = "yes"}
+if not defined kernel_image {$kernel_image = "linux-2.4.31.uimage"}
+if not defined initrd_image {$initrd_image = "busybox-0.60.2.uimage"}
+if not defined boot_command {$boot_command = "setenv bootargs rw; bootm ffc00000 ffd00000"}
+if not defined ip_address   {$ip_address   = "10.10.0.50"}
+if not defined host_name    {$host_name    = "ebony"}
+if not defined service_node {}
+
+###
+
+# This can produce all kinds of strange errors,
+# so we should probably give the user a heads up here.
+if $memory_megs > 256  {
+	echo "---"
+	echo "You are currently running the Ebony configuration with"
+	echo "more than 256MB of simulated RAM. Please note that this"
+	echo "is not well supported in u-boot, even when compiling"
+	echo "with the CONFIG_VERY_BIG_RAM option enabled."
+	echo "---"
+}
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+$plb = ($system.get-component-object plb)
+$plb.load-binary $ebony_u_boot 0x100000000
+$plb.load-file $kernel_image 0x1ffc00000
+if $initrd_image != "" {
+    $plb.load-file $initrd_image 0x1ffd00000
+}
+
+# The initrd image overwrites the MAC addresses, restore here
+@from components import mac_as_list
+@plb = sim.objects[simenv.system].object_list['plb']
+@plb.memory[[0x1fffffe0c, 0x1fffffe11]] = mac_as_list(simenv.mac_address)
+@plb.memory[[0x1fffffe18, 0x1fffffe1d]] = mac_as_list(simenv.mac_address1)
+
+if $do_boot == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+    	local $cmd = $boot_command
+    	# Wait for u-boot prompt, type boot
+    	$con.wait-for-string "=>"
+    	$con.input $cmd + "\n"
+    }
+}
+
+if $do_login == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+    	local $ip = $ip_address
+    	# Wait for login prompt, login as root
+    	$con.wait-for-string "ogin: "
+    	$con.input "root\n"
+    	# Wait for root prompt, do ifconfig
+    	$con.wait-for-string "# "
+    	$con.input "ifconfig eth0 " + $ip + " netmask 255.255.255.0 \n"
+    }
+}

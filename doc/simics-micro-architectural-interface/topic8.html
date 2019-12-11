@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Cycle Handler</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(29, true);
+</script>
+<a name="label105"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic7.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic9.html">Next</a></span></p>
+<h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;Cycle Handler</h3 class="jdocu">
+
+
+<p>
+The entry to the Micro Architectural Interface is a <a name="label106">cycle
+handler</a>. It is a call-back function that is called every clock
+cycle and is the location for the user code that models the micro
+architecture of the processor. The call-back should be placed in a
+module that can be loaded into Simics (see the <em>Simics User
+Guide</em> for a detailed description on how to write loadable
+modules).
+<p>
+The cycle handler can be configured to be called in different ways
+depending on the machine that will be modeled. If a single processor
+system or a <a name="label107">SMP</a> system is the target (where all the processors are
+independent) the cycle handler can be set up so that it is called once
+for each processor during a clock cycle, i.e. the whole first cycle is
+modeled for the first processor, then the whole first cycle is modeled
+for the second processor, etc. until all processors have modeled their
+first cycle, then the second cycle is modeled for the first processor
+and so on.
+<p>
+If a <a name="label108">SMT</a> system should be modeled each thread will be
+mapped on one Simics processor so that each physical processor will
+actually consists of a group of Simics processors. One cycle handler
+should then be used per group since the threads in one group will be
+dependent and may interact with each other during the same cycle.
+<p>
+An example of how to set up a cycle handler is presented below. 
+<p>
+<pre class="jdocu_small" style="color: black">
+...
+
+void
+my_cycle_handler(conf_object_t *cpu, void *data)
+{
+    // All threads on one CPU is modeled here, cpu will 
+    // point the the first thread on each physical CPU.
+
+    // when we are finished we post ourself in the next cycle           
+    SIM_time_post_cycle(cpu, 1, 0, my_cycle_handler, data);
+}
+
+static void
+setup(void *data)
+{
+    /* We set up a multi-processor system with 3 CPUs. 
+       Each CPU consists of 2 threads. We need a 6 processor 
+       configuration for this to work where, 
+       cpu0 and cpu1 are threads on the first physical processor,
+       cpu2 and cpu3 are threads on the second physical processor,
+       cpu4 and cpu5 are threads on the third physical processor.
+    */
+
+    SIM_time_post_cycle(SIM_get_object("cpu0"),
+                        0, 0, my_cycle_handler, data);
+    SIM_time_post_cycle(SIM_get_object("cpu2"),
+                        0, 0, my_cycle_handler, data);
+    SIM_time_post_cycle(SIM_get_object("cpu4"),
+                        0, 0, my_cycle_handler, data);
+}
+
+/* This code is called when the module is loaded into Simics */
+DLL_EXPORT void
+init_local(void)
+{
+    void *user_data = 0;
+
+    /* We call the setup function as soon as we have a ready 
+       configuration */
+    if (SIM_initial_configuration_ok())
+        setup(user_data);
+    else
+        SIM_hap_register_callback("Core_Initial_Configuration", 
+                                  setup, user_data);
+}
+
+...
+</pre>
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic7.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic9.html">Next</a></span></p>
+</body>
+</html>

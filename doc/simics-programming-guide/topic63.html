@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Standard Connector Types</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(182, true);
+</script>
+<a name="label343"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic62.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic64.html">Next</a></span></p>
+<h3 class="jdocu">12.6&nbsp;&nbsp;&nbsp;Standard Connector Types</h3 class="jdocu">
+
+
+<p>
+The following is a list of common connector types found in many of the
+architecture models implemented by Simics. Machine-dependent connector types
+are not described in this section. The tables list all connector directions and
+the <tt><a name="label344">connector_info</a></tt> for connectors of each direction,
+including check methods with different arguments than the connect method. The
+<tt>connector_info</tt> is used as argument to the connect function of the
+opposite component during connect, see <a class="jdocu" href="topic60.html#label315">12.3.9</a>.
+<p>
+<table>
+<tr><td class="jdocu_border">one direction</td><td class="jdocu_border">&lt;first argument&gt;, &lt;second argument&gt;, ...</td></tr>
+<tr><td class="jdocu_border">other direction(s)</td><td class="jdocu_border">&lt;first argument&gt;, ...</td></tr>
+</table>
+<p>
+
+<dl><dt><b><tt>agp-bus</tt></b></dt><dd>
+Used to connect AGP based graphics devices.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;AGP slot&gt;, &lt;agp-bus object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">[[&lt;AGP function&gt;, &lt;agp-device object&gt;]*]</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>ethernet-link</tt></b></dt><dd>
+Used to connect Ethernet devices and Ethernet links together. <em>Up and down
+connectors of the ethernet-link type can not be connected together. They have
+to be connected to an "any" connector.</em>
+<p>
+<table>
+<tr><td class="jdocu_border">any</td><td class="jdocu_border">&lt;ethernet-link object&gt;</td></tr>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">-</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">-</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>fc-loop</tt></b></dt><dd>
+Simplified Fibre-Channel connection. The controller should have a connect
+function that makes sure that disk IDs on the loop are unique.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;fc-controller object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;fc-device object&gt;, &lt;loop ID&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>graphics-console</tt></b></dt><dd>
+Used to connect a graphical console to a graphics device.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;graphics-device object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;graphics-console object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>keyboard</tt></b></dt><dd>
+Used to connect a keyboard device to a console for receiving real keyboard
+input.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;keyboard object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;console object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>ide-slot</tt></b></dt><dd>
+Provides connection between an IDE controller and IDE disks and CD-ROMs.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">-</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;ide-device object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>isa-bus</tt></b></dt><dd>
+Used to connect legacy ISA devices to an ISA bus. The connect function in the
+component with the "down" connector should detect port number
+collisions.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;port-space object&gt;, &lt;memory-space object&gt;, &lt;interrupt object&gt;, &lt;dma object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">-</td></tr>
+<tr><td class="jdocu_border">up check</td><td class="jdocu_border">[&lt;port-number&gt;*]</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>mem-bus</tt></b></dt><dd>
+Connection for SDRAM components providing SPD information. The connect function
+should make sure that only SDRAMs of the correct type and width are inserted in
+a memory slot.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;i2c-bus object&gt;, &lt;i2c-bus address&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;memory-megs&gt;, &lt;memory-ranks&gt;</td></tr>
+<tr><td class="jdocu_border">up check</td><td class="jdocu_border">&lt;type&gt;, &lt;memory_megs&gt;, &lt;memory-ranks&gt;, &lt;bit-width&gt;, &lt;ecc-width&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>mouse</tt></b></dt><dd>
+Used to connect a mouse device to a console for receiving real mouse input.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;mouse object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;console object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>pci-bus</tt></b></dt><dd>
+Used to connect PCI devices to a standard PCI bus. A component defining the
+"down" connector must make sure that the pci-bus object has both the
+<i>memory_space</i> and <i>io_space</i> attributes set, and that
+the pre-configuration objects referenced by them each have a <i>map</i>
+attribute.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;PCI slot&gt;, &lt;pci-bus object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">[[&lt;PCI function&gt;, &lt;pci-device object&gt;]*]</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>pcmcia-slot</tt></b></dt><dd>
+Used to connect PCMCIA (PC-CARD) devices into a PCMCIA controller. <em>The
+arguments exported by the up connector is expected to change in a future Simics
+version</em>.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">down &lt;pcmcia-device object&gt;, &lt;slot-id&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;attr-space object&gt;, &lt;common-space object&gt;, &lt;io-space object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>sb-interrupt</tt></b></dt><dd>
+South Bridge interrupt routing connection.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;interrupt object&gt;, &lt;io-apic object&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;interrupt object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>scsi-bus</tt></b></dt><dd>
+Used to connect SCSI disks and CD-ROM drives to a standard SCSI bus. The
+component with the "any" connector should make sure that devices are
+not connected to the bus using the same ID. <em>Up and down connectors of the
+scsi-bus type can not be connected together. They have to be connected to an
+"any" connector.</em>
+<p>
+<table>
+<tr><td class="jdocu_border">any</td><td class="jdocu_border">&lt;scsi-bus object&gt;</td></tr>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;scsi-device object&gt;, &lt;SCSI ID&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;scsi-device object&gt;, &lt;SCSI ID&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<dl><dt><b><tt>serial</tt></b></dt><dd>
+Used to connect serial devices together, and to different kinds of serial
+consoles. <em>Either the link argument, or the console/device has to be
+supported, not both</em>.
+<p>
+<table>
+<tr><td class="jdocu_border">down</td><td class="jdocu_border">&lt;link&gt;, &lt;serial-device object&gt;, &lt;console title&gt;</td></tr>
+<tr><td class="jdocu_border">up</td><td class="jdocu_border">&lt;serial-link&gt;, &lt;text-console object&gt;</td></tr>
+</table>
+</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic62.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic64.html">Next</a></span></p>
+</body>
+</html>

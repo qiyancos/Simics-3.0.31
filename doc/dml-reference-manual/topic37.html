@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Changes from DML 0.9 to DML 1.0</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(108, true);
+</script>
+<a name="label494"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic36.html">Previous</a> - <a class="jdocu" href="topic36.html">Up</a> - <a class="jdocu" href="topic38.html">Next</a></span></p>
+<h3 class="jdocu">1&nbsp;&nbsp;&nbsp;Changes from DML 0.9 to DML 1.0</h3 class="jdocu">
+
+
+<p>
+DML 0.9 was the version used internally at Virtutech before it was
+release externally as DML 1.0.
+<p>
+<ul>
+<li>More C-like syntax:
+  <ul>
+    <li>Multi-line <tt>/*...*/</tt>-comments are
+    allowed. Comments do not nest.</li>
+<p>
+    <li>Identifiers cannot contain hyphens (<tt>-</tt>); use
+    underscores instead.</li>
+<p>
+    <li><tt>for</tt>-statements have changed to <tt>for
+    (...;...;...) ...</tt> as in C.  Comma-separated expressions are
+    allowed in the first and third sections of the for-statement
+    head. Declarations in the first section of the head are not
+    allowed, yet. </li>
+<p>
+    <li><tt>verbatim &lt;typedecl&gt;;</tt> changed to
+    <tt>extern &lt;typedecl&gt;;</tt>.</li>
+<p>
+    <li>C function types are handled.</li>
+<p>
+    <li>The keyword <tt>exit</tt> has been changed to
+    <tt>return</tt>.  <tt>exit</tt> is no longer a reserved
+    word.</li>
+<p>
+    <li>The keyword <tt>fail</tt> has been changed to
+    <tt>throw</tt>, as in C++.  <tt>fail</tt> is no longer a
+    reserved word.</li>
+<p>
+    <li>The keyword <tt>free</tt> has been changed to
+    <tt>delete</tt>, as in C++.  <tt>free</tt> is no longer a
+    reserved word.</li>
+<p>
+    <li>The keyword <tt>except</tt> has been changed to
+    <tt>catch</tt>, as in C++.  <tt>except</tt> is no longer a
+    reserved word.</li>
+<p>
+    <li>Pre/post-increment/decrement operators <tt>++</tt>,
+    <tt>--</tt> have been added.</li>
+<p>
+    <li>The shift-assignment operators <tt>&lt;&lt;=</tt> and
+    <tt>&gt;&gt;=</tt> have been added.</li>
+<p>
+    <li>Assignments can be used as expressions, not only as
+    statements.  (This is mainly of importance in the head of
+    for-statements.)</li>
+<p>
+    <li><tt>switch</tt>-statements, labels, and
+    <tt>goto</tt>-statements have been added.</li>
+<p>
+    <li>All ANSI C and C99 keywords are reserved in DML.</li>
+<p>
+    <li>The C++ keywords <tt>class</tt>, <tt>namespace</tt>,
+    <tt>private</tt>, <tt>protected</tt>, <tt>public</tt>,
+    <tt>this</tt>, <tt>using</tt>, and <tt>virtual</tt>
+    are reserved in DML for future use.</li>
+<p>
+    <li>The keyword <tt>auto</tt> may be used as a synonym for
+    <tt>local</tt>.</li>
+  </ul>
+</li>
+<p>
+<li>The keyword <tt>bitslice-syntax</tt> has changed to <tt>bitorder</tt>, and the
+   colon following the keyword in such declarations has been dropped.
+<p>
+The keyword <tt>log-group</tt> has changed to <tt>loggroup</tt>.
+</li>
+<li>Import declarations on the form <tt>import &lt;identifier&gt;;</tt> have been
+   disallowed. The file name must be quoted, and must include the
+   extension, as in e.g. <tt>import "io-memory.dml";</tt>.
+</li>
+<li>The syntax for <tt>log</tt>-statements has changed to the form <tt>log "class",
+   log_level, log_group : "format-string", arg1, ..., argN;</tt>, using a
+   string instead of an identifier to specify the class, and a colon
+   before the format string. The log level is optional, and defaults to
+   1. The log class names must use underscores, as in "spec_violation",
+   not "spec-violation" as previously.
+</li>
+<li>The syntax for <tt>field</tt>-objects has changed to require <tt>[...]</tt>
+   brackets around the range, as in <tt>field nyb0 [3:0];</tt>. It is also
+   possible to specify a 1-bit field using a single number without a
+   colon, as in <tt>field bit7 [7];</tt>
+</li>
+<li>A simple syntax has been added for registering a callback to be
+   called later in the simulation. Instead of explicitly creating an
+   <tt>event</tt> object and specifying parameters and methods in it, an
+   <tt>after (...) call ...</tt> statement can be used; e.g. <tt>after (0.01) call
+   $mymethod(...);</tt>.
+</li>
+<li>The standard library file "io-mapped.ddl" has been renamed to
+   "io-memory.dml".
+</li>
+<li>The standard library file "builtin.ddl" has been renamed to
+   "utility.dml".
+</li>
+<li>The standard library file "hardwire.ddl" has been renamed to
+   "dml-builtins.dml" (note however that the user has never needed
+   to import this file explicitly; it is done automatically by dmlc).
+</li>
+<li>The device method <tt>finalize</tt> has been renamed to <tt>post_init</tt>.
+<p>
+ The syntax <tt>export method ...</tt> has been changed to <tt>method extern
+   ...</tt>; <tt>export</tt> is no longer a reserved word.
+</li>
+</ul>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic36.html">Previous</a> - <a class="jdocu" href="topic36.html">Up</a> - <a class="jdocu" href="topic38.html">Next</a></span></p>
+</body>
+</html>

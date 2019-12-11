@@ -1,0 +1,115 @@
+#!/bin/sh
+
+# Script which checks the host/target and then starts Simics.
+#
+# Copyright (c) 2000-2005 Virtutech AB, All Rights Reserved
+
+case "x$1" in
+    x-h | x--help) 
+        SHOWUSAGE=yes
+	shift
+	;;
+
+    x-no-nptl)
+        # workaround NPTL problem on some RH9 machines (early glibc-2.3.2)
+        # see https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=90301
+	export LD_ASSUME_KERNEL=2.4.1
+	shift
+	;;
+esac
+
+SCRIPTSDIR=`dirname "$0"`
+if [ "$SCRIPTSDIR" = "." ] ; then
+    HOSTSDIR=`cd .. ; pwd`
+else
+    # find HOSTSDIR in a way that works when running from a user-install
+    HOSTSDIR=`dirname "$SCRIPTSDIR"`
+    HOSTSDIR=`cd "$HOSTSDIR" ; pwd`
+fi
+
+USER_SET_HOST=$SIMICS_HOST
+SIMICS_HOST=`sh $HOSTSDIR/scripts/host-type.sh 2> /dev/null` 
+
+if [ -z "$SIMICS_HOST" ] ; then
+    SIMICS_HOST=$USER_SET_HOST
+    echo "The Simics start-script failed to find a matching host for Simics."
+    if [ -z "$USER_SET_HOST" ] ; then
+	echo "Set the SIMICS_HOST environment variable to set the host" \
+	    "manually."
+    fi
+    echo "Error message:" `sh $HOSTSDIR/scripts/host-type.sh 2>&1`
+    echo ""
+    exit 1
+fi
+
+TARGETBIN=$HOSTSDIR/$SIMICS_HOST/bin/simics-common
+
+if [ -n "$SIMICS_API_TRACE" ]; then
+    SIMICS_TRACE_DIR="$HOSTSDIR/$SIMICS_HOST/bin/trace:"
+else
+    SIMICS_TRACE_DIR=
+fi
+
+if [ -n "$LD_LIBRARY_PATH_64" ]; then
+    LD_LIBRARY_PATH_64="$SIMICS_TRACE_DIR$HOSTSDIR/$SIMICS_HOST/bin:$HOSTSDIR/$SIMICS_HOST/sys/lib:$LD_LIBRARY_PATH_64"
+    export LD_LIBRARY_PATH_64
+fi
+
+LD_LIBRARY_PATH="$SIMICS_TRACE_DIR$HOSTSDIR/$SIMICS_HOST/bin:$HOSTSDIR/$SIMICS_HOST/sys/lib:$LD_LIBRARY_PATH"
+
+if [ "$SIMICS_HOST" = "amd64-linux" -o "$SIMICS_HOST" = "x86-linux" ]; then
+    if [ "x`getconf GNU_LIBPTHREAD_VERSION 2> /dev/null | grep NPTL`" != x ] ; then
+        LD_LIBRARY_PATH="$HOSTSDIR/$SIMICS_HOST/sys/lib/nptl:$LD_LIBRARY_PATH"
+    fi
+fi
+
+export LD_LIBRARY_PATH
+
+if [ "$SHOWUSAGE" = "yes" ]; then
+    echo "Simics wrapper usage:"
+    echo
+    echo "    simics [<simics options>]"
+    echo
+    echo "You can set the SIMICS_HOST environment variable to force the" \
+	"startup script to "
+    echo "try to start a certain Simics host version (e.g., 'x86-linux'" \
+	"or 'v9-sol8-64')"
+    echo
+
+    echo "Simics options:"
+    exec $TARGETBIN -q -h
+    exit 1
+fi
+
+case $OS in
+    CYGWIN*)
+        PATH_SEP=";"
+        ;;
+    *)
+        PATH_SEP=":"
+        ;;
+esac
+
+#
+# if this is a user-local install, only modules in the master copy will be
+#  found. We set SIMICS_EXTRA_LIB to catch local ones too.
+#
+if [ -d "$HOSTSDIR/master-install" ] ; then
+    if [ -z "$SIMICS_EXTRA_LIB" ] ; then
+        SIMICS_EXTRA_LIB="$HOSTSDIR/$SIMICS_HOST/lib"
+    else
+        SIMICS_EXTRA_LIB="$HOSTSDIR/$SIMICS_HOST/lib$PATH_SEP$SIMICS_EXTRA_LIB"
+    fi
+    export SIMICS_EXTRA_LIB
+fi
+
+if [ -n "$SIMICS_WORKSPACE" ] ; then
+    if [ -z "$SIMICS_EXTRA_LIB" ] ; then
+        SIMICS_EXTRA_LIB="$SIMICS_WORKSPACE/$SIMICS_HOST/lib"
+    else
+        SIMICS_EXTRA_LIB="$SIMICS_WORKSPACE/$SIMICS_HOST/lib$PATH_SEP$SIMICS_EXTRA_LIB"
+    fi
+    export SIMICS_EXTRA_LIB
+fi
+
+exec "$TARGETBIN" ${1+"$@"}

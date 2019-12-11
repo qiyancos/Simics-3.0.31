@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics Basics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(19, true);
+</script>
+<a name="label24"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="topic3.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Simics Basics</h3 class="jdocu">
+
+
+<p>
+   Simics is a full-system simulator.  Its purpose is to replace real
+   hardware in testing, development, research, etc.  In order to be
+   useful, Simics must be able to run realistic workloads.  This
+   requires a careful balancing of accuracy and efficiency.
+<p>
+   Technically, Simics can be classified as an event-driven simulator.
+   It models the world as a series
+   of disjoint events, where each event occurs at some specific time.
+   Events can query and modify the simulated state, and post new
+   events.  This approach is very efficient, since the simulator does
+   nothing at all when there are no events, and can be made
+   arbitrarily accurate.  The alternative, clock-driven simulation,
+   can never be made as fast.
+<p>
+   Simics simulates a CPU at the instruction set level, the lowest
+   level that is readily visible to software.  This lets it run
+   unmodified binary code for the complete software stack of a system.
+   To make this work, the simulator provides bit-exact functional
+   accuracy at this level.  Somewhat less accuracy is normally
+   provided in the time domain.  However, time accuracy can be
+   selectively improved if needed, at the cost of sacrificing some
+   efficiency.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="topic3.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

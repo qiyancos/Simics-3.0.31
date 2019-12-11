@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Registers</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(16, true);
+</script>
+<a name="label81"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+<h3 class="jdocu">3.7&nbsp;&nbsp;&nbsp;Registers</h3 class="jdocu">
+
+
+<p>
+A <em><a name="label82">register</a></em> is an component of a register bank that
+contains an integer value, which can be either unsigned (the default) or
+signed. Normally, a register corresponds to a segment of consecutive
+locations in the address space of the bank; however, it is also possible
+(and often useful) to have registers that are not mapped to any address
+within the bank.
+<p>
+Every register has a fixed <em>size</em> (or <em>width</em>), which is
+an integral, nonzero number of 8-bit bytes. A single register cannot be
+wider than 8 bytes, in DML 1.0. The size of the register is given by the
+<tt>size<a name="label83"></a></tt> parameter,
+which can be specified either by a normal parameter assignment, as in
+<pre class="jdocu_small" style="color: black">
+    register r1 {
+      parameter size = 4;
+      ...
+    }
+</pre>
+or more commonly, using the following short-hand syntax:
+<pre class="jdocu_small" style="color: black">
+    register r1 size 4 {
+      ...
+    }
+</pre>
+which has the same meaning. The default size is provided by the
+<tt>register_size<a name="label84"></a></tt>
+parameter of the containing register bank, if that is defined.
+<p>
+The value of the register can be accessed directly by referencing the
+object, as in
+<pre class="jdocu_small" style="color: black">
+    log "info": "the value of register r1 is %d", $r1;
+</pre>
+or
+<pre class="jdocu_small" style="color: black">
+    $r1 += 1;
+</pre>
+<p>
+Storage for the register value is created by default in the generated C
+code. If this is not needed (e.g., if write accesses to the register are
+ignored and read accesses always return a constant value such as 0), it
+can be disabled in order to save memory by setting the
+<tt>allocate<a name="label85"></a></tt>
+parameter to <tt>false</tt>. Non-allocated registers cannot be accessed
+by value.
+<p>
+<a name="label86"></a><h4 class="jdocu">3.7.1&nbsp;&nbsp;&nbsp;Mapping Addresses To Registers </h4 class="jdocu">
+
+
+<p>
+For a register to be mapped into the internal address space of the
+containing bank, its starting address within the bank must be given by
+setting the
+<tt>offset<a name="label87"></a></tt>
+parameter. The address range occupied by the register is then from
+<tt>offset</tt> to <tt>offset</tt> + <tt>size</tt> - 1. The offset
+can be specified by a normal parameter assignment, as in
+<pre class="jdocu_small" style="color: black">
+    register r1 {
+      parameter offset = 0x0100;
+      ...
+    }
+</pre>
+or using the following short-hand syntax:
+<pre class="jdocu_small" style="color: black">
+    register r1 @ 0x0100 {
+      ...
+    }
+</pre>
+similar to the <tt>size</tt> parameter above. Usually, a normal
+read/write register does not need any additional specifications apart
+from the size and offset, and can simply be written like this:
+<pre class="jdocu_small" style="color: black">
+    register r1 size 4 @ 0x0100;
+</pre>
+or, if the bank contains several registers of the same size:
+<pre class="jdocu_small" style="color: black">
+    bank b1 {
+      parameter register_size = 4;
+      register r1 @ 0x0100;
+      register r2 @ 0x0103;
+      ...
+    }
+</pre>
+<p>
+The translation from the bank address space to the actual value of the
+register is controlled by the <tt>byte_order<a name="label88"></a></tt> parameter. When it is set to
+<tt>"little-endian"</tt> (the default), the lowest address, i.e., that
+defined by <tt>offset</tt>, corresponds to the least significant byte in
+the register, and when set to <tt>"big-endian"</tt>, the lowest address
+corresponds to the most significant byte in the register.  The third
+allowed value of this parameter is <tt>undefined</tt>, which ensures
+that neither assumption is ever made.
+<p>
+
+<a name="label89"></a><h4 class="jdocu">3.7.2&nbsp;&nbsp;&nbsp;Register Attributes</h4 class="jdocu">
+
+
+<p>
+For every register, an attribute of integer type is automatically added
+to the Simics configuration class generated from the device model. The
+name of the attribute corresponds to the hierarchy in the DML model;
+e.g., a register named <tt>r1</tt> in a bank named <tt>bank0</tt> will
+get a corresponding attribute named <i>bank0_r1</i>.
+<p>
+The register value is automatically saved when Simics creates a
+<a name="label90">checkpoint</a>, unless the
+<tt>configuration<a name="label91"></a></tt>
+parameter indicates otherwise.
+<p>
+
+<a name="label92"></a><h4 class="jdocu">3.7.3&nbsp;&nbsp;&nbsp;Fields</h4 class="jdocu">
+
+
+<a name="label93"></a>
+<p>
+Real hardware registers often have a number of <em>fields</em> with
+separate meaning. For example, the lowest three bits of the register
+could be a status code, the next six bits could be a set of flags, and
+the rest of the bits could be reserved.
+<p>
+To make this easy to express, a <b>register</b> object can
+contain a number of <b>field</b> objects. Each field is defined
+to correspond to a bit range of the containing register. (Technically, a
+register that does not contain any explicitly defined fields
+automatically gets a single, anonymous field, which covers the whole
+register.)
+<p>
+Only the values of the fields are stored in the generated C code; the
+value of the register as a whole is composed from the field values when
+needed (for example, when creating a Simics checkpoint). Storage for
+individual fields can be controlled by the
+<tt>allocate<a name="label94"></a></tt>
+parameter, which by default is inherited from the
+<b>register</b> object.
+<p>
+For example, the register described above could be modeled as follows,
+using the default little-endian bit numbering.
+<pre class="jdocu_small" style="color: black">
+    bank b2 {
+      register r0 size 4 @ 0x0000 {
+        field status   [2:0];
+        field flags    [8:3];
+        field reserved [15:9] {
+          parameter allocate = false;
+        } ;
+      }
+      ...
+    }
+</pre>
+<p>
+Note that the most significant bit number is always the first number (to
+the left of the colon) in the range, regardless of whether little-endian
+or big-endian bit numbering is used. (The bit numbering convention used
+in a source file can be selected by a <tt><a name="label95">bitorder</a></tt>
+declaration.)
+<p>
+The value of the field can be accessed by referencing the
+object, as for a register, e.g.:
+<pre class="jdocu_small" style="color: black">
+    log "info": "the value of the status field is %d", $r0.status;
+</pre>
+Note however that non-allocated fields cannot be accessed this way,
+since they do not have a stored value.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+</body>
+</html>

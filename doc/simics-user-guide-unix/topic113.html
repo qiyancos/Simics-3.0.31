@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Process Trackers</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(253, true);
+</script>
+<a name="label566"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic112.html">Previous</a> - <a class="jdocu" href="topic111.html">Up</a> - <a class="jdocu" href="topic114.html">Next</a></span></p>
+<h4 class="jdocu">21.2&nbsp;&nbsp;&nbsp;Process Trackers</h4 class="jdocu">
+
+
+<a name="label567"></a>
+<p>
+As mentioned in the previous section, Simics triggers haps for
+hardware events such as processor privilege level changes, making it
+easy to change contexts in response to those. It does not trigger haps
+in response to software events, such as when the currently executing
+process changes, because it knows nothing about things such as
+processes. But if you know how the operating system works, you can
+inspect the information that Simics does provide, and figure out all
+kinds of stuff.
+<p>
+A <em>process tracker</em> does just that; inspects the simulated
+operating system, and triggers haps when interesting things occur.
+<p>
+Typically, a new tracker needs to be written for each architecture/OS
+combination. Simics comes with two trackers:
+<p>
+<ul>
+<p>
+  <li><b>cpu-mode-tracker</b>, which only distinguishes
+      between user and supervisor mode (but works on all targets and
+      operating systems).</li>
+<p>
+  <li><b>linux-process-tracker</b>, which tracks
+      processes on Linux on PowerPC, UltraSPARC and x86 targets.</li>
+<p>
+</ul>
+<p>
+Their source code can be found in <tt>src/extensions</tt>. The
+intention is that this will be helpful if you would like to write a
+tracker for some other architecture/OS combination.
+<p>
+Note that a tracker is watching over a specific set of processors.
+This set should typically contain all processors that run an operating
+system together, and no other processors. That way, processes that
+migrate between processors will not get lost, and processes running in
+different operating system instances will not be mixed up. If there is
+more than one operating system running in the simulation, they will
+need separate trackers.
+<p>
+A new <b>cpu-mode-tracker</b> can be created like this:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-cpu-mode-tracker name = tracker0</b>
+New cpu mode tracker tracker0 created.
+simics&gt; <b>tracker0.add-processor cpu0</b>
+</pre>
+<p>
+Creating a <b>linux-process-tracker</b> requires a little more work:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-linux-process-tracker name = tracker0</b>
+New process tracker tracker0 created.
+simics&gt; <b>tracker0.add-processor cpu0</b>
+simics&gt; <b>tracker0.autodetect-parameters</b>
+</pre>
+<p>
+Notice the added command
+<b>tracker0.autodetect-parameters</b>. This makes the process
+tracker examine memory to figure out what operating system the target
+machine is actually running. This means that the target system must be
+booted before this command is issued. If that is not an option, the OS
+version can be specified explicitly as an argument to
+<b>new-linux-process-tracker</b>.  The process tracker just
+created should be suitable to try out the examples below.
+<p>
+If the trackers distributed with Simics do not fit your needs, there
+are some things to think about when creating a new tracker. (This part
+is beneficial to read even if you use the trackers shipped with
+Simics, as it explains the interface to the tracker, with some usage
+examples.) A tracker must do two things:
+<p>
+<ul>
+<p>
+  <li>Monitor a specific set of processors, and trigger the
+      <tt>Core_Trackee_Active</tt> hap when a trackee becomes active
+      or inactive on one of them.</li>
+<p>
+  <li>Answer questions about trackees by implementing the
+      <tt>tracker</tt> interface.</li>
+<p>
+</ul>
+<p>
+(It says "<a name="label568">tracker</a>" instead of "process tracker", and
+"<a name="label569">trackee</a>" instead of "process" in the text above because
+the things being tracked are not necessarily processes.
+<b>cpu-mode-tracker</b>, for example, tracks processor
+privilege levels.)
+<p>
+
+
+If the tracker tracks processes on a Unix-like operating system, it
+may additionally do the following:
+<p>
+<ul>
+<p>
+  <li>Monitor the processors, and trigger the
+     <tt>Core_Trackee_Exec</tt> hap when a process calls the
+     <b><i>exec</i></b> system call on one of them.</li>
+<p>
+  <li>Answer questions about processes by implementing the
+      <tt>tracker_unix</tt> interface.</li>
+<p>
+</ul>
+<p>
+And if it wants to play nice with automatic configuring of process
+trackers, there is one more thing to do:
+<p>
+<ul>
+<p>
+  <li>Expose any parameter settings it requires through the
+      <tt>tracker_settings</tt> interface.</li>
+<p>
+</ul>
+<p>
+These haps and interfaces are documented in the Reference Manual. The
+tracker typically implements this functionality by listening to haps
+such as <tt>Core_Mode_Change</tt> and <tt>Core_Exception</tt>, and
+knowing in which registers and memory locations the operating system
+stores interesting information.
+<p>
+
+Clearly, using just the basic interface (the
+<tt>Core_Trackee_Active</tt> hap and the <tt>tracker</tt>
+interface), it is easy to make a context follow the currently active
+trackee (this example assumes that there is a tracker called
+<b>tracker0</b>):
+<p>
+<pre class="jdocu_small" style="color: black">
+def set_context(user_arg, tracker, tid, cpu, active):
+    if active:
+        cpu.current_context = conf.my_little_context
+    else:
+        cpu.current_context = conf.primary_context
+current_tid = conf.tracker0.iface.tracker.active_trackee(
+    conf.tracker0, conf.cpu0)
+SIM_hap_add_callback_obj_index("Core_Trackee_Active", conf.tracker0,
+                               0, set_context, None, current_tid)
+</pre>
+<p>
+Here, <tt>current_tid</tt> is set to the ID of the trackee that is
+active <i>when we run this code</i>.
+<b><i>SIM_hap_add_callback_obj_index</i></b> is then used to cause our
+callback function <tt>set_context</tt> to be called every time the
+trackee with this ID becomes active or inactive. For example, if
+<b>tracker0</b> is a process tracker, <tt>current_tid</tt> will be
+an ID representing the currently executing process (or the operating
+system&#8212;whichever was executing at the time). The callback
+function then ensures that <b>my_little_context</b> is active
+whenever that process is active, and that <b>primary_context</b>
+is active at all other times.
+<p>
+Using the Unix process tracker interface as well (the
+<tt>Core_Trackee_Exec</tt> hap and the <tt>tracker_unix</tt>
+interface), we can do more complicated things, such as waiting for a
+specific binary (<tt>ifconfig</tt> in this example) to be executed,
+then follow any process that executes it:
+<p>
+<pre class="jdocu_small" style="color: black">
+def exec_hap(user_arg, tracker, tid, cpu, binary):
+    if binary.endswith("ifconfig"):
+        def active_hap(user_arg, tracker, tid, cpu, active):
+            if active:
+                cpu.current_context = conf.my_little_context
+            else:
+                cpu.current_context = conf.primary_context
+        SIM_hap_add_callback_obj_index("Core_Trackee_Active", tracker,
+                                       0, active_hap, None, tid)
+SIM_hap_add_callback_obj("Core_Trackee_Exec", conf.tracker0,
+                         0, exec_hap, None)
+</pre>
+Section <a class="jdocu" href="topic114.html#label570">21.3</a> reveals how to do this
+without having to write scripts.
+<p>
+Switching contexts is not all that can be done with process
+trackers. Here is another example that prints the number of steps a
+user process is running continuously in user mode. In this case we are
+looking at the program "ls".
+<p>
+<pre class="jdocu_small" style="color: black">
+start_cycle = 0
+
+def exec_hap(user_arg, tracker, tid, cpu, binary):
+    global total_cycles, start_cycle
+    if binary.endswith("ls"):
+        def active_hap(user_arg, tracker, tid, cpu, active):
+            global total_cycles, start_cycle
+            if active:
+                start_cycle = SIM_cycle_count(cpu)
+            else:
+                print "ls ran for", (SIM_cycle_count(cpu) - start_cycle), "cycles"
+        start_cycle = SIM_cycle_count(cpu)
+        SIM_hap_add_callback_obj_index("Core_Trackee_Active", tracker,
+                                       0, active_hap, None, tid)
+SIM_hap_add_callback_obj("Core_Trackee_Exec", conf.tracker0,
+                         0, exec_hap, None)
+</pre>
+Section <a class="jdocu" href="topic61.html#label396">12.3</a> has an example of how to use process trackers in symbolic debugging.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Remember to use the CLI command <b>&lt;tracker&gt;.activate</b>
+(or, equivalently, call the <b><i>activate</i></b> function of the
+<tt>tracker</tt> interface) before trying to use a
+tracker.<hr class="jdocu_note">
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic112.html">Previous</a> - <a class="jdocu" href="topic111.html">Up</a> - <a class="jdocu" href="topic114.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Error Messages</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(106, true);
+</script>
+<a name="label492"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic34.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic36.html">Next</a></span></p>
+<h3 class="jdocu">2&nbsp;&nbsp;&nbsp;Error Messages</h3 class="jdocu">
+
+
+<p>
+The messages are listed in alphabetical order; the corresponding tags
+are shown within brackets, e.g., <tt>[ENBOOL]</tt>.
+<p>
+<dl><dt><b>array index out of bounds [EOOB]</b></dt><dd>The used indexed is outside the defined range.</dd><dt><b>array range must start at 0 [EZRANGE]</b></dt><dd>An array index range must start at zero.</dd><dt><b>array size is less than 1 [EASZR]</b></dt><dd>An array must have at least one element.</dd><dt><b>array size is not a constant integer [EASZVAR]</b></dt><dd>The size of an array must be a constant integer.</dd><dt><b>attribute type undefined [EATYPE]</b></dt><dd>Either the <tt>attr_type</tt> or the <tt>type</tt> parameter of the
+attribute must be specified.</dd><dt><b>assignment to constant [ECONST]</b></dt><dd>The lvalue that is assigned to is declared as a <tt>const</tt> and
+thus can't be assigned to.</dd><dt><b>bit range of field '...' outside register boundaries [EFBITS]</b></dt><dd>The bit range of a field can only use bits present in the
+register.</dd><dt><b>bit range of field '...' overlaps with field '...' [EBITRO]</b></dt><dd>The fields of a register must not overlap.</dd><dt><b>bitslice size of ... bits is not between 0 and 64 [EBSSIZE]</b></dt><dd>Bit slices cannot be larger than 64 bits.</dd><dt><b>break is not possible here [EBREAKU]</b></dt><dd>A <tt>break</tt> statement cannot be used in a <tt>foreach</tt>
+or <tt>select</tt> statement.</dd><dt><b>cannot assign to this expression [EASSIGN]</b></dt><dd>The target of the assignment is not an l-value, and thus cannot be
+assigned to.</dd><dt><b>cannot assign to inlined parameter [EASSINL]</b></dt><dd>The target of the assignment is a method parameter that has been
+given a constant or undefined value when inlining the method.</dd><dt><b>cannot define both allocate_type and local 'data' objects [EATTRDATA]</b></dt><dd>Specifying <tt>allocate_type</tt> and using 'data' declarations in
+the same attribute object is not allowed.</dd><dt><b>cannot find file to import [EIMPORT]</b></dt><dd>The file to imported could not be found. Use the <tt>-I</tt>
+option to specify additional directories to search for imported
+files.</dd><dt><b>cannot use a register with fields as a value [EREGVAL]</b></dt><dd>When a register has been specified with explicit fields, you have to
+use the <b><i>get</i></b> and <b><i>set</i></b> methods to access the register as
+a single value.</dd><dt><b>cannot use an array as a value [EARRAY]</b></dt><dd>A whole array cannot be used as a single value.</dd><dt><b>cannot use variable index in a constant list [EAVAR]</b></dt><dd>Indexing into constant lists can only be done with constant indexes.</dd><dt><b>continue is not possible here [ECONTU]</b></dt><dd>A <tt>continue</tt> statement cannot be used in a <tt>foreach</tt>
+or <tt>select</tt> statement.</dd><dt><b>device declarations are not allowed in imported files [EDEVIMP]</b></dt><dd>Source files that are used with <tt>import</tt> directives may not
+contain <tt>device</tt> declarations.</dd><dt><b>duplicate assignment to parameter [EDPARAM]</b></dt><dd>A parameter may only have a single assignment (apart from any
+default value).</dd><dt><b>duplicate bank function number [EDBFUNC]</b></dt><dd>The device contains two differently-named banks that use the same
+function number.</dd><dt><b>duplicate definition of method [EDMETH]</b></dt><dd>A method has more than one definition in the same scope.</dd><dt><b>duplicate definition of variable [EDVAR]</b></dt><dd>A local variable has more than one definition in the same code block.</dd><dt><b>duplicate method parameter name [EARGD]</b></dt><dd>All parameter names of a method must be distinct.</dd><dt><b>file is empty [EEMPTY]</b></dt><dd>The compilation failed becuse the input file was empty.</dd><dt><b>forced compilation error in source code [EERSTMT]</b></dt><dd>The source code contained a statement "<tt>error;</tt>", which
+forces a compilation error with the above message.</dd><dt><b>illegal 'after' call [EAFTER]</b></dt><dd>An illegal <tt>after (..) call ..</tt> was made.  A method called
+this way may not take any parameters, and it may not be part of an
+array.</dd><dt><b>illegal bitslice operation [EBSLICE]</b></dt><dd>A bitslice operation was attempted on an expression that is not an
+integer.</dd><dt><b>illegal bitorder [EBITO]</b></dt><dd>The specified bit-order is not allowed.</dd><dt><b>illegal cast to '...' [ECAST]</b></dt><dd>The cast operation was not allowed.  It is illegal to cast to void.</dd><dt><b>illegal comparison; mismatching types [EILLCOMP]</b></dt><dd>The values being compared do not have matching types.</dd><dt><b>illegal function application of ... [EAPPLY]</b></dt><dd>The applied value is not a function.</dd><dt><b>illegal operand to unary '...' [EUNOP]</b></dt><dd>The operand has the wrong type for the given unary operator.</dd><dt><b>illegal operands to binary '...' [EBINOP]</b></dt><dd>One or both of the operands have the wrong type for the given binary
+operator.</dd><dt><b>illegal register size [EREGISZ]</b></dt><dd>The specified register size is not allowed. Possible values are 1-8.</dd><dt><b>illegal value for parameter [EPARAM]</b></dt><dd>The parameter is not bound to a legal value.</dd><dt><b>incompatible array declarations [EAINCOMP]</b></dt><dd>The array has been declared more than once, in an incompatible way.</dd><dt><b>incompatible method definitions [EMETH]</b></dt><dd>The default implementation is overridden by an implementation with
+different input/output parameters.</dd><dt><b>incompatible version (...) while compiling a ... device [EVERS]</b></dt><dd>A device declared to be written in one DML language version tried to
+import a file writen in an incompatible language version.</dd><dt><b>invalid expression [EINVALID]</b></dt><dd>The expression does not produce a proper value.</dd><dt><b>invalid log type [ELTYPE]</b></dt><dd>Log-statement type must be one of "info", "error", "undefined",
+"spec_violation", "target_error", and "unimplemented".</dd><dt><b>log level must be an integer between 1 and 4 [ELLEV]</b></dt><dd>Log-statement level must be 1-4.</dd><dt><b>malformed format string [EFORMAT]</b></dt><dd>The log-statement format string is malformed.</dd><dt><b>missing device declaration [EDEVICE]</b></dt><dd>The main source file given to the DML compiler must contain a
+<tt>device</tt> declaration.</dd><dt><b>missing implementation of method [EMMETH]</b></dt><dd>The method has been declared, but is not given an implementation or
+a default implementation.</dd><dt><b>more than one output parameter not allowed in interface methods [EIMPRET]</b></dt><dd>Methods within an <tt>interface</tt> declaration may have only have
+zero or one output parameter.</dd><dt><b>name collision on '...' [ENAMECOLL]</b></dt><dd>The name is already in use in the same scope.</dd><dt><b>negative size (...) of bit range for '...' [EBITRN]</b></dt><dd>The size of the bit range must be positive. Note that the [msb:lsb]
+syntax requires that the most significant bit (msb) is written to the
+left of the colon, regardless of the actual bit numbering used.</dd><dt><b>no assignment to parameter [ENPARAM]</b></dt><dd>The parameter has been declared, but is not assigned a value or a
+default value.</dd><dt><b>no return type [ERETTYPE]</b></dt><dd>The type of the return value (if any) must be specified for methods
+that implement interfaces.</dd><dt><b>no type for {input,output} parameter [ENARGT]</b></dt><dd>Methods that are called must have data type declarations for all
+their parameters. (Methods that are only inlined do not need this.)</dd><dt><b>no value provided for auto-declared parameter '...' [EAUTOPARAM]</b></dt><dd>A parameter declared as predefined using the 'auto' keyword was not
+assigned a value at compile time, possibly due to a missing <tt>-D</tt>
+compiler option.</dd><dt><b>non-boolean condition [ENBOOL]</b></dt><dd>Conditions must be properly boolean expressions; e.g., "<tt>if (i ==
+0)</tt>" is allowed, but "<tt>if (i)</tt>" is not, if <tt>i</tt> is an
+integer.</dd><dt><b>non-constant element in list [ECLST]</b></dt><dd>Lists may only contain constants.</dd><dt><b>non-constant expression [ENCONST]</b></dt><dd>A constant expression was expected.</dd><dt><b>non-constant parameter, or circular parameter dependencies [EVARPARAM]</b></dt><dd>The value assigned to the parameter is not a well-defined constant.</dd><dt><b>not a list [ENLST]</b></dt><dd>A list was expected.</dd><dt><b>not a method [ENMETH]</b></dt><dd>A method name was excpected.</dd><dt><b>not a pointer [ENOPTR]</b></dt><dd>A pointer value was expected.</dd><dt><b>not a value [ENVAL]</b></dt><dd>Only some objects can be used as values directly. An attribute can
+only be accessed directly as a value if it has been declared using the
+<tt>allocate_type</tt> parameter.</dd><dt><b>nothing to break from [EBREAK]</b></dt><dd>A <tt>break</tt> statement can only be used inside a loop or switch
+construct.</dd><dt><b>nothing to continue [ECONT]</b></dt><dd>A <tt>continue</tt> statement can only be used inside a loop
+construct.</dd><dt><b>object is not allocated at run-time [ENALLOC]</b></dt><dd>An object which is not allocated at run-time cannot be referenced as
+a run-time value.</dd><dt><b>overlapping registers [EREGOL]</b></dt><dd>The registers are mapped to overlapping address ranges.</dd><dt><b>passing const reference for nonconst parameter '...' in function call [ECONSTP]</b></dt><dd>C function called with a pointer to a constant value for a parameter
+declared without const in the prototype.</dd><dt><b>recursive inline [ERECUR]</b></dt><dd>Methods may not be inlined recursively.</dd><dt><b>redefining auto parameter [EREAUTOPARAM]</b></dt><dd>Built-in parameters cannot be redefined by the user.</dd><dt><b>reference to unknown object [EREF]</b></dt><dd>The referenced object has not been declared.</dd><dt><b>right-hand side operand of '...' is zero [EDIVZ]</b></dt><dd>The right-hand side of the given / or % operator is always zero.</dd><dt><b>shift with negative shift count [ESHNEG]</b></dt><dd>The right-hand side operand to a shift operator must not be negative.</dd><dt><b>syntax error [ESYNTAX]</b></dt><dd>The code is malformed.</dd><dt><b>this object is not allowed here [ENALLOW]</b></dt><dd>Many object types have limitations on the contexts in which they may
+appear.</dd><dt><b>trying to get a member of a non-struct [ENOSTUCT]</b></dt><dd>The left-hand side operand of the . operator is not of struct type.</dd><dt><b>trying to index something that isn't an array [ENARRAY]</b></dt><dd>Indexing can only be applied to arrays, integers (bit-slicing),
+ and lists.</dd><dt><b>uncaught exception [EBADFAIL]</b></dt><dd>An exception is thrown in a context where it will not be caught.</dd><dt><b>undefined array size [EASZUNDEF]</b></dt><dd>The size of an array must be defined somewhere in the program.</dd><dt><b>undefined index value [EIDX]</b></dt><dd>The index value is not well-defined.</dd><dt><b>undefined register size [EREGNSZ]</b></dt><dd>All registers must have a specified constant size.</dd><dt><b>undefined value [EUNDEF]</b></dt><dd>Caused by an attempt to generate code for an expression that
+contains the <tt>undefined</tt> value.</dd><dt><b>unknown identifier [EIDENT]</b></dt><dd>The identifier has not been declared anywhere.</dd><dt><b>unknown interface type [EIFTYPE]</b></dt><dd>The interface datatype is unknown.</dd><dt><b>unknown struct member [EMEMBER]</b></dt><dd>Attempt to access a nonexisting member of a struct.</dd><dt><b>unknown template [ENTMPL]</b></dt><dd>The template has not been defined.</dd><dt><b>unknown type [ETYPE]</b></dt><dd>The data type is not defined in the DML code.</dd><dt><b>wrong number of arguments for format string [EFMTARGN]</b></dt><dd>The log-statement has too few or too many arguments for the given
+format string.</dd><dt><b>wrong number of {input,output} arguments [EARG]</b></dt><dd>The number of input/output arguments given in the call differs from
+the method definition.</dd><dt><b>wrong type in assignment [EASTYPE]</b></dt><dd>The target of an assignment can't store the value given in the
+source, because they are of different types.</dd><dt><b>wrong type for argument <i>n</i> of format string ... [EFMTARGT]</b></dt><dd>Argument type mismatch in a log-statement format string.</dd><dt><b>wrong type for {input,output} parameter '...' when {calling,inlining} [EARGT]</b></dt><dd>The data type of the argument value given for the mentioned method
+parameter differs from the method definition.</dd><dt><b>wrong type for parameter '...' in function call [EPTYPE]</b></dt><dd>The data type of the argument value given for the mentioned C
+function parameter differs from the function prototype.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic34.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic36.html">Next</a></span></p>
+</body>
+</html>

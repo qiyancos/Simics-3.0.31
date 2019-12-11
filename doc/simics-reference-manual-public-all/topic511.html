@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>microwire</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2250, true);
+</script>
+<a name="label17785"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic510.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic512.html">Next</a></span></p>
+<h3 class="jdocu">microwire</h3 class="jdocu">
+
+
+<a name="label17786"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic165.html#label7824">microwire-eeprom</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This interface is used to communicate with a 3-wire (microwire) serial EEPROM device, for example, the 93Cxx series, via its pins. To set the values of the CS, SK, and DI pins, use the <b><i>set_cs()</i></b>, <b><i>set_sk()</i></b>, and <b><i>set_di()</i></b> functions, respectively. To read the value output on the DO pin, use the <b><i>get_do()</i></b> function. Zero represents low signal and non-zero high signal.
+<p>
+
+   <pre class="jdocu_small" style="color: black">#define MICROWIRE_INTERFACE "microwire"
+
+typedef struct {
+        void (*set_cs)(conf_object_t *obj, int cs);
+        void (*set_sk)(conf_object_t *obj, int sk);
+        void (*set_di)(conf_object_t *obj, int di);
+        int  (*get_do)(conf_object_t *obj);
+} microwire_interface_t;
+
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic510.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic512.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,1816 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Backwards Compatibility</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(371, true);
+</script>
+<a name="label1175"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+<h3 class="jdocu">3.4&nbsp;&nbsp;&nbsp;Backwards Compatibility</h3 class="jdocu">
+
+    
+<p>
+    It is unfortunately necessary to change the Simics API from time to time
+    for different reasons. In order to make the transition as easy as possible
+    for programmers, we try to maintain backwards compatibility when
+    possible. To enable backwards compatibility mode when including the Simics
+    API header files, you need to define different preprocessor macros, as
+    described in the following chapters. This is an example of how you could
+    use <tt>SIM_BC_LOG_CONSTRUCTOR</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+#define SIM_BC_LOG_CONSTRUCTOR
+#include "simics_api.h"
+
+typedef struct {
+        log_object_t log;
+                :
+} my_device_t;
+
+static conf_object_t *
+my_new_instance(parse_object_t *parse_obj)
+{
+        my_device_t *dev = malloc(sizeof *dev);
+        log_constructor(&amp;dev-&gt;log, parse_obj);
+                :
+}
+</pre>
+<p>
+    <a name="label1176"></a><h4 class="jdocu">3.4.1&nbsp;&nbsp;&nbsp;SIM_BC_NO_STDOUT_REDEFINE</h4 class="jdocu">
+
+   <a name="label1177"></a>
+   When this macro is defined, Simics will <i>not</i> define the
+   following macros to override some standard C library functions:
+<p>
+   
+   <pre class="jdocu_small" style="color: black">#undef printf
+
+#if defined(HAVE_VARARG_MACROS)
+#define printf(...) SIM_printf(__VA_ARGS__)
+#else
+#define printf SIM_printf
+#endif
+
+#undef vprintf
+#define vprintf(str, ap) SIM_printf_vararg(str, ap)
+
+#undef puts
+#define puts(str) SIM_puts(str)
+
+#undef putchar
+#define putchar(c) SIM_putchar(c)
+
+#undef fwrite
+#define fwrite(ptr, size, nmemb, stream)                \
+        ((stream) == stdout                             \
+         ? (size_t)SIM_write((ptr), (size) * (nmemb))   \
+         : fwrite(ptr, size, nmemb, stream))
+
+#undef fputs
+#define fputs(str, stream)                      \
+        ((stream) == stdout                     \
+         ? SIM_write((str), strlen(str))        \
+         : fputs((str), (stream)))
+
+#undef fflush
+#define fflush(stream) ((stream) == stdout ? SIM_flush() : fflush(stream))
+</pre>
+<p>
+   <a name="label1178"></a><a name="label1179"></a><a name="label1180"></a><a name="label1181"></a>
+   <a name="label1182"></a><a name="label1183"></a>
+   
+   
+    <a name="label1184"></a><h4 class="jdocu">3.4.2&nbsp;&nbsp;&nbsp;Obsolete API Types</h4 class="jdocu">
+<a name="label1185"></a><h5 class="jdocu">event_poster_interface_describe_event_t,
+         event_poster_interface_get_event_info_t,
+         event_poster_interface_set_event_info_t</h5 class="jdocu">
+
+   
+<p>
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1186"></a>
+   <a name="label1187">event_poster_interface_describe_event_t</a>
+   <a name="label1188">event_poster_interface_get_event_info_t</a>
+   <a name="label1189">event_poster_interface_set_event_info_t</a>
+   </dd>
+
+<p>
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   These datatypes are obsolete and should not be used.
+   </dd>
+
+   </dl>
+   
+    <a name="label1190"></a><h4 class="jdocu">3.4.3&nbsp;&nbsp;&nbsp;Obsolete API Functions</h4 class="jdocu">
+<a name="label1191"></a><h5 class="jdocu">SIM_add_mode_counter()</h5 class="jdocu">
+
+<a name="label1192"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1193"></a><b>SIM_add_mode_counter</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_add_mode_counter(conf_object_t *cpu, const char *desc);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics.</dd>
+
+<p>
+</dl>
+<a name="label1194"></a><h5 class="jdocu">SIM_all_classes()</h5 class="jdocu">
+
+<a name="label1195"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1196"></a><b>SIM_all_classes</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">class_vector_t
+SIM_all_classes(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_all_classes()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label374">SIM_get_all_classes</a></dl>
+<a name="label1197"></a><h5 class="jdocu">SIM_all_objects()</h5 class="jdocu">
+
+<a name="label1198"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1199"></a><b>SIM_all_objects</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">object_vector_t
+SIM_all_objects(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_all_objects()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label377">SIM_get_all_objects</a></dl>
+<a name="label1200"></a><h5 class="jdocu">SIM_breakpoint_action()</h5 class="jdocu">
+
+<a name="label1201"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1202"></a><b>SIM_breakpoint_action</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_breakpoint_action(breakpoint_id_t id, const char *action);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.0. Use the Core_Breakpoint hap instead to
+  connect your own callback to a breakpoint.</dd>
+
+<p>
+</dl>
+<a name="label1203"></a><h5 class="jdocu">SIM_c_frontend_exception()</h5 class="jdocu">
+
+<a name="label1204"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1205"></a><b>SIM_c_frontend_exception</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_c_frontend_exception(void *fe,
+                         sim_exception_t exc_type,
+                         const char *str);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 3.0. Use <b><i>SIM_frontend_exception()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label476">SIM_frontend_exception</a></dl>
+<a name="label1206"></a><h5 class="jdocu">SIM_check_exception()</h5 class="jdocu">
+
+<a name="label1207"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1208"></a><b>SIM_check_exception</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">sim_exception_t
+SIM_check_exception(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 3.0. Use <b><i>SIM_clear_exception()</i></b> and
+  <b><i>SIM_get_pending_exception()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label468">SIM_clear_exception</a>, <a class="jdocu" href="topic8.html#label479"> SIM_get_pending_exception</a></dl>
+<a name="label1209"></a><h5 class="jdocu">SIM_clear_atomic_reservation_bit()</h5 class="jdocu">
+
+<a name="label1210"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1211"></a><b>SIM_clear_atomic_reservation_bit</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_clear_atomic_reservation_bit(processor_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>clear_atomic_reservation_bit()</i></b> in the
+  <tt>ppc</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1212"></a><h5 class="jdocu">SIM_cpu_by_mid()</h5 class="jdocu">
+
+<a name="label1213"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1214"></a><b>SIM_cpu_by_mid</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">processor_t *
+SIM_cpu_by_mid(int mid);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+</dd>
+</dl>
+<a name="label1215"></a><h5 class="jdocu">SIM_cpu_enabled()</h5 class="jdocu">
+
+<a name="label1216"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1217"></a><b>SIM_cpu_enabled</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_cpu_enabled(conf_object_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_processor_enabled()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label744">SIM_processor_enabled</a></dl>
+<a name="label1218"></a><h5 class="jdocu">SIM_cpu_issue_cycles()</h5 class="jdocu">
+
+<a name="label1219"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1220"></a><b>SIM_cpu_issue_cycles</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">simtime_t
+SIM_cpu_issue_cycles(processor_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>SIM_step_count()()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label854">SIM_step_count</a></dl>
+<a name="label1221"></a><h5 class="jdocu">SIM_cpu_privilege_level()</h5 class="jdocu">
+
+<a name="label1222"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1223"></a><b>SIM_cpu_privilege_level</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_cpu_privilege_level(conf_object_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_processor_privilege_level()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label747">SIM_processor_privilege_level</a></dl>
+<a name="label1224"></a><h5 class="jdocu">SIM_device_log()</h5 class="jdocu">
+
+<a name="label1225"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1226"></a><b>SIM_device_log</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_device_log(conf_object_t *obj, const char *msg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>SIM_log_message()</i></b> and the new log
+  system macros instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label550">SIM_log_message</a></dl>
+<a name="label1227"></a><h5 class="jdocu">SIM_disassemble_physical()</h5 class="jdocu">
+
+<a name="label1228"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1229"></a><b>SIM_disassemble_physical</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">const char *
+SIM_disassemble_physical(processor_t *cpu_ptr, physical_address_t pa);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>SIM_disassemble()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label708">SIM_disassemble</a></dl>
+<a name="label1230"></a><h5 class="jdocu">SIM_dump_caches()</h5 class="jdocu">
+
+<a name="label1231"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1232"></a><b>SIM_dump_caches</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_dump_caches(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_flush_all_caches()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label823">SIM_flush_all_caches</a></dl>
+<a name="label1233"></a><h5 class="jdocu">SIM_exception_has_occurred()</h5 class="jdocu">
+
+<a name="label1234"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1235"></a><b>SIM_exception_has_occurred</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_exception_has_occurred(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 3.0. Use <b><i>SIM_get_pending_exception()</i></b>
+  instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label479">SIM_get_pending_exception</a></dl>
+<a name="label1236"></a><h5 class="jdocu">SIM_for_all_hap_types()</h5 class="jdocu">
+
+<a name="label1237"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1238"></a><b>SIM_for_all_hap_types</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_for_all_hap_types(void (*func)(char *));
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_all_hap_types()</i></b> instead.</dd>
+
+<p>
+</dl>
+<a name="label1239"></a><h5 class="jdocu">SIM_for_all_modules()</h5 class="jdocu">
+
+<a name="label1240"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1241"></a><b>SIM_for_all_modules</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_for_all_modules(void (*func)(char *, char *, char *, char *));
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_all_modules()</i></b> instead.</dd>
+
+<p>
+</dl>
+<a name="label1242"></a><h5 class="jdocu">SIM_for_all_modules_failed()</h5 class="jdocu">
+
+<a name="label1243"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1244"></a><b>SIM_for_all_modules_failed</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_for_all_modules_failed(void (*func)(char *, char *, char *,
+                                        char *, char *));
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_all_failed_modules()</i></b> instead.</dd>
+
+<p>
+</dl>
+<a name="label1245"></a><h5 class="jdocu">SIM_for_all_processors()</h5 class="jdocu">
+
+<a name="label1246"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1247"></a><b>SIM_for_all_processors</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_for_all_processors(void (*func)(conf_object_t *, lang_void *user_data),
+                       lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_all_processors()</i></b> and a loop instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label716">SIM_get_all_processors</a></dl>
+<a name="label1248"></a><h5 class="jdocu">SIM_get_No_Exception()</h5 class="jdocu">
+
+<a name="label1249"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1250"></a><b>SIM_get_No_Exception</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">exception_type_t 
+SIM_get_No_Exception(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use the enum value
+  <tt>Sim_PE_No_Exception</tt> instead.</dd>
+
+<p>
+</dl>
+<a name="label1251"></a><h5 class="jdocu">SIM_get_base_pointer()</h5 class="jdocu">
+
+<a name="label1252"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1253"></a><b>SIM_get_base_pointer</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">logical_address_t
+SIM_get_base_pointer(conf_object_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>SIM_read_register()</i></b> on the register
+  that is defined as the base pointer on your target.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label750">SIM_read_register</a></dl>
+<a name="label1254"></a><h5 class="jdocu">SIM_get_control_register_name()</h5 class="jdocu">
+
+<a name="label1255"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1256"></a><b>SIM_get_control_register_name</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">const char *
+SIM_get_control_register_name(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>SIM_get_register_name()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label738">SIM_get_register_number</a></dl>
+<a name="label1257"></a><h5 class="jdocu">SIM_get_control_register_number()</h5 class="jdocu">
+
+<a name="label1258"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1259"></a><b>SIM_get_control_register_number</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_get_control_register_number(processor_t *cpu_ptr, const char *regname);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>SIM_get_register_number()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label738">SIM_get_register_number</a></dl>
+<a name="label1260"></a><h5 class="jdocu">SIM_get_current_proc_no()</h5 class="jdocu">
+
+<a name="label1261"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1262"></a><b>SIM_get_current_proc_no</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_get_current_proc_no(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_processor_number()</i></b> and <b><i>SIM_current_processor()</i></b>
+  instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label730">SIM_get_processor_number</a>, <a class="jdocu" href="topic8.html#label705"> SIM_current_processor</a></dl>
+<a name="label1263"></a><h5 class="jdocu">SIM_get_file_size()</h5 class="jdocu">
+
+<a name="label1264"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1265"></a><b>SIM_get_file_size</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">uint64
+SIM_get_file_size(const char *filename);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.0. Use the corresponding library function on your
+  host system.</dd>
+
+<p>
+</dl>
+<a name="label1266"></a><h5 class="jdocu">SIM_get_history_match()</h5 class="jdocu">
+
+<a name="label1267"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1268"></a><b>SIM_get_history_match</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">const char *
+SIM_get_history_match(const char *str);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 3.0.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+</dd>
+</dl>
+<a name="label1269"></a><h5 class="jdocu">SIM_get_mmu_data()</h5 class="jdocu">
+
+<a name="label1270"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1271"></a><b>SIM_get_mmu_data</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">conf_object_t *
+SIM_get_mmu_data(processor_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Read the <i>mmu</i> attribute of
+  <i>cpu</i> instead.</dd>
+
+<p>
+</dl>
+<a name="label1272"></a><h5 class="jdocu">SIM_get_mode_counter()</h5 class="jdocu">
+
+<a name="label1273"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1274"></a><b>SIM_get_mode_counter</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">integer_t
+SIM_get_mode_counter(conf_object_t *cpu, processor_mode_t mode, int counter);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics.</dd>
+
+<p>
+</dl>
+<a name="label1275"></a><h5 class="jdocu">SIM_get_proc_no()</h5 class="jdocu">
+
+<a name="label1276"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1277"></a><b>SIM_get_proc_no</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_get_proc_no(const conf_object_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_processor_number()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label730">SIM_get_processor_number</a></dl>
+<a name="label1278"></a><h5 class="jdocu">SIM_get_simics_home()</h5 class="jdocu">
+
+<a name="label1279"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1280"></a><b>SIM_get_simics_home</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">const char *
+SIM_get_simics_home(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+The use of this function is deprecated. The <i>simics_home</i>
+  attribute in the <b>sim</b> class can be used instead.</dd>
+
+<p>
+</dl>
+<a name="label1281"></a><h5 class="jdocu">SIM_get_stack_pointer()</h5 class="jdocu">
+
+<a name="label1282"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1283"></a><b>SIM_get_stack_pointer</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">logical_address_t
+SIM_get_stack_pointer(conf_object_t *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>SIM_read_register()</i></b> on the register
+  that is defined as the stack pointer on your target.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label750">SIM_read_register</a></dl>
+<a name="label1284"></a><h5 class="jdocu">SIM_get_trap_time()</h5 class="jdocu">
+
+<a name="label1285"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1286"></a><b>SIM_get_trap_time</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">integer_t
+SIM_get_trap_time(processor_t *cpu_ptr, int trap_level);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Read the <i>trap_times</i> attribute of the
+  corresponding cpu instead.</dd>
+
+<p>
+</dl>
+<a name="label1287"></a><h5 class="jdocu">SIM_hap_install_callback()</h5 class="jdocu">
+
+<a name="label1288"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1289"></a><b>SIM_hap_install_callback</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_handle_t
+SIM_hap_install_callback(hap_type_t hap, 
+                         hap_func_t func, 
+                         lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_add_callback()</i></b> or
+  <b><i>SIM_hap_add_callback_obj()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a></dl>
+<a name="label1290"></a><h5 class="jdocu">SIM_hap_install_callback_idx()</h5 class="jdocu">
+
+<a name="label1291"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1292"></a><b>SIM_hap_install_callback_idx</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_handle_t
+SIM_hap_install_callback_idx(hap_type_t hap, 
+                             hap_func_t func, 
+                             integer_t idx, 
+                             lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_add_callback_index()</i></b> or
+  <b><i>SIM_hap_add_callback_obj_index()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a></dl>
+<a name="label1293"></a><h5 class="jdocu">SIM_hap_install_callback_range()</h5 class="jdocu">
+
+<a name="label1294"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1295"></a><b>SIM_hap_install_callback_range</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_handle_t
+SIM_hap_install_callback_range(hap_type_t hap, 
+                               hap_func_t func,
+                               integer_t low, 
+                               integer_t high, 
+                               lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_add_callback_range()</i></b> or
+  <b><i>SIM_hap_add_callback_obj_range()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a></dl>
+<a name="label1296"></a><h5 class="jdocu">SIM_hap_new_type()</h5 class="jdocu">
+
+<a name="label1297"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1298"></a><b>SIM_hap_new_type</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_type_t
+SIM_hap_new_type(const char *hap,
+                 const char *params,
+                 const char *param_desc,
+                 const char *index,
+                 const char *desc);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  function <b><i>SIM_hap_add_type()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label504">SIM_hap_add_type</a></dl>
+<a name="label1299"></a><h5 class="jdocu">SIM_hap_register_callback()</h5 class="jdocu">
+
+<a name="label1300"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1301"></a><b>SIM_hap_register_callback</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_handle_t
+SIM_hap_register_callback(const char *id, 
+                          hap_func_t func, 
+                          lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_add_callback()</i></b> or
+  <b><i>SIM_hap_add_callback_obj()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a></dl>
+<a name="label1302"></a><h5 class="jdocu">SIM_hap_register_callback_idx()</h5 class="jdocu">
+
+<a name="label1303"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1304"></a><b>SIM_hap_register_callback_idx</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_handle_t
+SIM_hap_register_callback_idx(const char *id, 
+                              hap_func_t func, 
+                              integer_t idx, 
+                              lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_add_callback_index()</i></b> or
+  <b><i>SIM_hap_add_callback_obj_index()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a></dl>
+<a name="label1305"></a><h5 class="jdocu">SIM_hap_register_callback_range()</h5 class="jdocu">
+
+<a name="label1306"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1307"></a><b>SIM_hap_register_callback_range</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">hap_handle_t
+SIM_hap_register_callback_range(const char *id, 
+                                hap_func_t func,
+                                integer_t low, 
+                                integer_t high, 
+                                lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_add_callback_range()</i></b> or
+  <b><i>SIM_hap_add_callback_obj_range()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a></dl>
+<a name="label1308"></a><h5 class="jdocu">SIM_hap_remove_callback()</h5 class="jdocu">
+
+<a name="label1309"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1310"></a><b>SIM_hap_remove_callback</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_hap_remove_callback(hap_type_t hap, hap_handle_t handle);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, in this case the
+  functions <b><i>SIM_hap_delete_callback_id()</i></b> or
+  <b><i>SIM_hap_delete_callback_obj_id()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label513">SIM_hap_delete_callback</a></dl>
+<a name="label1311"></a><h5 class="jdocu">SIM_hap_unregister_callback()</h5 class="jdocu">
+
+<a name="label1312"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1313"></a><b>SIM_hap_unregister_callback</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_hap_unregister_callback(const char *id, 
+                            hap_func_t func, 
+                            lang_void *user_data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 2.2. Use the new hap functions, and this case the
+  functions <b><i>SIM_hap_delete_callback()</i></b> or
+  <b><i>SIM_hap_delete_callback_obj()</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label513">SIM_hap_delete_callback</a></dl>
+<a name="label1314"></a><h5 class="jdocu">SIM_inc_cur_mode_counter()</h5 class="jdocu">
+
+<a name="label1315"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1316"></a><b>SIM_inc_cur_mode_counter</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_inc_cur_mode_counter(conf_object_t *cpu, int counter);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics.</dd>
+
+<p>
+</dl>
+<a name="label1317"></a><h5 class="jdocu">SIM_inc_mode_counter()</h5 class="jdocu">
+
+<a name="label1318"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1319"></a><b>SIM_inc_mode_counter</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_inc_mode_counter(conf_object_t *cpu, processor_mode_t mode, int counter);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics.</dd>
+
+<p>
+</dl>
+<a name="label1320"></a><h5 class="jdocu">SIM_install_default_ASI_handler()</h5 class="jdocu">
+
+<a name="label1321"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1322"></a><b>SIM_install_default_ASI_handler</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_install_default_ASI_handler(
+                      exception_type_t (*handler)(generic_transaction_t *),
+                      int asi);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6.</dd>
+
+<p>
+</dl>
+<a name="label1323"></a><h5 class="jdocu">SIM_install_user_ASI_handler()</h5 class="jdocu">
+
+<a name="label1324"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1325"></a><b>SIM_install_user_ASI_handler</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_install_user_ASI_handler(
+                       exception_type_t (*handler)(generic_transaction_t *),
+                       int asi);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6.</dd>
+
+<p>
+</dl>
+<a name="label1326"></a><h5 class="jdocu">SIM_instruction_info()</h5 class="jdocu">
+
+<a name="label1327"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1328"></a><b>SIM_instruction_info</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instr_info_t *
+SIM_instruction_info(conf_object_t *cpu, logical_address_t vaddr);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>instruction_info()</i></b> in the <tt>processor</tt> interface
+  instead.</dd>
+
+<p>
+</dl>
+<a name="label1329"></a><h5 class="jdocu">SIM_no_windows()</h5 class="jdocu">
+
+<a name="label1330"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1331"></a><b>SIM_no_windows</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_no_windows(void);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use the
+  <i>open_windows</i> attribute in the <b>sim</b> object instead.</dd>
+
+<p>
+</dl>
+<a name="label1332"></a><h5 class="jdocu">SIM_num_control_registers()</h5 class="jdocu">
+
+<a name="label1333"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1334"></a><b>SIM_num_control_registers</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_num_control_registers(processor_t *cpu_ptr);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+</dd>
+</dl>
+<a name="label1335"></a><h5 class="jdocu">SIM_object_by_id()</h5 class="jdocu">
+
+<a name="label1336"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1337"></a><b>SIM_object_by_id</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">conf_object_t *
+SIM_object_by_id(int id);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function is obsolete since Simics 2.2. The object id will be removed
+  in future Simics versions, code relying on it should be rewritten.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+</dd>
+</dl>
+<a name="label1338"></a><h5 class="jdocu">SIM_proc_no_2_ptr()</h5 class="jdocu">
+
+<a name="label1339"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1340"></a><b>SIM_proc_no_2_ptr</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">conf_object_t *
+SIM_proc_no_2_ptr(int proc_no);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_get_processor()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label727">SIM_get_processor</a></dl>
+<a name="label1341"></a><h5 class="jdocu">SIM_processor_break()</h5 class="jdocu">
+
+<a name="label1342"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1343"></a><b>SIM_processor_break</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_processor_break(conf_object_t *cpu, integer_t steps);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics. Use
+  <b><i>SIM_break_step()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label328">SIM_break_step</a></dl>
+<a name="label1344"></a><h5 class="jdocu">SIM_raise_general_exception()</h5 class="jdocu">
+
+<a name="label1345"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1346"></a><b>SIM_raise_general_exception</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_raise_general_exception(const char *msg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 3.0. Use <b><i>SIM_frontend_exception()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label476">SIM_frontend_exception</a></dl>
+<a name="label1347"></a><h5 class="jdocu">SIM_read_control_register()</h5 class="jdocu">
+
+<a name="label1348"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1349"></a><b>SIM_read_control_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">uinteger_t
+SIM_read_control_register(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>SIM_read_register()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label750">SIM_read_register</a></dl>
+<a name="label1350"></a><h5 class="jdocu">SIM_read_fp_register()</h5 class="jdocu">
+
+<a name="label1351"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1352"></a><b>SIM_read_fp_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">ia64_fp_register_t
+SIM_read_fp_register(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>read_fp_register()</i></b> in the
+  <tt>ia64</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1353"></a><h5 class="jdocu">SIM_read_fp_register_d()</h5 class="jdocu">
+
+<a name="label1354"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1355"></a><b>SIM_read_fp_register_d</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">double
+SIM_read_fp_register_d(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>read_fp_register_d()</i></b> in the
+  <tt>sparc-v9</tt> or <tt>alpha</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1356"></a><h5 class="jdocu">SIM_read_fp_register_i()</h5 class="jdocu">
+
+<a name="label1357"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1358"></a><b>SIM_read_fp_register_i</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">uint32
+SIM_read_fp_register_i(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>read_fp_register_i()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1359"></a><h5 class="jdocu">SIM_read_fp_register_s()</h5 class="jdocu">
+
+<a name="label1360"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1361"></a><b>SIM_read_fp_register_s</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">float
+SIM_read_fp_register_s(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>read_fp_register_s()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1362"></a><h5 class="jdocu">SIM_read_fp_register_x()</h5 class="jdocu">
+
+<a name="label1363"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1364"></a><b>SIM_read_fp_register_x</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">uint64
+SIM_read_fp_register_x(processor_t *cpu_ptr, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>read_fp_register_x()</i></b> in the
+  <tt>sparc-v9</tt> or <tt>alpha</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1365"></a><h5 class="jdocu">SIM_read_global_register()</h5 class="jdocu">
+
+<a name="label1366"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1367"></a><b>SIM_read_global_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">uinteger_t
+SIM_read_global_register(processor_t *cpu_ptr, int globals, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>read_global_register()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1368"></a><h5 class="jdocu">SIM_read_window_register()</h5 class="jdocu">
+
+<a name="label1369"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1370"></a><b>SIM_read_window_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">uinteger_t
+SIM_read_window_register(processor_t *cpu_ptr, int window, int reg);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>read_window_register()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1371"></a><h5 class="jdocu">SIM_set_mode_counter()</h5 class="jdocu">
+
+<a name="label1372"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1373"></a><b>SIM_set_mode_counter</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_set_mode_counter(conf_object_t *cpu, processor_mode_t mode,
+                     int counter, integer_t value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function will be obsolete in the next version of Simics.</dd>
+
+<p>
+</dl>
+<a name="label1374"></a><h5 class="jdocu">SIM_sparc_ASI_info()</h5 class="jdocu">
+
+<a name="label1375"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1376"></a><b>SIM_sparc_ASI_info</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_sparc_ASI_info(processor_t *cpu_ptr, int asi, int info);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6.</dd>
+
+<p>
+</dl>
+<a name="label1377"></a><h5 class="jdocu">SIM_void_to_processor_t()</h5 class="jdocu">
+
+<a name="label1378"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1379"></a><b>SIM_void_to_processor_t</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">processor_t *
+SIM_void_to_processor_t(void *cpu);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use a C cast to <tt>processor_t *</tt>
+  instead.</dd>
+
+<p>
+</dl>
+<a name="label1380"></a><h5 class="jdocu">SIM_write_control_register()</h5 class="jdocu">
+
+<a name="label1381"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1382"></a><b>SIM_write_control_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_control_register(processor_t *cpu_ptr, int reg, uinteger_t value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>SIM_write_register()</i></b> instead.</dd>
+
+<p>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label774">SIM_write_register</a></dl>
+<a name="label1383"></a><h5 class="jdocu">SIM_write_fp_register()</h5 class="jdocu">
+
+<a name="label1384"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1385"></a><b>SIM_write_fp_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_fp_register(processor_t *cpu_ptr, int reg, ia64_fp_register_t val);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>write_fp_register()</i></b> in the
+  <tt>ia64</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1386"></a><h5 class="jdocu">SIM_write_fp_register_d()</h5 class="jdocu">
+
+<a name="label1387"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1388"></a><b>SIM_write_fp_register_d</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_fp_register_d(processor_t *cpu_ptr, int reg, double value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>write_fp_register_d()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1389"></a><h5 class="jdocu">SIM_write_fp_register_i()</h5 class="jdocu">
+
+<a name="label1390"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1391"></a><b>SIM_write_fp_register_i</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_fp_register_i(processor_t *cpu_ptr, int reg, uint32 value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>write_fp_register_i()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1392"></a><h5 class="jdocu">SIM_write_fp_register_s()</h5 class="jdocu">
+
+<a name="label1393"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1394"></a><b>SIM_write_fp_register_s</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_fp_register_s(processor_t *cpu_ptr, int reg, float value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>write_fp_register_s()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1395"></a><h5 class="jdocu">SIM_write_fp_register_x()</h5 class="jdocu">
+
+<a name="label1396"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1397"></a><b>SIM_write_fp_register_x</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_fp_register_x(processor_t *cpu_ptr, int reg, uint64 value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.8. Use <b><i>write_fp_register_x()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1398"></a><h5 class="jdocu">SIM_write_global_register()</h5 class="jdocu">
+
+<a name="label1399"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1400"></a><b>SIM_write_global_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_global_register(processor_t *cpu_ptr, int globals,
+                          int reg, uinteger_t value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>write_global_register()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+<a name="label1401"></a><h5 class="jdocu">SIM_write_window_register()</h5 class="jdocu">
+
+<a name="label1402"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label1403"></a><b>SIM_write_window_register</b> &#8212; <i>obsolete API function</i></dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_write_window_register(processor_t *cpu_ptr, int window,
+                          int reg, uinteger_t value);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Obsolete since Simics 1.6. Use <b><i>write_window_register()</i></b> in the
+  <tt>sparc-v9</tt> interface instead.</dd>
+
+<p>
+</dl>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Discarding Instructions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(39, true);
+</script>
+<a name="label180"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+<h3 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Discarding Instructions</h3 class="jdocu">
+
+
+<p>
+<a name="label181"></a><a name="label182"></a><a name="label183"></a><a name="label184"></a> <a name="label185"></a> When speculation is used, the CPU model may cause
+wrong path or otherwise incorrect execution and the effects of these
+instructions must be discarded. This is done in Simics by calling
+<b><i><a name="label186">SIM_instruction_squash</a></i></b> on an instruction. This
+function will remove the instruction and all its descendants from the
+instruction tree and deallocate the data structures. There is no need
+to call <b><i><a name="label187">SIM_instruction_end</a></i></b>.
+<p>
+Memory operations that are associated with squashed instructions that
+have been issued from the <a name="label188">consistency controller</a> to the
+rest of the memory hierarchy will continue as normal, though no values
+will be written. Memory instruction that have not issued from the
+consistency controller will simply be removed. Thus from the
+perspective of the memory hierarchy, memory transactions are either
+executed completely or not at all.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+</body>
+</html>

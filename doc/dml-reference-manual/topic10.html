@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Register Banks</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(15, true);
+</script>
+<a name="label74"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+<h3 class="jdocu">3.6&nbsp;&nbsp;&nbsp;Register Banks</h3 class="jdocu">
+
+
+<p>
+A <em><a name="label75">register bank</a></em> (or simply <em><a name="label76">bank</a></em>)
+is an abstraction that is is used to group <em>registers<a name="label77"></a></em>
+in DML, and is the unit for memory mapped communication via the
+<em><a name="label78">io_memory</a></em> interface (see Section <a class="jdocu" href="topic9.html#label71">3.5.1</a>).
+<p>
+For a register bank to be mapped into a Simics memory space, its
+<tt>function<a name="label79"></a></tt>
+parameter must be set to a nonnegative integer that is unique within the
+device. The function number is used when setting up a memory space
+mapping in Simics, and allows a single device object to be configured
+with any number of address ranges mapped onto different banks (possibly
+with more than one address range mapped to each single bank).
+<p>
+A bank normally contains a number of <b><a name="label80">register</a></b>
+objects, but that is not a requirement. It is possible to define an
+alternative implementation of the <b><i>access</i></b> method of a particular
+bank, that does not depend on registers.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+</body>
+</html>

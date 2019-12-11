@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Invoking Simics (Startup Flags)</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Invoking Simics (Startup Flags)</h2 class="jdocu">
+
+    
+<p>
+    Simics is started using the <tt>simics</tt> script in the workspace
+    directory. The <tt>simics</tt> script takes the following arguments:
+<p>
+<pre class="jdocu_small" style="color: black">
+    ./simics [<i>simics options</i>]
+</pre>
+<p>
+    Simics can be started with a variety of command line flag arguments,
+    called <i>simics options</i> above. A summary of these can be found in
+    the <i>Simics User Guide</i>. The rest of this chapters describes each of
+    these, in alphabetical order.
+<p>
+    If you want to run another host version of Simics than the default, set the
+    <tt>SIMICS_HOST</tt> environment variable. The following shows how
+    you can do that in different shells.
+<p>
+<pre class="jdocu_small" style="color: black">
+    # Bourne shell
+    SIMICS_HOST=x86-linux ./simics
+
+    # C shell
+    setenv SIMICS_HOST x86-linux
+    ./simics
+</pre>
+<p>
+    By default, Simics executes the <tt>startup-commands</tt> files in the
+    <tt>[simics]/config/</tt> directory and in the current directory as
+    Simics scripts after having interpreted all the command-line arguments.
+    This allow you to specify commands that are run whenever Simics start,
+    where the file in <tt>[simics]/config/</tt> is run for all users
+    sharing the same Simics installation. To prevent this behavior, use the
+    <tt>-n</tt> simics option.
+<p>
+    <p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic4.html#label20" target="main">2.1&nbsp;&nbsp;&nbsp;Startup Flags</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

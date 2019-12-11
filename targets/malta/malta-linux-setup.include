@@ -1,0 +1,8 @@
+if not defined kernel_image {$kernel_image = "vmlinux-4kc"}
+
+###
+
+$cpu = ($system.get-component-object cpu)
+$offset = (if $cpu_class == "mips-4kc" {0} else {0xffffffff00000000})
+
+$cpu.set-pc ($cpu.load-binary $kernel_image $offset)

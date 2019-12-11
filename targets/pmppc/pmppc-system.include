@@ -1,0 +1,46 @@
+if not defined cpu_class           {$cpu_class   = "ppc750"}
+if not defined freq_mhz            {$freq_mhz    = 373.5}
+if not defined tb_freq_mhz         {$tb_freq_mhz =  20.75}
+if not defined mac_address         {$mac_address = "10:10:10:10:10:30"}
+if not defined rtc_time            {$rtc_time    = "2002-06-02 11:00:00 UTC"}
+if not defined disk_size           {$disk_size   = 2128486400}
+if not defined disk_image          {}
+if not defined terminal_bg_color   {$terminal_bg_color = "black"}
+if not defined terminal_fg_color   {$terminal_fg_color = "green"}
+if not defined terminal_win32_font {$terminal_win32_font = "Lucida Console:Regular:16"}
+
+###
+
+add-directory "%simics%/targets/pmppc/images"
+
+import-pci-components
+import-std-components
+import-pmppc-components
+
+$system = (create-pmppc-board cpu_class = $cpu_class
+                              cpu_frequency = $freq_mhz
+                              timebase_frequency = $tb_freq_mhz
+                              mac_address = $mac_address
+                              rtc_time = $rtc_time)
+$console = (create-std-text-console)
+if $terminal_bg_color {$console->bg_color = $terminal_bg_color}
+if $terminal_fg_color {$console->fg_color = $terminal_fg_color}
+if $terminal_win32_font {$console->win32_font = $terminal_win32_font}
+if $terminal_x11_font {$console->x11_font = $terminal_x11_font}
+$pci_glm = (create-pci-sym53c875)
+$scsi_bus = (create-std-scsi-bus)
+if $disk_image {
+    $scsi_disk = (create-std-scsi-disk scsi_id = 3 size = $disk_size
+                                       file = $disk_image)
+                                       
+} else {
+    $scsi_disk = (create-std-scsi-disk scsi_id = 3 size = $disk_size)
+}
+
+$system.connect uart0 $console
+$system.connect pci-slot6 $pci_glm
+$scsi_bus.connect $scsi_disk
+$scsi_bus.connect (create-std-scsi-cdrom scsi_id = 6)
+$scsi_bus.connect $pci_glm
+
+$machine_defined = 1

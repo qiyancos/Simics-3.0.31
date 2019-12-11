@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Core_Magic_Instruction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2331, true);
+</script>
+<a name="label18100"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic586.html">Previous</a> - <a class="jdocu" href="topic544.html">Up</a> - <a class="jdocu" href="topic588.html">Next</a></span></p>
+<h3 class="jdocu">Core_Magic_Instruction</h3 class="jdocu">
+
+
+<a name="label18101"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2886">Simics Core</a></dd>
+
+
+<dt class="jdocu_di"><b>Callback Type</b></dt><dd class="jdocu_di">
+    <tt>void (*)(lang_void *callback_data, <br>         conf_object_t *trigger_obj, integer_t parameter);</tt></dd>
+
+
+<dt class="jdocu_di"><b>Index</b></dt><dd class="jdocu_di">
+parameter</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+  Triggered when Simics executes a magic instruction.
+<p>
+The magic instruction on SPARC is sethi with destination g0 and imm22 != 0. The imm22 value is supplied as the parameter and range to the hap.
+<p>
+The magic instruction on x86 is <tt>xchg bx,bx</tt>. <i>parameter</i> is always zero.
+<p>
+The magic instruction on Alpha is <tt>sextb</tt> with Ra==R0. <i>parameter</i> is always zero.
+<p>
+The magic instruction on 64-bit PowerPC is <tt>fmr</tt> with identical source and destination registers. <i>parameter</i> is the number of the register (0&#8211;31). On 32-bit PowerPC, the magic instruction is <tt>mr</tt> with identical registers.
+<p>
+The magic instruction on ARM is <tt>orreq rN, rN, rN</tt> withrN != 15. The <i>parameter</i> is the register number (0..14).
+<p>
+The magic instruction on IA-64 is a <tt>nop</tt> with a 21-bit immediate, where most significant bit of the immediate is set.</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic586.html">Previous</a> - <a class="jdocu" href="topic544.html">Up</a> - <a class="jdocu" href="topic588.html">Next</a></span></p>
+</body>
+</html>

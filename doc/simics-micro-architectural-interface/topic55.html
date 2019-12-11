@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_status()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(84, true);
+</script>
+<a name="label407"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic54.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic56.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_status()</h4 class="jdocu">
+
+<a name="label408"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label409"></a><b>SIM_instruction_status</b> &#8212; get instruction status</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_status_t
+SIM_instruction_status(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Returns the instruction status of the instruction identified by
+   <i>ii</i>. <tt>instruction_status_t</tt> is a bit field
+   of the following values:
+   <p>
+   <tt>Sim_IS_Ready</tt> means that the instruction have all its
+   input ready and can be executed (for the first time or after a stalling period), 
+   <tt>Sim_IS_Waiting</tt> means that the instruction is waiting for its dependences to be ready,
+   <tt>Sim_IS_Stalling</tt> indicates that the instruction is stalling and does not have its output ready, 
+   <tt>Sim_IS_Faulting</tt> means that the instruction has raised an exception,
+   <tt>Sim_IS_Trap</tt> on x86 means that the instruction has raised a trap,
+   <tt>Sim_IS_Interrupt</tt> on x86 means that the interrupt received must be handled before executing further instructions,
+   see SIM_instruction_phase),
+   <tt>Sim_IS_Branch_Taken</tt> means that the branch was taken for a branch instruction.
+<p>
+   If both <tt>Sim_IS_Stalling</tt> and
+   <tt>Sim_IS_Ready</tt> are set it indicates that the instruction has
+   completed its stalling period and needs to be executed (proceeded)
+   again to make another call to the memory hierarchy, which this time
+   presumably will "unstall" the instruction.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The status of the instruction in the instruction queue.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic54.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic56.html">Next</a></span></p>
+</body>
+</html>

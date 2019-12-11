@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Introduction</h2 class="jdocu">
+  
+
+<p>
+This document describes how to model cycle accurate microprocessors and memory
+systems with Simics. A basic knowledge of Simics and its time modeling (refer
+to <em>Understanding Simics Timing</em> in <em>Simics User Guide</em>)
+is recommended before reading on.
+<p>
+&nbsp; 
+<p>
+Simics is a system-level instruction set simulator; its default CPU models are
+functionally very close to their real counterparts, detailed enough to boot
+and run unmodified operating systems and applications. At this level of
+abstraction, exact timing is rarely a requirement. Simics considers the
+execution of an entire instruction, an exception or an interrupt as an atomic
+operation in the simulation process: it takes exactly one cycle.
+<p>
+Simics allows a user module to take control over the memory system timing,
+deciding how many cycles each memory transaction requires to complete. Although
+this model can be sufficient to simulate the effects of caches, it still
+enforces Simics's concept of atomic, in-order execution.
+<p>
+&nbsp; 
+<p>
+Simics Micro Architectural Interface (MAI) was designed to overcome these
+limitations while keeping the power of a functional full-system
+simulator. Using MAI, Simics can model the timing behavior of modern
+processors with deep pipelines and still run unmodified
+system-level software.
+<p>
+The basic idea behind MAI is to let the user decide when things happen, while
+Simics handles how things happen. A user module chooses when to fetch, decode,
+execute and commit instructions, using MAI to tell Simics to actually perform
+the actions. Execution is supervised by Simics; it will notify the user when
+program order consistency is violated, but even these warnings may be
+overridden.
+<p>
+Simics MAI supports out-of-order execution, multi-processor and multi-threading,
+branch and value speculation; for each processor, it gives the user control
+over an execution tree that represents the possible execution paths. The user
+module builds these paths by speculating on output values and branches.
+<p>
+&nbsp; 
+<p>
+Simics MAI is available for the SPARC-V9 and x86 architectures. The SPARC-V9
+architecture, introduced in Simics 1.4, is more mature than the x86
+implementation delivered with Simics 2.0, but both support all MAI features.
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <a name="label20"></a> Parameterized execution mode that was
+present up to Simics 1.8 (for SPARC only) is not available any more. The
+<b><a name="label21">ooo-micro-arch</a></b> module mimics its behavior and
+should be used instead.<hr class="jdocu_note">
+<p>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>spitfire-mmu</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1828, true);
+</script>
+<a name="label14030"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic378.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic380.html">Next</a></span></p>
+<h3 class="jdocu">spitfire-mmu</h3 class="jdocu">
+
+
+<a name="label14031"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2918">spitfire-mmu</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>spitfire-mmu</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic513.html#label17798">mmu</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The spitfire-mmu models the MMU in UltraSPARC-I (Spitfire) and UltraSPARC-II (Blackbird) processors.
+
+</dd>
+
+</dl>
+<a name="label14032"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cpu</i></b></dt><a name="label14033"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Object</b>.
+<p>
+Processor that the MMU is connected to.</dd></dl>
+<dl><dt><b><i>ctxt_nucleus</i></b></dt><a name="label14034"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Nucleus context register (hardwired to zero).</dd></dl>
+<dl><dt><b><i>ctxt_primary</i></b></dt><a name="label14035"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Context identifier for the primary address space.</dd></dl>
+<dl><dt><b><i>ctxt_secondary</i></b></dt><a name="label14036"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Context identifier for the secondary address space.</dd></dl>
+<dl><dt><b><i>d_translation</i></b></dt><a name="label14037"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ii]</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Returns the D-TLB translation of a given address (read-only pseudo attribute).</dd></dl>
+<dl><dt><b><i>dsfar</i></b></dt><a name="label14038"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-MMU synchronous fault address register (SFAR).</dd></dl>
+<dl><dt><b><i>dsfsr</i></b></dt><a name="label14039"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-MMU synchronous fault status register (SFSR).</dd></dl>
+<dl><dt><b><i>dtag_access</i></b></dt><a name="label14040"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TLB tag access register.</dd></dl>
+<dl><dt><b><i>dtag_target</i></b></dt><a name="label14041"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB tag target register.</dd></dl>
+<dl><dt><b><i>dtlb_daccess</i></b></dt><a name="label14042"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TLB data access register.</dd></dl>
+<dl><dt><b><i>dtlb_tagread</i></b></dt><a name="label14043"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TLB tag read register.</dd></dl>
+<dl><dt><b><i>dtsb</i></b></dt><a name="label14044"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-translation storage buffer (TSB) register.</dd></dl>
+<dl><dt><b><i>dtsbp64k</i></b></dt><a name="label14045"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB 64Kb pointer register.</dd></dl>
+<dl><dt><b><i>dtsbp8k</i></b></dt><a name="label14046"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB 8Kb pointer register.</dd></dl>
+<dl><dt><b><i>dtsbpd</i></b></dt><a name="label14047"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB direct pointer register.</dd></dl>
+<dl><dt><b><i>i_translation</i></b></dt><a name="label14048"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ii]</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Returns the D-TLB translation of a given address (read-only pseudo attribute).</dd></dl>
+<dl><dt><b><i>isfsr</i></b></dt><a name="label14049"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-MMU synchronous fault status register (SFSR).</dd></dl>
+<dl><dt><b><i>itag_access</i></b></dt><a name="label14050"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TLB tag access register.</dd></dl>
+<dl><dt><b><i>itag_target</i></b></dt><a name="label14051"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TSB tag target register.</dd></dl>
+<dl><dt><b><i>itlb_daccess</i></b></dt><a name="label14052"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TLB data access register.</dd></dl>
+<dl><dt><b><i>itlb_tagread</i></b></dt><a name="label14053"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TLB tag read register.</dd></dl>
+<dl><dt><b><i>itsb</i></b></dt><a name="label14054"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-translation storage buffer (TSB) register.</dd></dl>
+<dl><dt><b><i>itsbp64k</i></b></dt><a name="label14055"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TSB 64Kb pointer register.</dd></dl>
+<dl><dt><b><i>itsbp8k</i></b></dt><a name="label14056"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TSB 8Kb pointer register.</dd></dl>
+<dl><dt><b><i>lsu_ctrl</i></b></dt><a name="label14057"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Load/Store Unit (LSU) control register.</dd></dl>
+<dl><dt><b><i>pa_watchpoint</i></b></dt><a name="label14058"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+PA Watchpoint Address</dd></dl>
+<dl><dt><b><i>registers</i></b></dt><a name="label14059"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>; <b>integer</b> or <b>string</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Used to translate between register index and register name for all MMU registers that can generate haps when written. When indexed with an integer, the name is returned, and vice versa. When not indexed, an array with all names is returned in (register index) order.</dd></dl>
+<dl><dt><b><i>trace</i></b></dt><a name="label14060"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+No documentation available.</dd></dl>
+<dl><dt><b><i>va_watchpoint</i></b></dt><a name="label14061"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+VA Watchpoint Address</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label14062"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14064">d-probe</a></b></td><td class="jdocu_noborder">check data TLB for translation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14066">d-tlb</a></b></td><td class="jdocu_noborder">print data TLB contents</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14068">i-probe</a></b></td><td class="jdocu_noborder">check instruction TLB for translation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14070">i-tlb</a></b></td><td class="jdocu_noborder">print instruction TLB contents</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14072">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14074">regs</a></b></td><td class="jdocu_noborder">print mmu registers</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14076">reverse-lookup</a></b></td><td class="jdocu_noborder">check TLBs for reverse translation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label14078">trace</a></b></td><td class="jdocu_noborder">toggle trace functionality</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label14063"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label14064"></a><a name="label14065"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.d-probe</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.d-probe</b> <i>address</i> <br><b>&lt;spitfire-mmu&gt;.i-probe</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Translate a virtual address to physical<br>
+The translation is based on the mappings in the
+instruction or data TLB.<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14066">&lt;spitfire-mmu&gt;.d-tlb</a></dd>
+
+</dl>
+
+
+
+<a name="label14066"></a><a name="label14067"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.d-tlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.d-tlb</b><br><b>&lt;spitfire-mmu&gt;.i-tlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+print the content of the data TLB<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14064">&lt;spitfire-mmu&gt;.d-probe</a></dd>
+
+</dl>
+
+
+
+<a name="label14068"></a><a name="label14069"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.i-probe</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.i-probe</b> <i>address</i> <br><b>&lt;spitfire-mmu&gt;.d-probe</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Translate a virtual address to physical<br>
+The translation is based on the mappings in the
+instruction or data TLB.<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14066">&lt;spitfire-mmu&gt;.d-tlb</a></dd>
+
+</dl>
+
+
+
+<a name="label14070"></a><a name="label14071"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.i-tlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.i-tlb</b><br><b>&lt;spitfire-mmu&gt;.d-tlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+print the content of the data TLB<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14064">&lt;spitfire-mmu&gt;.d-probe</a></dd>
+
+</dl>
+
+
+
+<a name="label14072"></a><a name="label14073"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label14074"></a><a name="label14075"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.regs</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.regs</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the content of the spitfire-mmu MMU registers<br></dd>
+
+</dl>
+
+
+
+<a name="label14076"></a><a name="label14077"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.reverse-lookup</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.reverse-lookup</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+List mappings in all TLBs that matches the specified physical address<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label14064">&lt;spitfire-mmu&gt;.d-probe</a></dd>
+
+</dl>
+
+
+
+<a name="label14078"></a><a name="label14079"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;spitfire-mmu&gt;.trace</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;spitfire-mmu&gt;.trace</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Toggles trace mode<br>
+When active, lists all changes to TLB entries and to MMU registers.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic378.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic380.html">Next</a></span></p>
+</body>
+</html>

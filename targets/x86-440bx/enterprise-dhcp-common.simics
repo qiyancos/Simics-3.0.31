@@ -1,0 +1,5 @@
+$create_network = "yes"
+
+@linux_diffs = [["enterprise3.1-dhcp.craff", "ro", 0, 20496236544, 0]]
+
+run-command-file "%script%/enterprise-common.simics"

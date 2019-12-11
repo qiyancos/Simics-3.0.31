@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>x86</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2285, true);
+</script>
+<a name="label17996"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic541.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic543.html">Next</a></span></p>
+<h3 class="jdocu">x86</h3 class="jdocu">
+
+
+<a name="label17997"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic468.html#label16229">x86-486sx</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a>, <a class="jdocu" href="topic475.html#label16876">x86-p2</a>, <a class="jdocu" href="topic476.html#label17148">x86-p4</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The x86 interface allows certain processor pins to be
+   set/cleared. It is also used by the apic for the startup IPI.
+   <a name="label17998"></a>
+    
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Pin_Init,
+        Pin_Smi,
+        Pin_Nmi,
+        Pin_Ignne
+} x86_pin_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        void (*set_pin_status)(conf_object_t *obj, x86_pin_t pin, int status);
+        void (*start_up)(conf_object_t *obj, uint32 start_address);
+        int  (*interrupt_current_cpu)(int (*ack)(conf_object_t *), conf_object_t *data);
+        void (*uninterrupt_current_cpu)(int (*ack)(conf_object_t *));
+        int  (*has_pending_interrupt)(conf_object_t *obj);
+        int  (*has_waiting_interrupt)(conf_object_t *obj);
+        physical_address_t (*linear_to_physical)(processor_t *cpu_ptr, data_or_instr_t data_or_instr, linear_address_t address);
+} x86_interface_t;</pre>
+
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label18000">memory-configuration</a></td><td class="jdocu_noborder">print memory configuration</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label18002">msrs</a></td><td class="jdocu_noborder">print MSRs</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label18004">pregs-fpu</a></td><td class="jdocu_noborder">print the x87 registers</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label18006">pregs-sse</a></td><td class="jdocu_noborder">print the sse registers</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label18008">print-gdt</a></td><td class="jdocu_noborder">print GDT</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label18010">print-idt</a></td><td class="jdocu_noborder">print IDT</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17999"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label18000"></a><a name="label18001"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;x86&gt;.memory-configuration</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;x86&gt;.memory-configuration</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the processors memory configuration. Depending on the processor type, this may
+include MTRR information, HyperTransport routing information, DRAM configuration,
+and other memory configuration related information.</dd>
+
+</dl>
+
+
+
+<a name="label18002"></a><a name="label18003"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;x86&gt;.msrs</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;x86&gt;.msrs</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print model specific registers. MSRs not included in the output
+are either not supported, not implemented, read-only, or must
+be accessed through other attributes.</dd>
+
+</dl>
+
+
+
+<a name="label18004"></a><a name="label18005"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;x86&gt;.pregs-fpu</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;x86&gt;.pregs-fpu</b> [-f] [-x] [-i] [-b] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the x87 floating-point registers.<br>
+This command takes one of the formatting flags -f, -x, or -i.<br>
+The -f flag prints the floating-point values of the registers.
+The -x flag prints the contents of the registers as hexadecimal integers.
+The -i flag prints the contents of the registers as decimal integers.
+With the -b flag, the registers are printed in binary floating point form.</dd>
+
+</dl>
+
+
+
+<a name="label18006"></a><a name="label18007"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;x86&gt;.pregs-sse</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;x86&gt;.pregs-sse</b> [-s] [-d] [-f] [-x] [-i] [-b] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the contents of the SSE registers.<br>
+This command can take one subregister size flag and one formatting flag.<br>
+The subregister size is selected using the either the -s flag (32-bit), or the -d flag (64-bit).<br>
+The formatting flags -f, -x, and -i select the formatting of the output.
+The -f flag prints the floating-point values of the registers as decimal numbers.
+The -x flag prints the contents of the registers as hexadecimal integers.
+The -i flag prints the contents of the registers as decimal integers.
+With the -b flag, the registers are printed in binary floating point form.</dd>
+
+</dl>
+
+
+
+<a name="label18008"></a><a name="label18009"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;x86&gt;.print-gdt</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;x86&gt;.print-gdt</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print all descriptors in the Global Descriptor Table (GDT). Only usable in protected mode.</dd>
+
+</dl>
+
+
+
+<a name="label18010"></a><a name="label18011"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;x86&gt;.print-idt</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;x86&gt;.print-idt</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print all descriptors in the Interrupt Descriptor Table (IDT).</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic541.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic543.html">Next</a></span></p>
+</body>
+</html>

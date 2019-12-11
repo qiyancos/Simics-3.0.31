@@ -1,0 +1,102 @@
+dml 1.0;
+
+/*
+ * simics-callbacks-types.h
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+typedef int callback_arguments_t;
+
+typedef integer_t (*cb_func_Io_t)(void *arg1);
+typedef integer_t (*cb_func_IoI_t)(void *arg1, integer_t arg2);
+typedef integer_t (*cb_func_IoII_t)(void *arg1, integer_t arg2, integer_t arg3);
+typedef integer_t (*cb_func_IoIII_t)(void *arg1, integer_t arg2, integer_t arg3, integer_t arg4);
+typedef integer_t (*cb_func_IooII_t)(void *arg1, void *arg2, integer_t arg3, integer_t arg4);
+typedef integer_t (*cb_func_Ios_t)(void *arg1, char *arg2);
+typedef integer_t (*cb_func_IossII_t)(void *arg1, char *arg2, char *arg3, integer_t arg4, integer_t arg5);
+typedef integer_t (*cb_func_IssII_t)(char *arg1, char *arg2, integer_t arg3, integer_t arg4);
+typedef exception_type_t (*cb_func_em_t)(generic_transaction_t *arg1);
+typedef exception_type_t (*cb_func_ecm_t)(conf_object_t *arg1, generic_transaction_t *arg2);
+typedef void (*cb_func_nI_t)(integer_t arg1);
+typedef void (*cb_func_nIco_t)(integer_t arg1, conf_object_t *arg2, void *arg3);
+typedef void (*cb_func_nIss_t)(integer_t arg1, char *arg2, char *arg3);
+typedef void (*cb_func_nc_t)(conf_object_t *arg1);
+typedef void (*cb_func_nco_t)(conf_object_t *arg1, void *arg2);
+typedef void (*cb_func_ncoi_t)(conf_object_t *arg1, void *arg2, int arg3);
+typedef void (*cb_func_ncsII_t)(conf_object_t *arg1, char *arg2, integer_t arg3, integer_t arg4);
+typedef void (*cb_func_ncsIII_t)(conf_object_t *arg1, char *arg2, integer_t arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_ns_t)(char *arg1);
+typedef void (*cb_func_nsI_t)(char *arg1, integer_t arg2);
+typedef void (*cb_func_nss_t)(char *arg1, char *arg2);
+typedef void (*cb_func_nsss_t)(char *arg1, char *arg2, char *arg3);
+typedef void (*cb_func_nssss_t)(char *arg1, char *arg2, char *arg3, char *arg4);
+typedef void (*cb_func_nsssss_t)(char *arg1, char *arg2, char *arg3, char *arg4, char *arg5);
+typedef void (*cb_func_nvo_t)(void *arg1, void *arg2);
+typedef void (*cb_func_nzo_t)(void *arg1, void *arg2);
+typedef char *(*cb_func_so_t)(void *arg1);
+typedef void (*cb_func_nci_t)(conf_object_t *arg1, int arg2);
+typedef void (*cb_func_no_t)(void *arg1);
+typedef void (*cb_func_noisssI_t)(void *arg1, int arg2, char *arg3, char *arg4, char *arg5, integer_t arg6);
+typedef void (*cb_func_noI_t)(void *arg1, integer_t arg2);
+typedef void (*cb_func_noII_t)(void *arg1, integer_t arg2, integer_t arg3);
+typedef void (*cb_func_noIII_t)(void *arg1, integer_t arg2, integer_t arg3, integer_t arg4);
+typedef void (*cb_func_noIIII_t)(void *arg1, integer_t arg2, integer_t arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_noIIvI_t)(void *arg1, integer_t arg2, integer_t arg3, void *arg4, integer_t arg5);
+typedef void (*cb_func_noIIzI_t)(void *arg1, integer_t arg2, integer_t arg3, void *arg4, integer_t arg5);
+typedef void (*cb_func_nois_t)(void *arg1, int arg2, char *arg3);
+typedef void (*cb_func_noIs_t)(void *arg1, integer_t arg2, char *arg3);
+typedef void (*cb_func_noc_t)(void *arg1, conf_object_t *arg2);
+typedef void (*cb_func_noci_t)(void *arg1, conf_object_t *arg2, int arg3);
+typedef void (*cb_func_nocii_t)(void *arg1, conf_object_t *arg2, int arg3, int arg4);
+typedef void (*cb_func_nocI_t)(void *arg1, conf_object_t *arg2, integer_t arg3);
+typedef void (*cb_func_nocII_t)(void *arg1, conf_object_t *arg2, integer_t arg3, integer_t arg4);
+typedef void (*cb_func_nocIII_t)(void *arg1, conf_object_t *arg2, integer_t arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_nocIvvv_t)(void *arg1, conf_object_t *arg2, integer_t arg3, void *arg4, void *arg5, void *arg6);
+typedef void (*cb_func_nocIzzz_t)(void *arg1, conf_object_t *arg2, integer_t arg3, void *arg4, void *arg5, void *arg6);
+typedef void (*cb_func_nocc_t)(void *arg1, conf_object_t *arg2, conf_object_t *arg3);
+typedef void (*cb_func_noccc_t)(void *arg1, conf_object_t *arg2, conf_object_t *arg3, conf_object_t *arg4);
+typedef void (*cb_func_nocs_t)(void *arg1, conf_object_t *arg2, char *arg3);
+typedef void (*cb_func_noi_t)(void *arg1, int arg2);
+typedef void (*cb_func_noii_t)(void *arg1, int arg2, int arg3);
+typedef void (*cb_func_noiiI_t)(void *arg1, int arg2, int arg3, integer_t arg4);
+typedef void (*cb_func_nooII_t)(void *arg1, void *arg2, integer_t arg3, integer_t arg4);
+typedef void (*cb_func_nooIII_t)(void *arg1, void *arg2, integer_t arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_nos_t)(void *arg1, char *arg2);
+typedef void (*cb_func_nosI_t)(void *arg1, char *arg2, integer_t arg3);
+typedef void (*cb_func_nosII_t)(void *arg1, char *arg2, integer_t arg3, integer_t arg4);
+typedef void (*cb_func_nossII_t)(void *arg1, char *arg2, char *arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_nov_t)(void *arg1, void *arg2);
+typedef void (*cb_func_noz_t)(void *arg1, void *arg2);
+typedef void (*cb_func_noIm_t)(void *arg1, integer_t arg2, generic_transaction_t *arg3);
+typedef void (*cb_func_nom_t)(void *arg1, generic_transaction_t *arg2);
+typedef void (*cb_func_nocisssI_t)(void *arg1, conf_object_t *arg2, int arg3, char *arg4, char *arg5, char *arg6, integer_t arg7);
+typedef void (*cb_func_nocIIvI_t)(void *arg1, conf_object_t *arg2, integer_t arg3, integer_t arg4, void *arg5, integer_t arg6);
+typedef void (*cb_func_nocIIzI_t)(void *arg1, conf_object_t *arg2, integer_t arg3, integer_t arg4, void *arg5, integer_t arg6);
+typedef void (*cb_func_nocis_t)(void *arg1, conf_object_t *arg2, int arg3, char *arg4);
+typedef void (*cb_func_nociiI_t)(void *arg1, conf_object_t *arg2, int arg3, int arg4, integer_t arg5);
+typedef void (*cb_func_nocIs_t)(void *arg1, conf_object_t *arg2, integer_t arg3, char *arg4);
+typedef void (*cb_func_nocoII_t)(void *arg1, conf_object_t *arg2, void *arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_nocoIII_t)(void *arg1, conf_object_t *arg2, void *arg3, integer_t arg4, integer_t arg5, integer_t arg6);
+typedef void (*cb_func_nocsI_t)(void *arg1, conf_object_t *arg2, char *arg3, integer_t arg4);
+typedef void (*cb_func_nocsII_t)(void *arg1, conf_object_t *arg2, char *arg3, integer_t arg4, integer_t arg5);
+typedef void (*cb_func_nocssII_t)(void *arg1, conf_object_t *arg2, char *arg3, char *arg4, integer_t arg5, integer_t arg6);
+typedef void (*cb_func_nocv_t)(void *arg1, conf_object_t *arg2, void *arg3);
+typedef void (*cb_func_nocz_t)(void *arg1, conf_object_t *arg2, void *arg3);
+typedef void (*cb_func_nocIIII_t)(void *arg1, conf_object_t *arg2, integer_t arg3, integer_t arg4, integer_t arg5, integer_t arg6);
+typedef void (*cb_func_nocIm_t)(void *arg1, conf_object_t *arg2, integer_t arg3, generic_transaction_t *arg4);
+typedef void (*cb_func_nocm_t)(void *arg1, conf_object_t *arg2, generic_transaction_t *arg3);
+typedef void (*cb_func_noIci_t)(void *arg1, integer_t arg2, conf_object_t *arg3, int arg4);
+typedef void (*cb_func_nocIci_t)(void *arg1, conf_object_t *arg2, integer_t arg3, conf_object_t *arg4, int arg5);
+typedef void (*cb_func_noIcs_t)(void *arg1, integer_t arg2, conf_object_t *arg3, char *arg4);
+typedef void (*cb_func_nocIcs_t)(void *arg1, conf_object_t *arg2, integer_t arg3, conf_object_t *arg4, char *arg5);

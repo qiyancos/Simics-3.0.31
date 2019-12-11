@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Approximate Performance Counters and Hardwire Diagnostics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(28, true);
+</script>
+<a name="label45"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic11.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+<h3 class="jdocu">6.3&nbsp;&nbsp;&nbsp;Approximate Performance Counters and Hardwire Diagnostics</h3 class="jdocu">
+
+<a name="label46"></a> 
+
+<p>
+   <a name="label47"></a> Performance meters and diagnostic
+   functions are usually not accessed during normal operation, and
+   should therefore be abstracted away.  If they are ever read,
+   diagnostic registers should normally be hardwired to report
+   "everything OK" without bothering to access any internal state.  If
+   performance meters are accessed, it may be necessary to provide
+   approximate values which are computed only when requested.
+<p>
+   <a name="label48"></a>If you find that the driver reads
+   values from, e.g., a JTAG port, you can look at the driver source
+   code and try to figure out what values it expects to find (look at
+   what it compares the data to), and make the model supply some
+   values that are acceptable.
+<p>
+   Sometimes it is necessary to model a bit more.  One particular
+   architecture provides interfaces to access parity bits and
+   checksums in the caches.  In its boot sequence, the OS performs a
+   self-test on the caches by writing flawed parity bits and checking
+   that the cache handles them gracefully (reporting error or
+   auto-correcting the data).  The model of this cache thus needs to
+   simulate the parity bits.  To increase performance, however, it
+   is sufficient to simulate this only on cache lines where the parity bits have
+   been accessed.
+<p>
+   When approximate or invented values are being returned from the
+   model, it is good practice to issue a warning to the user, and/or
+   print a message to the appropriate log file.  See section <a class="jdocu" href="topic23.html#label69">9.3</a> for more on this.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic11.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+</body>
+</html>

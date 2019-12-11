@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Getting Files into a Simulated System</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(42, true);
+</script>
+<a name="label77"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+<h4 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Getting Files into a Simulated System</h4 class="jdocu">
+
+
+<p>
+A full systems simulation can be run completely isolated, but Simics also
+provides a way for the simulated system to access files that are located
+on the host, i.e, your real computer.
+<p>
+<i>SimicsFS</i> is a Linux kernel filesystem module that
+talks to a simulated device, namely a corresponding Simics
+module. Our <tt>firststeps</tt> machine is
+prepared with <b>simicsfs</b> support; just mount <tt>/host</tt>
+to access it.
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>mount /host</b>
+[simicsfs] mounted
+root@firststeps: ~# <b>ls /host</b>
+bin         etc         lost+found  net         root        sys
+boot        home        media       opt         sbin        tmp
+[...]
+root@firststeps: ~#
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Support for SimicsFS have to be
+installed in the
+target system, which means it have to be modified. Modules exists
+for the Linux 2.4 and 2.6 series. On other systems a module has
+to be written in order to get SimicsFS to work.<hr class="jdocu_note">
+<p>
+As write support is experimental, SimicsFS is mounted read-only
+by default. To be able to transfer files from
+the simulation to the host, mount it read-write. 
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>mount /host -o remount,rw</b>
+root@firststeps: ~# <b>cp /proc/cpuinfo /host/tmp/cpuinfo</b>
+root@firststeps: ~# <b>umount /host</b>
+root@firststeps: ~#
+</pre>
+<p>
+Now, we can read the file on our host machine.
+<p>
+
+<pre class="jdocu_small" style="color: black">
+<b>[press control-C]</b>
+simics&gt;  <b>!cat /tmp/cpuinfo</b>
+processor       : 0
+cpu             : 440GP Rev. C
+revision        : 4.129 (pvr 4012 0481)
+bogomips        : 799.53
+vendor          : IBM
+machine         : Ebony
+simics&gt; 
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <b>!</b> command will interpret the rest of the
+command line as if it was given in a shell.<hr class="jdocu_note">
+<p>
+
+Sometimes it is desirable to limit the accessible files to a certain directory.
+This is done with the <b>&lt;hostfs&gt;.root</b> command. Set the
+root to the Simics installation directory.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>[press control-C]</b>
+simics&gt;  <b>hfs0.root sim-&gt;simics_base</b>
+simics&gt;  <b>c</b>
+</pre>
+<p>
+Now transfer the file to be used in next section into the 
+simulated system.
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>mount /host</b>
+[simicsfs] mounted
+root@firststeps: ~# <b>cp /host/targets/ebony/images/debug_example .</b>
+root@firststeps: ~#
+</pre>
+<p>
+You can read more about SimicsFS/<b>hostfs</b> and other ways to
+transfer files in chapter <a class="jdocu" href="topic30.html#label151">7</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+</body>
+</html>

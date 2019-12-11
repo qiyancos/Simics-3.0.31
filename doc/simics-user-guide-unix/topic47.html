@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Selecting Host Ethernet Interface</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(130, true);
+</script>
+<a name="label304"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic46.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic48.html">Next</a></span></p>
+<h4 class="jdocu">10.2&nbsp;&nbsp;&nbsp;Selecting Host Ethernet Interface</h4 class="jdocu">
+
+
+<p>
+When you connect to a real network on a host with multiple network interfaces
+installed, Simics will select one of them for the real network connection. If
+the default selection is incorrect, you can use the <i>interface</i>
+argument of the command you use to connect to select the desired interface.
+<p>
+
+The interface name expected by the <i>interface</i> argument is the
+ordinary interface name used by the host operating system. You can list all
+network interfaces by running <tt>/sbin/ifconfig -a</tt> on the simulation
+host:
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer$ <b>/sbin/ifconfig -a</b>
+eth0      Link encap:Ethernet  HWaddr 00:10:18:0A:DE:EF
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+          Interrupt:21
+
+eth1      Link encap:Ethernet  HWaddr 00:0C:F1:D1:FF:09
+          inet addr:10.0.0.140  Bcast:10.0.0.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:671467287 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:647635204 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:3725791210 (3553.1 Mb)  TX bytes:217046405 (206.9 Mb)
+          Interrupt:20 Base address:0xdf40 Memory:fceef000-fceef038
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:24929 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:24929 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:4164218 (3.9 Mb)  TX bytes:4164218 (3.9 Mb)
+</pre>
+<p>
+For example, to use the first interface listed above you would specify
+<tt>eth0</tt> as the <i>interface</i> argument.
+<p>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic46.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic48.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,6 @@
+$create_network = "yes"
+
+@solaris8_diffs = [["sarek1.1.1-dhcp.craff", "ro", 0, 2128486400]]
+@solaris9_diffs = [["sarek2.1.1-dhcp.craff", "ro", 0, 2128486400]]
+
+run-command-file "%script%/sarek-common.simics"

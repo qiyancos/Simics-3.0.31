@@ -1,0 +1,84 @@
+# we don't want automatic login
+$do_login = "no"
+
+# Change limit from 6 to 5 if installing older Solaris 10 than 6/06
+
+# path to CD-ROM, use default if none given by user setup variables.
+$idx = 2
+if not defined cdrom_path {
+    while $idx < 6 {
+        $cdrom_path[$idx] = ("sol-10-u2-ga-sparc-v" + $idx + ".iso")
+        $idx += 1
+    }
+}
+
+$idx = 2
+while $idx < 6 {
+    if not `SIM_lookup_file(simenv.cdrom_path[simenv.idx])` {
+        echo "Cannot find the CD-ROM specified as : "  + $cdrom_path[$idx]
+        echo "Please add this file, or edit the path in this script."
+        echo ""
+        quit
+    }
+
+    echo "Using CD-ROM image file: " + $cdrom_path[$idx]
+    $idx += 1
+}
+
+$create_network = "yes"
+$disk_size = 8513945600
+$os = "none"
+
+run-command-file "%script%/abisko-common.simics"
+
+load-persistent-state abisko-sol10-p1.state
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+@image.files = [["abisko-sol10-install.disk", "rw", 0, simenv.disk_size]]
+
+# create and insert CD media
+$cd = ($scsi_cdrom.get-component-object cd)
+$cd.insert (new-file-cdrom $cdrom_path[2])
+
+($system.set-prom-env
+    nvramrc "devalias disk /ssm@0,0/pci@19,700000/scsi@2/disk@0,0")
+
+echo "Capturing output to 'abisko-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "abisko-install-log.txt"
+
+run-command-file "%script%/../common/solaris10-install.include"
+
+script-branch {
+    $solaris10_phase2 = 1 # trigger script
+    $con.wait-for-string "[]"
+    $cd.insert (new-file-cdrom $cdrom_path[3])
+    $con.input "\n"
+    # CD 4 software
+    $con.wait-for-string "Media"
+    $con.input "1\n"
+    $con.wait-for-string "[]"
+    $cd.insert (new-file-cdrom $cdrom_path[4])
+    $con.input "\n"
+    # Remove the following lines if installing older Solaris 10 than 6/06
+    # CD 5 software
+    $con.wait-for-string "Media"
+    $con.input "1\n"
+    $con.wait-for-string "[]"
+    $cd.insert (new-file-cdrom $cdrom_path[5])
+    $con.input "\n"
+    # remove until this line. (Solaris 10 6/06)
+    #
+    $con.wait-for-string "Resetting ..."
+    stop "Installation complete"
+    save-persistent-state abisko-sol10-p2.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Now exit Simics and continue with the abisko-sol10-cd-install3.simics "
+echo "script."
+echo ""

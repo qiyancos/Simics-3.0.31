@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Tracing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(44, true);
+</script>
+<a name="label80"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+<h4 class="jdocu">4.7&nbsp;&nbsp;&nbsp;Tracing</h4 class="jdocu">
+
+
+<p>
+Tracing is a way to observe what is going on during the simulation.
+This section describes how to trace memory accesses, I/O accesses,
+control register writes, and exceptions in Simics.
+<p>
+The tracing facility provided by the <b>trace</b> module
+will display all memory accesses, both instruction fetches and
+data accesses.
+<p>
+First, launch the
+<tt>ebony-linux-firststeps.simics</tt>
+configuration, but not boot it.
+Second, create a tracer:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>new-tracer</b>
+Trace object 'trace0' created. Enable tracing with 'trace0.start'.
+simics&gt; 
+</pre>
+<p>
+Now we are going to trace a few of instructions executed when booting
+<i>Ebony</i>.
+We execute 300 instructions without tracing first to reach a
+sequence of instructions that includes memory accesses:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>continue 300</b>
+[cpu0] v:0xfffff160 p:0x1fffff160  tlbwe r1,r4,1
+simics&gt;  <b>trace0.start</b>
+Tracing enabled. Writing text output to standard output.
+simics&gt;  <b>continue 6</b>
+inst: [    1] CPU  0 &lt;v:0xfffff160&gt; [...] 7c240fa4 tlbwe r1,r4,1
+inst: [    2] CPU  0 &lt;v:0xfffff164&gt; [...] 7c4417a4 tlbwe r2,r4,2
+inst: [    3] CPU  0 &lt;v:0xfffff168&gt; [...] 38840001 addi r4,r4,1
+inst: [    4] CPU  0 &lt;v:0xfffff16c&gt; [...] 4200ffdc bdnz+ 0xfffff148
+inst: [    5] CPU  0 &lt;v:0xfffff148&gt; [...] 84050004 lwzu r0,4(r5)
+data: [    1] CPU  0 &lt;v:0xfffff1b8&gt; [...] Read   1 bytes  0xc0
+data: [    2] CPU  0 &lt;v:0xfffff1b9&gt; [...] Read   1 bytes  0x0
+data: [    3] CPU  0 &lt;v:0xfffff1ba&gt; [...] Read   1 bytes  0x12
+data: [    4] CPU  0 &lt;v:0xfffff1bb&gt; [...] Read   1 bytes  0x10
+inst: [    6] CPU  0 &lt;v:0xfffff14c&gt; [...] 2c000000 cmpwi r0,0
+[cpu0] v:0xfffff150 p:0x1fffff150  beq- 0xfffff170
+simics&gt; 
+</pre>
+<p>
+Lines beginning with <tt>inst:</tt> are executed instructions. Each line
+contains the address (both virtual and physical) and the instruction itself,
+in both hexadecimal form and the mnemonic.
+<p>
+Lines beginning with <tt>data:</tt> indicate that some instructions are
+performing memory operations. Each line contains the operation address (again,
+both virtual and physical), the type of operation (read or write), the size
+and the value.
+<p>
+<hr class="jdocu_note"><b>Note:</b> In the trace you can
+see one four-byte memory read that is split into four single-byte reads.
+This reflects how Simics models the accesses to the flash memory it
+reads from.<hr class="jdocu_note">
+<p>
+It is also possible to only trace accesses to a certain device. This
+is done with the <b>trace-io</b> command. In this example we
+are looking at in the interaction with the UART device.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>trace0.stop</b>
+Tracing disabled
+simics&gt;  <b>trace-io uart0</b>
+simics&gt;  <b>continue 30_000</b>
+[cpu0 -&gt; uart0] Write: 0x140000203 1 0x80
+[cpu0 -&gt; uart0] Write: 0x140000200 1 0x48
+[cpu0 -&gt; uart0] Write: 0x140000201 1 0
+[cpu0 -&gt; uart0] Write: 0x140000203 1 0x3
+[cpu0 -&gt; uart0] Write: 0x140000202 1 0
+[cpu0 -&gt; uart0] Write: 0x140000204 1 0
+[cpu0 -&gt; uart0] Read: 0x140000205 1 0x60
+[cpu0 -&gt; uart0] Read: 0x140000200 1 0
+[cpu0 -&gt; uart0] Write: 0x140000207 1 0
+[cpu0 -&gt; uart0] Write: 0x140000201 1 0
+[cpu0 -&gt; uart0] Read: 0x140000205 1 0x60
+[cpu0 -&gt; uart0] Write: 0x140000200 1 0xd
+[cpu0 -&gt; uart0] Read: 0x140000205 1 0
+[cpu0] v:0xfff8a634 p:0x1fff8a634  bl 0xfff8a608
+simics&gt; 
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> You can use underscores anywhere in numbers to make them
+more readable. The underscores have no other meaning and are ignored when
+the number is read.<hr class="jdocu_note">
+<p>
+<b>trace-cr</b> turns on tracing of changes in the processor's
+control registers.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>untrace-io uart0</b>
+simics&gt;  <b>trace-cr -all</b>
+simics&gt;  <b>continue 6_500_000</b>
+[cpu0] tcr &lt;- 0
+[cpu0] dec &lt;- 0
+[cpu0] decar &lt;- 0
+[cpu0] tsr &lt;- 0x8000000
+[cpu0] decar &lt;- 0x51615
+[cpu0] dec &lt;- 0x51615
+[cpu0] tcr &lt;- 0x4400000
+[cpu0] ivpr &lt;- 0
+[cpu0] msr &lt;- 0x29000
+[cpu0] msr &lt;- 0
+[...]
+[cpu0] [cpu0] v:0x07fd8634 p:0x007fd8634  bl 0x7fd8608
+simics&gt; 
+</pre>
+<p>
+We can single-step with the <i>-r</i> flag,
+to see what registers each instruction changes.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>untrace-cr -all</b>
+simics&gt;  <b>step-instruction -r 10</b>
+[cpu0] v:0x07fd8608 p:0x007fd8608  mftbu r3
+[cpu0] v:0x07fd860c p:0x007fd860c  mftbl r4
+        r4 &lt;- 6529678
+[cpu0] v:0x07fd8610 p:0x007fd8610  mftbu r5
+[cpu0] v:0x07fd8614 p:0x007fd8614  cmpw r3,r5
+[cpu0] v:0x07fd8618 p:0x007fd8618  bne+ 0x7fd8608
+[cpu0] v:0x07fd861c p:0x007fd861c  blr
+[cpu0] v:0x07fd8638 p:0x007fd8638  subfc r4,r4,r7
+        r4 &lt;- 1384
+[cpu0] v:0x07fd863c p:0x007fd863c  subfe. r3,r3,r6
+[cpu0] v:0x07fd8640 p:0x007fd8640  bge+ 0x7fd8634
+[cpu0] v:0x07fd8634 p:0x007fd8634  bl 0x7fd8608
+simics&gt; 
+</pre>
+<p>
+Simics can also monitor exceptions. Here we will trace all system calls.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>trace-exception System_call</b>
+simics&gt;  <b>c</b>
+[cpu0] (@ cycle 203963506) Exception 8: System_call
+[cpu0] (@ cycle 205608905) Exception 8: System_call
+[cpu0] (@ cycle 205617423) Exception 8: System_call
+[...]
+<b>[control-C]</b>
+[cpu0] v:0xc01bc12c p:0x0001bc12c  addi r10,r10,1
+simics&gt;  <b>untrace-exception -all</b>
+simics&gt; 
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> 
+There are variants of <b>trace-io</b>, <b>trace-cr</b> and
+<b>trace-exception</b> that will stop the simulation
+when respective event occur.
+These commands begin with <b>break-</b>.
+<hr class="jdocu_note">
+<p>
+Why do we need to create an object to trace instructions? This is because
+the tracing should be easy to customize to your needs. By changing some
+attributes, it is possible to choose what to trace on, and control the
+output format. You can also build your own tracer based on the source
+of this tracer. All attributes are described in the Reference Manual.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+</body>
+</html>

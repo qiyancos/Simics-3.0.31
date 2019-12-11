@@ -1,0 +1,21 @@
+#
+# telos-mote-system.include
+#
+# This file sets up the hardware of a single mote (it is a simics command file)
+#
+# Configuration parameters, typically preset from other files:
+#
+if not defined freq_mhz      {$freq_mhz    = 1}
+if not defined location_x    {$location_x  = 0}
+if not defined location_y    {$location_y  = 0}
+if not defined location_z    {$location_z  = 0}
+if not defined mote_name     {$mote_name = "mote"}
+
+import-std-components
+import-telos-mote-components
+
+$system = (create-telos-mote  name = $mote_name
+			      cpu_frequency = $freq_mhz
+			      location_x = $location_x
+			      location_y = $location_y
+			      location_z = $location_z)

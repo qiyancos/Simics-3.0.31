@@ -1,0 +1,38 @@
+/*
+ * module_id.c - automatically generated, do not edit
+ */
+
+#include <simics/global.h>
+
+#define __MOD_VERS2(ver) #ver
+#define __MOD_VERS1(ver) __MOD_VERS2(ver)
+#ifdef SUPPRESS_MODULE_VERSION
+ #define MOD_VERS "VER:" __MOD_VERS1(0)
+#else
+ #define MOD_VERS "VER:" __MOD_VERS1(SIM_VERSION_COMPAT)
+#endif
+
+#if defined(USE_DLOPEN_GLOBAL)
+ #define DLOPEN_FLAG "DLOPEN:GLOBAL"
+#else
+ #define DLOPEN_FLAG ""
+#endif
+
+#if defined(USER_VERSION)
+ #define __USR_VERS2(ver) #ver
+ #define __USR_VERS1(ver) __USR_VERS2(ver)
+ #define USR_VER "USRVER:" __USR_VERS1(USER_VERSION)
+#else
+ #define USR_VER ""
+#endif
+#define EXTRA "                                           "
+
+#if !defined(CPUMOD)
+#define CPUMOD ""
+#endif
+
+extern DLL_EXPORT const char _module_capabilities_[];
+const char _module_capabilities_[] = MOD_VERS ";" MODNAME ";" CLASSES ";" 
+                                     DLOPEN_FLAG ";" USR_VER ";" CPUMOD ";"
+                                     EXTRA ;
+const char _module_date[] = "__MODULE_DATE__";

@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>server-console</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1759, true);
+</script>
+<a name="label13696"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic360.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic362.html">Next</a></span></p>
+<h3 class="jdocu">server-console</h3 class="jdocu">
+
+
+<a name="label13697"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2878">server-console-c</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>server-console</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic527.html#label17942">serial_device</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+Class allowing telnet access to a simulated serial port.
+
+</dd>
+
+</dl>
+<a name="label13698"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>break_string</i></b></dt><a name="label13699"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>s|[[s[i]+]*]</b>.
+<p>
+An output string causing Simics to trigger a Xterm_Break_String hap when the string is printed.</dd></dl>
+<dl><dt><b><i>break_string_id</i></b></dt><a name="label13700"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>string</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+Return an id for a string that is set to break on. The id can be used as index for the Xterm_Break_String hap.</dd></dl>
+<dl><dt><b><i>buffer_until_connection</i></b></dt><a name="label13701"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If non-zero, the console will buffer any output until a client connects. If zero, such output will be discarded.</dd></dl>
+<dl><dt><b><i>data_in</i></b></dt><a name="label13702"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>.
+<p>
+Characters received by the server but not yet delivered to the simulated serial port.</dd></dl>
+<dl><dt><b><i>device</i></b></dt><a name="label13703"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Serial device the server is connected to.</dd></dl>
+<dl><dt><b><i>input</i></b></dt><a name="label13704"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|[di]</b>.
+<p>
+Keyboard input queue.</dd></dl>
+<dl><dt><b><i>input_delayed</i></b></dt><a name="label13705"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>[sf]</b>.
+<p>
+(string, seconds) This attribute appends characters to the input queue, after the specified simulated time have elapsed.</dd></dl>
+<dl><dt><b><i>input_next</i></b></dt><a name="label13706"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Position in the keyboard input queue where new input is stored.</dd></dl>
+<dl><dt><b><i>output_buffer</i></b></dt><a name="label13707"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>.
+<p>
+Characters transmitted by the simulated serial port, but not yet written out by the server. If buffer_until_connection is non-zero, then this attribute contains everything written out on the simulated serial port.</dd></dl>
+<dl><dt><b><i>output_file</i></b></dt><a name="label13708"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+If <tt>no-window</tt> is set, output will be directed to this file.</dd></dl>
+<dl><dt><b><i>port</i></b></dt><a name="label13709"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TCP port for server.</dd></dl>
+<dl><dt><b><i>raw</i></b></dt><a name="label13710"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to nonzero, will not interpret telnet escapes or otherwise change the bytes transmitted in either direction.</dd></dl>
+<dl><dt><b><i>recorded_string</i></b></dt><a name="label13711"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The characters that have been recorded when the attribute <i>recording</i> is <i>true</i>. Note that the recorded string will NOT be cleared when <i>recording</i> is reset.</dd></dl>
+<dl><dt><b><i>recording</i></b></dt><a name="label13712"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+When enabled, all characters written to the console will be recorded. The record can be read from the attribute <i>recorded-string</i>.</dd></dl>
+<dl><dt><b><i>unbreak_id</i></b></dt><a name="label13713"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Remove breakpoint based on breakpoint id.</dd></dl>
+<dl><dt><b><i>unbreak_string</i></b></dt><a name="label13714"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>String</b>.
+<p>
+Stop breaking on a specified string. Note that if a string is added several times, it also has to be removed the same number of times. I.e. if a hap callback is tied to a string and does not want to be called again, it should both remove the string and unregister the hap callback, since another hap callback may want to break on the same string again.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label13715"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13717">break</a></b></td><td class="jdocu_noborder">set a string to break on</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13719">capture-start</a></b></td><td class="jdocu_noborder">capture output to file</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13721">capture-stop</a></b></td><td class="jdocu_noborder">stop output capture to file</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13723">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13725">input</a></b></td><td class="jdocu_noborder">send string to a console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13727">input-file</a></b></td><td class="jdocu_noborder">input a file into a console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13729">kbd-abort</a></b></td><td class="jdocu_noborder">send a keyboard abort signal</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13731">list-break-strings</a></b></td><td class="jdocu_noborder">list all strings the console will break on</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13733">playback-start</a></b></td><td class="jdocu_noborder">start traffic generator</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13735">playback-stop</a></b></td><td class="jdocu_noborder">stop traffic generation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13737">record-start</a></b></td><td class="jdocu_noborder">start recording of output on the console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13739">record-stop</a></b></td><td class="jdocu_noborder">stop recoding of output on the console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13741">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13743">switch-to-serial-link</a></b></td><td class="jdocu_noborder">replace server-console with serial link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13745">switch-to-text-console</a></b></td><td class="jdocu_noborder">replace server console with text console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13747">unbreak</a></b></td><td class="jdocu_noborder">stop breaking on string</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13749">unbreak-id</a></b></td><td class="jdocu_noborder">remove a breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label13751">wait-for-string</a></b></td><td class="jdocu_noborder">wait for a string in a script branch</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label13716"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label13717"></a><a name="label13718"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.break</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.break</b> <i>"string"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set a string to break on for the console. The simulation will stop
+when this string is written on the console. If text output is intermixed
+with control sequences for colors/positioning, the break command may
+fail breaking on the string.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15238">&lt;text-console&gt;.unbreak</a>, <a class="jdocu" href="topic446.html#label15214">&lt;text-console&gt;.list-break-strings</a></dd>
+
+</dl>
+
+
+
+<a name="label13719"></a><a name="label13720"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.capture-start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.capture-start</b> <i>filename</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Capture all output from the console to a file.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15194">&lt;text-console&gt;.capture-stop</a></dd>
+
+</dl>
+
+
+
+<a name="label13721"></a><a name="label13722"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.capture-stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.capture-stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop capturing all output from the console.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15192">&lt;text-console&gt;.capture-start</a></dd>
+
+</dl>
+
+
+
+<a name="label13723"></a><a name="label13724"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label13725"></a><a name="label13726"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.input</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.input</b> <i>"string"</i> [<i>delay</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Send string to a text console. The text is delayed by default, to wait
+for the simulated software to be ready after a previous break on string.
+To input the string immediately, specify delay = 0</dd>
+
+</dl>
+
+
+
+<a name="label13727"></a><a name="label13728"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.input-file</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.input-file</b> <i>file</i> [-binary] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Inputs the contents of <i>file</i> into the text console.  If the <i>-binary</i>
+flag is specified, the file is treated as a binary file.</dd>
+
+</dl>
+
+
+
+<a name="label13729"></a><a name="label13730"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.kbd-abort</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.kbd-abort</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Send a serial line abort signal to the attached device.
+This is only useful when the text-console is connected
+to a serial device.</dd>
+
+</dl>
+
+
+
+<a name="label13731"></a><a name="label13732"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.list-break-strings</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.list-break-strings</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print a listing of all strings that the console will break on.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="topic446.html#label15238">&lt;text-console&gt;.unbreak</a></dd>
+
+</dl>
+
+
+
+<a name="label13733"></a><a name="label13734"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.playback-start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.playback-start</b> <i>filename</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Starts generating bus traffic from a specified file. The file should consist of data and delay specifications in a "command: data" format. Examples:
+<b>Delay: 0.345</b> will delay 345 milliseconds
+<b>Hexdata: 72 6f 6f 74 0a</b> will send the string "root\n" to the connected device. Unrecognised lines are ignored.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label13735">&lt;server-console&gt;.playback-stop</a></dd>
+
+</dl>
+
+
+
+<a name="label13735"></a><a name="label13736"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.playback-stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.playback-stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop bus traffic generation previously started with playback-start.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label13733">&lt;server-console&gt;.playback-start</a></dd>
+
+</dl>
+
+
+
+<a name="label13737"></a><a name="label13738"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.record-start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.record-start</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Start recording of output on the console. All previously
+recorded output will be discarded. The recorded string can
+be read with the <b>record-stop</b> command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15230">&lt;text-console&gt;.record-stop</a></dd>
+
+</dl>
+
+
+
+<a name="label13739"></a><a name="label13740"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.record-stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.record-stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop recording of output on the console, and return the recorded string.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15228">&lt;text-console&gt;.record-start</a></dd>
+
+</dl>
+
+
+
+<a name="label13741"></a><a name="label13742"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+
+<a name="label13743"></a><a name="label13744"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.switch-to-serial-link</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.switch-to-serial-link</b> <i>"linkname"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Replace the server-console with a serial link. Another serial port, possibly
+            in another Simics session can connect to the other end of the link.</dd>
+
+</dl>
+
+
+
+<a name="label13745"></a><a name="label13746"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.switch-to-text-console</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.switch-to-text-console</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Replace the server console with a standard text console.</dd>
+
+</dl>
+
+
+
+<a name="label13747"></a><a name="label13748"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.unbreak</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.unbreak</b> <i>"string"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop breaking on specified string.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="topic446.html#label15214">&lt;text-console&gt;.list-break-strings</a></dd>
+
+</dl>
+
+
+
+<a name="label13749"></a><a name="label13750"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.unbreak-id</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.unbreak-id</b> <i>id</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Remove the breakpoint with specified id.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="topic446.html#label15214">&lt;text-console&gt;.list-break-strings</a></dd>
+
+</dl>
+
+
+
+<a name="label13751"></a><a name="label13752"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;server-console&gt;.wait-for-string</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;server-console&gt;.wait-for-string</b> <i>"string"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Wait for the output of the text <i>string</i> on the
+console. This command can only be run from a script branch
+where it suspends the branch until the string has been
+found in the output.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic446.html#label15190">&lt;text-console&gt;.break</a>, <a class="jdocu" href="topic13.html#label2330">script-branch</a>, <a class="jdocu" href="topic13.html#label2473">wait-for-variable</a>, <a class="jdocu" href="topic13.html#label2471">wait-for-hap</a>, <a class="jdocu" href="topic446.html#label15242">&lt;text-console&gt;.wait-for-string</a>, <a class="jdocu" href="topic523.html#label17926">&lt;processor&gt;.wait-for-cycle</a>, <a class="jdocu" href="topic523.html#label17928">&lt;processor&gt;.wait-for-step</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic360.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic362.html">Next</a></span></p>
+</body>
+</html>

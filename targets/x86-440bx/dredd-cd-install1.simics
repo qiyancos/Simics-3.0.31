@@ -1,0 +1,31 @@
+if `SIM_lookup_file("dredd-install.disk")` {
+    echo "The file 'dredd-install.disk' already exists."
+    echo "Move or delete this file before continuing."
+    echo ""
+    quit 1
+}
+
+$create_network = "yes"
+$disk_image = ""
+@disk_files = [["dredd-install.disk", "rw", 0, 20496236544]]
+
+run-command-file "%script%/dredd-common.simics"
+
+# TODO:
+run-python-file "%simics%/home/scripts/cdrom_bootloader.py"
+@install_cdrom_bootloader((conf.cpu0,))
+
+echo ""
+echo "################### OS installation phase 1"
+echo ""
+echo "Now insert boot CD-ROM using:"
+echo ""
+echo "simics> new-file-cdrom <iso-file>"
+echo "cdrom '<iso-object>' created"
+echo "simics> cd0.insert <iso-object>"
+echo ""
+echo "Where <iso-file> is the name of the CD-ROM image, and <iso-object> is"
+echo "the CD-ROM object created by the 'new-file-cdrom' command."
+echo ""
+echo "###################"
+echo ""

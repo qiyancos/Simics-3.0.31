@@ -1,0 +1,41 @@
+# -*- shell-script -*-
+# Common host-defaults. Loaded *before* host-defaults.<host-type>.
+# Contains host-defaults common to all host platforms.
+
+# Be very careful about what variables are set here!
+
+# ------------------------------------------------------------
+# Libraries
+# ------------------------------------------------------------
+: ${LIBPATH="/usr/local/lib:/usr/lib:$HOST_DIR/sys/lib"}
+
+# ------------------------------------------------------------
+# Tools.
+# ------------------------------------------------------------
+if test $simics_distrib = yes; then
+    : ${TOOLPATH="$HOST_DIR/sys/bin:/usr/local/bin"}
+else
+    : ${TOOLPATH="/usr/local/bin"}
+fi
+
+# ------------------------------------------------------------
+# Package paths
+# ------------------------------------------------------------
+: ${PACKAGE_PATH="/home/packages"}
+
+# These things are *fixed* for a given platform.
+DIR_SEP="/"
+PATH_SEP=":"
+
+SO_PREFIX="lib"
+SO_SFX="so"
+
+# ------------------------------------------------------------
+# FlexLM
+# ------------------------------------------------------------
+FLEXLM_LMGR=liblmgr.a
+FLEXLM_LMNEW=lm_new.o
+
+# No Python stuff here anymore. If you want to change the Python version
+# Simics uses, you need to change in each host-defaults.<host>.
+

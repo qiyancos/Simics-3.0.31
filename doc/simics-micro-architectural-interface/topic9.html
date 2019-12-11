@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Creating the Instruction Tree</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(30, true);
+</script>
+<a name="label109"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+<h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;Creating the Instruction Tree</h3 class="jdocu">
+
+
+<p>
+<a name="label110"></a>
+As stated previously, the state for an instruction in the out-of-order
+window is maintained in an Instruction Tree. Instructions in the tree
+are identified by an instruction id which is returned when the data
+structures for the instruction are allocated through the API function
+<b><i><a name="label111">SIM_instruction_begin</a></i></b>. All API functions that operate on an
+instruction take the instruction id as parameter.
+<p>
+Once an instruction is created with <b><i><a name="label112">SIM_instruction_begin</a></i></b>
+it can be inserted into the instruction tree with
+<b><i><a name="label113">SIM_instruction_insert</a></i></b>. This function takes the id of the
+instruction to insert and the id of a parent instruction.  If the
+parent instruction already has a child the new instruction will be
+added as an additional child, thus creating a branch in the tree.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+</body>
+</html>

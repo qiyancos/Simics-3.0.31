@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>apic_cpu</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2224, true);
+</script>
+<a name="label17690"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic487.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic489.html">Next</a></span></p>
+<h3 class="jdocu">apic_cpu</h3 class="jdocu">
+
+
+<a name="label17691"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic24.html#label3340">apic</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Interface to read and write the task priority register. Only used
+   on x86-64 where the task priority register is both a cpu register
+   (CR8) and a register in the local apic.
+<p>
+   
+<pre class="jdocu_small" style="color: black">struct apic_cpu_interface {
+        uint64 (*tpr_r)(conf_object_t *NOTNULL obj);
+        void (*tpr_w)(conf_object_t *NOTNULL obj, uint64 tpr);
+        void (*init)(conf_object_t *NOTNULL obj);
+};</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic487.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic489.html">Next</a></span></p>
+</body>
+</html>

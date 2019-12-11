@@ -1,0 +1,362 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Script Support in CLI</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(91, true);
+</script>
+<a name="label189"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic35.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+<h4 class="jdocu">8.1&nbsp;&nbsp;&nbsp;Script Support in CLI</h4 class="jdocu">
+
+
+<a name="label190"></a>
+<a name="label191"></a><h5 class="jdocu">8.1.1&nbsp;&nbsp;&nbsp;Variables</h5 class="jdocu">
+
+
+<a name="label192"></a>
+<a name="label193"></a>
+The Simics command line has support for string and integer variables. Variables
+are always prefixed with the $ character. Variables that are not set have
+a value of 0.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$foo = "some text"</b>
+simics&gt; <b>$foo</b>
+some text
+simics&gt; <b>echo $not_used_before</b>
+0
+</pre>
+<p>
+There is also support for indexed variables (arrays). This is useful in loops
+for example.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$foo[0] = 10</b>
+simics&gt; <b>$foo[1] = 20</b>
+simics&gt; <b>echo $foo[0] + $foo[1]</b>
+30
+</pre>
+<p>
+CLI also has support for local variables, described later in this chapter.
+<p>
+
+<a name="label194"></a><h5 class="jdocu">8.1.2&nbsp;&nbsp;&nbsp;Command Return Values</h5 class="jdocu">
+
+
+The return value of a command is printed on the console, unless it is used as
+argument to some other command. Parenthesis () are used to group a command
+with arguments together, allowing the return value to be used as argument. The
+return value can also be used as name-space in another command. Variables can
+be used in the same way.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$address = 0</b>
+simics&gt; <b>set $address 20</b>
+simics&gt; <b>echo "The Value at address " + $address + " is " + (get $address)</b>
+The Value at address 0 is 20
+
+simics&gt; <b>$id = 0</b>
+simics&gt; <b>("cpu" + $id).print-time</b>
+processor                 steps             cycles    time [s]
+cpu0                          0                  0         0.0
+
+simics&gt; <b>$cpu = cpu0</b>
+simics&gt; <b>$cpu.print-time</b>
+processor                 steps             cycles    time [s]
+cpu0                          0                  0         0.0
+</pre>
+<p>
+
+Parenthesis can also be used to enter a multi-line command, making it easier
+to read scripts with nested command invocations.
+In the text console, the prompt will change to
+<tt>.......</tt> for code spanning more than one line. 
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>(echo 10</b>
+....... <b>      + (20 - 5)</b>
+....... <b>      + (max 4 7))</b>
+.......
+32
+</pre>
+<p>
+
+<a name="label195"></a><h5 class="jdocu">8.1.3&nbsp;&nbsp;&nbsp;Control Flow Commands</h5 class="jdocu">
+
+<a name="label196"></a>
+<a name="label197"></a>
+<a name="label198"></a>
+<a name="label199"></a> 
+
+The script support in CLI has support for standard <b>if</b>,
+<b>else</b> and <b>while</b> statements.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$value = 10</b>
+simics&gt; <b>if $value &gt; 5 { echo "Larger than five!" }</b>
+Larger than five!
+</pre>
+The <b>if</b> statement has a return value:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$num_cpus = 2</b>
+simics&gt; <b>(if $num_cpus &gt; 1 { "multi" } else { "single" }) + "-pro"</b>
+multi-pro
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Multi-line <b>if-else</b> statements must have <tt>} else {</tt> on
+the same line.<hr class="jdocu_note">
+<p>
+It is also possible to have else followed by another if statement.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>if $b == 1 {</b>
+....... <b>    echo 10</b>
+....... <b>} else if $b == 0 {</b>
+....... <b>    echo 20</b>
+....... <b>} else {</b>
+....... <b>    echo 30</b>
+....... <b>}</b>
+.......
+20
+</pre>
+<p>
+Loops can be written with the <b>while</b> command.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$loop = 3</b>
+simics&gt; <b>while $loop {</b>
+....... <b>    echo $loop</b>
+....... <b>    $loop -= 1</b>
+....... <b>}</b>
+.......
+3
+2
+1
+</pre>
+<p>
+<a name="label200"></a>
+<a name="label201"></a>
+In <b>if</b> and <b>while</b> statements, it can be useful to have
+variables that are local to the scope and thus do not collide with the names of
+global variables. By adding <b>local</b> before the first assignment of a
+variable, the variable is made local.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>$global = 10</b>
+simics&gt; <b>if 1 &gt; 0 {</b>
+....... <b>    local $global = 20</b>
+....... <b>    echo $global</b>
+....... <b>}</b>
+....... <b>echo $global</b>
+20
+10
+</pre>
+
+<a name="label202"></a><h5 class="jdocu">8.1.4&nbsp;&nbsp;&nbsp;Integer Conversion</h5 class="jdocu">
+
+
+In some cases it is useful to interpret an integer as a signed value of a
+specific bit size, for example when reading four bytes from memory that should
+be interpreted as a signed 32 bit integer. The <b>signed8</b>,
+<b>signed16</b>, ..., <b>signed64</b>  commands can be used in to
+perform the conversion.
+argument.
+<pre class="jdocu_small" style="color: black">
+simics&gt; phys_mem.set 0 0xffffffff 4
+simics&gt; phys_mem.get 0 4
+4294967295
+simics&gt; signed32 (phys_mem.get 0 4)
+-1
+</pre>
+
+<a name="label203"></a><h5 class="jdocu">8.1.5&nbsp;&nbsp;&nbsp;Accessing Configuration Attributes</h5 class="jdocu">
+
+
+<a name="label204"></a>
+<a name="label205"></a>
+Simics configuration attributes that are of string and integer type can be
+accessed directly from CLI using the <b><tt>-&gt;</tt></b> operator.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>echo "Will switch cpu every " + (sim-&gt;cpu_switch_time) + " cycles"</b>
+Will switch cpu every 1000000 cycles
+</pre>
+<p>
+
+<a name="label206"></a><h5 class="jdocu">8.1.6&nbsp;&nbsp;&nbsp;Script Branches</h5 class="jdocu">
+
+
+<a name="label207"></a>
+<a name="label208"></a>
+<a name="label209"></a><h6 class="jdocu">8.1.6.1&nbsp;&nbsp;&nbsp;Introduction to Script Branches</h6 class="jdocu">
+
+
+Script branches allow the user to write sequences of CLI commands that can wait
+for Simics haps at anytime without breaking the sequential flow of commands.
+This is typically used to avoid breaking a script into many small sections,
+each installed as a hap callback written in Python.
+<p>
+A simple example from a Simics script:
+<p>
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    echo "This is a script branch test - going to sleep."
+    cpu0.wait-for-step 10
+    echo "Processor registers after 10 steps:"
+    cpu0.pregs
+}
+</pre>
+<p>
+The example above will execute the first <b>echo</b> command at once, and
+then go to sleep waiting until the first 10 instructions (steps) have run.
+When the step counter for <b>cpu0</b> has reached 10, the branch will wake
+up and run the next two commands, <b>echo</b> and <b>pregs</b>.
+<p>
+Some commands can not be run while Simics is executing. One example is the
+<b>write-configuration</b> command. To issue such commands from a script
+branch, it is possible to stop the execution, issue the command and then
+resume the simulation. The following is an example that writes a checkpoint
+when the simulation reaches a login prompt, and then continues running. It
+assumes that a text-console called <tt>con0</tt> is used.
+<p>
+<a name="label210"></a>
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    con0.wait-for-string login
+    stop
+    write-configuration login.conf
+    run
+}
+</pre>
+
+<a name="label211"></a><h6 class="jdocu">8.1.6.2&nbsp;&nbsp;&nbsp;Waiting for Haps in Script Branches</h6 class="jdocu">
+
+
+<a name="label212"></a>
+A common use of script branches is to wait for a hap to occur before
+continuing the script execution. Most haps have some data associated with them,
+such as the exception number for the <tt>Core_Exception</tt> hap used in the
+example below. This data can be accessed from CLI by telling the
+<b>wait-for-hap</b> command to save it into a named indexed variable with
+local scope. See the hap documentation for information on what data is
+associated with each hap type.
+<a name="label213"></a>
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    wait-for-hap Core_Exception info
+    echo "Processor " + $info[0] + " got exception " + $info[1]
+}
+</pre>
+
+<a name="label214"></a><h6 class="jdocu">8.1.6.3&nbsp;&nbsp;&nbsp;How Script Branches Work</h6 class="jdocu">
+
+
+<p>
+<a name="label215"></a>
+When a script branch is started (using <b>script-branch</b>), it begins
+executing immediately, and runs until a <b>wait-for-</b>, command is
+issued. Execution is then resumed in the main script; i.e., there is never any
+concurrent activity. When a hap, or some other activity, occurs that a script
+branch is waiting for, the branch continues executing once the currently
+simulated instruction is ready.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Since only one branch can be active at once, any callback to Python from
+Simics will execute in the currently active branch, i.e., if a branch installs
+a callback, it is most likely that it will be called when the main branch is
+active.<hr class="jdocu_note">
+<p>
+
+<a name="label216"></a><h6 class="jdocu">8.1.6.4&nbsp;&nbsp;&nbsp;Script Branch Commands</h6 class="jdocu">
+
+
+<a name="label217"></a>
+The following is a list of the commands related to script branches.
+<p>
+<dl><dt><b><b>script-branch</b></b></dt><dd>Create a new script branch and start it.</dd><dt><b><b><a name="label218">list-script-branches</a></b></b></dt><dd>List all existing, but suspended, branches.</dd><dt><b><b><a name="label219">interrupt-script-branch</a></b></b></dt><dd>Interrupt a script-branch, causing it to exit.</dd><dt><b><b><a name="label220">wait-for-hap</a></b> <i>hap</i> [<i>object</i>]
+        [<i>index|range-start</i>] [<i>range-end</i>]</b></dt><dd>Suspend branch waiting for a hap to occur.</dd><dt><b><b><a name="label221">wait-for-variable</a></b> <i>variable</i></b></dt><dd>Suspend branch until a specified CLI variable is modified. This can
+            be used for synchronization between script branches.</dd><dt><b><a name="label222"></a><b>&lt;processor&gt;.wait-for-cycle</b> <i>cycle</i></b></dt><dd>Suspend branch until the specified <i>cycle</i> on the
+            processor has been reached.</dd><dt><b><a name="label223"></a><b>&lt;processor&gt;.wait-for-step</b> <i>step</i></b></dt><dd>Suspend branch until the specified <i>step</i> on the
+            processor has been reached.</dd><dt><b><a name="label224"></a><b>&lt;text-console&gt;.wait-for-string</b> <i>string</i></b></dt><dd>Suspend branch until <i>string</i> is printed
+            on the text console.</dd></dl>
+<p>
+<a name="label225"></a><h6 class="jdocu">8.1.6.5&nbsp;&nbsp;&nbsp;Variables in Script Branches</h6 class="jdocu">
+
+
+<a name="label226"></a>
+<a name="label227"></a>
+<a name="label228"></a>
+Variable references in CLI are evaluated when accessed. This is important to
+remember when writing script branches, since some commands are executed when
+the branch has been suspended, and variables may have been changed. To make
+sure that CLI variables in script branches are untouched by other scripts,
+they should be made local.
+<p>
+The following example
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    $foo = 20
+    cpu0.wait-for-step 10
+    echo "foo is " + $foo
+}
+$foo = 15
+run
+</pre>
+will produce the output <tt>foo is 15</tt> while the following script will
+print <tt>foo is 20</tt>.
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    local $foo = 20
+    cpu0.wait-for-step 10
+    echo "foo is " + $foo
+}
+$foo = 15
+run
+</pre>
+<p>
+
+<a name="label229"></a><h6 class="jdocu">8.1.6.6&nbsp;&nbsp;&nbsp;Canceling Script Branches</h6 class="jdocu">
+
+
+It is possible to cancel a suspended script branch by interrupting it using the
+<b>interrupt-script-branch</b> command. Each branch has an ID associated
+that can be found using <b>list-script-branches</b>, and that is returned
+by the <b>script-branch</b> command.
+<pre class="jdocu_small" style="color: black">
+$id = (script-branch {
+    wait-for-variable trigger
+})
+
+...
+
+simics&gt; interrupt-script-branch $id
+Command 'wait-for-variable' interrupted.
+Script branch 1 interrupted.
+</pre>
+
+<a name="label230"></a><h6 class="jdocu">8.1.6.7&nbsp;&nbsp;&nbsp;Script Branch Limitations</h6 class="jdocu">
+
+
+<p>
+There are some limitations to script branches. The first two in the list are
+enforced by Simics:
+<p>
+<ul>
+<p>
+<li>Script branches may not start new branches.</li>
+<p>
+<li>The main branch may not issue the <b>wait-for-</b> commands.</li>
+<p>
+<li>Breaking the simulation with multiple control-C, which forces Simics back
+to prompt, may confuse the Python interpreter about what thread is active.
+(Interrupting Simics this way typically destroy the simulation state anyway.)
+</li>
+<p>
+</ul>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic35.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+</body>
+</html>

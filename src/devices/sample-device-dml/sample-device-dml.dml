@@ -1,0 +1,61 @@
+/*
+  sample-device-dml.dml - sample DML code for a Simics device
+
+  Copyright 2005-2007 Virtutech AB
+
+  The contents herein are Source Code which are a subset of Licensed
+  Software pursuant to the terms of the Virtutech Simics Software
+  License Agreement (the "Agreement"), and are being distributed under
+  the Agreement.  You should have received a copy of the Agreement with
+  this Licensed Software; if not, please contact Virtutech for a copy
+  of the Agreement prior to using this Licensed Software.
+
+  By using this Source Code, you agree to be bound by all of the terms
+  of the Agreement, and use of this Source Code is subject to the terms
+  the Agreement.
+
+  This Source Code and any derivatives thereof are provided on an "as
+  is" basis.  Virtutech makes no warranties with respect to the Source
+  Code or any derivatives thereof and disclaims all implied warranties,
+  including, without limitation, warranties of merchantability and
+  fitness for a particular purpose and non-infringement.
+
+*/   
+
+// Use this file as a skeleton for your own device implementation in DML.
+dml 1.0;
+device sample_device_dml;
+
+parameter documentation =
+    "This is a dummy device that can be used as a starting point when "
+    + "writing new devices for Simics in DML. The source code can be "
+    + "found in <tt>[simics]/src/devices/sample-device-dml</tt>.";
+
+import "io-memory.dml";
+import "simple-interface.dml";
+
+implement simple {
+    method simple_function() {
+	log "info": "simple_function() was called";
+    }
+}
+
+attribute a {
+    parameter allocate_type = "int32";
+    method after_set() {
+	log "info": "attribute a was set";
+    }
+}
+
+bank b {
+    parameter function = 0;
+    parameter register_size = 4;
+    register r @ 0x0000 {
+	method after_read(generic_transaction_t *memop) {
+	    log "info": "read from r";
+	}
+	method after_write(generic_transaction_t *memop) {
+	    log "info": "write to r";
+	}
+    }
+}

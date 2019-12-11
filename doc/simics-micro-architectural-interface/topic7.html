@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>The Micro-Architectural Interface</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(28, true);
+</script>
+<a name="label104"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;The Micro-Architectural Interface</h2 class="jdocu">
+
+
+<p>
+The Micro-Architectural Interface allows the user module to specify
+all actions a processor should take during one clock cycle. This gives
+the user total control of the scheduling and latencies of the
+different instruction phases described earlier. The module is of
+course not limited to these phases alone, it has full freedom to add
+its own phases or pipeline stages. The simulation is driven forward by
+calling API functions that will pass instructions through the
+different phases.  It is up to the user module to decide <em>when</em>
+things should happen while Simics will still perform <em>what</em>
+should happen. This allows the user to concentrate on the timing
+aspects of the processor while leaving the functional details to
+Simics.
+<p>
+This extensive API allows the user to control when instruction should
+be fetched, decoded, executed, etc. As described earlier, the active
+instruction state is stored in a tree. This helps the user keep track
+of dependences between instruction and prevents instructions from
+being executed before input data is available.
+<p>
+Complete details of all API functions are documented in appendix <a class="jdocu" href="topic28.html#label316">A</a>.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic8.html#label105" target="main">4.1&nbsp;&nbsp;&nbsp;Cycle Handler</a></p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic9.html#label109" target="main">4.2&nbsp;&nbsp;&nbsp;Creating the Instruction Tree</a></p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic10.html#label114" target="main">4.3&nbsp;&nbsp;&nbsp;Proceeding Instructions</a></p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic11.html#label180" target="main">4.4&nbsp;&nbsp;&nbsp;Discarding Instructions</a></p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic12.html#label189" target="main">4.5&nbsp;&nbsp;&nbsp;Synchronous Instructions</a></p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic13.html#label196" target="main">4.6&nbsp;&nbsp;&nbsp;Limitations in the Simics MAI Implementation</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

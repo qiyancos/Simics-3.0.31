@@ -1,0 +1,11 @@
+#
+# groups
+#
+
+group: common      |           |
+
+#
+# binaries
+#
+
+# <binary>         | common     |

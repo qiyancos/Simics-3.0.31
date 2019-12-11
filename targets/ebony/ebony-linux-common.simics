@@ -1,0 +1,13 @@
+if not defined create_network {}
+
+###
+
+run-command-file "%script%/ebony-system.include"
+
+instantiate-components
+
+$eth_comp = $system
+$eth_cnt = emac0
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/ebony-linux-setup.include"

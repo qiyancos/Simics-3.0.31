@@ -1,0 +1,120 @@
+@if not "do_login"          in dir(): do_login = 1
+@if not "cdrom_path"        in dir(): cdrom_path = ""
+@if not "central_host"      in dir(): central_host = "localhost"
+# one of: none, local, exported and remote
+@if not "central_setup"     in dir(): central_setup = "none"
+@if not "real_network"      in dir(): real_network = 0
+@if not "cpu_spaces"        in dir(): cpu_spaces = 0
+@if not "use_dhcp"          in dir(): use_dhcp = 0
+@if not "ethernet"          in dir(): ethernet = "10:10:10:10:10:24"
+@if not "cpu_freq"          in dir(): cpu_freq = 75
+@if not "cpu_class"         in dir(): cpu_class = "ultrasparc-iii-plus"
+@if not "solaris_version"   in dir(): solaris_version = 9
+
+@from text_console_common import wait_for_string
+
+run-python-file ../scripts/extrapath.py
+
+add-directory "%simics%/import/serengeti"
+
+run-python-file "../scripts/serengeti_conf.py"
+
+@if not "boards" in dir(): boards = { 0 : [[0, 1, 512]]}
+@nodes = boards.keys()
+@nodes.sort()
+
+@for n in nodes:
+    create_serengeti_node(node_no = n, chassis = "DS")
+
+@set_current_node(nodes[0])
+@add_system_console(hostid = 0x80804a6c,
+                    mac_address = ethernet,
+                    tod = "2002-06-02 11:00:00 UTC")
+
+# backward compatibility with 2.2 and older
+@if cpu_class == "ultrasparc-iii+": cpu_class = "ultrasparc-iii-plus"
+
+@for n in nodes:
+    set_current_node(n)
+    for brd in boards[n]:
+        add_cpu_board(board_no = brd[0], num_cpus = brd[1], mb = brd[2], cpu_class = cpu_class, cpu_freq = cpu_freq)
+
+@set_current_node(nodes[0])
+# create one 8 slot pci board
+@add_pci8_board(board_no = 6)
+
+@if cpu_class == "ultrasparc-iii-plus" and solaris_version == 8:
+    print "Solaris 8 does not work with UltraSPARC III Cu (sparc-u3+)."
+    print "Use the sparc-u3 binary instead."
+    SIM_command_has_problem()
+
+# add a hme Ethernet device
+@if solaris_version == 8:
+    # sarek1 was configured with a non-existing hme board
+    add_pci_hme_simple(board_no = 6, slot_no = 0, mac_address = ethernet)
+else:
+    add_pci_hme(board_no = 6, slot_no = 0, mac_address = ethernet)
+
+# add a glm SCSI device
+@add_pci_glm(board_no = 6, slot_no = 5)
+
+@if "sarek_files" in dir(): 
+    print "Using user-specified disk files"
+    pass  # name of install disk in given in variable sarek_files
+          # already. Do not setup special files!
+elif solaris_version == 9:
+    sarek_files = [["sarek2-solaris9.craff", "ro", 0, 2128486400],
+                   ["sarek2.1-extras.craff", "ro", 0, 2128486400]]
+    if use_dhcp:
+        sarek_files += [["sarek2.1.1-dhcp.craff", "ro", 0, 2128486400]]
+elif solaris_version == 8:
+    sarek_files = [["sarek1-solaris8.craff", "ro", 0, 2128486400],
+                   ["sarek1.1-extras.craff", "ro", 0, 2128486400]]
+    if use_dhcp:
+        sarek_files += [["sarek1.1.1-dhcp.craff", "ro", 0, 2128486400]]
+else:
+    print "Unsupported Solaris version %d" % solaris_version
+    SIM_command_has_problem()
+
+@if not "sarek_disk_size"  in dir(): sarek_disk_size = 2128486400
+
+# create a disk on the 'glm' controller.
+@add_scsi_disk(board_no = 6, slot_no = 5, scsi_target = 0,
+               size = sarek_disk_size, files = sarek_files)
+
+@add_scsi_cdrom(board_no = 6, slot_no = 5, scsi_target = 6, file = cdrom_path)
+
+default-port-forward-target 10.10.0.11
+
+run-command-file ../central/central-include.simics
+
+# call the user configuration function before finishing
+@if "user_config" in dir(): user_config()
+
+# simplify some object names
+@rename_object(conf_list, "sd25B_2_0", "sd0")
+@rename_object(conf_list, "sb25B_2",   "sb0")
+@rename_object(conf_list, "hme24B_1",  "hme0")
+@rename_object(conf_list, "glm25B_2",  "glm0")
+
+@if cpu_spaces == 1:
+    create_cpu_spaces()
+
+@finish_configuration()
+
+hme0.connect -auto net0
+
+# use this to get a copy of the configuration
+# @write_configuration(conf_list, "sarek.conf")
+
+# override some default values
+# system.set-prom-env "auto-boot?"   "false"  # stop at the OBP prompt
+# system.set-prom-env "boot-command" "boot disk -rv" # reconfigure devices and enable verbose mode during boot
+
+@def do_boot():
+    wait_for_string(conf.con0, "ogin: ")
+    conf.con0.input = "root\n"
+
+# set do_login to 0 to avoid the automatic login
+@if do_login == 1:
+    start_branch(do_boot)

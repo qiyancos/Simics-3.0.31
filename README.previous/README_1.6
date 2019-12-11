@@ -1,0 +1,377 @@
+NOTES ON 1.6
+============
+
+General:
+--------
+
+This is Simics 1.6. It contains eight target architectures: Alpha, AMD x86-64,
+ARM, IA64, MIPS, PowerPC, UltraSPARC, and x86.
+
+
+Changes between 1.6.4 and 1.6.5
+-------------------------------
+
+ * x86 and PowerPC: Added the halt_steps attribute to the x86, x86-64, and
+   PowerPC CPUs.
+
+ * Improved Solaris 8 and Solaris 9 installation scripts for the donut
+   and sarek simulated machines. 
+
+ * Changes in the vga, voodoo3, and voodoo3-agp classes. Support for split-
+   screen operation and various fixes for tweaked video modes.
+
+ * New x86 bios, version 2.45, fixes problems with int 15h (function E820h) and
+   also includes an 8x8 font at offset FA6Eh.
+
+ * UltraSPARC III+ target only: Support for MAI.
+
+ * x86 and PowerPC: Added the halt_steps attribute to the x86, x86-64, and
+   PowerPC CPUs.
+
+ * UltraSPARC targets only: Access to PCR and PIC control registers improved.
+
+ * The output-radix command was added to allow changing how Simics prints
+   numbers by default.
+
+ * UltraSPARC targets only: Setup fixes in the 'sarek-1p-emb.simics' and
+   'sarek-2p-emb.simics' scripts.
+
+Changes between 1.6.3 and 1.6.4
+-------------------------------
+
+ * Bug fix: SIM_dump_caches() now flushes all STCs correctly.
+
+ * Bug fix: Using the <image>.limit-memory command could cause incorrect
+   simulation in previous 1.6 versions.
+
+ * X86 target only: Bug fix in 'no-acpi' configuration scripts.
+
+ * UltraSPARC target only: Reserved fields checked in flush, shift, shutdown,
+   fzero, fzeros, fone and fones.
+
+ * Serengeti target only: Bug fix in memory setup for multiple boards.
+
+
+Changes between 1.6.2 and 1.6.3
+-------------------------------
+
+ * Missing files in the import directory added.
+
+ * X86 target only: CD-ROM boot bug fix.
+
+ * X86 target only: Example code for TLB included.
+
+ * UltraSPARC target only: Reserved fields checked in all instructions.
+
+ * UltraSPARC target only: ASI memory access bug fix (only in 1.6.2).
+
+ * UltraSPARC target only: Correct disassembly of trap instructions.
+
+
+Changes between 1.6.1 and 1.6.2
+-------------------------------
+
+ * UltraSPARC target only: User decoder flush bug fixed.
+
+ * UltraSPARC target only: Reserved fields checked in several instructions.
+
+ * Memory leak when reading attributes in configuration objects from Python
+   fixed.
+
+ * UltraSPARC target only: Minor floating point fixes.
+
+ * UltraSPARC target only: W bit is set in the D-SFSR register for errors on
+   the read in part an atomic transaction.
+
+ * IA64 target only: Added missing pfalz-common.simics file.
+
+ * UltraSPARC III+ target only: Bug fix for multiple page sizes in the TLBs.
+
+ * X86 target only: Added 'fernwilter' simulated machine that demonstrates
+   kernel-level debugging and ethernet network fault injection. This machine
+   requires additional disk dumps and files to be downloaded.
+
+
+Changes between 1.6.0 and 1.6.1
+-------------------------------
+
+ * UltraSPARC Micro-Architecture: three instructions switch from synch. 1 mode
+   to synch. 2 mode (done, retry, wrpstate). Fix to handle synch. 2 mode
+   instructions in sample-micro-arch. Solaris boots again on Simics MAI +
+   sample-micro-arch.
+
+ * Checkpointing bug fix in the ISP2200 device.
+
+ * UltraSPARC III target only: Checkpoint determinism fixes.
+
+ * X86 target only: Fixed assertion error in piix4 device when running from
+   checkpoint of dual machine configuration.
+
+ * The NS16450 and NS16550 serial devices now accept keyboard breaks from the
+   text-console (con0.kbd-break command).
+
+ * Solaris host only: added missing compiler run-time library.
+
+ * UltraSPARC target only: Fix for a rare "branch in delay slot" bug.
+
+ * The old API is correctly default in the (Python) frontend. Note that several
+   machine setup scripts use the new 2.0 API. The old API can be selected again
+   with the following Python line: "from simics_1_4_api import *".
+
+ * Bug fix: xterm-console works properly when many files are open.
+
+ * PPC target only: The 'orange' simulated machine has been updated with a SCSI
+   disk configuration. The new setup requires new additional files; disk image
+   and linux kernel to boot. Montavista Linux 2.1 Professional Edition is
+   installed on the new disk.
+
+Simics 1.6.0
+============
+
+Major Changes:
+--------------
+
+ * Improved command line interface on Windows hosts.
+
+ * New HTML and WinHelp documentation: the HTML documentation look has been
+   completly rewritten to be more usable. A Winhelp format documentation is now
+   available for Windows Users.
+
+ * Simics 1.6 includes a modified API that will be default in Simics 2.0.
+   Some functions in the Simics API have changed, or have been moved to
+   "interfaces" as a result of making the API target independent. The use of
+   the new 2.0 API is recommended for new modules and must be explicitly
+   requested by the module.
+
+
+Minor Changes:
+--------------
+
+ * The Simics build environment now separates the host type from the compiler.
+   As a result, host type names have changed to exclude the compiler name in
+   several cases. This also means that the compiler must be specified
+   explicitly when running 'configure' to setup a build environment to compile
+   modules.
+
+ * Optional 'host-flags' file are now of the form:
+   'host-flags.user'
+   'host-flags.user.<user>'
+   'host-flags.<hosttype>.user'
+   'host-flags.<hosttype>.user.<user>'
+
+ * The 'host-flags' files can no longer be used to set the compiler. (It still
+   work on Solaris/Linux hosts, but is not recommended.) They must be set as
+   environment variables or as arguments to configure:
+
+   $ [...]/configure CC=/opt/local/bin/gcc
+
+ * The following API functions are removed if the Simics 2.0 API is used:
+
+        SIM_void_to_processor_t         - not needed
+        SIM_disassemble_physical        - see SIM_disassemble
+        SIM_get_num_exceptions          - see SIM_get_all_exceptions
+
+ * The following API functions take a processor pointer as first argument
+   if the Simics 2.0 API is used:
+
+        SIM_get_register_name
+        SIM_get_register_number
+        SIM_get_exception_name
+        SIM_get_exception_number
+
+ * The command 'catch-exception' has been deprecated. The new commands
+   'break-exception' and 'trace-exception' should be used instead.
+
+ * The deprecated command 'hap-break' has been removed. The command 'break-hap'
+   should be used instead.
+
+ * The 'x86-linux' and 'x86-win32' host versions are compiled with GCC 3.2.
+
+ * Simics now accepts a .simics script as last argument, without '-x'.
+
+ * Hostfs (simulated Linux and Solaris) now works on Windows host.
+
+ * The "Core_Exception" hap is now consistently available for all targets.
+
+ * The speed of the SYM53C810 and SYM53C875 devices can be modified with the
+   new 'execution-delay' attribute.
+
+ * The delay for arbitration on the SCSI bus is now configurable with the
+   'arbitration-delay' attribute.
+
+ * In Python, an "iface" attribute has been added to all configuration objects,
+   which contains all the interfaces exported by that object. You can, e.g.,
+   use "@conf.cpu0.iface.processor" to access cpu0's processor interface.
+
+ * To enable the Simics 2.0 API the module should be marked with one of 'ONE2',
+   'BIT2' or 'ARCH2' in the modules.list file (instead of ONE, BIT or ARCH).
+
+ * To enable the Simics 2.0 API in Python, add the following line early in
+   the source file: "from simics_2_0_api import *"
+
+ * Python-wrapped C API data types (including interfaces and configuration
+   objects) now support the dir() operation (which lists fields in
+   objects). For interfaces and structures this will list the fields in said
+   structures. For configuration objects, it will list the available
+   attributes in that object.
+
+ * In attribute and interface names, dashes and underscores are considered
+   equivalent (so foo_bar and foo-bar refer to the same attribute or
+   interface).
+
+ * The param_descs argument in SIM_hap_new_type field has new semantics. It
+   should now be a list of whitespace-separated words describing the
+   arguments. The number of words should be the same as the number of
+   characters in the params argument. This information is used when showing
+   information in the "list-haps <hap-name>" command.
+
+ * The gdb-remote module is now included on Windows hosts as well.
+
+ * The output of api-help has been made more readable.
+
+ * The obsolete "thread" configuration class has been removed. This may
+   prevent very old configurations from loading. In this case, just remove
+   any objects of that type from the file.
+
+ * The xterm-console (text-console for Unix-like hosts) now understands
+   various function keys correctly when emulating a vga console.
+   Modified function keys (i.e. alt-f2 etc) also work, but only with recent
+   xterms (the one in RedHat 7.2 is known to work).
+
+ * The win32-text-console understands vt100/xterm escape codes much better.
+
+ * All graphics consoles (x11/win32/sdl-console) now support the
+   <gfx-console>.save-bmp command to save its contents as a BMP image file.
+
+ * The Core_Waiting_For_Command hap is now deprecated, and may go away in
+   future versions. If you still have use for it that cannot easily be done
+   in any other way, please contact Virtutech.
+
+ * The deprecated simmalloc macros with _p, _s and _g suffixes were removed
+   in the Simics 2.0 API. Example: MM_ZALLOC_s() -> MM_ZALLOC()
+
+
+UltraSPARC targets only:
+
+ * The 'break_on_error_state' attribute in the 'sim' class was renamed to
+   'sparc_break_on_error_state'.
+
+ * SunFire target only: The following obsolete classes were removed.
+    'AM79C90'           'NCR53C90'      'sun4u-confloader'   'sun4u-dma2'
+    'sun4u-interrupt'   'sun4u-iommu'   'sun4u-sbus'         'sun4u-streambuf'
+    'sun4u-sysio'       'sun4u-trans'
+
+ * The 'atomic_last' field of the generic_transaction_t was removed since there
+   is always one read and one write in the atomic sequence now.
+     (mem_op->atomic_last)
+   can be replaced with:
+     (mem_op->atomic && SIM_mem_op_is_write(mem_op))
+
+ * The zero-sized atomic memory transaction at the end of a 'compare-and-swap'
+   instruction was removed. Simics will always issue the store since this is
+   more similar to the behavior of real hardware.
+
+ * New device 'sparc-irq-bus' used to send interrupts between devices and
+   processors. Old checkpoints should still work, but configurations may have
+   to be updated manually.
+
+ * Incompatibility: The 'Core_Software_Trap' was removed. The 'Core_Exception'
+   hap can be used instead with an offset of 0x100.
+
+ * Incompatibility: The following Simics API functions are not available in
+   the Simics 2.0 API:
+
+   SIM_get_mmu_data                 -  All MMU and ASI callbacks now get a
+                                       pointer to the mmu object as argument.
+   SIM_cpu_by_mid                   -  Did not work in multi-machine setups.
+   SIM_install_default_ASI_handler  -  Moved to "sparc-v9" interface.
+   SIM_install_user_ASI_handler     -  Moved to "sparc-v9" interface.
+   SIM_sparc_asi_info               -  Moved to "sparc-v9" interface.
+   SIM_read_window_register         -  Moved to "sparc-v9" interface.
+   SIM_write_window_register        -  Moved to "sparc-v9" interface.
+   SIM_read_global_register         -  Moved to "sparc-v9" interface.
+   SIM_write_global_register        -  Moved to "sparc-v9" interface.
+   SIM_read_control_register        -  Use SIM_read_register instead.
+   SIM_write_control_register       -  Use SIM_write_register instead.
+   SIM_get_control_register_number  -  Use SIM_get_register_number instead.
+   SIM_get_control_register_name    -  Use SIM_get_register_name instead.
+   SIM_num_control_registers        -  Use SIM_get_all_registers
+
+ * The command 'catch-trap' has been removed. The command 'break-exception'
+   should be used instead.
+
+
+Known Problems & Limitations:
+-----------------------------
+
+All targets:
+
+ * Simics-central communication does not work when central and Simics are
+   running on hosts with different endianness.
+
+ * Simics doesn't honor Ctrl-C when running with all processors disabled.
+
+ * Craff sometimes produces corrupt output files on Linux over NFS. We have
+   found problems running craff on Red Hat 6.2 when the output file is mounted
+   over NFS. This is a problem with Linux and might have been solved in newer
+   distributions (kernels). Note that craff is used when a checkpoint is
+   saved.
+
+ * Some operating systems don't work. Not all devices in Simics implement all
+   possible features exactly like actual hardware. If an operating system you
+   are interested in does not run on Simics, please let us know.
+
+ * Weird output in the console window when running Simics on a remote desktop
+   (WindowsXP). This problem can be worked around by adding the line
+
+      set SDL_VIDEODRIVER=windib
+
+   to the script that starts Simics (typically home/x86-test-machine/simics.bat
+   or x86-win32-gcc/bin/simics-x86-hammer.bat).
+
+* The console window on Windows can become blank when using multiple
+  monitors.  If the console window is positioned on a secondary
+  screen which is then turned off, the console will not
+  refresh. Taking a checkpoint and restarting Simics will fix the 
+  problem. 
+  
+
+UltraSPARC targets only:
+
+ * Refer to the Simics/Sunfire and Simics/Serengeti Target Guides.
+
+
+Alpha target only:
+
+ * Only limited support for VAX floating-point instructions.
+
+
+X86 and X86-64 targets only:
+
+ * Refer to the Simics/x86 Target Guide.
+
+
+IA64 target only:
+
+ * The IA32 mode is not implemented.
+
+ * Some floating-point exceptions are unimplemented.
+
+ * The only supported OS is Linux.
+
+ * The ALAT is not implemented, which means that data speculation always
+   fails.
+
+ * Parts of the instruction set are still missing.
+
+ * As the "fr" attribute has been modified, loading old configurations
+   (from previous versions of Simics) may fail if the rotation base
+   (cr.rrb.fr) is not is equal to zero.
+
+
+Simics Central (Ethernet Central):
+
+ * IP broadcasting is not supported - neither limited broadcasts
+   (i.e. 255.255.255.255), nor directed (net/subnet) broadcasts.
+
+ * IP multicasting is not supported.

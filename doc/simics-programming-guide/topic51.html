@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>DS12887-dml</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(121, true);
+</script>
+<a name="label244"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic49.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+<h3 class="jdocu">10.2&nbsp;&nbsp;&nbsp;DS12887-dml</h3 class="jdocu">
+
+
+<p>
+DS12887 is a very common real-time clock device. It is used, among other
+places, in PC computers. There are also many other devices that are extensions
+of the DS12887, for example, DS17485 and M5823.
+<p>
+Normally the module and device class would both have been named
+<b>DS12887</b>, but because Virtutech already had a DS12887 device
+model written in C, the sample DML module and the device class are named
+<b>DS12887-dml</b>.
+<p>
+It may be good to have the documentation for the DS12887 chip when looking at
+the sample code, so that you can compare the code to the specification. The
+documentation can be found on the Internet, search for <tt>ds12887.pdf</tt> on
+<tt>www.google.com</tt> and you will get lots of links to it.
+<p>
+The source code for the sample device can be found in the directory
+<tt>[simics]/src/devices/DS12887-dml</tt>. If you want to try modifying
+the DS12887 yourself, we recommend that you set up a user workspace and copy
+the source code there, as described in section <a class="jdocu" href="topic4.html#label20">3</a>.
+<p>
+If you compile the DS12887-dml module yourself, you will see some compilation
+warnings like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+/home/mve/simics/src/devices/DS12887-dml/DS12887.dml:291: <img src="nextline.png">
+In DS12887_dml.time.set
+/home/mve/simics/src/devices/DS12887-dml/DS12887.dml:291: <img src="nextline.png">
+warning: not a function: sscanf
+</pre>
+<p>
+They do not indicate any error. They are caused by a limitation in the current
+DML compiler. There is currently no support for proper declarations of C
+functions with variable numbers of arguments, which causes the warnings.
+<p>
+<a name="label245"></a><h4 class="jdocu">10.2.1&nbsp;&nbsp;&nbsp;Running the DS12887 model</h4 class="jdocu">
+
+
+<p>
+If your distribution contains the simulated machine <em>enterprise</em>, you
+can find the Simics script <tt>enterprise-DS12887-dml.simics</tt> in the
+directory <tt>[simics]/targets/x86-440bx</tt>. This file creates an
+enterprise machine using the <b>DS12887-dml</b> module instead of the
+default <b>DS12887</b> module. The DS12887 object is called
+<b>rtc0</b>.
+<p>
+You can, for example, log what is happening to the device during the boot by
+setting the log level of the <b>rtc0</b> object to 3:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>rtc0.log-level 3</b>
+[rtc0] Changing log level: 1 -&gt; 3
+simics&gt; c
+[rtc0 info] Update-ended interrupt triggered, raising UF.
+Pressing return
+[rtc0 info] Periodic interrupt frequency set to 1024.000000 Hz.
+[rtc0 info] Periodic interrupt triggered, raising PF.
+[rtc0 info] UF lowered.
+[rtc0 info] PF lowered.
+[rtc0 info] UIE set.
+[rtc0 info] Periodic interrupt triggered, raising PF.
+[rtc0 info] Update-ended interrupt triggered, raising UF.
+[rtc0 info] Raising interrupt.
+[rtc0 info] UF lowered.
+[rtc0 info] PF lowered.
+[rtc0 info] Lowering interrupt.
+[rtc0 info] UIE cleared.
+[rtc0 info] Periodic interrupt triggered, raising PF.
+[rtc0 info] Update-ended interrupt triggered, raising UF.
+</pre>
+<p>
+If you raise the log level to 4 all access the processor does to the device
+will be logged. The <b>rtc0</b> object is accessed a lot during the boot,
+so you probably don't want to run the entire boot with log level 4.
+<p>
+Note that Linux only uses the real-time clock while booting and shutting
+down. Once it has booted it uses other timers to keep the time, so to get Linux
+to access the D12887 again once it has booted, you have to reboot the system.
+<p>
+
+<a name="label246"></a><h4 class="jdocu">10.2.2&nbsp;&nbsp;&nbsp;Comments to the Code</h4 class="jdocu">
+
+
+<p>
+The source code of the DS12887 module is quite richly commented, so if you have
+the documentation for the DS12887 chip you should hopefully be able to
+understand most of the code without too much problem.
+<p>
+The DS12887 model is quite complete. The few limitations are listed at the top
+of the source file.
+<p>
+A difference between the documentation of the DS12887 and the model is that the
+model has two register banks, while the documentation only describes one. This
+is because of the way the device is used in PC computers. The registers
+described in the documentation correspond to the <i>registers</i>
+bank. When the device is used in a PC a small translation device with two
+registers that forwards accesses to the registers of the DS12887 is mapped in
+the port space. This translation device corresponds to the
+<i>port_registers</i> bank. If you want to use the model as a pure DS12887,
+just ignore the port_registers bank.
+<p>
+The model handles the updating of the time registers in a more complicated way
+than absolutely necessary. A simple implementation could post an event that
+raises the UIP flag and then an event that lowers the UIP flag, updates the
+time registers and compares them to the alarm registers each simulated
+second. To avoid having to post these events, the model instead saves the
+simulated time that the real-time clock time was last set, and the time it was
+set to. From this information the the current real-time clock time can be
+calculated at any time, and the time registers are only updated when they are
+read. There is a comment above the <i>base_time</i> attribute in the source
+code that describes the details of the time representation.
+<p>
+Similarly, events for the periodic interrupt, alarm interrupt and update-ended
+interrupt are only posted if the corresponding interrupt flag is not already
+raised. This implementation means that, since Linux does not use the device
+after the boot, the model does not need to post any more events once Linux has
+booted.
+<p>
+The device model uses the time conversion functions <b><i>os_gmtime()</i></b> and
+<b><i>os_timegm()</i></b>, available in the header file
+<tt>simics/utils.h</tt>. These
+are not part of the official Simics API, but they are very handy when you need
+host-independent time conversion functions. They work like the
+<b><i>gmtime()</i></b> and <b><i>timegm()</i></b> functions available on Unix hosts,
+but are host independent. They also have the associated types
+<tt>os_time_t</tt> and <tt>os_tm_t</tt>, which correspond to
+<tt>time_t</tt> and <tt>struct tm</tt> on Unix hosts.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic49.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/Serengeti Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/Serengeti Overview</h2 class="jdocu">
+
+
+<p>
+<a name="label20"></a><h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics/Serengeti models the <i>Sun Fire 3800 - 6800</i> class of servers. A
+Serengeti server can be configured with up to 24 UltraSPARC III,
+UltraSPARC III Cu (III+), UltraSPARC IV, or UltraSPARC IV+ processors and 192GB
+of memory. A variety of PCI-bus based devices are supported. Only Solaris is
+supported as target Operating System.
+<p>
+Virtutech does not provide any disk images with Solaris for Serengeti, due
+to licensing issues. However, scripts are included for installing Solaris 8,
+9 or 10 on the virtual machine. Installing Solaris is described in chapter
+<a class="jdocu" href="topic5.html#label513">6.1</a>.
+<p>
+
+<a name="label21"></a><h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Supported Hardware</h3 class="jdocu">
+
+
+    <p>
+Serengeti servers can have up to 10 board-slots depending on the model. Simics
+models the largest machine, Sun Fire 6800, by default, but this is
+configurable. The first 6 slots can hold CPU boards, and the last 4 can hold
+I/O boards. There are three kinds of PCI boards, the kind that can be used
+depends on the server model. For example, the 3800 server only supports the
+(SP) cPCI board.
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Chassis</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Sun Fire 3800</td><td class="jdocu_noborder">SP</td><td class="jdocu_noborder">2 CPU boards + 2 I/O boards</td></tr>
+<tr><td class="jdocu_noborder">Sun Fire 4800</td><td class="jdocu_noborder">MD</td><td class="jdocu_noborder">3 CPU boards + 2 I/O boards</td></tr>
+<tr><td class="jdocu_noborder">Sun Fire 4810</td><td class="jdocu_noborder">ME</td><td class="jdocu_noborder">3 CPU boards + 2 I/O boards</td></tr>
+<tr><td class="jdocu_noborder">Sun Fire 6800</td><td class="jdocu_noborder">DS</td><td class="jdocu_noborder">6 CPU boards + 4 I/O boards</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>CPU Boards</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">0 - 4 UltraSPARC-III</td><td class="jdocu_noborder">max 8 GB of memory per CPU, 32GB total</td></tr>
+<tr><td class="jdocu_noborder">0 - 4 UltraSPARC-III Cu</td><td class="jdocu_noborder">max 8 GB of memory per CPU, 32GB total</td></tr>
+<tr><td class="jdocu_noborder">0 - 4 UltraSPARC-IV</td><td class="jdocu_noborder">max 8 GB of memory per CPU, 32GB total</td></tr>
+<tr><td class="jdocu_noborder">0 - 4 UltraSPARC-IV+</td><td class="jdocu_noborder">max 8 GB of memory per CPU, 32GB total</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>I/O Boards</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">8 slot PCI board</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">4-slot Compact PCI board</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">6-slot Compact PCI board</td><td class="jdocu_noborder">SP Chassis only</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Supported Devices</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">'ce'</td><td class="jdocu_noborder">Gb Ethernet controller</td><td class="jdocu_noborder">(Cassini+)</td></tr>
+<tr><td class="jdocu_noborder">'bge'</td><td class="jdocu_noborder">Gb Ethernet controller</td><td class="jdocu_noborder">(BCM5703C)</td></tr>
+<tr><td class="jdocu_noborder">'bge'</td><td class="jdocu_noborder">Dual Gb Ethernet controller</td><td class="jdocu_noborder">(BCM5704C)</td></tr>
+<tr><td class="jdocu_noborder">'hme'</td><td class="jdocu_noborder">Ethernet controller</td><td class="jdocu_noborder">(Cheerio)</td></tr>
+<tr><td class="jdocu_noborder">'glm'</td><td class="jdocu_noborder">SCSI controller</td><td class="jdocu_noborder">(SYM53C875)</td></tr>
+<tr><td class="jdocu_noborder">'isp'</td><td class="jdocu_noborder">SCSI controller</td><td class="jdocu_noborder">(ISP1040)</td></tr>
+<tr><td class="jdocu_noborder">'pgx64'</td><td class="jdocu_noborder">24-Bit Frame Buffer</td><td class="jdocu_noborder">(pgx64)</td></tr>
+<tr><td class="jdocu_noborder">'qlc'</td><td class="jdocu_noborder">Fibre-Channel controller</td><td class="jdocu_noborder">(ISP2200)</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder">PCI-to-PCI bridge</td><td class="jdocu_noborder">(i21152)</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder">PCI-to-PCI bridge</td><td class="jdocu_noborder">(i21554)</td></tr>
+</table>
+<p>
+A good guide to the Sun Fire servers and what boards and devices that are
+supported can be found in the "Sun System Handbook", available online at:
+<a class="jdocu" href="http://sunsolve.sun.com/handbook_pub/" target="_top">http://sunsolve.sun.com/handbook_pub/</a>
+<p>
+<hr class="jdocu_note"><b>Note:</b> 
+The Simics/Serengeti model does not currently support a keyboard or mouse, 
+and thus the pgx64 card cannot be used to create an interactive X session.
+It can be used as a passive display by starting an X server in no mouse
+and no keyboard mode. 
+<hr class="jdocu_note">
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

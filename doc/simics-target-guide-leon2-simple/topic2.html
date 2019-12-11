@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting LEON2 machines are located in the
+<tt>[workspace]/targets/leon2-simple/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/leon2-simple/</tt>.
+<p>
+
+
+<a name="label21"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;LEON2 Parameters</h3 class="jdocu">
+
+
+The leon2-simple target takes a number of parameters. The parameters prefixed with
+<tt>pmon</tt> are further documented in the PMON firmware sourcecode.
+<p>
+<dl><dt><b>$freq_mhz<a name="label22"></a></b></dt><dd>The clock frequency of the processor in MHz</dd><dt><b>$prom_size<a name="label23"></a></b></dt><dd>The size of the PROM area in bytes.</dd><dt><b>$has_sram<a name="label24"></a></b></dt><dd>Set to TRUE if the the LEON has SRAM attached. If $has_sram is TRUE, the SDRAM
+will be mapped to address 0x60000000, if it is set to FALSE, the SDRAM will be mapped
+to address 0x40000000. Defaults to FALSE.</dd><dt><b>$sram_size<a name="label25"></a></b></dt><dd>The size of the SRAM area in bytes, only used if $has_sram is set to TRUE.</dd><dt><b>$sdram_size<a name="label26"></a></b></dt><dd>The size of the SDRAM area. Defaults to 0x40000000 (1 GiB)</dd><dt><b>$num_windows<a name="label27"></a></b></dt><dd>The number of register windows available in the LEON2 cpu. The $num_windows
+must be a power of 2 and be in the range [2, 32].</dd><dt><b>$has_v8e_mac<a name="label28"></a></b></dt><dd>TRUE if the UMAC and SMAC instructions are to be enabled. FALSE if they are disabled.
+Default is TRUE.</dd><dt><b>$has_v8_mul<a name="label29"></a></b></dt><dd>TRUE if the UMUL and SMUL instructions are to be enabled. FALSE if they are disabled.
+Default is TRUE.</dd><dt><b>$has_v8_div<a name="label30"></a></b></dt><dd>TRUE if the UDIV and SDIV instructions are to be enabled. FALSE if they are disabled.
+Default is TRUE.</dd><dt><b>$use_pmon_emulation<a name="label31"></a></b></dt><dd>Set this to TRUE if the PMON firmware is to be emulated on boot. It defaults
+to TRUE. Note that if the PMON memory parameters don't match the machine configuration
+the same behaviour will ocurr as if the PMON firmware was compiled with the wrong
+parameters, e.g. the stack pointer could point outside valid memory.</dd><dt><b>$pmon_memcfg1<a name="label32"></a></b></dt><dd>This value is used if the PMON emulation is used, it will be written to the
+Memory Configuration 1 on chip register. Defaults to 0x80000</dd><dt><b>$pmon_memcfg2<a name="label33"></a></b></dt><dd>This value is used if the PMON emulation is used, it will be written to the
+Memory Configuration 2 on chip register. Defaults to 0x3806000</dd><dt><b>$pmon_ram_banks<a name="label34"></a></b></dt><dd>The number of RAM banks. Defaults to 2.</dd><dt><b>$pmon_bank_size<a name="label35"></a></b></dt><dd>Size of one RAM bank in bytes. Defaults to 0x20000000 (512 MiB)</dd><dt><b>$pmon_timer_scale<a name="label36"></a></b></dt><dd>Timer scaling, this is the divisor when the timer scaler values are computed.
+Usually, this should remain at the default value. Defaults to 1000000.</dd><dt><b>$pmon_baud_rate<a name="label37"></a></b></dt><dd>The baud rate of the serial ports, defaults to 38400.</dd></dl>
+
+<a name="label38"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;LEON2 Scripts</h3 class="jdocu">
+
+
+This section explains the files and scripts that can be used to create and boot
+a simple LEON2 based target.
+<dl><dt><b>leon2-simple.simics</b></dt><dd>The <tt>leon2-simple.simics</tt> script is used to bring up a working LEON2
+        based target. It creates a LEON2 processor, some additional memory and
+        optionally runs a PMON emulation script that perform the regular PMON
+        firmware setup but without starting the serial port boot-loader. Note that
+        the script does not load any binary. Loading a binary is
+        performed by issuing 
+        a <tt>set-pc (load-binary foo.srec)</tt> command after the
+        machine has been set up.</dd></dl>
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

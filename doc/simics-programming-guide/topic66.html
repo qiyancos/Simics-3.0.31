@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Changing the Behavior of a Memory Transaction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(185, true);
+</script>
+<a name="label349"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic65.html">Previous</a> - <a class="jdocu" href="topic64.html">Up</a> - <a class="jdocu" href="topic67.html">Next</a></span></p>
+<h3 class="jdocu">13.2&nbsp;&nbsp;&nbsp;Changing the Behavior of a Memory Transaction</h3 class="jdocu">
+
+
+<p>
+<a name="label350"></a><h4 class="jdocu">In a Timing Model</h4 class="jdocu">
+
+
+<p>
+An object listening on the <tt>timing-model</tt> interface is
+presented with memory transactions before they have been executed, and
+may therefore change both their semantics and their timing. Here is a
+list of changes that a timing model is authorized to perform:
+<p>
+<dl><dt><b>Setting <tt>mem_op-&gt;ignore</tt></b></dt><dd>If set to 1, the memory
+transaction will not be executed.</dd><dt><b>Setting <tt>mem_op-&gt;reissue</tt></b></dt><dd>If set to 1 and the memory
+hierarchy is stalling, the memory transaction will be sent again to the timing
+model after the stalling was performed. If set to 0, the transaction will be
+executed without further calls to the timing model.</dd><dt><b>Setting <tt>mem_op-&gt;block_STC</tt></b></dt><dd>If set to 1, the transaction
+won't be cached in the STCs, ensuring that the next access to the same memory
+area will be sent to the timing model. Default is 0, unless the transaction has
+side-effects that would prevent it from being cached.</dd><dt><b>Stalling the Memory Transaction</b></dt><dd>By returning a non-zero number of
+cycles, the <b><i>operate()</i></b> function will stall the memory transaction
+that was passed as argument for that amount of time.</dd></dl>
+<p>
+If a zero stall time is returned, some additional operations are
+allowed:
+<p>
+<dl><dt><b>Setting <tt>mem_op-&gt;exception</tt></b></dt><dd>If set to an exception, the
+transaction will be interrupted and an exception will be taken. Default is no
+exception (<tt>Sim_PE_No_Exception</tt>).</dd><dt><b>Setting <tt>mem_op-&gt;user_ptr</tt></b></dt><dd>This <tt>void *</tt> pointer
+is not touched by Simics during the memory operation execution. It can be used
+to pass information from a timing model to a snoop device.</dd><dt><b>Memory Store Value</b></dt><dd>Since the memory operation has not been
+executed yet, it is possible to change the value of a store operation in the
+timing model. However, it is <em>important</em> to restore the original
+value in the snoop device once the operation has been performed. The
+<b><i>SIM_get_mem_op_value()</i></b> and <b><i>SIM_set_mem_op_value()</i></b>
+functions (and their variants) can be used to get and set the value of a given
+memory transaction.</dd></dl>
+<p>
+
+<a name="label351"></a><h4 class="jdocu">In a Snoop Device</h4 class="jdocu">
+
+
+<p>
+An object listening on the <tt>snoop-memory</tt> interface is presented
+with memory transactions after they have completed. It cannot influence the
+execution of the operation and it may not return a non-zero value for stalling,
+but it is allowed to modify the value of the memory operation. Since the data
+returned by read operations are available at this stage, the snoop device is
+also an ideal place to trace memory transactions.
+<p>
+The following actions are allowed:
+<p>
+<dl><dt><b>Change a Memory Store Value</b></dt><dd>If the value of a memory store has
+been changed in the timing model, it should be reset in the
+snoop device.</dd><dt><b>Change a Memory Load Value</b></dt><dd>Since the operation has been performed,
+the snoop device is the right place to change the value of a load. This is done
+with the usual <b><i>SIM_get/set_mem_op_value()</i></b> functions.</dd></dl>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic65.html">Previous</a> - <a class="jdocu" href="topic64.html">Up</a> - <a class="jdocu" href="topic67.html">Next</a></span></p>
+</body>
+</html>

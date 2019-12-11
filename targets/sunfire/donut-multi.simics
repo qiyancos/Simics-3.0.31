@@ -1,0 +1,11 @@
+import-std-components
+$eth_link = (create-std-ethernet-link link)
+
+set-component-prefix d1_
+run-command-file "%script%/donut-dhcp-common.simics"
+
+$mac_address = "10:10:10:10:10:13"
+$ip_address   = "10.10.0.6"
+$host_name    = "donut2"
+set-component-prefix d2_
+run-command-file "%script%/donut-dhcp-common.simics"

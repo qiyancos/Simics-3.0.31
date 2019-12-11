@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>fiesta-system</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(747, true);
+</script>
+<a name="label5616"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic85.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic87.html">Next</a></span></p>
+<h3 class="jdocu">fiesta-system</h3 class="jdocu">
+
+
+<a name="label5617"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2616">fiesta-system</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>fiesta-system</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+<p>
+The <b>fiesta-system</b> class is deprecated and only distributed
+for compatibility with old configurations.
+<p>
+
+</dd>
+
+</dl>
+<a name="label5618"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>all_cpus</i></b></dt><a name="label5619"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of all processors in the machine.</dd></dl>
+<dl><dt><b><i>master_cpu</i></b></dt><a name="label5620"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The master processor in the machine.</dd></dl>
+<dl><dt><b><i>nvram_image</i></b></dt><a name="label5621"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The nvram image object, holding OBP variables.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5622"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5624">get-prom-env</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; Get an OBP environment variable</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5626">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5628">set-prom-defaults</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; Restore all OBP variables</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5630">set-prom-env</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; Set an OBP environment variable</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5623"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5624"></a><a name="label5625"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;fiesta-system&gt;.get-prom-env &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;fiesta-system&gt;.get-prom-env</b> [<i>"variable"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="topic437.html#label14974">&lt;taco-system&gt;.get-prom-env</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5626"></a><a name="label5627"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;fiesta-system&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;fiesta-system&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label5628"></a><a name="label5629"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;fiesta-system&gt;.set-prom-defaults &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;fiesta-system&gt;.set-prom-defaults</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="topic437.html#label14982">&lt;taco-system&gt;.set-prom-defaults</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5630"></a><a name="label5631"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;fiesta-system&gt;.set-prom-env &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;fiesta-system&gt;.set-prom-env</b> <i>"variable"</i> (<i>int</i>|<i>"string"</i>) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="topic437.html#label14984">&lt;taco-system&gt;.set-prom-env</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic85.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic87.html">Next</a></span></p>
+</body>
+</html>

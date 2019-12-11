@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Examples</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(73, true);
+</script>
+<a name="label510"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Examples</h2 class="jdocu">
+
+
+<a name="label511"></a><h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Adding a new Disk to a Serengeti Machine</h3 class="jdocu">
+
+
+<p>
+<ol>
+<p>
+<li><b>Add a SCSI Disk Component</b>
+<p>
+First create a file in <tt>[workspace]/targets/serengeti/</tt>
+called <tt>abisko-disk.simics</tt>. In this file add the
+following contents:
+<p>
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    wait-for-variable machine_defined
+    local $disk = (create-std-scsi-disk size = 4256972800)
+    connect-components $scsi_bus scsi-slot-2 $disk scsi-bus
+}
+
+run-command-file abisko-common.simics
+</pre>
+<p>
+This will run a <em>script branch</em> that first waits for the machine to
+be defined by the machine configuration script (included from
+<tt>abisko-common.simics</tt>). Once the <i>$machine_defined</i>
+variable has triggered, a SCSI disk component, representing a 4GB disk, will be
+created that on the following line is connected to the SCSI bus component on
+connector <tt>scsi-slot-2</tt>.
+</li>
+<p>
+<li><b>Prepare the Boot</b>
+<p>
+Start Simics, but do not start the simulation. Before booting, the disk needs
+an empty partition table for Solaris to recognize the disk. The partition table
+must contain a geometry that matches the size of the disk. Also add a large
+partition that covers the full disk.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sd1.create-sun-vtoc-header 5470 19 80</b>
+simics&gt; <b>sd1.create-sun-vtoc-partition number = 0 start-block = 0 num-blocks = ((5470 - 2) * 19 * 80) flag = RW tag = root</b>
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Configuring partitions can also be done using the Solaris
+<b>format</b> command once the simulated machine has booted.<hr class="jdocu_note">
+<p>
+The partition table should now look something like:
+<pre class="jdocu_small" style="color: black"><span class="jdocu_small">
+Partition Table:
+Number   Tag             Flag                 Start        End       Size
+  0      2 (root)        0 (RW)                   0    8311359    8311360
+  2      5 (backup)      1 (unmountable)          0    8311359    8311360
+</span></pre>
+Before booting, tell Solaris that new hardware has been added, by adding the
+<tt>-r</tt> argument to the OBP boot command variable:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.set-prom-env boot-command "boot disk -rv"</b>
+</pre>
+</li>
+<p>
+<li><b>Configure Solaris</b>
+<p>
+Start the simulation and wait for the simulated machine to reach the prompt.
+A file system has to be created on the new disk, this is done using the
+Solaris <b>newfs</b> command. At the same time, also add a mount point,
+and an entry in the file-system table. This way Solaris will automatically
+mount the disk on the next boot.
+<pre class="jdocu_small" style="color: black"><span class="jdocu_small">
+# <b>newfs /dev/dsk/c0t2d0s0</b>
+newfs: construct a new file system /dev/rdsk/c0t2d0s0: (y/n)? <b>y</b>
+
+&lt;output from newfs here&gt;
+
+# <b>mkdir /disk</b>
+# <b>cat &gt;&gt; /etc/vfstab
+/dev/dsk/c0t2d0s0    /dev/rdsk/c0t2d0s0   /disk ufs  2    yes    -</b>
+&lt;control-D&gt;
+# <b>mount /disk</b>
+</span></pre>
+The disk can now be accessed as <tt>/disk/</tt> in the file-system.
+</li>
+<p>
+<li><b>Save the Changes</b>
+<p>
+To save the changes to the new disk, shut down the simulated machine and
+save the modifications. Issue:
+<p>
+<pre class="jdocu_small" style="color: black">
+# <b>init 0</b>
+</pre>
+then wait for Solaris to shut down, stop the simulation and save the all
+modifications using the <b>save-persistent-state</b> command. But first
+remove <tt>-r</tt> from the boot command, or it will be for the next boot as
+well, making the boot slower.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.set-prom-env boot-command "boot disk -v"</b>
+simics&gt; <b>save-persistent-state new-disk1.state</b>
+</pre>
+Now exit Simics, and restart the <tt>abisko-disk.simics</tt>
+script. Before running, load the disk modifications saved earlier:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>load-persistent-state new-disk1.state</b>
+</pre>
+Now boot the machine again. The new disk will be mounted as
+<tt>/disk/</tt>.
+</li>
+</ol>
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

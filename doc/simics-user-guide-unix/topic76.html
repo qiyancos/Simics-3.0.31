@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Memory Transactions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(202, true);
+</script>
+<a name="label477"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic75.html">Previous</a> - <a class="jdocu" href="topic66.html">Up</a> - <a class="jdocu" href="topic77.html">Next</a></span></p>
+<h3 class="jdocu">16&nbsp;&nbsp;&nbsp;Memory Transactions</h3 class="jdocu">
+
+
+<p>
+Both CPUs and devices can initiate memory transactions in Simics. For a CPU,
+the requested virtual address is first translated by the MMU, and an access is
+performed using the physical address obtained. Device transactions usually skip
+the translation phase, but are otherwise handled in the same way.
+<p>
+In order to know what a given physical address corresponds to, Simics uses a
+concept called <em>memory-space</em>. A memory-space maps a physical address to
+an object that can accept a memory transaction, like RAM, a flash-memory or a
+device. An access performed in a memory-space is automatically propagated to
+the right <em>target</em> (device or memory).
+<p>
+Memory-spaces can also contain other memory-spaces as targets which will
+in-turn map the physical address to a specific object, thus creating a
+hierarchical organization of memory-spaces. This is often used to separate
+different types of mapping, or to implement architecture specific differences.
+<p>
+For example, the memory mappings of a one-processor Serengeti system (in this
+case <tt>sarek-common.simics</tt>) at boot time is based on two memory-spaces:
+<b>phys_io0</b> (the I/O space) and <b>phys_mem0</b> (the memory
+space). They contain the following mappings:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>phys_mem0.map</b>
+base               object               fn offs               length
+0x0000000000000000 memory                0 0x0                0x10000000
+0x000007fff07ffff0 hfs                   0 0x0                0x10
+
+simics&gt; <b>phys_io0.map</b>
+base               object               fn offs               length
+0x0000040000400000 mmu0                  0 0x0                0x48
+0x000004000c000000 schizo24              0 0x0                0x800000
+0x000004000c800000 schizo25              0 0x0                0x800000
+0x000007fff0000000 cpuprom               0 0x0                0xbd3b0
+0x000007fff0102000 fpost_code            0 0x0                0x2000
+0x000007fff0104000 fpost_data            0 0x0                0x2000
+0x000007fff0800060 empty0                0 0x60               0x10
+0x000007fff091e000 empty1                0 0x0                0x120
+</pre>
+<p>
+Simics allows you to observe and sometimes modify the behavior of the
+transactions that go through the memory system. The rest of this chapter will
+present the basic concepts behind Simics's memory system and how to interact
+with it.
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic77.html#label478" target="main">16.1&nbsp;&nbsp;&nbsp;Observing Memory Transactions</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic78.html#label479" target="main">16.2&nbsp;&nbsp;&nbsp;Stalling Memory Transactions</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic79.html#label480" target="main">16.3&nbsp;&nbsp;&nbsp;Observing Instruction Fetches</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic80.html#label481" target="main">16.4&nbsp;&nbsp;&nbsp;Simulator Translation Cache (STC)</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic81.html#label482" target="main">16.5&nbsp;&nbsp;&nbsp;Summary of Simics Memory System</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic75.html">Previous</a> - <a class="jdocu" href="topic66.html">Up</a> - <a class="jdocu" href="topic77.html">Next</a></span></p>
+</body>
+</html>

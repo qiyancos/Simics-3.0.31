@@ -1,0 +1,55 @@
+# we don't want automatic login
+$do_login = "no"
+
+# path to CD-ROM, use default if none given by user setup variables.
+if not defined cdrom_path {
+    $cdrom_path = "sol-8-hw4-sparc-v2.iso"
+}
+
+if not `SIM_lookup_file(simenv.cdrom_path)` {
+    echo "Cannot find the CD-ROM specified as : "  + $cdrom_path
+    echo "Please add this file, or edit the path in this script."
+    echo ""
+    quit
+}
+
+echo "Using CD-ROM image file: " + $cdrom_path
+
+$create_network = "yes"
+$disk_size = 8513945600
+$os = "none"
+
+run-command-file "%script%/abisko-common.simics"
+
+load-persistent-state abisko-sol8-p1.state
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+@image.files = [["abisko-sol8-install.disk", "rw", 0, simenv.disk_size]]
+
+# create and insert CD media
+($scsi_cdrom.get-component-object cd).insert (new-file-cdrom $cdrom_path)
+
+($system.set-prom-env
+    nvramrc "devalias disk /ssm@0,0/pci@19,700000/scsi@2/disk@0,0")
+
+echo "Capturing output to 'abisko-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "abisko-install-log.txt"
+
+run-command-file "%script%/../common/solaris8-install.include"
+
+script-branch {
+    $solaris8_phase2 = 1 # trigger script
+    $con.wait-for-string "Resetting ..."
+    stop "Installation complete"
+    save-persistent-state abisko-sol8-p2.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Now exit Simics and continue with the abisko-sol8-cd-install3.simics "
+echo "script."
+echo ""

@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>tracker</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2280, true);
+</script>
+<a name="label17979"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic537.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic539.html">Next</a></span></p>
+<h3 class="jdocu">tracker</h3 class="jdocu">
+
+
+<a name="label17980"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic59.html#label4826">cpu-mode-tracker</a>, <a class="jdocu" href="topic148.html#label7590">linux-process-tracker</a>, <a class="jdocu" href="topic253.html#label9319">ppc32-linux-process-tracker</a>, <a class="jdocu" href="topic298.html#label11244">ppc64-linux-process-tracker</a>, <a class="jdocu" href="topic474.html#label16866">x86-linux-process-tracker</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   <hr class="jdocu_note"><b>Note:</b> This interface is not supported, and may change in the future.<hr class="jdocu_note">
+<p>
+   Interface for trackers. This is a generic interface implemented by all
+   trackers, regardless of what it is that they track.
+<p>
+   Typically, the things being tracked (the <i>trackees</i>) are processes. The
+   tracker keeps track of what trackee is active on what processor; this is
+   useful when one wants to observe one specific trackee and disregard the
+   others. Trackees are identified by a unique integer called a <i>tid</i>
+   (Trackee ID).
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        integer_t (*active_trackee)(conf_object_t *NOTNULL tracker,
+                                    conf_object_t *NOTNULL cpu);
+        const char *(*describe_trackee)(conf_object_t *NOTNULL tracker,
+                                        integer_t tid);
+        attr_value_t (*processor_list)(conf_object_t *NOTNULL tracker);
+        void (*add_processor)(conf_object_t *NOTNULL tracker,
+                              conf_object_t *NOTNULL cpu);
+        void (*remove_processor)(conf_object_t *NOTNULL tracker,
+                                 conf_object_t *NOTNULL cpu);
+        int (*supports_processor)(const char *NOTNULL classname);
+        int (*activate)(conf_object_t *NOTNULL tracker);
+        int (*deactivate)(conf_object_t *NOTNULL tracker);
+} tracker_interface_t;
+#define TRACKER_INTERFACE "tracker"
+</pre>
+<p>
+
+   <b><i>active_trackee</i></b> returns the tid of the trackee that is currently
+   active on the given processor. <b><i>describe_trackee</i></b> returns a short
+   string that describes the trackee with the given tid.
+<p>
+   <b><i>processor_list</i></b> returns the set of processors being watched by the
+   tracker. <b><i>add_processor</i></b> and <b><i>remove_processor</i></b> add and
+   remove a processor from this set, respectively.
+<p>
+   <b><i>supports_processor</i></b> returns true if trackers of this type support
+   processors of the given class, and false otherwise.
+<p>
+   Before using the tracker, call <b><i>activate</i></b>. When you are done with
+   it, call <b><i>deactivate</i></b>.
+<p>
+   In addition to these interface functions, the tracker should trigger the
+   <b><i>Core_Trackee_Active</i></b> hap when the active trackee changes for a
+   processor.
+<p>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17982">activate</a></td><td class="jdocu_noborder">activate tracker</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17984">add-processor</a></td><td class="jdocu_noborder">track processes on this processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17986">deactivate</a></td><td class="jdocu_noborder">deactivate tracker</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17988">remove-processor</a></td><td class="jdocu_noborder">do not track processes on this processor</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17981"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17982"></a><a name="label17983"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;tracker&gt;.activate</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;tracker&gt;.activate</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Activate a tracker. For performance reasons, trackers are inactive by
+default and need to be activated before they start tracking processes.
+If the tracker is used by another object, such as a context switcher,
+it is the responsibility of that object to activate the tracker; but
+if you want to use it directly, you must activate it yourself.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label17986">&lt;tracker&gt;.deactivate</a></dd>
+
+</dl>
+
+
+
+<a name="label17984"></a><a name="label17985"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;tracker&gt;.add-processor</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;tracker&gt;.add-processor</b> <i>"processor"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Add a processor to the set of processors that the process tracker
+watches.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label17988">&lt;tracker&gt;.remove-processor</a></dd>
+
+</dl>
+
+
+
+<a name="label17986"></a><a name="label17987"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;tracker&gt;.deactivate</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;tracker&gt;.deactivate</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Deactivate a tracker. This command undoes the effects of one
+<b>activate</b> command; when all of them are undone, the tracker
+will stop tracking processes (and consuming resources).</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label17982">&lt;tracker&gt;.activate</a></dd>
+
+</dl>
+
+
+
+<a name="label17988"></a><a name="label17989"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;tracker&gt;.remove-processor</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;tracker&gt;.remove-processor</b> <i>"processor"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Remove a processor from the set of processors that the process tracker
+watches.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label17984">&lt;tracker&gt;.add-processor</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic537.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic539.html">Next</a></span></p>
+</body>
+</html>

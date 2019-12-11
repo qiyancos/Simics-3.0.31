@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Booting RTEMS</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(25, true);
+</script>
+<a name="label59"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Booting RTEMS</h2 class="jdocu">
+
+
+The Real-Time Executive for Multiprocessor Systems operating system, known as
+RTEMS, usually builds and links into a single binary file. This file usually
+includes the user application. This mean that booting RTEMS is a fairly simple
+task with Simics.
+<p>
+Booting RTEMS can be acomplished in several ways. One way is to run the regular
+PMON firmware and inject the binary in SREC format over the emulated serial port
+e.g. by copy-paste to the console window. This method is cumbersome, however.
+<p>
+A much easier and faster method is to use the PMON emulation that can be accessed
+through Simics's Python layer to do the initial firmware set-up, and then
+load RTEMS as either an ELF or an SREC file with the load-binary command. After
+the file has been loaded, it is possible to execute RTEMS by setting PC?to the
+start address provided by the binary.
+<p>
+RTEMS typically zeros the entire memory area during boot. In order to
+avoid repeating this process&#8212;which is completely unnecessary in
+Simics and can take some considerable time if the amount of memory is
+large&#8212;a checkpoint can be saved after the first boot in order to
+avoid repeating this excercise.  
+<p>
+Another way is to patch the call to <tt>memset</tt> from
+<tt>RTEMS_Malloc_Initialize</tt> and turn the call into a <tt>nop</tt>
+instruction.  It is also possible to identify when the memory-zeroing
+loop starts in the boot process and which register is used as the
+counter.  As the following example shows, the register can then be
+patched on-the-fly:
+<pre class="jdocu_small" style="color: black">
+# Load dhrystone binary, skipping memory zeroing
+  set-pc (load-binary "rtems-dhrystone.elf")
+  c 105089
+  %o2 = 16
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

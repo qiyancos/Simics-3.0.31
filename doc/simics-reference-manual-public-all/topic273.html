@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ppc440gp-pci</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1432, true);
+</script>
+<a name="label10204"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic272.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic274.html">Next</a></span></p>
+<h3 class="jdocu">ppc440gp-pci</h3 class="jdocu">
+
+
+<a name="label10205"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2496">440gp-devices</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ppc440gp-pci</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a>, <a class="jdocu" href="topic541.html#label17994">translate</a>, <a class="jdocu" href="topic519.html#label17810">pci_interrupt</a>, <a class="jdocu" href="topic515.html#label17802">pci_bridge</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+PPC440GP PCI(X) Bridge
+
+</dd>
+
+</dl>
+<a name="label10206"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>CIX0_RID</i></b></dt><a name="label10207"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal Core Revision ID</dd></dl>
+<dl><dt><b><i>PCIX0_BAR0H</i></b></dt><a name="label10208"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+BAR 0 High</dd></dl>
+<dl><dt><b><i>PCIX0_BAR0L</i></b></dt><a name="label10209"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+BAR 0 Low</dd></dl>
+<dl><dt><b><i>PCIX0_BAR1</i></b></dt><a name="label10210"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+BAR 1</dd></dl>
+<dl><dt><b><i>PCIX0_BAR2H</i></b></dt><a name="label10211"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+BAR 2 High</dd></dl>
+<dl><dt><b><i>PCIX0_BAR2L</i></b></dt><a name="label10212"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+BAR 2 Low</dd></dl>
+<dl><dt><b><i>PCIX0_BAR3</i></b></dt><a name="label10213"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Unused BAR 3</dd></dl>
+<dl><dt><b><i>PCIX0_BIST</i></b></dt><a name="label10214"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Built In Self Test Control</dd></dl>
+<dl><dt><b><i>PCIX0_BRDGOPT1</i></b></dt><a name="label10215"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Bridge Options 1</dd></dl>
+<dl><dt><b><i>PCIX0_BRDGOPT2</i></b></dt><a name="label10216"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Bridge Options 2</dd></dl>
+<dl><dt><b><i>PCIX0_CACHELS</i></b></dt><a name="label10217"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Cache Line Size</dd></dl>
+<dl><dt><b><i>PCIX0_CAP</i></b></dt><a name="label10218"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Capabilities Pointer</dd></dl>
+<dl><dt><b><i>PCIX0_CAPID</i></b></dt><a name="label10219"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Capability Identifier</dd></dl>
+<dl><dt><b><i>PCIX0_CFGADDR</i></b></dt><a name="label10220"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Configuration address register.</dd></dl>
+<dl><dt><b><i>PCIX0_CID</i></b></dt><a name="label10221"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal Core Device ID</dd></dl>
+<dl><dt><b><i>PCIX0_CISPTR</i></b></dt><a name="label10222"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Unused Cardbus CIS Pointer</dd></dl>
+<dl><dt><b><i>PCIX0_CLS</i></b></dt><a name="label10223"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Class Register</dd></dl>
+<dl><dt><b><i>PCIX0_CMD</i></b></dt><a name="label10224"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Command Register</dd></dl>
+<dl><dt><b><i>PCIX0_DEVID</i></b></dt><a name="label10225"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Device ID</dd></dl>
+<dl><dt><b><i>PCIX0_EROMBA</i></b></dt><a name="label10226"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Expansion ROM Base Address</dd></dl>
+<dl><dt><b><i>PCIX0_ERREN</i></b></dt><a name="label10227"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Error Enable</dd></dl>
+<dl><dt><b><i>PCIX0_ERRSTS</i></b></dt><a name="label10228"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Error Status</dd></dl>
+<dl><dt><b><i>PCIX0_HDTYPE</i></b></dt><a name="label10229"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Header Type</dd></dl>
+<dl><dt><b><i>PCIX0_IDR</i></b></dt><a name="label10230"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal Debug Register</dd></dl>
+<dl><dt><b><i>PCIX0_INTLN</i></b></dt><a name="label10231"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt Line</dd></dl>
+<dl><dt><b><i>PCIX0_INTPN</i></b></dt><a name="label10232"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt Pin</dd></dl>
+<dl><dt><b><i>PCIX0_LATTIM</i></b></dt><a name="label10233"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Latency Timer</dd></dl>
+<dl><dt><b><i>PCIX0_MAXLTNCY</i></b></dt><a name="label10234"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Maximum Latency</dd></dl>
+<dl><dt><b><i>PCIX0_MINGNT</i></b></dt><a name="label10235"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Minimum Grant</dd></dl>
+<dl><dt><b><i>PCIX0_NIPTR</i></b></dt><a name="label10236"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Next Item Pointer</dd></dl>
+<dl><dt><b><i>PCIX0_OMCAPID</i></b></dt><a name="label10237"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Capability Identifier</dd></dl>
+<dl><dt><b><i>PCIX0_OMMA</i></b></dt><a name="label10238"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Message Address</dd></dl>
+<dl><dt><b><i>PCIX0_OMMC</i></b></dt><a name="label10239"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Message Control</dd></dl>
+<dl><dt><b><i>PCIX0_OMMDATA</i></b></dt><a name="label10240"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Message Data</dd></dl>
+<dl><dt><b><i>PCIX0_OMMEOI</i></b></dt><a name="label10241"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Message End Of Interrupt</dd></dl>
+<dl><dt><b><i>PCIX0_OMMUA</i></b></dt><a name="label10242"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Message Upper Address</dd></dl>
+<dl><dt><b><i>PCIX0_OMNIPTR</i></b></dt><a name="label10243"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Outbound MSI Next Item Pointer</dd></dl>
+<dl><dt><b><i>PCIX0_PCIXCMD</i></b></dt><a name="label10244"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Command</dd></dl>
+<dl><dt><b><i>PCIX0_PIM0LAH</i></b></dt><a name="label10245"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM0 Local Address High</dd></dl>
+<dl><dt><b><i>PCIX0_PIM0LAL</i></b></dt><a name="label10246"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM0 Local Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_PIM0SA</i></b></dt><a name="label10247"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM0 Size/Attribute</dd></dl>
+<dl><dt><b><i>PCIX0_PIM1LAH</i></b></dt><a name="label10248"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM1 Local Address High</dd></dl>
+<dl><dt><b><i>PCIX0_PIM1LAL</i></b></dt><a name="label10249"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM1 Local Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_PIM1SA</i></b></dt><a name="label10250"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM1 Size/Attribute</dd></dl>
+<dl><dt><b><i>PCIX0_PIM2LAH</i></b></dt><a name="label10251"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM2 Local Address High</dd></dl>
+<dl><dt><b><i>PCIX0_PIM2LAL</i></b></dt><a name="label10252"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM2 Local Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_PIM2SA</i></b></dt><a name="label10253"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PIM2 Size/Attribute</dd></dl>
+<dl><dt><b><i>PCIX0_PLBBEARH</i></b></dt><a name="label10254"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PLB Slave Error Address Register High</dd></dl>
+<dl><dt><b><i>PCIX0_PLBBEARL</i></b></dt><a name="label10255"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PLB Slave Error Address Register Low</dd></dl>
+<dl><dt><b><i>PCIX0_PLBBESR</i></b></dt><a name="label10256"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PLB Slave Error Syndrome Register</dd></dl>
+<dl><dt><b><i>PCIX0_PMC</i></b></dt><a name="label10257"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Power Management Capabilities</dd></dl>
+<dl><dt><b><i>PCIX0_PMCAPID</i></b></dt><a name="label10258"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PMC Capability Identifier</dd></dl>
+<dl><dt><b><i>PCIX0_PMCSR</i></b></dt><a name="label10259"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Power Management Control Status</dd></dl>
+<dl><dt><b><i>PCIX0_PMCSRBSE</i></b></dt><a name="label10260"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PMCSR PCI to PCI Bridge Support Extensions</dd></dl>
+<dl><dt><b><i>PCIX0_PMDATA</i></b></dt><a name="label10261"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PMC Data Register</dd></dl>
+<dl><dt><b><i>PCIX0_PMNIPTR</i></b></dt><a name="label10262"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PMC Next Item Pointer</dd></dl>
+<dl><dt><b><i>PCIX0_PMSCRR</i></b></dt><a name="label10263"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Power Management State Change Request Register</dd></dl>
+<dl><dt><b><i>PCIX0_POM0LAH</i></b></dt><a name="label10264"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM0 Local Address High</dd></dl>
+<dl><dt><b><i>PCIX0_POM0LAL</i></b></dt><a name="label10265"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM0 Local Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_POM0PCIAH</i></b></dt><a name="label10266"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM0 PCI Address High</dd></dl>
+<dl><dt><b><i>PCIX0_POM0PCIAL</i></b></dt><a name="label10267"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM0 PCI Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_POM0SA</i></b></dt><a name="label10268"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM0 Size Attribute</dd></dl>
+<dl><dt><b><i>PCIX0_POM1LAH</i></b></dt><a name="label10269"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM1 Local Address High</dd></dl>
+<dl><dt><b><i>PCIX0_POM1LAL</i></b></dt><a name="label10270"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM1 Local Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_POM1PCIAH</i></b></dt><a name="label10271"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM1 PCI Address High</dd></dl>
+<dl><dt><b><i>PCIX0_POM1PCIAL</i></b></dt><a name="label10272"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM1 PCI Address Low</dd></dl>
+<dl><dt><b><i>PCIX0_POM1SA</i></b></dt><a name="label10273"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM1 Size Attribute</dd></dl>
+<dl><dt><b><i>PCIX0_POM2SA</i></b></dt><a name="label10274"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+POM2 Size/Attribute</dd></dl>
+<dl><dt><b><i>PCIX0_RES0</i></b></dt><a name="label10275"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Reserved</dd></dl>
+<dl><dt><b><i>PCIX0_RES1</i></b></dt><a name="label10276"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Reserved</dd></dl>
+<dl><dt><b><i>PCIX0_RES2</i></b></dt><a name="label10277"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Reserved</dd></dl>
+<dl><dt><b><i>PCIX0_REVID</i></b></dt><a name="label10278"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Revision ID</dd></dl>
+<dl><dt><b><i>PCIX0_SBSYSID</i></b></dt><a name="label10279"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Subsystem ID</dd></dl>
+<dl><dt><b><i>PCIX0_SBSYSVID</i></b></dt><a name="label10280"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Subsystem Vendor ID</dd></dl>
+<dl><dt><b><i>PCIX0_STATUS</i></b></dt><a name="label10281"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Status Register</dd></dl>
+<dl><dt><b><i>PCIX0_STS</i></b></dt><a name="label10282"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Status</dd></dl>
+<dl><dt><b><i>PCIX0_VENDID</i></b></dt><a name="label10283"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Vendor ID</dd></dl>
+<dl><dt><b><i>config_register_info</i></b></dt><a name="label10284"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[isii]*]</b>.
+<p>
+Register info for all registered configuration registers. The format for each entry is (offset, name, size, write-mask).</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label10285"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size.</dd></dl>
+<dl><dt><b><i>expansion_rom</i></b></dt><a name="label10286"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oii]</b>.
+<p>
+ROM object, map size, and map function number for the Expansion ROM.</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label10287"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiii]</b>.
+<p>
+State of the interrupt pin.</dd></dl>
+<dl><dt><b><i>irq_routing</i></b></dt><a name="label10288"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ioi]*]</b>.
+<p>
+Interrupt routing table.</dd></dl>
+<dl><dt><b><i>mappings</i></b></dt><a name="label10289"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{5:8}]|[iiiiiiiio|nii]*]</b>.
+<p>
+List of all current PCI IO and memory mappings.</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label10290"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>plb</i></b></dt><a name="label10291"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Memory space object representing the PLB address space.</dd></dl>
+<dl><dt><b><i>write_masks</i></b></dt><a name="label10292"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Write masks for all registered configuration registers. The format for each entry is (offset, mask).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label10293"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label10295">status</a></b></td><td class="jdocu_noborder">print dynamic information about device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label10294"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label10295"></a><a name="label10296"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp-pci&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp-pci&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed dynamic information about the simulated device.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic272.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic274.html">Next</a></span></p>
+</body>
+</html>

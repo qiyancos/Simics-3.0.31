@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Interfaces</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(70, true);
+</script>
+<a name="label146"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic28.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic30.html">Next</a></span></p>
+<h3 class="jdocu">6.5&nbsp;&nbsp;&nbsp;Interfaces</h3 class="jdocu">
+
+
+<p>
+<a name="label147"></a><h4 class="jdocu">6.5.1&nbsp;&nbsp;&nbsp;Using Interfaces</h4 class="jdocu">
+
+
+<a name="label148"></a>
+<p>
+An object that wants to interacts with another through an interface uses the
+<b><i><a name="label149">SIM_get_interface</a>()</i></b> functions to retrieve the interface
+structure. It can then call the other object using the functions defined in the
+structure.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># in Python</b>
+ifc = SIM_get_interface(conf.phys_mem, "memory_space")
+val = ifc.read(conf.phys_mem, conf.cpu0, 0x1234, 4, 0)
+
+<b>// In C</b>
+conf_object_t *obj = SIM_get_object("phys_mem");
+memory_space_interface_t *ifc;
+attr_value_t val;
+
+ifc = (memory_space_interface_t *) SIM_get_interface(obj, "memory_space");
+val = ifc-&gt;read(obj, SIM_get_object("cpu0"), 0x1234, 4, 0);
+</pre>
+<p>
+In Python, you can use the <i>iface</i> attribute of the object to access
+the interface directly:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+val = conf.phys_mem.iface.memory_space.read(conf.phys_mem, conf.cpu0, 0x1234, 4, 0)
+</pre>
+<p>
+When you are using interfaces inside an object, you will often need to define
+which object you want to talk to via an attribute. The classic way of doing
+that is to define an attribute with type <tt>o|n</tt>, and check if the
+object passed as argument implements the necessary interface:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// In C</b>
+static attr_value_t
+get_an_object(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+        return SIM_make_attr_object_or_nil(obj-&gt;an_object);
+}
+
+static set_error_t
+set_an_object(void *arg, conf_object_t *obj, attr_value_t *val,
+              attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        if (val-&gt;u.kind == Sim_Val_Nil) {
+                mo-&gt;an_object = NULL;
+        } else {
+                foo_interface_t *foo_ifc =
+                    (foo_interface_t *)SIM_get_interface(val-&gt;u.object, "foo");
+                if (SIM_clear_exception() != SimExc_No_Exception)
+                        return Sim_Set_Interface_Not_Found;
+                mo-&gt;an_object = val-&gt;u.object;                
+        }
+
+        return Sim_Set_Ok;
+}
+
+[...]
+
+SIM_register_typed_attribute(class_name, "an_object",
+                             get_an_object, NUL,
+                             set_an_object, NULL,
+                             Sim_Attr_Optional,
+                             "o|n", NULL,
+                             "An object implementing the 'foo' interface");
+</pre>
+<p>
+
+<a name="label150"></a><h4 class="jdocu">6.5.2&nbsp;&nbsp;&nbsp;Implementing an Existing Interface</h4 class="jdocu">
+
+
+<p>
+Implementing an existing interface consists in filling in the functions
+pointers that are listed in the interface definition with the functions that
+should be called. The interface should then be registered using the
+<b><i>SIM_register_interface()</i></b> function:
+<p>
+<pre class="jdocu_small" style="color: black">
+SIM_register_interface(conf_class_t *class, char *name, void *iface)
+</pre>
+<p>
+Where the parameters are:
+<p>
+<dl><dt><b><i>class</i></b></dt><dd>The class that will advertise that it
+implements the interface</dd><dt><b><i>name</i></b></dt><dd>The name of the interface</dd><dt><b><i>iface</i></b></dt><dd>The filled interface structure.</dd></dl>
+<p>
+This gives us the following code:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+def my_operate(memhier, space, map, memop):
+    print "my_operate() has been called!"
+
+ifc = timing_interface_t()
+ifc.operate = my_operate
+SIM_register_interface(my_class, "timing-model", ifc)
+
+<b>// And in C</b>
+static cycles_t
+my_operate(conf_object_t *mem_hier, conf_object_t *space,
+           map_list_t *map, generic_transaction_t *mem_op)
+{
+        // do something
+}
+
+static conf_class_t *my_class;
+static timing_model_interface_t ifc;
+
+void init_loca(void)
+{
+        ...
+        ifc.operate = my_operate;
+        SIM_register_interface(my_class, "timing-model", (void *) &amp;ifc);
+        ...
+}
+</pre>
+<p>
+
+<a name="label151"></a><h4 class="jdocu">6.5.3&nbsp;&nbsp;&nbsp;Implementing an New Interface</h4 class="jdocu">
+
+
+<p>
+It is unfortunately not possible to implement new interfaces in Python since it
+would require additional type wrapping to exchange data between Python and the
+C layer that implements interfaces.
+<p>
+Implementing a new interface in C is pretty much the same as implementing an
+existing interface, except that you must declare the structure defining the
+interface first:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef struct {
+        int (*my_function)(conf_object_t *o, int i);
+} myifc_interface_t;
+
+int my_function(conf_object_t *o, int i)
+{
+       return i + 1;
+}
+
+...
+</pre>
+<p>
+Note that:
+<p>
+<ul>
+<p>
+<li>It is very common to have as a first argument of an interface function the
+object on which the function is applied.</li>
+<p>
+<li>The structure defining the interface <tt>foo</tt> should be called
+<tt>foo_interface_t</tt>.</li>
+<p>
+</ul>
+<p>
+If you plan to use the interface you are declaring in DML code, these two rules
+are mandatory. Refer to the section <a class="jdocu" href="topic20.html#label98">5.3</a> to get more
+explanation about interfaces in DML.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic28.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic30.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Object Types</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(7, true);
+</script>
+<a name="label32"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Object Types</h3 class="jdocu">
+
+
+<p>
+The following is an overview of the available <em><a name="label33">object
+types</a></em> (the built-in classes):
+<p>
+<dl><dt><b><a name="label34">device</a></b></dt><dd>Each DML program defines a subclass of the <b>device</b>
+class, which can be instantiated as a configuration object in
+Simics.</dd><dt><b><a name="label35">attribute</a></b></dt><dd>An arbitrary Simics configuration-object attribute of the
+<b>device</b>. Many attributes are created automatically from
+the declaration of device members such as registers and connects, but it
+is possible to manually add other attributes as well. This can be used
+to provide synthetic information about the device for inspection, or as
+a simple programming interface. Attributes are typically saved
+automatically when a Simics checkpoint is created.</dd><dt><b><a name="label36">bank</a></b></dt><a name="label37"></a><dd>A register bank. Banks make sets of registers accessible by placing
+them in an <em><a name="label38">address space</a></em>. Register banks can be
+individually mapped into Simics memory spaces by using a separate
+<em><a name="label39">function number</a></em> for each bank. The
+<b>bank</b> class is a subclass of <b>group</b>.</dd><dt><b><a name="label40">register</a></b></dt><dd>A <b>register</b> holds an integer value, and is generally
+used to model a hardware register. The width of a register is a nonzero
+number of bytes (a register may not be wider than 8 bytes). Registers
+may only occur within a <b>bank</b> (directly or indirectly).
+Registers divide the address space of a bank into discrete elements with
+non-overlapping addresses. Registers are used for communication via
+memory-mapped I/O, and also for storing device state in natural way.
+Sometimes it is useful to have registers that belong to a bank but are
+not mapped into its address space.</dd><dt><b>array of register</b></dt><a name="label41"></a><dd>Register arrays are used for compact representation of related
+registers within the same bank.</dd><dt><b><a name="label42">field</a></b></dt><a name="label43"></a><dd>A <b>register</b> can be further divided into
+<em><a name="label44">fields</a></em> on the bit level. Each such field can be
+accessed separately, both for reading and for writing. The fields of a
+register may not overlap. </dd><dt><b><a name="label45">group</a></b></dt><a name="label46"></a><dd>Groups are generic container objects, and are mainly used to define
+logical groups of registers. See also <b>bank</b>.</dd><dt><b>array of group</b></dt><a name="label47"></a><dd>Arrays of groups are useful for modeling repeated groups of
+registers.</dd><dt><b><a name="label48">connect</a></b></dt><dd>A <b>connect</b> object holds a reference to a Simics
+configuration object. (Typically, the connected object is expected to
+implement some particular Simics-interface.) An attribute with the same
+name is added to the <b>device</b>; thus, a
+<b>connect</b> is similar to a simple <b>attribute</b>
+object. Usually, initialization is done from outside the device, e.g., in
+a Simics configuration file.</dd><dt><b>array of connect</b></dt><a name="label49"></a><dd>Connect-arrays make it easy to connect a whole array of
+objects.</dd><dt><b><a name="label50">interface</a></b></dt><dd>An <b>interface</b> object may only occur within a
+<b>connect</b>. It is used to declare a Simics-interface assumed
+to be implemented by the connected object. In many cases, the name of
+the interface is sufficient, and the body of the object can be left
+empty.</dd><dt><b><a name="label51">implement</a></b></dt><dd>An <b>implement</b> object is used to define a
+Simics-interface that the <b>device</b> implements. The methods
+defined within the <b>implement</b> must correspond to the
+functions of the interface.</dd><dt><b><a name="label52">event</a></b></dt><dd>An <b>event</b> object is an encapsulation of a Simics event
+that can be posted on a time or step queue. Almost all objects can have
+event members, except events themselves, and objects of type
+<b>field</b> and <b>implement</b>.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

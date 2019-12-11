@@ -1,0 +1,1047 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>GT64120</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(795, true);
+</script>
+<a name="label5989"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic98.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic100.html">Next</a></span></p>
+<h3 class="jdocu">GT64120</h3 class="jdocu">
+
+
+<a name="label5990"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2636">GT64120</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>GT64120</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic504.html#label17753">interrupt_ack</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+System controller chip from Galileo Technology Ltd. (now merged with Marvell Technology Group Ltd.): The GT64120 is a single-chip system controller for MIPS CPUs. This highly-integrated device contains all the key system peripherals needed to build a high-performance 64-bit MIPS system: SDRAM controller (parity support), device controller, DMA engines, timer/counters, and high-performance Universal PCI interfaces.The GT64120 includes an advanced dual-mode PCI interface unit that can support either two independent 32-bit PCI buses, or a single 64-bit PCI interface. PCI bus speeds up to 66MHz are also supported, as is an industry standard I2O messaging unit. Universal PCI for both 3.3V and 5V signalling is included. The 64-bit device controller on the GT64120 supports a wide range of memory devices including SDRAM, Flash, and SRAM.
+
+</dd>
+
+</dl>
+<a name="label5991"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>address_decode_error</i></b></dt><a name="label5992"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Address Decode Error</dd></dl>
+<dl><dt><b><i>arbiter_control</i></b></dt><a name="label5993"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: DMA Arbiter Arbiter Control</dd></dl>
+<dl><dt><b><i>boot_cs_high_decode_address</i></b></dt><a name="label5994"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Boot CS* High Decode Address</dd></dl>
+<dl><dt><b><i>boot_cs_low_decode_address</i></b></dt><a name="label5995"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Boot CS* Low Decode Address</dd></dl>
+<dl><dt><b><i>bootcs</i></b></dt><a name="label5996"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+BootCS</dd></dl>
+<dl><dt><b><i>bus_error_address_high_processor</i></b></dt><a name="label5997"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Bus Error Address Low Processor</dd></dl>
+<dl><dt><b><i>bus_error_address_low_processor</i></b></dt><a name="label5998"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Bus Error Address Low Processor</dd></dl>
+<dl><dt><b><i>byte_swap_pci</i></b></dt><a name="label5999"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to non-zero, all mappings to and from the PCI busses are byte swapped. That is, the mappings are byte swapped an extra time in addition to the number of times they are programmed to be swapped in the GT64120.</dd></dl>
+<dl><dt><b><i>channel_0_control</i></b></dt><a name="label6000"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 0 Control</dd></dl>
+<dl><dt><b><i>channel_0_current_descriptor_pointer</i></b></dt><a name="label6001"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 0 Current Descriptor Pointer</dd></dl>
+<dl><dt><b><i>channel_0_dma_byte_count</i></b></dt><a name="label6002"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 0 Byte Count</dd></dl>
+<dl><dt><b><i>channel_0_dma_destination_address</i></b></dt><a name="label6003"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 0 DMA Destination Address</dd></dl>
+<dl><dt><b><i>channel_0_dma_source_address</i></b></dt><a name="label6004"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 0 DMA Source Address</dd></dl>
+<dl><dt><b><i>channel_0_next_record_pointer</i></b></dt><a name="label6005"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 0 Next Record Pointer</dd></dl>
+<dl><dt><b><i>channel_1_control</i></b></dt><a name="label6006"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 1 Control</dd></dl>
+<dl><dt><b><i>channel_1_current_descriptor_pointer</i></b></dt><a name="label6007"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 1 Current Descriptor Pointer</dd></dl>
+<dl><dt><b><i>channel_1_dma_byte_count</i></b></dt><a name="label6008"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 1 DMA Byte Count</dd></dl>
+<dl><dt><b><i>channel_1_dma_destination_address</i></b></dt><a name="label6009"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 1 DMA Destination Address</dd></dl>
+<dl><dt><b><i>channel_1_dma_source_address</i></b></dt><a name="label6010"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 1 DMA Source Address</dd></dl>
+<dl><dt><b><i>channel_1_next_record_pointer</i></b></dt><a name="label6011"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 1 Next Record Pointer</dd></dl>
+<dl><dt><b><i>channel_2_control</i></b></dt><a name="label6012"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 2 Control</dd></dl>
+<dl><dt><b><i>channel_2_current_descriptor_pointer</i></b></dt><a name="label6013"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 2 Current Descriptor Pointer</dd></dl>
+<dl><dt><b><i>channel_2_dma_byte_count</i></b></dt><a name="label6014"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 2 DMA Byte Count</dd></dl>
+<dl><dt><b><i>channel_2_dma_destination_address</i></b></dt><a name="label6015"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 2 DMA Destination Address</dd></dl>
+<dl><dt><b><i>channel_2_dma_source_address</i></b></dt><a name="label6016"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 2 DMA Source Address</dd></dl>
+<dl><dt><b><i>channel_2_next_record_pointer</i></b></dt><a name="label6017"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 2 Next Record Pointer</dd></dl>
+<dl><dt><b><i>channel_3_control</i></b></dt><a name="label6018"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 3 Control</dd></dl>
+<dl><dt><b><i>channel_3_current_descriptor_pointer</i></b></dt><a name="label6019"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 3 Current Descriptor Pointer</dd></dl>
+<dl><dt><b><i>channel_3_dma_byte_count</i></b></dt><a name="label6020"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 3 DMA Byte Count</dd></dl>
+<dl><dt><b><i>channel_3_dma_destination_address</i></b></dt><a name="label6021"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 3 DMA Destination Address</dd></dl>
+<dl><dt><b><i>channel_3_dma_source_address</i></b></dt><a name="label6022"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 3 DMA Source Address</dd></dl>
+<dl><dt><b><i>channel_3_next_record_pointer</i></b></dt><a name="label6023"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Channel 3 Next Record Pointer</dd></dl>
+<dl><dt><b><i>cpu_high_interrupt_mask_register</i></b></dt><a name="label6024"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CPU High Interrupt Mask Register</dd></dl>
+<dl><dt><b><i>cpu_interface_configuration</i></b></dt><a name="label6025"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CPU Interface Configuration</dd></dl>
+<dl><dt><b><i>cpu_interrupt_mask_register</i></b></dt><a name="label6026"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CPU Interrupt Mask Register</dd></dl>
+<dl><dt><b><i>cpu_mapped_bootcs</i></b></dt><a name="label6027"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if BootCS is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_cs0</i></b></dt><a name="label6028"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if CS0 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_cs1</i></b></dt><a name="label6029"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if CS1 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_cs2</i></b></dt><a name="label6030"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if CS2 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_cs3</i></b></dt><a name="label6031"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if CS3 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_internal_registers</i></b></dt><a name="label6032"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if Internal Registers is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_pci_0_io</i></b></dt><a name="label6033"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI_0 I/O is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_pci_0_memory_0</i></b></dt><a name="label6034"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI_0 Memory 0 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_pci_0_memory_1</i></b></dt><a name="label6035"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI_0 Memory 1 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_pci_1_io</i></b></dt><a name="label6036"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI_1 I/O is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_pci_1_memory_0</i></b></dt><a name="label6037"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI_1 Memory 0 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_pci_1_memory_1</i></b></dt><a name="label6038"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI_1 Memory 1 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_scs0</i></b></dt><a name="label6039"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if SCS0 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_scs1</i></b></dt><a name="label6040"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if SCS1 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_scs2</i></b></dt><a name="label6041"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if SCS2 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapped_scs3</i></b></dt><a name="label6042"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if SCS3 is mapped in the CPU address space.</dd></dl>
+<dl><dt><b><i>cpu_mapping_bootcs_function</i></b></dt><a name="label6043"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping BootCS.</dd></dl>
+<dl><dt><b><i>cpu_mapping_cs0_function</i></b></dt><a name="label6044"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping CS0.</dd></dl>
+<dl><dt><b><i>cpu_mapping_cs1_function</i></b></dt><a name="label6045"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping CS1.</dd></dl>
+<dl><dt><b><i>cpu_mapping_cs2_function</i></b></dt><a name="label6046"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping CS2.</dd></dl>
+<dl><dt><b><i>cpu_mapping_cs3_function</i></b></dt><a name="label6047"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping CS3.</dd></dl>
+<dl><dt><b><i>cpu_mapping_internal_registers_function</i></b></dt><a name="label6048"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping Internal Registers.</dd></dl>
+<dl><dt><b><i>cpu_mapping_pci_0_io_function</i></b></dt><a name="label6049"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping PCI_0 I/O.</dd></dl>
+<dl><dt><b><i>cpu_mapping_pci_0_memory_0_function</i></b></dt><a name="label6050"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping PCI_0 Memory 0.</dd></dl>
+<dl><dt><b><i>cpu_mapping_pci_0_memory_1_function</i></b></dt><a name="label6051"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping PCI_0 Memory 1.</dd></dl>
+<dl><dt><b><i>cpu_mapping_pci_1_io_function</i></b></dt><a name="label6052"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping PCI_1 I/O.</dd></dl>
+<dl><dt><b><i>cpu_mapping_pci_1_memory_0_function</i></b></dt><a name="label6053"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping PCI_1 Memory 0.</dd></dl>
+<dl><dt><b><i>cpu_mapping_pci_1_memory_1_function</i></b></dt><a name="label6054"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping PCI_1 Memory 1.</dd></dl>
+<dl><dt><b><i>cpu_mapping_scs0_function</i></b></dt><a name="label6055"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping SCS0.</dd></dl>
+<dl><dt><b><i>cpu_mapping_scs1_function</i></b></dt><a name="label6056"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping SCS1.</dd></dl>
+<dl><dt><b><i>cpu_mapping_scs2_function</i></b></dt><a name="label6057"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping SCS2.</dd></dl>
+<dl><dt><b><i>cpu_mapping_scs3_function</i></b></dt><a name="label6058"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The function to use when mapping SCS3.</dd></dl>
+<dl><dt><b><i>cpu_mem</i></b></dt><a name="label6059"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The memory space on the CPU side.</dd></dl>
+<dl><dt><b><i>cpu_select_cause_register</i></b></dt><a name="label6060"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CPU Select Cause Register</dd></dl>
+<dl><dt><b><i>cs0</i></b></dt><a name="label6061"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+CS0</dd></dl>
+<dl><dt><b><i>cs0_high_decode_address</i></b></dt><a name="label6062"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[0]* High Decode Address</dd></dl>
+<dl><dt><b><i>cs0_low_decode_address</i></b></dt><a name="label6063"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[0]* Low Decode Address</dd></dl>
+<dl><dt><b><i>cs1</i></b></dt><a name="label6064"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+CS1</dd></dl>
+<dl><dt><b><i>cs1_high_decode_address</i></b></dt><a name="label6065"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[1]* High Decode Address</dd></dl>
+<dl><dt><b><i>cs1_low_decode_address</i></b></dt><a name="label6066"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[1]* Low Decode Address</dd></dl>
+<dl><dt><b><i>cs2</i></b></dt><a name="label6067"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+CS2</dd></dl>
+<dl><dt><b><i>cs20_high_decode_address</i></b></dt><a name="label6068"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[2:0]* High Decode Address</dd></dl>
+<dl><dt><b><i>cs20_low_decode_address</i></b></dt><a name="label6069"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[2:0]* Low Decode Address</dd></dl>
+<dl><dt><b><i>cs20_remap</i></b></dt><a name="label6070"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[2:0]* Remap</dd></dl>
+<dl><dt><b><i>cs2_high_decode_address</i></b></dt><a name="label6071"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[2]* High Decode Address</dd></dl>
+<dl><dt><b><i>cs2_low_decode_address</i></b></dt><a name="label6072"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[2]* Low Decode Address</dd></dl>
+<dl><dt><b><i>cs3</i></b></dt><a name="label6073"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+CS3</dd></dl>
+<dl><dt><b><i>cs3_boot_cs_high_decode_address</i></b></dt><a name="label6074"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[3]* and Boot CS* High Decode Address</dd></dl>
+<dl><dt><b><i>cs3_boot_cs_low_decode_address</i></b></dt><a name="label6075"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[3]* and Boot CS* Low Decode Address</dd></dl>
+<dl><dt><b><i>cs3_boot_cs_remap</i></b></dt><a name="label6076"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[3]* and Boot CS* Remap</dd></dl>
+<dl><dt><b><i>cs3_high_decode_address</i></b></dt><a name="label6077"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[3]* High Decode Address</dd></dl>
+<dl><dt><b><i>cs3_low_decode_address</i></b></dt><a name="label6078"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CS[3]* Low Decode Address</dd></dl>
+<dl><dt><b><i>device_bank0_parameters</i></b></dt><a name="label6079"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Device Parameters Device Bank0 Parameters</dd></dl>
+<dl><dt><b><i>device_bank1_parameters</i></b></dt><a name="label6080"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Device Bank1 Parameters</dd></dl>
+<dl><dt><b><i>device_bank2_parameters</i></b></dt><a name="label6081"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Device Bank2 Parameters</dd></dl>
+<dl><dt><b><i>device_bank3_parameters</i></b></dt><a name="label6082"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Device Bank3 Parameters</dd></dl>
+<dl><dt><b><i>device_boot_bank_parameters</i></b></dt><a name="label6083"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Device Boot Bank Parameters</dd></dl>
+<dl><dt><b><i>high_interrupt_cause_register</i></b></dt><a name="label6084"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: High Interrupt Cause Register</dd></dl>
+<dl><dt><b><i>inbound_doorbell_register</i></b></dt><a name="label6085"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Doorbell Register</dd></dl>
+<dl><dt><b><i>inbound_free_head_pointer_register</i></b></dt><a name="label6086"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Free Head Pointer Register</dd></dl>
+<dl><dt><b><i>inbound_free_tail_pointer_register</i></b></dt><a name="label6087"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Free Tail Pointer Register</dd></dl>
+<dl><dt><b><i>inbound_interrupt_cause_register</i></b></dt><a name="label6088"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Interrupt Cause Register</dd></dl>
+<dl><dt><b><i>inbound_interrupt_mask_register</i></b></dt><a name="label6089"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Interrupt Mask Register</dd></dl>
+<dl><dt><b><i>inbound_message_register_0</i></b></dt><a name="label6090"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Message Register 0</dd></dl>
+<dl><dt><b><i>inbound_message_register_1</i></b></dt><a name="label6091"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Message Register 1</dd></dl>
+<dl><dt><b><i>inbound_post_head_pointer_register</i></b></dt><a name="label6092"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Post Head Pointer Register</dd></dl>
+<dl><dt><b><i>inbound_post_tail_pointer_register</i></b></dt><a name="label6093"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Post Tail Pointer Register</dd></dl>
+<dl><dt><b><i>inbound_queue_port_virtual_register</i></b></dt><a name="label6094"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Inbound Queue Port Virtual Register</dd></dl>
+<dl><dt><b><i>internal_registers</i></b></dt><a name="label6095"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Internal Registers</dd></dl>
+<dl><dt><b><i>internal_space_decode</i></b></dt><a name="label6096"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Internal Space Decode</dd></dl>
+<dl><dt><b><i>interrupt_cause_register</i></b></dt><a name="label6097"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Interrupts Interrupt Cause Register</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label6098"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Upstream interrupt device.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label6099"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Upstream interrupt level.</dd></dl>
+<dl><dt><b><i>multi_gt_register</i></b></dt><a name="label6100"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Multi-GT Register</dd></dl>
+<dl><dt><b><i>outbound_doorbell_register</i></b></dt><a name="label6101"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Doorbell Register</dd></dl>
+<dl><dt><b><i>outbound_free_head_pointer_register</i></b></dt><a name="label6102"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Free Head Pointer Register</dd></dl>
+<dl><dt><b><i>outbound_free_tail_pointer_register</i></b></dt><a name="label6103"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Free Tail Pointer Register</dd></dl>
+<dl><dt><b><i>outbound_interrupt_cause_register</i></b></dt><a name="label6104"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Interrupt Cause Register</dd></dl>
+<dl><dt><b><i>outbound_interrupt_mask_register</i></b></dt><a name="label6105"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Interrupt Mask Register</dd></dl>
+<dl><dt><b><i>outbound_message_register_0</i></b></dt><a name="label6106"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Message Register 0</dd></dl>
+<dl><dt><b><i>outbound_message_register_1</i></b></dt><a name="label6107"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Message Register 1</dd></dl>
+<dl><dt><b><i>outbound_post_head_pointer_register</i></b></dt><a name="label6108"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Post Head Pointer Register</dd></dl>
+<dl><dt><b><i>outbound_post_tail_pointer_register</i></b></dt><a name="label6109"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Post Tail Pointer Register</dd></dl>
+<dl><dt><b><i>outbound_queue_port_virtual_register</i></b></dt><a name="label6110"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Outbound Queue Port Virtual Register</dd></dl>
+<dl><dt><b><i>pci_0_0</i></b></dt><a name="label6111"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_0 function 0</dd></dl>
+<dl><dt><b><i>pci_0_1</i></b></dt><a name="label6112"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_0 function 1</dd></dl>
+<dl><dt><b><i>pci_0_base_address_registers_enable</i></b></dt><a name="label6113"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Base Address Registers Enable</dd></dl>
+<dl><dt><b><i>pci_0_command</i></b></dt><a name="label6114"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI Internal PCI_0 Command</dd></dl>
+<dl><dt><b><i>pci_0_conf</i></b></dt><a name="label6115"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_0 Conf</dd></dl>
+<dl><dt><b><i>pci_0_conf_bist_header_type_latency_timer_cache_line</i></b></dt><a name="label6116"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 BIST, Header Type, Latency Timer, Cache Line.</dd></dl>
+<dl><dt><b><i>pci_0_conf_class_code_and_revision_id</i></b></dt><a name="label6117"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Class Code and Revision ID.</dd></dl>
+<dl><dt><b><i>pci_0_conf_cs20_base_address</i></b></dt><a name="label6118"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 CS[2:0]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_cs3_boot_cs_base_address</i></b></dt><a name="label6119"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 CS[3]* and Boot CS* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_device_and_vendor_id</i></b></dt><a name="label6120"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Device and Vendor ID.</dd></dl>
+<dl><dt><b><i>pci_0_conf_expansion_rom_base_address_register</i></b></dt><a name="label6121"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Expansion ROM Base_Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_internal_registers_io_mapped_base_address</i></b></dt><a name="label6122"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Internal Registers I/O Mapped Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_internal_registers_memory_mapped_base_address</i></b></dt><a name="label6123"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Internal Registers Memory Mapped Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_interrupt_pin_and_line</i></b></dt><a name="label6124"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Interrupt Pin and Line.</dd></dl>
+<dl><dt><b><i>pci_0_conf_scs10_base_address</i></b></dt><a name="label6125"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 SCS[1:0]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_scs32_base_address</i></b></dt><a name="label6126"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 SCS[3:2]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_status_and_command</i></b></dt><a name="label6127"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Status and Command.</dd></dl>
+<dl><dt><b><i>pci_0_conf_subsystem_id_and_subsystem_vendor_id</i></b></dt><a name="label6128"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Subsystem ID and Subsystem Vendor ID.</dd></dl>
+<dl><dt><b><i>pci_0_conf_swapped_cs3_boot_cs_base_address</i></b></dt><a name="label6129"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Swapped CS[3]* and Boot CS* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_swapped_scs10_base_address</i></b></dt><a name="label6130"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Swapped SCS[1:0]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_conf_swapped_scs32_base_address</i></b></dt><a name="label6131"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 0 Swapped SCS[3:2]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_0_configuration_address</i></b></dt><a name="label6132"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Configuration Address</dd></dl>
+<dl><dt><b><i>pci_0_configuration_data_virtual_register</i></b></dt><a name="label6133"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Configuration Data Virtual Register</dd></dl>
+<dl><dt><b><i>pci_0_cs20_bank_size</i></b></dt><a name="label6134"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 CS[2:0]* Bank Size</dd></dl>
+<dl><dt><b><i>pci_0_cs20_base_address_remap</i></b></dt><a name="label6135"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 CS[2:0]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_cs3_boot_cs_address_remap</i></b></dt><a name="label6136"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 CS[3]* and Boot CS* Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_cs3_boot_cs_bank_size</i></b></dt><a name="label6137"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 CS[3]* and Boot CS* Bank Size</dd></dl>
+<dl><dt><b><i>pci_0_high_interrupt_cause_mask_register</i></b></dt><a name="label6138"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 High Interrupt Cause Mask Register</dd></dl>
+<dl><dt><b><i>pci_0_interrupt_acknowledge_virtual_register</i></b></dt><a name="label6139"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Interrupt Acknowledge Virtual Register</dd></dl>
+<dl><dt><b><i>pci_0_interrupt_cause_mask_register</i></b></dt><a name="label6140"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Interrupt Cause Mask Register</dd></dl>
+<dl><dt><b><i>pci_0_interrupt_select_register</i></b></dt><a name="label6141"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Interrupt Select Register</dd></dl>
+<dl><dt><b><i>pci_0_io</i></b></dt><a name="label6142"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_0 I/O</dd></dl>
+<dl><dt><b><i>pci_0_io_high_decode_address</i></b></dt><a name="label6143"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 I/O High Decode Address</dd></dl>
+<dl><dt><b><i>pci_0_io_low_decode_address</i></b></dt><a name="label6144"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 I/O Low Decode Address</dd></dl>
+<dl><dt><b><i>pci_0_io_remap</i></b></dt><a name="label6145"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 I/O Remap</dd></dl>
+<dl><dt><b><i>pci_0_mapped_bootcs</i></b></dt><a name="label6146"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_cs0</i></b></dt><a name="label6147"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_cs1</i></b></dt><a name="label6148"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_cs2</i></b></dt><a name="label6149"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_cs3</i></b></dt><a name="label6150"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_internal_registers_io_mapped</i></b></dt><a name="label6151"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Internal Registers IO Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_internal_registers_memory_mapped</i></b></dt><a name="label6152"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Internal Registers Memory Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_scs0</i></b></dt><a name="label6153"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_scs1</i></b></dt><a name="label6154"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_scs2</i></b></dt><a name="label6155"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_scs3</i></b></dt><a name="label6156"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_swapped_bootcs</i></b></dt><a name="label6157"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_swapped_cs3</i></b></dt><a name="label6158"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_swapped_scs0</i></b></dt><a name="label6159"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_swapped_scs1</i></b></dt><a name="label6160"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_swapped_scs2</i></b></dt><a name="label6161"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapped_swapped_scs3</i></b></dt><a name="label6162"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_bootcs_function</i></b></dt><a name="label6163"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_cs0_function</i></b></dt><a name="label6164"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_cs1_function</i></b></dt><a name="label6165"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_cs2_function</i></b></dt><a name="label6166"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_cs3_function</i></b></dt><a name="label6167"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_internal_registers_io_mapped_function</i></b></dt><a name="label6168"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Internal Registers IO Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_internal_registers_memory_mapped_function</i></b></dt><a name="label6169"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Internal Registers Memory Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_scs0_function</i></b></dt><a name="label6170"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_scs1_function</i></b></dt><a name="label6171"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_scs2_function</i></b></dt><a name="label6172"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_scs3_function</i></b></dt><a name="label6173"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_swapped_bootcs_function</i></b></dt><a name="label6174"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_swapped_cs3_function</i></b></dt><a name="label6175"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_swapped_scs0_function</i></b></dt><a name="label6176"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_swapped_scs1_function</i></b></dt><a name="label6177"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_swapped_scs2_function</i></b></dt><a name="label6178"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_mapping_swapped_scs3_function</i></b></dt><a name="label6179"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 0 Swapped SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_0_memory</i></b></dt><a name="label6180"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_0 Memory</dd></dl>
+<dl><dt><b><i>pci_0_memory_0_high_decode_address</i></b></dt><a name="label6181"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Memory 0 High Decode Address</dd></dl>
+<dl><dt><b><i>pci_0_memory_0_low_decode_address</i></b></dt><a name="label6182"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Memory 0 Low Decode Address</dd></dl>
+<dl><dt><b><i>pci_0_memory_0_remap</i></b></dt><a name="label6183"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Memory 0 Remap</dd></dl>
+<dl><dt><b><i>pci_0_memory_1_high_decode_address</i></b></dt><a name="label6184"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Memory 1 High Decode Address</dd></dl>
+<dl><dt><b><i>pci_0_memory_1_low_decode_address</i></b></dt><a name="label6185"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Memory 1 Low Decode Address</dd></dl>
+<dl><dt><b><i>pci_0_memory_1_remap</i></b></dt><a name="label6186"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Memory 1 Remap</dd></dl>
+<dl><dt><b><i>pci_0_prefetch_max_burst_size</i></b></dt><a name="label6187"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Prefetch/Max Burst Size</dd></dl>
+<dl><dt><b><i>pci_0_scs10_bank_size</i></b></dt><a name="label6188"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 SCS[1:0]* Bank Size</dd></dl>
+<dl><dt><b><i>pci_0_scs10_base_address_remap</i></b></dt><a name="label6189"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 SCS[1:0]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_scs32_bank_size</i></b></dt><a name="label6190"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 SCS[3:2]* Bank Size</dd></dl>
+<dl><dt><b><i>pci_0_scs32_base_address_remap</i></b></dt><a name="label6191"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 SCS[3:2]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_serr0_mask</i></b></dt><a name="label6192"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 SErr0 Mask</dd></dl>
+<dl><dt><b><i>pci_0_swapped_cs3_bootcs_base_address_remap</i></b></dt><a name="label6193"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Swapped CS[3]* and BootCS* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_swapped_scs10_base_address_remap</i></b></dt><a name="label6194"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Swapped SCS[1:0]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_swapped_scs32_base_address_remap</i></b></dt><a name="label6195"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Swapped SCS[3:2]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_0_sync_barrier_virtual_register</i></b></dt><a name="label6196"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CPU Sync Barrier PCI_0 Sync Barrier Virtual Register</dd></dl>
+<dl><dt><b><i>pci_0_time_out_retry</i></b></dt><a name="label6197"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_0 Time Out and Retry</dd></dl>
+<dl><dt><b><i>pci_1_0</i></b></dt><a name="label6198"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_1 function 0</dd></dl>
+<dl><dt><b><i>pci_1_1</i></b></dt><a name="label6199"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_1 function 1</dd></dl>
+<dl><dt><b><i>pci_1_base_address_registers_enable</i></b></dt><a name="label6200"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Base Address Registers Enable</dd></dl>
+<dl><dt><b><i>pci_1_command</i></b></dt><a name="label6201"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Command</dd></dl>
+<dl><dt><b><i>pci_1_conf</i></b></dt><a name="label6202"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_1 Conf</dd></dl>
+<dl><dt><b><i>pci_1_conf_bist_header_type_latency_timer_cache_line</i></b></dt><a name="label6203"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 BIST, Header Type, Latency Timer, Cache Line.</dd></dl>
+<dl><dt><b><i>pci_1_conf_class_code_and_revision_id</i></b></dt><a name="label6204"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Class Code and Revision ID.</dd></dl>
+<dl><dt><b><i>pci_1_conf_cs20_base_address</i></b></dt><a name="label6205"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 CS[2:0]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_cs3_boot_cs_base_address</i></b></dt><a name="label6206"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 CS[3]* and Boot CS* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_device_and_vendor_id</i></b></dt><a name="label6207"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Device and Vendor ID.</dd></dl>
+<dl><dt><b><i>pci_1_conf_expansion_rom_base_address_register</i></b></dt><a name="label6208"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Expansion ROM Base_Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_internal_registers_io_mapped_base_address</i></b></dt><a name="label6209"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Internal Registers I/O Mapped Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_internal_registers_memory_mapped_base_address</i></b></dt><a name="label6210"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Internal Registers Memory Mapped Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_interrupt_pin_and_line</i></b></dt><a name="label6211"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Interrupt Pin and Line.</dd></dl>
+<dl><dt><b><i>pci_1_conf_scs10_base_address</i></b></dt><a name="label6212"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 SCS[1:0]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_scs32_base_address</i></b></dt><a name="label6213"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 SCS[3:2]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_status_and_command</i></b></dt><a name="label6214"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Status and Command.</dd></dl>
+<dl><dt><b><i>pci_1_conf_subsystem_id_and_subsystem_vendor_id</i></b></dt><a name="label6215"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Subsystem ID and Subsystem Vendor ID.</dd></dl>
+<dl><dt><b><i>pci_1_conf_swapped_cs3_boot_cs_base_address</i></b></dt><a name="label6216"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Swapped CS[3]* and Boot CS* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_swapped_scs10_base_address</i></b></dt><a name="label6217"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Swapped SCS[1:0]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_conf_swapped_scs32_base_address</i></b></dt><a name="label6218"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+PCI 1 Swapped SCS[3:2]* Base Address.</dd></dl>
+<dl><dt><b><i>pci_1_configuration_address</i></b></dt><a name="label6219"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Configuration Address</dd></dl>
+<dl><dt><b><i>pci_1_configuration_data_virtual_register</i></b></dt><a name="label6220"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Configuration Data Virtual Register</dd></dl>
+<dl><dt><b><i>pci_1_cs20_bank_size</i></b></dt><a name="label6221"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 CS[2:0]* Bank Size</dd></dl>
+<dl><dt><b><i>pci_1_cs20_base_address_remap</i></b></dt><a name="label6222"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 CS[2:0]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_cs3_boot_cs_address_remap</i></b></dt><a name="label6223"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 CS[3]* and Boot CS* Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_cs3_boot_cs_bank_size</i></b></dt><a name="label6224"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 CS[3]* and Boot CS* Bank Size</dd></dl>
+<dl><dt><b><i>pci_1_interrupt_acknowledge_virtual_register</i></b></dt><a name="label6225"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Interrupt Acknowledge Virtual Register</dd></dl>
+<dl><dt><b><i>pci_1_io</i></b></dt><a name="label6226"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_1 I/O</dd></dl>
+<dl><dt><b><i>pci_1_io_high_decode_address</i></b></dt><a name="label6227"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 I/O High Decode Address</dd></dl>
+<dl><dt><b><i>pci_1_io_low_decode_address</i></b></dt><a name="label6228"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 I/O Low Decode Address</dd></dl>
+<dl><dt><b><i>pci_1_io_remap</i></b></dt><a name="label6229"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 I/O Remap</dd></dl>
+<dl><dt><b><i>pci_1_mapped_bootcs</i></b></dt><a name="label6230"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_cs0</i></b></dt><a name="label6231"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_cs1</i></b></dt><a name="label6232"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_cs2</i></b></dt><a name="label6233"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_cs3</i></b></dt><a name="label6234"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_internal_registers_io_mapped</i></b></dt><a name="label6235"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Internal Registers IO Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_internal_registers_memory_mapped</i></b></dt><a name="label6236"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Internal Registers Memory Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_scs0</i></b></dt><a name="label6237"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_scs1</i></b></dt><a name="label6238"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_scs2</i></b></dt><a name="label6239"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_scs3</i></b></dt><a name="label6240"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_swapped_bootcs</i></b></dt><a name="label6241"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_swapped_cs3</i></b></dt><a name="label6242"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_swapped_scs0</i></b></dt><a name="label6243"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_swapped_scs1</i></b></dt><a name="label6244"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_swapped_scs2</i></b></dt><a name="label6245"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapped_swapped_scs3</i></b></dt><a name="label6246"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_bootcs_function</i></b></dt><a name="label6247"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_cs0_function</i></b></dt><a name="label6248"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_cs1_function</i></b></dt><a name="label6249"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_cs2_function</i></b></dt><a name="label6250"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_cs3_function</i></b></dt><a name="label6251"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_internal_registers_io_mapped_function</i></b></dt><a name="label6252"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Internal Registers IO Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_internal_registers_memory_mapped_function</i></b></dt><a name="label6253"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Internal Registers Memory Mapped is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_scs0_function</i></b></dt><a name="label6254"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_scs1_function</i></b></dt><a name="label6255"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_scs2_function</i></b></dt><a name="label6256"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_scs3_function</i></b></dt><a name="label6257"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_swapped_bootcs_function</i></b></dt><a name="label6258"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped BootCS is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_swapped_cs3_function</i></b></dt><a name="label6259"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped CS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_swapped_scs0_function</i></b></dt><a name="label6260"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS0 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_swapped_scs1_function</i></b></dt><a name="label6261"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS1 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_swapped_scs2_function</i></b></dt><a name="label6262"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS2 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_mapping_swapped_scs3_function</i></b></dt><a name="label6263"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if PCI 1 Swapped SCS3 is mapped in the PCI address space.</dd></dl>
+<dl><dt><b><i>pci_1_memory</i></b></dt><a name="label6264"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+PCI_1 Memory</dd></dl>
+<dl><dt><b><i>pci_1_memory_0_high_decode_address</i></b></dt><a name="label6265"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Memory 0 High Decode Address</dd></dl>
+<dl><dt><b><i>pci_1_memory_0_low_decode_address</i></b></dt><a name="label6266"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Memory 0 Low Decode Address</dd></dl>
+<dl><dt><b><i>pci_1_memory_0_remap</i></b></dt><a name="label6267"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Memory 0 Remap</dd></dl>
+<dl><dt><b><i>pci_1_memory_1_high_decode_address</i></b></dt><a name="label6268"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Memory 1 High Decode Address</dd></dl>
+<dl><dt><b><i>pci_1_memory_1_low_decode_address</i></b></dt><a name="label6269"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Memory 1 Low Decode Address</dd></dl>
+<dl><dt><b><i>pci_1_memory_1_remap</i></b></dt><a name="label6270"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Memory 1 Remap</dd></dl>
+<dl><dt><b><i>pci_1_prefetch_max_burst_size</i></b></dt><a name="label6271"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Prefetch/Max Burst Size</dd></dl>
+<dl><dt><b><i>pci_1_scs10_bank_size</i></b></dt><a name="label6272"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 SCS[1:0]* Bank Size</dd></dl>
+<dl><dt><b><i>pci_1_scs10_base_address_remap</i></b></dt><a name="label6273"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 SCS[1:0]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_scs32_bank_size</i></b></dt><a name="label6274"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 SCS[3:2]* Bank Size</dd></dl>
+<dl><dt><b><i>pci_1_scs32_base_address_remap</i></b></dt><a name="label6275"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 SCS[3:2]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_serr1_mask</i></b></dt><a name="label6276"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 SErr1 Mask</dd></dl>
+<dl><dt><b><i>pci_1_swapped_cs3_bootcs_base_address_remap</i></b></dt><a name="label6277"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Swapped CS[3]* and BootCS* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_swapped_scs10_base_address_remap</i></b></dt><a name="label6278"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Swapped SCS[1:0]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_swapped_scs32_base_address_remap</i></b></dt><a name="label6279"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Swapped SCS[3:2]* Base Address Remap</dd></dl>
+<dl><dt><b><i>pci_1_sync_barrier_virtual_register</i></b></dt><a name="label6280"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Sync Barrier Virtual Register</dd></dl>
+<dl><dt><b><i>pci_1_time_out_retry</i></b></dt><a name="label6281"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: PCI_1 Time Out and Retry</dd></dl>
+<dl><dt><b><i>pending_ack_interrupt</i></b></dt><a name="label6282"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 when there is an incoming ack interrupt, 0 when not.</dd></dl>
+<dl><dt><b><i>pending_interrupt</i></b></dt><a name="label6283"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 when there is an outgoing interrupt, 0 when not.</dd></dl>
+<dl><dt><b><i>queue_base_address_register</i></b></dt><a name="label6284"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Queue Base Address Register</dd></dl>
+<dl><dt><b><i>queue_control_register</i></b></dt><a name="label6285"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Queue Control Register</dd></dl>
+<dl><dt><b><i>scs0</i></b></dt><a name="label6286"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+SCS0</dd></dl>
+<dl><dt><b><i>scs0_high_decode_address</i></b></dt><a name="label6287"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[0]* High Decode Address</dd></dl>
+<dl><dt><b><i>scs0_low_decode_address</i></b></dt><a name="label6288"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM and Device Address Decode SCS[0]* Low Decode Address</dd></dl>
+<dl><dt><b><i>scs1</i></b></dt><a name="label6289"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+SCS1</dd></dl>
+<dl><dt><b><i>scs10_address_remap</i></b></dt><a name="label6290"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[1:0]* Address Remap</dd></dl>
+<dl><dt><b><i>scs10_high_decode_address</i></b></dt><a name="label6291"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[1:0]* High Decode Address</dd></dl>
+<dl><dt><b><i>scs10_low_decode_address</i></b></dt><a name="label6292"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: CPU Address Decode SCS[1:0]* Low Decode Address</dd></dl>
+<dl><dt><b><i>scs1_high_decode_address</i></b></dt><a name="label6293"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[1]* High Decode Address</dd></dl>
+<dl><dt><b><i>scs1_low_decode_address</i></b></dt><a name="label6294"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[1]* Low Decode Address</dd></dl>
+<dl><dt><b><i>scs2</i></b></dt><a name="label6295"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+SCS2</dd></dl>
+<dl><dt><b><i>scs2_high_decode_address</i></b></dt><a name="label6296"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[2]* High Decode Address</dd></dl>
+<dl><dt><b><i>scs2_low_decode_address</i></b></dt><a name="label6297"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[2]* Low Decode Address</dd></dl>
+<dl><dt><b><i>scs3</i></b></dt><a name="label6298"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+SCS3</dd></dl>
+<dl><dt><b><i>scs32_address_remap</i></b></dt><a name="label6299"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[3:2]* Address Remap</dd></dl>
+<dl><dt><b><i>scs32_high_decode_address</i></b></dt><a name="label6300"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[3:2]* High Decode Address</dd></dl>
+<dl><dt><b><i>scs32_low_decode_address</i></b></dt><a name="label6301"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[3:2]* Low Decode Address</dd></dl>
+<dl><dt><b><i>scs3_high_decode_address</i></b></dt><a name="label6302"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[3]* High Decode Address</dd></dl>
+<dl><dt><b><i>scs3_low_decode_address</i></b></dt><a name="label6303"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SCS[3]* Low Decode Address</dd></dl>
+<dl><dt><b><i>sdram_address_decode</i></b></dt><a name="label6304"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Address Decode</dd></dl>
+<dl><dt><b><i>sdram_bank0_parameters</i></b></dt><a name="label6305"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Bank0 Parameters</dd></dl>
+<dl><dt><b><i>sdram_bank1_parameters</i></b></dt><a name="label6306"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Bank1 Parameters</dd></dl>
+<dl><dt><b><i>sdram_bank2_parameters</i></b></dt><a name="label6307"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Bank2 Parameters</dd></dl>
+<dl><dt><b><i>sdram_bank3_parameters</i></b></dt><a name="label6308"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Bank3 Parameters</dd></dl>
+<dl><dt><b><i>sdram_burst_mode</i></b></dt><a name="label6309"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Burst Mode</dd></dl>
+<dl><dt><b><i>sdram_configuration</i></b></dt><a name="label6310"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Configuration</dd></dl>
+<dl><dt><b><i>sdram_operation_mode</i></b></dt><a name="label6311"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: SDRAM Operation Mode</dd></dl>
+<dl><dt><b><i>timer_counter_0</i></b></dt><a name="label6312"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Timer/Counter Timer /Counter 0</dd></dl>
+<dl><dt><b><i>timer_counter_1</i></b></dt><a name="label6313"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Timer /Counter 1</dd></dl>
+<dl><dt><b><i>timer_counter_2</i></b></dt><a name="label6314"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Timer /Counter 2</dd></dl>
+<dl><dt><b><i>timer_counter_3</i></b></dt><a name="label6315"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Timer /Counter 3</dd></dl>
+<dl><dt><b><i>timer_counter_control</i></b></dt><a name="label6316"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+GT64120 register: Timer /Counter Control</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label6317"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+</dl>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic98.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic100.html">Next</a></span></p>
+</body>
+</html>

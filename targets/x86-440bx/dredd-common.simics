@@ -1,0 +1,22 @@
+if not defined create_network {}
+if not defined mac_address    {$mac_address = "10:10:10:10:10:26"}
+if not defined disk_image     {$disk_image = "dredd-install.disk"}
+if not defined use_agp {$use_agp = TRUE}
+###
+
+if $use_agp {
+    run-command-file "%script%/x86-440bx-agp-system.include"
+} else {
+    run-command-file "%script%/x86-440bx-pci-system.include"
+}
+
+$eth = (create-pci-dec21143 mac_address = $mac_address)
+$nb.connect pci-slot4 $eth
+
+instantiate-components
+
+$eth_comp = $eth
+$eth_cnt = ""
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/dredd-setup.include"

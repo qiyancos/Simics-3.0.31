@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Attributes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(46, true);
+</script>
+<a name="label95"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+<h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Attributes</h3 class="jdocu">
+
+
+<p>
+Registers defined in the DML files are automatically registered as both object
+structure variables and attributes. The line:
+<p>
+<pre class="jdocu_small" style="color: black">    register aprom_0 size 1 @ 0x00 "Address PROM (MAC address)";</pre>
+<p>
+will define a variable in the object structure that contains the value of the
+register <tt>aprom_0</tt>. It will also define a corresponding attribute so
+that the state of the register can be saved and restored during checkpointing.
+<p>
+You can also manually add attributes in DML. All that is required is an
+attribute declaration, including name, type and configuration type. If the type
+of the attribute is simple, then the declaration itself is sufficient and the
+default <b><i>set</i></b>/<b><i>get</i></b> methods will be used.
+<p>
+<a name="label96"></a><h4 class="jdocu">5.2.1&nbsp;&nbsp;&nbsp;A Simple Example</h4 class="jdocu">
+
+
+<p>
+The simplest possible attribute holds the value of a simple data type and
+allows the attribute to be read and written without any side effects. Let us
+take the example of a counter attribute:
+<p>
+<pre class="jdocu_small" style="color: black">
+attribute counter {
+        parameter documentation = "A sample counter attribute";
+        parameter type          = "i";
+        parameter allocate_type = "int64";
+        parameter configuration = "required";
+}
+</pre>
+<p>
+The two type declarations serve different purposes. The <em>"i"</em> tells
+Simics type system to check the value in set and get operations for an integer
+type. <em>allocate_type</em> defines the internal representation of the
+attribute value. It is perfectly possible to let those differ to be
+incompatible, but if they do, you must provide <b><i>get</i></b>/<b><i>set</i></b>
+methods that do the correct conversions. See the <em>DML Reference
+Manual</em> for details.
+<p>
+<a name="label97"></a><h4 class="jdocu">5.2.2&nbsp;&nbsp;&nbsp;A Pseudo Attribute</h4 class="jdocu">
+
+
+<p>
+When the attribute is more complex, for example if writing an attribute can
+have side effects, or if it contains by a complex data type, the
+<b><i>set</i></b>/<b><i>get</i></b> methods must be provided. They are defined as:
+<p>
+<pre class="jdocu_small" style="color: black">
+method set(attr_value_t val) {
+        ...
+}
+method get() -&gt; (attr_value_t val) {
+        ...
+}
+</pre>
+<p>
+A slightly more complicated example is a pseudo attribute which, when setting
+values, will add to the value of the counter, and for which getting is
+an error.
+<p>
+<pre class="jdocu_small" style="color: black">
+attribute add_counter {
+        parameter documentation = "A sample pseudo attribute";
+        parameter type          = "i";
+        parameter configuration = "pseudo";
+
+        method set(val) {
+                $counter += val.u.integer;
+        }
+        method get() -&gt; (val) {
+                log "error", 1, 1 : "Get is not allowed";
+                throw;
+        }
+}
+</pre>
+<p>
+Note that no type check is required in the <b><i>set</i></b> method, since the
+type <em>"i"</em> is unambiguously checked by Simics. Note also that there
+is no <em>allocate_type</em> parameter for the attribute. Since it is a pseudo
+attribute that does not store any value, there is no type to allocate.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+</body>
+</html>

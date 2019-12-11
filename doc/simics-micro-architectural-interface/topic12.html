@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Synchronous Instructions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(40, true);
+</script>
+<a name="label189"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+<h3 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Synchronous Instructions</h3 class="jdocu">
+
+
+<p>
+Simics does not currently have the ability to rename all architectural
+state, thus there are a limited number of instructions that write to
+the <a name="label190">architectural state</a> immediately. These instructions are called
+<a name="label191">synchronous instructions</a><a name="label192"></a> as they must be run
+synchronously. <b><i><a name="label193">SIM_instruction_is_sync</a></i></b> can be used to
+determine if an instruction is synchronous.  These instructions need
+to be executed non-speculatively and when all earlier instructions in
+the tree have been executed or committed. This is to ensure that the
+immediate changes to the <a name="label194">architectural state</a> caused by the instruction
+are never incorrect. If a synchronous instruction is executed in an
+illegal way <b><i><a name="label195">SIM_instruction_proceed</a></i></b> will return an error code.
+<p>
+Note that this is a Simics limitation and not an architectural
+limitation.  In appendix <a class="jdocu" href="topic58.html#label416">B</a> and
+appendix <a class="jdocu" href="topic59.html#label417">C</a> all synchronous instructions
+are listed for SPARC and x86 respectively.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+</body>
+</html>

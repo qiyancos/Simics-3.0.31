@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>linux-process-tracker</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(973, true);
+</script>
+<a name="label7590"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic147.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic149.html">Next</a></span></p>
+<h3 class="jdocu">linux-process-tracker</h3 class="jdocu">
+
+
+<a name="label7591"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2682">linux-process-tracker</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>linux-process-tracker</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic540.html#label17992">tracker_unix</a>, <a class="jdocu" href="topic539.html#label17990">tracker_settings</a>, <a class="jdocu" href="topic538.html#label17979">tracker</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+<p>
+
+Process tracker for Linux. Works on ppc32, ppc64, UltraSPARC and
+x86 targets.
+
+</dd>
+
+</dl>
+<a name="label7592"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>param</i></b></dt><a name="label7593"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[s,i]*]</b>; <b>string</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+Linux version dependent parameters, such as
+        <tt>task_struct</tt> offsets. The easiest way to set these are
+        to give the <i>kernel</i> argument to
+        <b>new-linux-process-tracker</b>, or to run the
+        <b>autodetect-parameters</b> command.
+<p>
+        Parameters starting with <tt>ts_</tt> are offsets in the
+        <tt>task_struct</tt>. <b><tt>ts_comm</tt></b> is the offset of
+        the <tt>comm</tt> field, which contains the name of the
+        process. <b><tt>ts_pid</tt></b> and <b><tt>ts_state</tt></b>
+        are the offsets of the fields that contain the process's pid
+        and state. <b><tt>ts_thread_struct</tt></b> is the offset of
+        the <tt>thread_struct</tt> embedded in the
+        <tt>task_struct</tt>.
+<p>
+        <b><tt>ts_next</tt></b> and <b><tt>ts_prev</tt></b> are the
+        offsets of the pointers that connect all the task structs in a
+        circular double-linked list. <b><tt>ts_next_relative</tt></b>
+        is non-zero if these pointers point at the <tt>next</tt> field
+        of other <tt>task_struct</tt>s, and zero if they point to the
+        first byte.
+<p>
+        <b><tt>kernel_stack_size</tt></b> is the size, in bytes, of a
+        kernel stack; this is either 4096 or 8192.
+        <b><tt>paca_task_struct</tt></b> is the offset in the
+        <tt>paca</tt> struct of the pointer to the current
+        <tt>task_struct</tt>.
+<p>
+        Not all of these parameters are necessary for any given
+        simulated machine.</dd></dl>
+<dl><dt><b><i>per_cpu_state</i></b></dt><a name="label7594"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[o[a*]]*]</b>.
+<p>
+Per-processor state that has to be maintained by the
+        process tracker.</dd></dl>
+<dl><dt><b><i>processors</i></b></dt><a name="label7595"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+Processors whose modes are being tracked.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label7596"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic538.html#label17979">tracker</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic538.html#label17982">activate</a>, <a class="jdocu" href="topic538.html#label17984">add-processor</a>, <a class="jdocu" href="topic538.html#label17986">deactivate</a>, <a class="jdocu" href="topic538.html#label17988">remove-processor</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7598">autodetect-parameters</a></b></td><td class="jdocu_noborder">autodetect parameters</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7600">process-list</a></b></td><td class="jdocu_noborder">list running processes</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label7602">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label7597"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label7598"></a><a name="label7599"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;linux-process-tracker&gt;.autodetect-parameters</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;linux-process-tracker&gt;.autodetect-parameters</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Autodetect the parameters to use in the <i>param</i> attribute.
+For this to work, the process tracker must have at least one
+processor, and Linux must be already running on the simulated machine.
+(This means that if you want to use process tracking during the boot,
+you must enter the parameters manually; but you can still get hold of
+them in the first place by running
+<b>autodetect-parameters</b>.)</dd>
+
+</dl>
+
+
+
+<a name="label7600"></a><a name="label7601"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;linux-process-tracker&gt;.process-list</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;linux-process-tracker&gt;.process-list</b> [-task-struct-address] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print a list of all running processes on the simulated system. If the
+<tt>-task-struct-address</tt> flag is given, list the
+<tt>task_struct</tt> address for each process.</dd>
+
+</dl>
+
+
+
+<a name="label7602"></a><a name="label7603"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;linux-process-tracker&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;linux-process-tracker&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic147.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic149.html">Next</a></span></p>
+</body>
+</html>

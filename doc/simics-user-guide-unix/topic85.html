@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Multiprocessor Simulation</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(217, true);
+</script>
+<a name="label516"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic84.html">Previous</a> - <a class="jdocu" href="topic82.html">Up</a> - <a class="jdocu" href="topic86.html">Next</a></span></p>
+<h4 class="jdocu">17.3&nbsp;&nbsp;&nbsp;Multiprocessor Simulation</h4 class="jdocu">
+
+
+<p>
+Simics can model systems with several processors, each with their own clock
+frequency. In this case the definition of how long a cycle is becomes
+processor-dependent. Ideally, Simics would make time progress and execute one
+cycle at a time, scheduling processors according to their frequency. However,
+perfect synchronization is exceedingly slow, so Simics <em>serializes</em>
+execution to improve performance.
+<p>
+Simics does this by dividing time into segments and serializing the execution
+of separate processors within a segment. The length of these segments is
+referred to as the <i>quantum</i> and is specified in seconds (this is similar
+to the way operating systems implement multitasking on a single-processor
+machine: each process is given access to the processor and runs for a certain
+time quantum).  The processors are scheduled in a round-robin fashion, and when
+a particular processor <em>P</em> has finished its quantum, all other processors
+will finish their quanta before execution returns to <em>P</em>. The length of
+the time quantum can be set by using the command
+<b>cpu-switch-time</b>. The argument to <b>cpu-switch-time</b> is
+specified in cycles (referring to the first processor in the system) rather
+than absolute time.
+<p>
+As in the single-processor case, instruction execution and latency are defined
+with execution modes and timing interfaces. Simics does not define the order in
+which the processors are serialized, which means that if causality is to be
+preserved, processor-to-processor communications must have a minimum latency of
+one quantum. Another consequence of serializing the execution is that Simics
+will maintain strict sequential consistency. However, through careful use of
+the memory hierarchy interface, the user can choose to simulate other
+consistency models.
+<p>
+As an example, consider a dual-processor system where the first processor runs
+at <nobr>4 MHz</nobr> and the second at <nobr>1 MHz</nobr>. Setting
+<b>cpu-switch-time</b> to 10 will give a quantum of
+<nobr>2.5 simulated</nobr> microseconds. During each quantum, the first
+processor will execute <nobr>10 steps</nobr>, and the second <nobr>2 or</nobr>
+<nobr>3 steps</nobr>, not necessarily in that order. Breakpoints do not affect
+this schedule, so that interaction remains non-intrusive.
+<p>
+Note that if you are single-stepping (<b>step-instruction</b>) on a
+processor <em>P</em>, which has just executed the last cycle of a quantum, the
+next single-step will cause all other processors to advance an entire quantum
+and then <em>P</em> will stop after one step. This behavior makes it convenient
+to follow the execution of instructions on a particular processor. You can use
+the <b>&lt;processor&gt;.ptime</b> command to see the flow of time on each
+particular processor in the simulated machine.
+<p>
+For a multi-processor simulation to run efficiently, the quantum should not be
+set too low, since a CPU switch causes simulator overhead. It should not be set
+below 10, and should preferably be set to 50 or higher. The default value is
+1000. For a perfectly synchronized simulation, set the switch time to 1 (which
+will give a very slow simulation but is useful for detailed cache studies, for
+example). Note that all of the above remains essentially the same when running
+a distributed simulation (see next section).
+<p>
+Time events in Simics are executed when the processor on which they were posted
+run the triggering cycle during its quantum. However, it is possible to post
+<em>synchronizing</em> time events that will ensure that all processors have
+the same local time when the event is executed, independently of the time
+quantum. Synchronizing events can not be posted less than one time quantum in
+the future unless the simulation is already synchronized.
+<p>
+Simics MAI has limited support for multiprocessor simulation; processors are
+always scheduled in a round-robin fashion, one cycle at a time.
+<p>
+Let us have a look at a 2-machines setup containing two SPARC SunFire machine
+(with one processor each) to illustrate multiprocessor simulation. The
+processor in the first machine runs at 168MHz; the other runs at 56MHz (equal
+to 168/3). The time quantum (configured via the <b>cpu-switch-time</b>
+command) is 1000 cycles of the first processor, or 6 microseconds.
+<p>
+<pre class="jdocu_small" style="color: black">
+                                
+  +----------------+    Copyright 1998-2005 by Virtutech, All Rights Reserved
+  |   Virtutech    |    Version: 
+  |     Simics     |    Build: 
+  +----------------+
+    www.simics.com      "Virtutech" and "Simics" are trademarks of Virtutech AB
+
+
+simics&gt; <b>@conf.d1_cpu0.freq_mhz</b>
+168
+simics&gt; <b>@conf.d2_cpu0.freq_mhz</b>
+56
+simics&gt; <b>@conf.sim.cpu_switch_time</b>
+1000
+simics&gt; <b>c 10000</b>
+[d1_cpu0] v:0xfffffffff0001364 p:0x1fff0001364  bne,pt %xcc, 0xfffffffff0001360
+simics&gt; <b>ptime -all</b>
+processor                 steps             cycles    time [s]
+d1_cpu0                   10000              10000       0.000
+d2_cpu0                    3333               3333       0.000
+</pre>
+<p>
+While the first processor executed 10000 steps, the second processor completed
+3333 steps, which corresponds to the ratio between the two frequencies (168MHz
+compared to 56MHz). Let us now examine the effects of the time quantum:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>c 30</b>
+[d1_cpu0] v:0xfffffffff0001364 p:0x1fff0001364  bne,pt %xcc, 0xfffffffff0001360
+simics&gt; <b>ptime -all</b>
+processor                 steps             cycles    time [s]
+d1_cpu0                   10030              10030       0.000
+d2_cpu0                    3333               3333       0.000
+</pre>
+<p>
+Although the first processor ran 30 steps further, the second processor has not
+run the 10 steps that we would expect, and the frequency ratio is not respected
+anymore. This is the effect of the 1000 cycles time quantum: the first
+processor is scheduled for the next 1000 cycles and no other processor will be
+run until the quantum is finished. If we switch to the second processor and try
+to make it run one step further, we will observe the following:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>pselect d2_cpu0</b>
+simics&gt; <b>c 1</b>
+[d2_cpu0] v:0xfffffffff0001364 p:0x1fff0001364  bne,pt %xcc, 0xfffffffff0001360
+simics&gt; <b>ptime -all</b>
+processor                 steps             cycles    time [s]
+d1_cpu0                   11000              11000       0.000
+d2_cpu0                    3334               3334       0.000
+</pre>
+<p>
+The second processor has run 1 step further as requested, but the first had to
+finish its time quantum before the second processor could be allowed to run,
+which explains its step count of 11000 compared to 10030 before. Let us now set
+the time quantum to 1:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>cpu-switch-time 1</b>
+The switch time will change to 1 cycles (for CPU-0) once all<img src="nextline.png">
+ processors have synchronized.
+simics&gt; <b>c 1</b>
+[d2_cpu0] v:0xfffffffff0001368 p:0x1fff0001368  nop
+simics&gt; ptime -all
+processor                 steps             cycles    time [s]
+d1_cpu0                   11000              11000       0.000
+d2_cpu0                    3335               3335       0.000
+</pre>
+<p>
+Note that the new time quantum length will only become valid once all
+processors have finished their current time quantum. This is why stepping one
+more step forward with the second processor hasn't affected the first yet. Now
+let us select the first processor again, and run three steps:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>pselect d1_cpu0</b>
+simics&gt; <b>c 3</b>
+[d1_cpu0] v:0xfffffffff0001368 p:0x1fff0001368  nop
+simics&gt; <b>ptime -all</b>
+processor                 steps             cycles    time [s]
+d1_cpu0                   11003              11003       0.000
+d2_cpu0                    3668               3668       0.000
+simics&gt; <b>c 3</b>
+[d1_cpu0] v:0xfffffffff0001368 p:0x1fff0001368  nop
+simics&gt; <b>ptime -all</b>
+processor                 steps             cycles    time [s]
+d1_cpu0                   11006              11006       0.000
+d2_cpu0                    3669               3669       0.000
+simics&gt;
+</pre>
+<p>
+All processors finished their 1000 cycles time quantum and started to run with
+the new 1 cycle value, which means that they are now advancing in lockstep. For
+every 3 steps performed by the first processor, the second executes 1.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic84.html">Previous</a> - <a class="jdocu" href="topic82.html">Up</a> - <a class="jdocu" href="topic86.html">Next</a></span></p>
+</body>
+</html>

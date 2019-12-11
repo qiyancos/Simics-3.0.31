@@ -1,0 +1,446 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Breakpoints</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(159, true);
+</script>
+<a name="label352"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic58.html">Previous</a> - <a class="jdocu" href="topic58.html">Up</a> - <a class="jdocu" href="topic60.html">Next</a></span></p>
+<h4 class="jdocu">12.1&nbsp;&nbsp;&nbsp;Breakpoints</h4 class="jdocu">
+
+    
+    <a name="label353"></a>
+<p>
+    Like an ordinary debugger, Simics can run user binaries, allowing
+    the user to set breakpoints, inspect state, single step, etc.
+    Some difficult bugs are easier to find using various esoteric
+    breakpoint types.  In Simics you can set breakpoints on:
+<p>
+    <ul>
+    <li>memory accesses: any range and combination of read/write/execute</li>
+    <li>time (number of cycles or instructions executed)</li>
+    <li>instruction types, such as control register accesses</li>
+    <li>device accesses</li>
+    <li>output in the console</li>
+    </ul>
+<p>
+    Simics is fully deterministic, allowing you to narrow down the location of
+    difficult bugs. If your session has interactive input, you can record it
+    using the <b>recorder</b> <a name="label354"></a> and replay when you
+    need to reproduce the same execution. If Hindsight is available, you can of
+    course freely go forward and backward in time until you found the location
+    of the problem.
+<p>
+    <a name="label355"></a><h5 class="jdocu">12.1.1&nbsp;&nbsp;&nbsp;Memory Breakpoints</h5 class="jdocu">
+
+    
+    <a name="label356"></a>
+<p>
+    A memory breakpoint stops the simulation whenever a memory location in a
+    specified address interval is accessed. The address interval can be of
+    arbitrary length and the type of the memory access can be specified as any
+    combination of <i>read</i>, <i>write</i>, and <i>execute</i>.
+<p>
+    Physical memory breakpoints refer to addresses within a memory space, so
+    the breakpoint itself is always connected to a specific memory space object
+    in Simics. If this object is known by name (as <b>phys_mem0</b> in the
+    following example), the breakpoint can be set with the <b>break</b>
+    command:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>phys_mem0.break address = 0x10000 length = 16 -w</b>
+    Breakpoint 1 set on address 0x10000, length 16 with access mode 'w'
+</pre>
+<p>
+    Virtual memory breakpoints are handled by context objects:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>primary_context.break 0x1ff00</b>
+    Breakpoint 1 set on address 0x1ff00 with access mode 'x'
+</pre>
+<p>
+    Note that by default, all simulated processors in one Simics
+    process share one context. If you want a virtual breakpoint to
+    apply only to a subset of the processors, create a new context
+    just for them:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>new-context foo</b>
+    simics&gt; <b>cpu1.set-context foo</b>
+    simics&gt; <b>cpu7.set-context foo</b>
+    simics&gt; <b>foo.break 0xffffffffbfc008b8</b>
+</pre>
+<p>
+    The <b>break</b> command can also be used without explicitly specifying
+    an address space or context object. Instead you can prefix the address with
+    <tt>p:</tt> for a physical address, or <tt>v:</tt> for a virtual
+    address. The breakpoint will refer respectively to the memory space
+    (physical address) or context (virtual address) connected to the current
+    front-end processor (as specified with the <b>pselect</b> command).
+    Note that, unless you have created a new context for the current processor,
+    the breakpoint will apply to all processors.
+<p>
+    As you can see in the following example, Simics interprets a
+    breakpoint address as virtual unless <tt>p:</tt> is explicitly
+    specified:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>break v:0x4711</b>
+    Breakpoint 2 set on address 0x4711 with access mode 'x'
+    simics&gt; <b>break p:0x4711</b>
+    Breakpoint 3 set on address 0x4711 with access mode 'x'
+    simics&gt; <b>break 0x4711</b>
+    Breakpoint 4 set on address 0x4711 with access mode 'x'
+    Note: overlaps with breakpoint 2
+</pre>
+<p>
+   <a name="label357"></a> 
+   <a name="label358"></a>
+   <a name="label359"></a> 
+   <a name="label360"></a> 
+   <a name="label361"></a>
+   <a name="label362"></a> 
+<p>
+   Execution breakpoints can be modified with filter rules to only
+   trigger when instructions match certain syntactical criteria. This
+   feature is mainly useful with breakpoints covering large areas of
+   memory.  The commands available are <b>set-prefix</b> (to match
+   the start of an instruction), <b>set-substr</b> (to match a
+   particular substring), and <b>set-pattern</b> (to match the bit
+   pattern of the instruction).  The commands work by modifying an existing
+   breakpoint, so you first have to set an execution breakpoint and
+   then modify it to match only particular expressions.
+<p>
+   For example, to stop when an instruction with the name <tt>add</tt> is
+   executed in a memory range from 0x10000 to 0x12000, use the following
+   commands:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>break 0x10000 0x2000 -x</b>
+    Breakpoint 1 set on address 0x10000, length 8192 with access mode 'x'
+    simics&gt; <b>set-prefix 1 "add"</b>
+</pre>
+<p>
+    Simics will stop when the first add instruction is encountered. For more
+    information, see the <em>Simics Reference Manual</em> or use the
+    <b>help break</b> command.
+<p>
+    
+    <a name="label363"></a><h5 class="jdocu">12.1.2&nbsp;&nbsp;&nbsp;Temporal Breakpoints</h5 class="jdocu">
+
+    
+    <a name="label364"></a>
+<p>
+    Unlike an ordinary debugger, Simics can handle temporal breakpoints, i.e.,
+    breakpoints in time. As the concept of time is based on steps and cycles, a
+    temporal breakpoint refers to a specific step or a cycle count for a given
+    processor object:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.cycle-break 100</b>
+    simics&gt; <b>cpu0.step-break 100</b>
+</pre>
+<p>
+    In the example above, the breakpoints are specified relative to the current
+    time. It is also possible to set temporal breakpoints in absolute time
+    (where 0 refers to the time when the original configuration was set up in
+    Simics). When Hindsight is available, you can freely set time breakpoints
+    in the past as well as in the future.
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>cpu0.cycle-break-absolute 100</b>
+    simics&gt; <b>cpu0.step-break-absolute 100</b>
+</pre>
+<p>
+    All the commands <tt>cycle-break</tt>, <tt>step-break</tt>,
+    <tt>cycle-break-absolute</tt>, and <tt>step-break-absolute</tt>,
+    can be given without prefixing them with the CPU. Note that the
+    in this case the commands will plant a breakpoint for current
+    front-end processor (and not all processors).
+<p>
+    
+    <a name="label365"></a><h5 class="jdocu">12.1.3&nbsp;&nbsp;&nbsp;Control Register Breakpoints</h5 class="jdocu">
+
+    
+    <a name="label366"></a>
+<p>
+    A control register breakpoint is triggered when a selected control register
+    is accessed. The control register is specified either by name or number,
+    and the access type can be any combination of <i>read</i> or
+    <i>write</i>. For example:
+        <p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>break-cr reg-name = asi</b>
+</pre>
+<p>
+    Note that the exact arguments to this command depend on the target
+    architecture. A list of available control registers can be obtained by
+    tab-completing the <i>reg-name</i> argument. See the documentation for
+    <b>break-cr</b> in the <em>Simics Reference Manual</em> for more
+    information..
+<p>
+    
+    <a name="label367"></a><h5 class="jdocu">12.1.4&nbsp;&nbsp;&nbsp;I/O Breakpoints</h5 class="jdocu">
+
+    
+    <a name="label368"></a>
+<p>
+    An I/O breakpoint is always connected to a specific device object. The
+    breakpoint is triggered when that device is accessed. The breakpoint is set
+    using the <b>break-io</b> command, which take the device name as a
+    parameter. For example, to break on accesses to the
+    <b>hme0</b> device, we would use the following syntax:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simics&gt; <b>break-io object-name = hme0</b>
+</pre>  
+<p>
+    A list of devices can be obtained by tab-completing the
+    <i>object-name</i> argument.
+<p>
+    
+    <a name="label369"></a><h5 class="jdocu">12.1.5&nbsp;&nbsp;&nbsp;Graphics Breakpoints</h5 class="jdocu">
+
+  
+  <a name="label370"></a>
+  <a name="label371"></a>
+<p>
+  The graphics-console can be used to save and set graphical breakpoints. A
+  graphical breakpoint is a rectangular area on the simulated display that
+  triggers a hap (<tt>Gfx_Break_String</tt>) whenever the pixels inside
+  the saved breakpoint rectangle exactly match those on the display.
+<p>
+  The following commands can be used to save and set breakpoints for a
+  graphics console:
+<p>
+  <dl><dt><b> <b>&lt;gfx-console&gt;.save-break <em>filename</em> [<em>comment</em>]</b>
+  </b></dt><dd>Let the user select a rectangular area inside the graphics console
+  using the mouse pointer. To cancel the select operation press the right mouse
+  button. The selected area will be saved as a graphical breakpoint file. You
+  can add an optional comment that will be put in the beginning of the (binary)
+  breakpoint file. </dd><dt><b> <b>&lt;gfx-console&gt;.save-break-xy <em>filename</em> <em>left</em>
+  <em>top</em> <em>right</em> <em>bottom</em> [<em>comment</em>]</b> </b></dt><dd> Let
+  the user specify a rectangular area inside the graphics console using the top
+  left and bottom right corners coordinates. The selected area will be saved as
+  a binary graphical breakpoint file. You can add an optional comment that will
+  be put at the beginning of the breakpoint file.</dd><dt><b> <b>&lt;gfx-console&gt;.break <em>filename</em></b> </b></dt><dd>Activate a
+  previously saved breakpoint and return a breakpoint id. When a graphical
+  breakpoint is reached, it is immediately deleted and a
+  <tt>Gfx_Break_String</tt> hap is triggered. If no callbacks for this
+  hap were registered, Simics halts execution and returns to the command
+  prompt. </dd><dt><b> <b>&lt;gfx-console&gt;.delete <em>id</em></b> </b></dt><dd>Delete the
+  breakpoint associated with <em>id</em>. </dd></dl>
+   
+    <a name="label372"></a><h5 class="jdocu">12.1.6&nbsp;&nbsp;&nbsp;Text Output Breakpoints</h5 class="jdocu">
+
+    
+    <a name="label373"></a>
+<p>
+    The text console can set breakpoints on the occurrence of certain
+    character sequences in the output sent to the screen.  
+<p>
+    <ul>
+    <li>To set a  breakpoint, use the command <b><em>console</em>.break
+    <em>string</em></b>. Simics will stop when <em>string</em> appears
+    in the output. </li>  
+<p>
+    <li>Use <b><em>console</em>.unbreak <em>string</em></b> to 
+    remove a particular breakpoint. </li>
+<p>
+    <li>All breakpoints can be listed using the
+    <b><em>console</em>.list-break-strings</b> command. </li>
+    </ul>
+<p>
+    <hr class="jdocu_note"><b>Note:</b> To find out if a specific simulated machine uses a text console, look
+    for an object of class <b>text-console</b> in the list provided by
+    <b>list-objects</b> once the configuration is loaded.<hr class="jdocu_note">
+<p>
+    
+    <a name="label374"></a><h5 class="jdocu">12.1.7&nbsp;&nbsp;&nbsp;Magic Instructions and Magic Breakpoints</h5 class="jdocu">
+
+    
+<p>
+    For each simulated processor architecture, a special no-operation
+    instruction has been chosen to be a <b>magic instruction</b> for the
+    simulator. When the simulator executes such an instruction, it triggers a
+    <tt>Core_Magic_Instruction</tt> hap and calls all the callbacks functions
+    registered on this hap (see chapter <a class="jdocu" href="topic35.html#label187">8</a>
+    to get more information about haps).
+<p>
+    If the architecture makes it possible, an immediate value is encoded in the
+    magic instruction. When the hap is triggered, this value is passed as an
+    argument to the hap handlers. This provides the user with a rudimentary way
+    of passing information from the simulated system to the hap handler.
+<p>
+    Magic instructions have to be compiled in the binary files that are
+    executed on the target. The file <tt>magic-instruction.h</tt> in 
+    <tt>[simics]/src/include/simics/</tt>
+    defines a <tt>MAGIC(</tt><i>n</i><tt>)</tt> macro that can be used to
+    place magic instructions in your program, where <i>n</i> is the
+    immediate value to use.
+<p>
+    <a name="label375"></a>
+<p>
+    <hr class="jdocu_note"><b>Note:</b> The declaration of the macros are heavily dependent on the compiler
+    used, so you may get an error message telling you that your compiler is not
+    supported. You will need to write by yourself the inline assembly
+    corresponding to the magic instruction you want to use. The GCC compiler
+    should always be supported.<hr class="jdocu_note">
+<p>
+    <hr class="jdocu_note"><b>Note:</b> Using magic instructions in other languages than C requires
+    the ability to insert inline assembler in a program, or at least
+    the ability to call arbitrary functions written in assembly.  For
+    example, in Java it would be necessary to use the JNI
+    interface. As always, check your compiler and language
+    documentation for details on how to enter inline assembly. <hr class="jdocu_note">
+<p>
+    A complete definition of magic instructions and the values the parameter
+    <i>n</i> can take is provided in figure <a class="jdocu" href="#label376">3</a>.
+<p>
+    
+  <a name="label376"></a>
+<table>
+<tr><td style="border: none; ">
+  <center>
+  <table>
+<tr><td class="jdocu_border"><b>Target</b></td><td class="jdocu_border"><b>Magic instruction</b></td><td class="jdocu_border"><b>Conditions on <i>n</i></b></td></tr>
+<tr><td class="jdocu_border">Alpha</td><td class="jdocu_border"><i>binary:</i> <tt>0x70000000</tt></td><td class="jdocu_border"><i>n = 0</i></td></tr>
+<tr><td class="jdocu_border">ARM</td><td class="jdocu_border"><tt>orreq rn, rn, rn</tt></td><td class="jdocu_border">0 &lt;= n &lt; 15</td></tr>
+<tr><td class="jdocu_border">IA-64</td><td class="jdocu_border"><tt>nop (0x100000 + n)</tt></td><td class="jdocu_border">0 &lt;= n &lt; 0x100000</td></tr>
+<tr><td class="jdocu_border">MIPS</td><td class="jdocu_border"><tt>li %zero, n</tt></td><td class="jdocu_border">0 &lt;= n &lt; 0x10000</td></tr>
+<tr><td class="jdocu_border">MSP430</td><td class="jdocu_border"><tt>bis r0,r0</tt></td><td class="jdocu_border">n = 0</td></tr>
+<tr><td class="jdocu_border">PowerPC 32-bit</td><td class="jdocu_border"><tt>mr n, n</tt></td><td class="jdocu_border">0 &lt;= n &lt; 32</td></tr>
+<tr><td class="jdocu_border">PowerPC 64-bit</td><td class="jdocu_border"><tt>fmr n, n</tt></td><td class="jdocu_border">0 &lt;= n &lt; 32</td></tr>
+<tr><td class="jdocu_border">SPARC</td><td class="jdocu_border"><tt>sethi n, %g0</tt></td><td class="jdocu_border">1 &lt;= n &lt; 0x400000</td></tr>
+<tr><td class="jdocu_border">x86</td><td class="jdocu_border"><tt>xchg %bx, %bx</tt></td><td class="jdocu_border">n = 0</td></tr>
+</table>
+  </center>
+  
+  </td></tr>
+<tr><td style="text-align: center">Figure 3. Magic instructions for different Simics Targets</td></tr>
+</table>
+
+  
+<p>
+    Here is a simple pseudo-code example:
+<p>
+<pre class="jdocu_small" style="color: black">
+#include "magic-instruction.h"
+
+int main(int argc, char **argv)
+{
+        initialize();
+        MAGIC(1);                     <i>tell the simulator to start</i>
+                                      <i>the cache simulation</i>
+        do_something_important();
+        MAGIC(2);                     <i>tell the simulator to stop</i>
+                                      <i>the cache simulation</i>
+        clean_up();
+}
+</pre>
+<p>
+    This code needs to be coupled with a callback registered on the
+    magic instruction hap to handle what happens when the simulator
+    encounters a magic instruction with the arguments 1 or 2 (in this
+    example, to start and stop the cache simulation).
+<p>
+    Simics implements a special handling of magic instructions called <b>magic
+    breakpoints</b>. A magic breakpoint occurs if magic breakpoints are enabled
+    and if the parameter <i>n</i> of a magic instruction matches a
+    special condition. When a magic breakpoint is triggered, the simulation
+    stops and returns to prompt.
+<p>
+    Magic breakpoints can be enabled and disabled with the commands
+    <b>magic-break-enable</b> <a name="label377"></a> and
+    <b>magic-break-disable</b> <a name="label378"></a>. The
+    condition on <i>n</i> for a magic instruction to be recognized as a
+    magic breakpoint is the following:
+<p>
+<pre class="jdocu_small" style="color: black">
+      n == 0 || (n &amp; 0x3f0000) == 0x40000
+</pre>
+<p>
+    Note that the value 0 is included for architectures where no immediate can
+    be specified. The file <tt>magic-instruction.h</tt> defines a macro
+    called MAGIC_BREAKPOINT that places a magic instruction with a correct
+    parameter value in your program.
+<p>
+    On architectures that only offer a single magic instruction (x86 and
+    Alpha), more information can be passed from the
+    simulation to the magic instruction hap handler by putting data
+    values in machine registers prior to triggering the magic
+    instruction.
+    <p>
+    As a concrete example, on the x86, the hap argument can only be 0. This can
+    be worked around by putting extra information into register <tt>eax</tt>
+    before executing the <tt>MAGIC(0)</tt> magic instruction.  The hap handler
+    for magic instructions then needs to read the value from <tt>eax</tt> and
+    do different things depending on its contents.
+<p>
+    The following is an example program implementing this technique,
+    using the <tt>gcc</tt> compiler's syntax for inserting inline
+    assembler:
+<p>
+<pre class="jdocu_small" style="color: black">
+#include "stdio.h"
+#include "magic-instruction.h"
+
+#define MY_MAGIC(n) do {                                        \
+    asm volatile ("movl %0, %%eax" : : "g" (n) : "eax");        \
+    MAGIC(0);                                                   \
+} while (0)
+
+int main(void)
+{
+    printf("Hello,\n");
+    MY_MAGIC(1);
+    printf("World!\n");
+    MY_MAGIC(2);
+    return 0;
+}
+</pre>
+<p>
+    The hap handler for this would look something like the following:
+<p>
+<pre class="jdocu_small" style="color: black">
+@def call_back_1(cpu):
+    pr("call back one triggered\n")
+
+@def call_back_2(cpu):
+    pr("another one here\n")
+
+@def hap_callback(user_arg, cpu, arg):
+    eax = cpu.eax             # read value passed from program
+    if eax == 1:              # take appropriate action
+        call_back_1(cpu)
+    elif eax == 2:
+        call_back_2(cpu)
+    else:
+        print "Unknown callback, eax is", eax
+        SIM_break_simulation("snore")
+
+@SIM_hap_add_callback("Core_Magic_Instruction", hap_callback, None)
+</pre>
+<p>
+    The same technique can be applied to other architectures, but you
+    need to adapt the names of the registers involved. 
+<p>
+    <hr class="jdocu_note"><b>Note:</b> This method is slightly intrusive since a register will change its
+    value.  It is thus important to make sure that the compiler is aware of the
+    change to the register so that no broken code is emitted; in the
+    <tt>gcc</tt> compiler, this is specified in the last argument to the
+    <tt>asm()</tt> statement.<hr class="jdocu_note">
+<p>
+    
+
+    
+<p>
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic58.html">Previous</a> - <a class="jdocu" href="topic58.html">Up</a> - <a class="jdocu" href="topic60.html">Next</a></span></p>
+</body>
+</html>

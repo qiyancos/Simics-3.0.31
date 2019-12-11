@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_stalling_mem_op()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(83, true);
+</script>
+<a name="label404"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic53.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic55.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_stalling_mem_op()</h4 class="jdocu">
+
+<a name="label405"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label406"></a><b>SIM_instruction_stalling_mem_op</b> &#8212; get stalling mem op</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">generic_transaction_t *
+SIM_instruction_stalling_mem_op(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Returns the memory transaction that the instruction with id
+   <i>ii</i> is currently stalling on. If there is no
+   stalling transaction NULL is returned.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The stalling memory transaction or NULL if the 
+                           instruction is not stalling.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic53.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic55.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Options</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2402, true);
+</script>
+<a name="label18241"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic657.html">Previous</a> - <a class="jdocu" href="topic657.html">Up</a> - <a class="jdocu" href="topic659.html">Next</a></span></p>
+<h3 class="jdocu">9.1&nbsp;&nbsp;&nbsp;Options</h3 class="jdocu">
+
+
+<dl><dt><b><tt>-o, --output=FILE</tt></b></dt><dd>
+Specifies the output file name. Without this option, output will go to
+<tt>craff.out</tt>. A hyphen (<tt>-</tt>) means standard output, and implies
+<tt>-q</tt>. Writing to standard output is only possible in raw format
+(<tt>-d</tt>) or when writing a content map (<tt>-l</tt>).
+</dd><dt><b><tt>-d, --decompress</tt></b></dt><dd>
+Causes the output to be an ordinary (raw) file. The default is to output in
+the craff format. When this option is given, any holes in the output are
+filled with zero bytes.
+</dd><dt><b><tt>-l, --content-map</tt></b></dt><dd>
+Writes a human-readable map of the input files to the output. Blocks are marked
+D where data is present, and . (dot) where not.
+</dd><dt><b><tt>-D, --diff</tt></b></dt><dd>
+Instead of merging the input files, output the difference between the
+input files as a craff file. There must be exactly two input files.
+The output is the file that, when merged with the first file, would
+result in the second file. The input files may be in craff or raw format.
+</dd><dt><b><tt>-z, --zero-fill-gaps</tt></b></dt><dd>
+Fills gaps with zero bytes and marks them as present. Without this
+option, a gap in all input files will remain a gap in the output file.
+</dd><dt><b><tt>-Z, --omit-zero-blocks</tt></b></dt><dd>
+Treats blocks that consist entirely of zero bytes as empty in the output
+(i.e., they will be output as holes).
+</dd><dt><b><tt>-b, --block-size=SIZE</tt></b></dt><dd>
+Specifies the output block size in bytes. The size must be a power of 2, and
+may be specified in kilobytes using 'k' as a suffix. Without this option,
+the block size will be the smallest of the input files' block sizes.
+<p>
+This is the smallest unit of storage in a craff file. Larger values compress
+better, but will waste more space if only part of the block is present.
+A block size of at least 4k is recommended.
+</dd><dt><b><tt>-s, --sub-block-size=SIZE</tt></b></dt><dd>
+Specifies the output sub-block size in bytes. The size must be a power
+of 2, and may be specified in kilobytes using 'k' as a suffix. Without
+this option, the block size will be the smallest of the input files'
+sub-block sizes.
+<p>
+This is the smallest unit of granularity in a craff file. Smaller values
+allow more fine-grained control of what data is present, but uses more space.
+For disk dumps, the sector size is useful (often 512 bytes); for
+memory dumps, use the page size (such as 4k or 8k).
+</dd><dt><b><tt>-i, --dir-entries=N</tt></b></dt><dd>
+Specifies the number of entries in each directory node. Must be a power of 2.
+</dd><dt><b><tt>-c, --compression=COMPRESSION</tt></b></dt><dd>
+Specifies the compression type: none, zlib, or bz2. No compression is
+fastest, bz2 is smallest but slow, and zlib is a good compromise. The
+default is zlib. (In practice, zlib is often better than bz2 unless the
+block size is large.)
+</dd><dt><b><tt>-e, --extract=START</tt></b></dt><dd>
+Extracts a block to the output file. The extracted block starts at file
+offset START and the size is given by
+<tt>--extract-block-size</tt>. The output is in raw format.
+</dd><dt><b><tt>-w, --extract-block-size=SIZE</tt></b></dt><dd>
+Size of block to extract with <tt>--extract</tt>.
+</dd><dt><b><tt>-n, --info</tt></b></dt><dd>
+Displays file information for each of the input files to the standard output.
+</dd><dt><b><tt>-q, --quiet</tt></b></dt><dd>
+Suppresses the progress indicator.
+</dd><dt><b><tt>-v, --version</tt></b></dt><dd>
+Displays version information of the <b>craff</b> utility itself.
+</dd><dt><b><tt>-h, --help</tt></b></dt><dd>
+Displays a summary of the command-line options.
+</dd></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic657.html">Previous</a> - <a class="jdocu" href="topic657.html">Up</a> - <a class="jdocu" href="topic659.html">Next</a></span></p>
+</body>
+</html>

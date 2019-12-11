@@ -1,0 +1,33 @@
+The frolic machine is an example of running a binary on a machine without any
+operating system. In this example setup, a 'gzip' binary is loaded and it
+compresses 'TESTFILE'. Both these files have to be provided by the user, and
+placed in the home/frolic/ directory. The 'gzip' file should be a statically
+linked SPARC binary, and 'TESTFILE' can be any file.
+
+By modifying frolic.simics, some other program can be run. That program should
+be a statically linked binary. If it uses any syscalls, they have to be
+implemented in frolic.py, with the "fake OS".
+
+There are some very simple implementations of syscalls already included:
+
+  brk()
+  chmod()
+  chown()
+  close()
+  exit()
+  fstat()
+  ioctl()
+  llseek()
+  lstat()
+  open()
+  read()
+  sigaction()
+  stat()
+  unlink()
+  utime()
+  write()
+  open64()
+  stat64()
+  fstat64()
+  getuid()
+  getpid()

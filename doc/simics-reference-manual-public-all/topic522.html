@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ppc</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2262, true);
+</script>
+<a name="label17816"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic521.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic523.html">Next</a></span></p>
+<h3 class="jdocu">ppc</h3 class="jdocu">
+
+
+<a name="label17817"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic254.html#label9330">ppc405gp</a>, <a class="jdocu" href="topic264.html#label9716">ppc440gp</a>, <a class="jdocu" href="topic278.html#label10365">ppc440gx</a>, <a class="jdocu" href="topic297.html#label11100">ppc603e</a>, <a class="jdocu" href="topic299.html#label11254">ppc7400</a>, <a class="jdocu" href="topic300.html#label11410">ppc7447</a>, <a class="jdocu" href="topic301.html#label11589">ppc7450</a>, <a class="jdocu" href="topic302.html#label11750">ppc7457</a>, <a class="jdocu" href="topic303.html#label11936">ppc750</a>, <a class="jdocu" href="topic304.html#label12083">ppc750fx</a>, <a class="jdocu" href="topic305.html#label12247">ppc750gx</a>, <a class="jdocu" href="topic307.html#label12425">ppc970fx</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        void (*clear_atomic_reservation_bit)(conf_object_t *cpu);
+        void (*raise_machine_check_exception)(conf_object_t *cpu,
+                                              ppc_mc_exc_t exc);
+        void (*register_spr_user_handlers)(integer_t spr_number,
+                                           ppc_spr_user_getter_func_t getter,
+                                           lang_void *user_getter_data,
+                                           ppc_spr_user_setter_func_t setter,
+                                           lang_void *user_setter_data,
+                                           int privilege_checks);
+        void (*unregister_spr_user_handlers)(integer_t spr_number);
+        void (*spr_set_target_value)(conf_object_t *cpu, uinteger_t value);
+        void (*spr_stash_value)(conf_object_t *cpu, integer_t spr_number,
+                                uinteger_t value);
+        uinteger_t (*spr_fetch_value)(conf_object_t *cpu,
+                                      integer_t spr_number);
+        ppc_spr_ret_t (*spr_default_getter)(conf_object_t *cpu,
+                                            integer_t spr_number,
+                                            ppc_spr_access_type_t type);
+        ppc_spr_ret_t (*spr_default_setter)(conf_object_t *cpu,
+                                            integer_t spr_number,
+                                            uinteger_t value,
+                                            ppc_spr_access_type_t type);
+        const char* (*spr_get_name)(integer_t spr_number);
+        integer_t (*spr_get_number)(const char *spr_name);
+} ppc_interface_t;
+
+#define PPC_INTERFACE "ppc"
+</pre>
+<p>
+
+   The <b><i>clear_atomic_reservation_bit()</i></b> function clears the
+   reservation bit which is set by an <tt>lwarx</tt> instruction.  Clearing the
+   reservation will cause a following <tt>stwcx.</tt> instruction to fail.
+   This function is typically used by a cache hierarchy supporting SMP.
+<p>
+   The <b><i>raise_machine_check_exception()</i></b> function raises a machine
+   check exception. The <i>exc</i> argument is of the following type:
+<p>
+   <a name="label17818"></a>
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_PPC_Generic_MC,
+
+        Sim_PPC_MC_TEA,
+        Sim_PPC_MC_MCP,
+        Sim_PPC_Bus_Address_Parity,
+        Sim_PPC_Bus_Data_Parity,
+        Sim_PPC_Instruction_Cache_Parity,
+        Sim_PPC_Data_Cache_Parity,
+        Sim_PPC_L2_Data_Parity,
+        Sim_PPC_L3_Data_Parity,
+        Sim_PPC_L3_Address_Parity,
+        
+        Sim_PPC970_Data_Cache_Parity,
+        Sim_PPC970_Data_Cache_Tag_Parity,
+        Sim_PPC970_D_ERAT_Parity,
+        Sim_PPC970_TLB_Parity,
+        Sim_PPC970_SLB_Parity,
+        Sim_PPC970_L2_Load_ECC_Parity,
+        Sim_PPC970_L2_Page_Table_ECC_Parity,
+        Sim_PPC970_Uncacheable_Load_Parity,
+        Sim_PPC970_MC_External
+} ppc_mc_exc_t;</pre>
+
+<p>
+   The <b><i>register_spr_user_handlers</i></b> function will register user
+   implemented get and set functions that will be called every time a
+   read or write access is made to the SPR with number <i>spr</i>.
+   The <i>getter</i> and <i>setter</i> function is of the
+   following type:
+<p>
+   
+<p>
+   The <i>type</i> parameter in the get and set functions is one of
+   the following, depending on where from the access originated:
+<p>
+   
+<p>
+   Both the get and the set functions must return one of these enum values:
+<p>
+   
+<p>
+   If <i>privilege_checks</i> is not zero, Simics will do privilege
+   checks when a mfspr/mtspr instruction is executed. If this does not produce
+   the desired results, you can register the SPR handlers with
+   <i>privilege_checks</i> set to zero, and do you own checks in your
+   handlers.
+<p>
+   The functions <b><i>unregister_spr_user_handlers</i></b> will remove any
+   registered user handlers for a particular SPR.
+<p>
+   The function <b><i>spr_set_target_value</i></b> should be called from the get
+   function. The <i>value</i> will be written to the target register
+   for instruction accesses, and returned for attribute and int register
+   interface accesses. If this function is not called, the target register is
+   not changed for instruction accesses (and the mfspr thus acts as a nop).
+<p>
+   The functions <b><i>spr_stash_value</i></b> and <b><i>spr_fetch_value</i></b> can
+   be used to store a SPR value in the processor. This is useful if only the
+   getter (or only the setter) has been overridden with a user handler.
+<p>
+   Sometimes it may be desirable to let the processor take care of the access.
+   The functions <b><i>spr_default_getter</i></b> and
+   <b><i>spr_default_setter</i></b> exist for this purpose.
+<p>
+   The function <b><i>spr_get_name</i></b> takes <i>spr_number</i>
+   as parameter and returns the name of the SPR.
+<p>
+   The function <b><i>spr_get_number</i></b> takes the <i>spr_name</i>
+   and returns the SPR number.
+<p>
+   Note that the following registers cannot be overridden with user handlers:
+   <em>xer</em>, <em>lr</em> and <em>ctr</em>.
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic521.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic523.html">Next</a></span></p>
+</body>
+</html>

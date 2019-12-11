@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>pci_interrupt</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2259, true);
+</script>
+<a name="label17810"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic518.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic520.html">Next</a></span></p>
+<h3 class="jdocu">pci_interrupt</h3 class="jdocu">
+
+
+<a name="label17811"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic100.html#label6318">GT64120-pci</a>, <a class="jdocu" href="topic152.html#label7644">LX164-IRQ-PLD</a>, <a class="jdocu" href="topic160.html#label7761">MD1535D-isa</a>, <a class="jdocu" href="topic29.html#label3484">artesyn-pm-ppc</a>, <a class="jdocu" href="topic118.html#label6703">i82461GX</a>, <a class="jdocu" href="topic242.html#label9116">piix4_isa</a>, <a class="jdocu" href="topic262.html#label9659">ppc405gp-pci</a>, <a class="jdocu" href="topic263.html#label9690">ppc405gp-uic</a>, <a class="jdocu" href="topic273.html#label10204">ppc440gp-pci</a>, <a class="jdocu" href="topic276.html#label10323">ppc440gp-uic</a>, <a class="jdocu" href="topic289.html#label10863">ppc440gx-pci</a>, <a class="jdocu" href="topic295.html#label11058">ppc440gx-uic</a>, <a class="jdocu" href="topic461.html#label15942">uPD66566S1016</a>, <a class="jdocu" href="topic467.html#label16223">wire</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface should only be used when a device other than the bridge
+   handles PCI interrupts on the PCI bus. The initiating device is specified
+   with a PCI device number, and the pin represents PCI interrupt lines
+   (A, B, C, or D) as numbers in the range of 0 to 3.
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        void (*raise_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+        void (*lower_interrupt)(conf_object_t *obj, conf_object_t *irq_obj,
+                                int device, int pin);
+} pci_interrupt_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic518.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic520.html">Next</a></span></p>
+</body>
+</html>

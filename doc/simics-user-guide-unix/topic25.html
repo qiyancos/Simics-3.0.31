@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Basics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(50, true);
+</script>
+<a name="label123"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+<h4 class="jdocu">6.1&nbsp;&nbsp;&nbsp;Basics</h4 class="jdocu">
+
+
+<p>
+As mentioned above, Simics's configuration system is object-oriented. A Simics
+object is instantiated from a Simics <em>class</em>. The core of Simics defines
+some useful classes, but most of the classes (processors, device models,
+statistic gathering extensions) are provided by <em>modules</em> that are
+loaded by the simulator when requested.
+<p>
+For example, the <b>x86-p4</b> module defines, surprisingly, the
+<b>x86-p4</b> class. Note that a module may define several
+classes. Since modules advertise the classes they define, Simics can load
+modules transparently as objects are instantiated.
+<p>
+A class defines <em>attributes</em> that represent both the static and dynamic
+state of the instantiated objects. The static state includes information that
+doesn't change during the simulation (like a version number in a register)
+while the dynamic state covers the part of the device that are affected by the
+simulation (registers, internal state, buffers, etc.).
+<p>
+Let us take the example of an x86-p4 processor and have a closer look:
+<p>
+<ul>
+<p>
+<li>We can create an object instantiated from the class
+<b>x86-p4</b>. Let us call it <b>cpu0</b></li>
+<p>
+<li>The attribute <i>freq_mhz</i> can be set to 1500. It defines the
+processor clock frequency (in MHz)</li>
+<p>
+<li>The attribute <i>physical_memory</i> can be set to a memory space
+object, such as <b>phys_mem0</b>. This attribute points to the object that
+will answer to the memory accesses coming from the processor.</li>
+<p>
+<li>etc.</li>
+<p>
+</ul>
+<p>
+As you noticed, attributes may be of various types. A complete description is
+available in the next section.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+</body>
+</html>

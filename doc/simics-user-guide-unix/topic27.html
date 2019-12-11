@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Inspecting the Configuration</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(58, true);
+</script>
+<a name="label134"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+<h4 class="jdocu">6.3&nbsp;&nbsp;&nbsp;Inspecting the Configuration</h4 class="jdocu">
+
+
+<p>
+Object attributes that are of type <tt>integer</tt>, <tt>string</tt> or
+<tt>object</tt> are directly accessible at the <em>command-line</em> with
+the notation <tt></tt><em>object</em><tt>-&gt;</tt><em>attribute</em><tt></tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+# reading the EAX register in an x86 processor
+simics&gt; cpu0-&gt;eax
+0
+# writing a new value to EAX
+simics&gt; cpu0-&gt;eax = 10
+simics&gt; cpu0-&gt;eax
+10
+simics&gt;
+</pre>
+<p>
+More information about the command-line and scripting is available in chapter
+<a class="jdocu" href="topic35.html#label187">8</a>.
+<p>
+The Eclipse-based User Interface includes a <em>Configuration Browser</em> that
+allows you to visually browse the complete state of the simulation.
+<p>
+Finally, objects and attributes (of all types) are also available when
+<em>scripting Simics directly in Python</em>. Configuration objects are
+available under the <tt>conf</tt> namespace:
+<p>
+<pre class="jdocu_small" style="color: black">
+# reading the EAX register in an x86 processor
+simics&gt; @conf.cpu0.eax
+0
+# writing a new value to EAX
+simics&gt; @conf.cpu0.eax = 10
+simics&gt; @conf.cpu0.eax
+10
+simics&gt;
+</pre>
+<p>
+More information about scripting Simics in Python is available in chapter <a class="jdocu" href="topic35.html#label187">8</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic26.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic28.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/Niagara Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/Niagara Overview</h2 class="jdocu">
+
+
+<p>
+<a name="label20"></a><h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics/Niagara Simple models the processor and memory of a Sun Fire T2000
+server with an UltraSPARC T1 processor. The processor is running at 5MHz and
+there are 256 MB of memory. A single disk image with Solaris is also supported.
+<p>
+Virtutech does not provide any disk images with Solaris for Niagara Simple, due
+to licensing issues. No OpenBoot PROM (OBP) image is not provided either. These
+files can be downloaded from The OpenSPARC web-site.
+
+<a name="label21"></a><h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Supported Hardware</h3 class="jdocu">
+
+
+<p>
+The niagara-simple has only support for the SUN4V console and RTC device.
+There are no other devices modelled.
+<p>
+A good guide to the Sun Fire T2000 servers can be found in the Sun
+System Handbook, available online at:
+<a class="jdocu" href="http://sunsolve.sun.com/handbook_pub/" target="_top">http://sunsolve.sun.com/handbook_pub/</a>
+<p>
+
+<a name="label22"></a><h3 class="jdocu">2.3&nbsp;&nbsp;&nbsp;Required Files</h3 class="jdocu">
+
+
+Some files required to run the Niagara Simple system are not included in the
+Simics distribution. These files can be found on the opensparc.org web site,
+bundled with the UltraSPARC T1 simulator from Sun.
+<p>
+Copy the files in the <tt>S10image/</tt> directory of the Sun simulator
+package to <tt>[simics]/targets/niagara-simple/images/</tt>. The files
+needed are:
+<ul>
+<li>1up-hv.bin</li>
+<li>1up-md.bin</li>
+<li>1g2p-hv.bin</li>
+<li>1g2p-md.bin</li>
+<li>1g32p-hv.bin</li>
+<li>1g32p-md.bin</li>
+<li>disk.s10hw2</li>
+<li>openboot.bin</li>
+<li>q.bin</li>
+<li>reset.bin</li>
+</ul>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

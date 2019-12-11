@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Help System</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(199, true);
+</script>
+<a name="label469"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic72.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic74.html">Next</a></span></p>
+<h4 class="jdocu">15.3&nbsp;&nbsp;&nbsp;Help System</h4 class="jdocu">
+
+
+<a name="label470"></a><a name="label471"></a>
+<p>
+The most useful Simics commands are grouped into categories. To list these
+categories, just type <b>help</b> at the command prompt. The list should
+look like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>help</b>
+[...]
+To get you started, here is a list of command categories:
+  Breakpoints
+  Changing Simulated State
+  Command-Line Interface
+  Configuration
+  Debugging
+  Disk
+  Ethernet
+  Execution
+  Files and Directories
+  Haps
+  Help
+  Inspecting Simulated State
+  Light Edition
+  Logging
+  Memory
+  Modules
+  Output
+  Profiling
+  Python
+  Real Network
+  Registers
+  Remote Access
+  Simics Central
+  Simics Search Path
+  Speed
+  Symbolic Debugging
+  Test
+  Tracing
+[...]
+</pre>
+<p>
+Note that since Simics's configuration can change between sessions and even
+dynamically through loading modules, the commands and command categories may
+look different.
+<p>
+Type <b>help <i>category</i></b> for a list of commands, e.g., <b>help
+"Changing Simulated State"</b> will list all commands belonging to that
+category:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>help "Changing Simulated State"</b>
+Commands available in category Changing Simulated State
+  set-pc                  set the current processor's program counter
+  set                     set physical address to specified value
+  &lt;image&gt;.set             set bytes in image to specified value
+  load-file               load file into memory
+  load-binary             load binary (executable) file into memory
+  &lt;processor&gt;.write-reg   write to register
+  write-reg               write to register
+  penable                 switch processor on
+</pre>
+<p>
+Type <b>help <i>command</i></b> to print the documentation for a
+specific command.
+<p>
+The <b>help</b> command can do much more than printing command
+documentation: it gives you access to nearly all Simics documentation on
+commands, classes, modules, interfaces, API types and functions, haps and more
+according to the configuration loaded in the simulator. All documentation is
+also available in the <em>Simics Reference Manual</em>.
+<p>
+Here are some more examples of usage of the <b>help</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>help ptime</b>
+[... ptime command documentation ...]
+
+simics&gt; <b>help cpu0.disassemble</b>
+[... &lt;processor&gt;.disassemble command documentation ...]
+
+simics&gt; <b>help &lt;processor&gt;.disassemble</b>
+[... &lt;processor&gt;.disassemble command documentation ...]
+
+simics&gt; <b>help cpu0</b>
+[... &lt;ultrasparc-iii-i&gt; class documentation ...]
+
+simics&gt; <b>help ultrasparc-iii-i</b>
+[... &lt;ultrasparc-iii-i&gt; class documentation ...]
+
+simics&gt; <b>help processor</b>
+[... &lt;processor&gt; interface documentation ...]
+
+simics&gt; <b>help cpu0.reorder_buffer_size</b>
+[... &lt;ultrasparc-iii-i&gt;.reorder_buffer_size attribute documentation ...]
+
+simics&gt; <b>help ultrasparc-iii-i.windowed_registers</b>
+[... &lt;ultrasparc-iii-i&gt;.windowed_registers attribute documentation ...]
+
+simics&gt; <b>help Core_Exception</b>
+[... Core_Exception hap documentation ...]
+
+simics&gt; <b>help SIM_get_mem_op_type</b>
+[... SIM_get_mem_op_type() function declaration ...]
+
+simics&gt; <b>help sparc-u3-turbo</b>
+[... sparc-u3-turbo module documentation ...]
+</pre>
+<p>
+When a name matches several help topics (for example, a command and an
+attribute, or a module and a class), <b>help</b> will print out the first
+topic coming in this order: command categories, commands, classes, interfaces,
+haps, modules, attributes, API functions and symbols. It will also inform you
+at the end of the documentation output that other topics were matching your
+search:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>help cheerio-hme</b>
+[... cheerio-hme class documentation ...]
+     
+Note that your request also matched other topics:
+  module:cheerio-hme
+</pre>
+<p>
+If you type <b>help module:cheerio-hme</b>, the module documentation will
+be printed instead:
+<p>
+<pre class="jdocu_small" style="color: black"> 
+simics&gt; <b>help module:cheerio-hme</b>
+[... cheerio-hme module documentation ...]
+</pre>
+<p>
+You can use specifiers like <tt>module:</tt> or <tt>class:</tt> at any time. It
+will also allow the <b>help</b> command to provide you better
+tab-completion, since only items in the selected category of documentation will
+be proposed. The following specifiers are available: <tt>object:</tt>,
+<tt>class:</tt>, <tt>command:</tt>, <tt>attribute:</tt>, <tt>interface:</tt>,
+<tt>module:</tt>, <tt>api:</tt>, <tt>hap:</tt> and <tt>category:</tt>.
+<p>
+<hr class="jdocu_note"><b>Note:</b> By default, <b>help</b> does not propose tab-completion for modules
+and API symbols, because they tend not to be the most searched for and would
+clutter the tab-completion propositions unnecessarily. You can get
+tab-completion for those by specifying <tt>module:</tt> or <tt>api:</tt> in
+front of what you are looking for.<hr class="jdocu_note">
+<p>
+The <b><a name="label472">apropos</a></b> command can search for keywords in the
+documentation provided by <b>help</b>. Type <b>apropos
+<i>keyword</i></b> to get a list of all documentation topics matching
+this keyword.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>apropos step</b>
+The text 'step' appears in the documentation
+for the following items:
+ 
+Command        &lt;processor&gt;.cycle-break-absolute
+Command        &lt;processor&gt;.step-break
+Command        &lt;processor&gt;.step-break-absolute
+Command        cycle-break-absolute
+Command        log-setup
+Command        print-event-queue
+[...]
+Attribute      &lt;ultrasparc-iii&gt;.steps
+Hap            Core_Step_Count
+
+simics&gt;
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic72.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic74.html">Next</a></span></p>
+</body>
+</html>

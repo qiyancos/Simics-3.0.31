@@ -1,0 +1,3 @@
+run-command-file "%script%/malta-system.include"
+instantiate-components
+run-command-file "%script%/malta-linux-setup.include"

@@ -1,0 +1,42 @@
+dml 1.0;
+
+/*
+ * x86.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2007 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+header %{
+#include <simics/core/memory.h>
+#include <simics/arch/x86.h>
+%}
+
+constant Pin_Init  = 0;
+constant Pin_Smi   = 1;
+constant Pin_Nmi   = 2;
+constant Pin_Ignne = 3;
+
+typedef int x86_pin_t;
+
+typedef struct {
+        void (*set_pin_status)(conf_object_t *obj, x86_pin_t pin, int status);
+        void (*start_up)(conf_object_t *obj, uint32 start_address);
+        //int  (*interrupt_current_cpu)(int (*ack)(conf_object_t *), 
+        //                              conf_object_t *data);
+        //void (*uninterrupt_current_cpu)(int (*ack)(conf_object_t *));
+        int  (*has_pending_interrupt)(conf_object_t *obj);
+        int  (*has_waiting_interrupt)(conf_object_t *obj);
+        physical_address_t (*linear_to_physical)(
+            processor_t *cpu_ptr, data_or_instr_t data_or_instr, 
+            linear_address_t address);
+} x86_interface_t;

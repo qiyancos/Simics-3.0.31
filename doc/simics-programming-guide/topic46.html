@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Migrating Modules from Older Versions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(114, true);
+</script>
+<a name="label237"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic45.html">Previous</a> - <a class="jdocu" href="topic43.html">Up</a> - <a class="jdocu" href="topic47.html">Next</a></span></p>
+<h3 class="jdocu">9.3&nbsp;&nbsp;&nbsp;Migrating Modules from Older Versions</h3 class="jdocu">
+
+
+<p>
+There are only minor changes in the API between Simics version 3.0 and
+2.2. Some functions that have been marked deprecated for a long time
+were removed.
+<p>
+The Simics API was changed for the 2.0 release to allow modeling
+of heterogeneous target systems, i.e., systems that have processors of
+different architectures all running in the same Simics session.
+<p>
+Modules written for the 1.4 and 1.6 versions of Simics can usually be
+compiled for Simics 2.0, using the <i>obsolete API</i> backward compatibility
+layer. Modules for version 1.8 should compile without any major changes,
+but in all those cases, there may be some minor updates that have to be
+done manually.
+<p>
+Modules from older versions has to specify what API that are written for
+by setting the make variable SIMICS_API. This variable can have one of
+the following values:
+<p>
+<dl><dt><b><tt>3.0</tt></b></dt><dd>Compile module for the 3.0 API.</dd><dt><b><tt>2.2</tt></b></dt><dd>Compile module for the 2.2 API.</dd><dt><b><tt>2.0</tt></b></dt><dd>Compile module for the 2.0 API.</dd><dt><b><tt>1.8</tt></b></dt><dd>Compile module for the 1.8 API.</dd><dt><b><tt>1.6</tt></b></dt><dd>Compile module for the 1.6 API.</dd><dt><b><tt>1.4</tt></b></dt><dd>Compile module for the 1.4 API.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic45.html">Previous</a> - <a class="jdocu" href="topic43.html">Up</a> - <a class="jdocu" href="topic47.html">Next</a></span></p>
+</body>
+</html>

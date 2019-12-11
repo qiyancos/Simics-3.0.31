@@ -1,0 +1,463 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>i8042</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(845, true);
+</script>
+<a name="label6512"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic112.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic114.html">Next</a></span></p>
+<h3 class="jdocu">i8042</h3 class="jdocu">
+
+
+<a name="label6513"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2502">8042</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>i8042</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic514.html#label17800">mouse</a>, <a class="jdocu" href="topic507.html#label17764">keyboard</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The 8042 device implements the functionality of the 8042 keyboard controller together with a 104/105 key Windows 95 type keyboard, and a two button mouse. They keyboard is a MF II, similar to an AT keyboard but with a few extensions. A 105 key keyboard is a 101 keyboard with the extra key found on European 102 keyboards, and the three Windows keys.
+
+</dd>
+
+</dl>
+<a name="label6514"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>allow_keyboard_buffer_overflow</i></b></dt><a name="label6515"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+By default this attribute is FALSE, which implies that the i8042 will not allow the keyboard buffer to overflow. Instead it will force the console to buffer the input until there is room for it in the keyboard buffer. This makes the console generally easier to work with, since you are guaranteed that it won't drop characters. If you for some reason want to allow keyboard buffer overflows, set this attribute to TRUE.</dd></dl>
+<dl><dt><b><i>alt_l_down</i></b></dt><a name="label6516"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Status of the left alt key.</dd></dl>
+<dl><dt><b><i>alt_r_down</i></b></dt><a name="label6517"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Status of the right alt key.</dd></dl>
+<dl><dt><b><i>button_event</i></b></dt><a name="label6518"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+<i>Write-only</i>. Forces mouse button events. Writing <tt></tt><i>value</i><tt></tt> to index <tt>0</tt> (<tt>1</tt>, <tt>2</tt>, <tt>3</tt>, or <tt>4</tt>) causes the left (right, middle, fourth, or fifth) button to be pressed if <tt></tt><i>value</i><tt></tt> is <tt>0</tt>, or released if <tt></tt><i>value</i><tt></tt> is <tt>1</tt>.</dd></dl>
+<dl><dt><b><i>check_pending</i></b></dt><a name="label6519"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag whether there is a <i>check data for 8042</i> event pending.</dd></dl>
+<dl><dt><b><i>cmd_buttons</i></b></dt><a name="label6520"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The state of the mouse buttons as set by the <tt>button-event</tt> pseudo attribute. Bit 0 = left button pressed, bit 1 = right button pressed, and 2 = middle button pressed.</dd></dl>
+<dl><dt><b><i>command_last</i></b></dt><a name="label6521"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag saying whether the last write to the keyboard was a command.</dd></dl>
+<dl><dt><b><i>console</i></b></dt><a name="label6522"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Console device implementing the 'gfx-console' or 'keyboard-console' interface.</dd></dl>
+<dl><dt><b><i>ctrl_l_down</i></b></dt><a name="label6523"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Status of the left ctrl key.</dd></dl>
+<dl><dt><b><i>ctrl_r_down</i></b></dt><a name="label6524"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Status of the right ctrl key.</dd></dl>
+<dl><dt><b><i>fast_a20</i></b></dt><a name="label6525"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The fast A20 bit (port 92h).</dd></dl>
+<dl><dt><b><i>fast_init</i></b></dt><a name="label6526"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The fast init bit (port 92h).</dd></dl>
+<dl><dt><b><i>ifull</i></b></dt><a name="label6527"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Input buffer full flag. Always <tt>0</tt> in the current implementation.</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label6528"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Interrupt device implementing the <tt>simple-interrupt</tt> interface.</dd></dl>
+<dl><dt><b><i>irq_freq</i></b></dt><a name="label6529"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The maximum frequency in Hz at which the i8042 will generate interrupts. The default is 2000 Hz, which simulates the timing of a real device. However, some operating systems and X servers may have problems keeping up with that interrupt frequency when run with low processor clock frequencies and may start to loose input. If that happens you can lower the interrupt frequency. 20 Hz seems to work well with X servers on Linux in the configurations distributed by Virtutech.</dd></dl>
+<dl><dt><b><i>irq_sent</i></b></dt><a name="label6530"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to <tt>1</tt> if the keyboard interrupt line is raised, <tt>2</tt> if the mouse interrupt is raised, or <tt>0</tt> otherwise.</dd></dl>
+<dl><dt><b><i>kbd_disabled</i></b></dt><a name="label6531"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Keyboard disabled flag.</dd></dl>
+<dl><dt><b><i>kbd_irq_en</i></b></dt><a name="label6532"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Keyboard interrupt enabled flag.</dd></dl>
+<dl><dt><b><i>kbd_irq_level</i></b></dt><a name="label6533"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Interrupt level of the keyboard.</dd></dl>
+<dl><dt><b><i>key_buf_num</i></b></dt><a name="label6534"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Number of entries used after <tt>key_first</tt> in the <tt>key_buffer</tt>.</dd></dl>
+<dl><dt><b><i>key_buffer</i></b></dt><a name="label6535"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>b0</i><tt>, </tt><i>b1</i><tt>, ..., </tt><i>b15</i><tt>)</tt> Controller keyboard output data.</dd></dl>
+<dl><dt><b><i>key_caps_lock</i></b></dt><a name="label6536"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Caps lock led flag.</dd></dl>
+<dl><dt><b><i>key_enabled</i></b></dt><a name="label6537"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag saying if the keyboard is enabled.</dd></dl>
+<dl><dt><b><i>key_event</i></b></dt><a name="label6538"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+<i>Write-only</i>. Forces keyboard events. Writing <tt></tt><i>value</i><tt></tt> (an integer) to index <i>i</i> forces key number <i>i</i> to be pressed if <tt></tt><i>value</i><tt></tt> is <tt>0</tt>, or released if <tt></tt><i>value</i><tt></tt> is <tt>1</tt>.</dd></dl>
+<dl><dt><b><i>key_first</i></b></dt><a name="label6539"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Index of the next data that will be read from the <tt>key_buffer</tt>.</dd></dl>
+<dl><dt><b><i>key_next_write</i></b></dt><a name="label6540"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Command expected for the next write to the keyboard controller. <tt>0 = Undefined</tt>, <tt>1 = Led</tt>, <tt>2 = Typematic</tt>, and <tt>3 = Scan</tt>.</dd></dl>
+<dl><dt><b><i>key_num_lock</i></b></dt><a name="label6541"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Num lock led flag.</dd></dl>
+<dl><dt><b><i>key_present</i></b></dt><a name="label6542"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag saying if the keyboard is actually connected to the controller.</dd></dl>
+<dl><dt><b><i>key_scan_codes</i></b></dt><a name="label6543"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Selected scan codes.</dd></dl>
+<dl><dt><b><i>key_scroll_lock</i></b></dt><a name="label6544"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Scroll lock led flag.</dd></dl>
+<dl><dt><b><i>mfull</i></b></dt><a name="label6545"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag saying whether the <tt>obuffer</tt> contains mouse data.</dd></dl>
+<dl><dt><b><i>mode_select_state</i></b></dt><a name="label6546"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mode selection state. <tt>0 = knocking not in progress</tt>, <tt>1 = having set sample rate to 200 Hz once</tt>, <tt>2 = having set sample rate to 200 Hz twice</tt>, and <tt>3 = having set sample rate to 100 Hz</tt>.</dd></dl>
+<dl><dt><b><i>mou_buf_num</i></b></dt><a name="label6547"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Number of entries used from <tt>mou_first</tt> in <tt>mou_buffer</tt>.</dd></dl>
+<dl><dt><b><i>mou_buffer</i></b></dt><a name="label6548"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+<tt>(</tt><i>b0</i><tt>, </tt><i>b1</i><tt>, ..., </tt><i>b47</i><tt>)</tt> Controller output mouse data.</dd></dl>
+<dl><dt><b><i>mou_enabled</i></b></dt><a name="label6549"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse enabled flag.</dd></dl>
+<dl><dt><b><i>mou_first</i></b></dt><a name="label6550"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Index of next data in <tt>mou_buffer</tt>.</dd></dl>
+<dl><dt><b><i>mou_left_button</i></b></dt><a name="label6551"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse left button pressed flag.</dd></dl>
+<dl><dt><b><i>mou_middle_button</i></b></dt><a name="label6552"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse middle button pressed flag.</dd></dl>
+<dl><dt><b><i>mou_next_write</i></b></dt><a name="label6553"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Command expected for the next write to the mouse controller. <tt>0 = Undefined</tt>, <tt>1 = Resolution</tt>, and <tt>3 = SampleRate</tt>.</dd></dl>
+<dl><dt><b><i>mou_resolution</i></b></dt><a name="label6554"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse resolution. The resolution is <tt>1 &lt;&lt; </tt><i>value</i><tt></tt> counts / mm.</dd></dl>
+<dl><dt><b><i>mou_right_button</i></b></dt><a name="label6555"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse right button pressed flag.</dd></dl>
+<dl><dt><b><i>mou_sample_rate</i></b></dt><a name="label6556"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Sample rate in Hz.</dd></dl>
+<dl><dt><b><i>mou_two_to_one</i></b></dt><a name="label6557"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Scaling is 2:1 flag.</dd></dl>
+<dl><dt><b><i>mouse_disabled</i></b></dt><a name="label6558"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse disabled flag.</dd></dl>
+<dl><dt><b><i>mouse_event</i></b></dt><a name="label6559"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+<i>Write-only</i>. Forces mouse events. Writes to indices <tt>0</tt> through <tt>5</tt> result in movement in directions <tt>up</tt>, <tt>down</tt>, <tt>left</tt>, <tt>right</tt>, <tt>wheel up</tt>, or <tt>wheel down</tt> by <tt></tt><i>value</i><tt></tt> mm.</dd></dl>
+<dl><dt><b><i>mouse_irq_en</i></b></dt><a name="label6560"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mouse interrupt enabled flag.</dd></dl>
+<dl><dt><b><i>mouse_irq_level</i></b></dt><a name="label6561"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Interrupt level of the mouse.</dd></dl>
+<dl><dt><b><i>mouse_mode</i></b></dt><a name="label6562"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Mode operating mode. <tt>0 = 3-button mode</tt>, <tt>1 = 3-button wheel mode</tt>, and <tt>2 = 5-button wheel mode</tt>.</dd></dl>
+<dl><dt><b><i>mouse_type</i></b></dt><a name="label6563"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Modeled mouse type. <tt>0 = 3-button mouse</tt> (default), <tt>1 = 3-button wheel mouse</tt>, and <tt>2 = 5-button wheel mouse</tt>.</dd></dl>
+<dl><dt><b><i>next_write</i></b></dt><a name="label6564"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The next write expected on the command port. <tt>0 = Undefined</tt>, <tt>1 = Command</tt>, <tt>2 = Output</tt>, <tt>3 = Mouse</tt>, and <tt>4 = MouseBuffer</tt>.</dd></dl>
+<dl><dt><b><i>obuffer</i></b></dt><a name="label6565"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The next data that will be read from the keyboard.</dd></dl>
+<dl><dt><b><i>ofull</i></b></dt><a name="label6566"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag saying whether the <tt>obuffer</tt> contains data.</dd></dl>
+<dl><dt><b><i>output_port</i></b></dt><a name="label6567"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The 8042 controller's output port P2. Only bits 2 and 3 are in this attribute. Use other attributes for the remaining bits.</dd></dl>
+<dl><dt><b><i>output_port_mask</i></b></dt><a name="label6568"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+One bit set for each locked bit in output port P2.</dd></dl>
+<dl><dt><b><i>recorder</i></b></dt><a name="label6569"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Recorder object defining the <tt>recorder</tt> interface.</dd></dl>
+<dl><dt><b><i>reset_target</i></b></dt><a name="label6570"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Object implementing the <tt>x86_reset_bus</tt> interface.</dd></dl>
+<dl><dt><b><i>scan_convert</i></b></dt><a name="label6571"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Flag whether we do scan code conversion.</dd></dl>
+<dl><dt><b><i>selftest_ok</i></b></dt><a name="label6572"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The selftest ok flag.</dd></dl>
+<dl><dt><b><i>sent_time</i></b></dt><a name="label6573"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The last time we sent an interrupt.</dd></dl>
+<dl><dt><b><i>shift_l_down</i></b></dt><a name="label6574"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Status of the left shift key.</dd></dl>
+<dl><dt><b><i>shift_r_down</i></b></dt><a name="label6575"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Status of the right shift key.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label6576"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6578">ctrl-alt-del</a></b></td><td class="jdocu_noborder">send ctrl-alt-del to console</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6580">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6582">key-down</a></b></td><td class="jdocu_noborder">send key event</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6584">key-up</a></b></td><td class="jdocu_noborder">send key event</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6586">left-button</a></b></td><td class="jdocu_noborder">set button state</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6588">middle-button</a></b></td><td class="jdocu_noborder">set button state</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6590">mouse-down</a></b></td><td class="jdocu_noborder">move mouse</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6592">mouse-left</a></b></td><td class="jdocu_noborder">move mouse</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6594">mouse-right</a></b></td><td class="jdocu_noborder">move mouse</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6596">mouse-up</a></b></td><td class="jdocu_noborder">move mouse</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6598">right-button</a></b></td><td class="jdocu_noborder">set button state</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label6600">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label6577"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label6578"></a><a name="label6579"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.ctrl-alt-del</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.ctrl-alt-del</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Sends a Ctrl-Alt-Del command to the console. This is useful primarily on
+a Windows-hosted Simics to avoid having Ctrl-Alt-Del catched by the host OS.</dd>
+
+</dl>
+
+
+
+<a name="label6580"></a><a name="label6581"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label6582"></a><a name="label6583"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.key-down</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.key-down</b> <i>key-code</i> <br><b>&lt;i8042&gt;.key-up</b> <i>key-code</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Send a key press to the keyboard controller.
+The argument is the internal Simics keycode.</dd>
+
+</dl>
+
+
+
+<a name="label6584"></a><a name="label6585"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.key-up</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.key-up</b> <i>key-code</i> <br><b>&lt;i8042&gt;.key-down</b> <i>key-code</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Send a key press to the keyboard controller.
+The argument is the internal Simics keycode.</dd>
+
+</dl>
+
+
+
+<a name="label6586"></a><a name="label6587"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.left-button</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.left-button</b> <i>"direction"</i> <br><b>&lt;i8042&gt;.middle-button</b> <i>"direction"</i> <br><b>&lt;i8042&gt;.right-button</b> <i>"direction"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the state of the left or right mouse button.
+Valid arguments are "up" and "down".</dd>
+
+</dl>
+
+
+
+<a name="label6588"></a><a name="label6589"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.middle-button</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.middle-button</b> <i>"direction"</i> <br><b>&lt;i8042&gt;.left-button</b> <i>"direction"</i> <br><b>&lt;i8042&gt;.right-button</b> <i>"direction"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the state of the left or right mouse button.
+Valid arguments are "up" and "down".</dd>
+
+</dl>
+
+
+
+<a name="label6590"></a><a name="label6591"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.mouse-down</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.mouse-down</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-left</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-right</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-up</b> <i>millimeters</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Move the mouse up/down/left/right a specified number of millimeters.<br></dd>
+
+</dl>
+
+
+
+<a name="label6592"></a><a name="label6593"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.mouse-left</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.mouse-left</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-down</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-right</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-up</b> <i>millimeters</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Move the mouse up/down/left/right a specified number of millimeters.<br></dd>
+
+</dl>
+
+
+
+<a name="label6594"></a><a name="label6595"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.mouse-right</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.mouse-right</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-down</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-left</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-up</b> <i>millimeters</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Move the mouse up/down/left/right a specified number of millimeters.<br></dd>
+
+</dl>
+
+
+
+<a name="label6596"></a><a name="label6597"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.mouse-up</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.mouse-up</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-down</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-left</b> <i>millimeters</i> <br><b>&lt;i8042&gt;.mouse-right</b> <i>millimeters</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Move the mouse up/down/left/right a specified number of millimeters.<br></dd>
+
+</dl>
+
+
+
+<a name="label6598"></a><a name="label6599"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.right-button</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.right-button</b> <i>"direction"</i> <br><b>&lt;i8042&gt;.left-button</b> <i>"direction"</i> <br><b>&lt;i8042&gt;.middle-button</b> <i>"direction"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the state of the left or right mouse button.
+Valid arguments are "up" and "down".</dd>
+
+</dl>
+
+
+
+<a name="label6600"></a><a name="label6601"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;i8042&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;i8042&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic112.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic114.html">Next</a></span></p>
+</body>
+</html>

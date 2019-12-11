@@ -1,0 +1,25 @@
+script-branch {
+    wait-for-variable machine_defined
+    $pcibrd = (create-sunfire-pci-board mac_address = "10:10:10:10:10:14")
+    $pgx64 = (create-sun-pci-pgx64)
+    $gfxcon = (create-std-graphics-console)
+    $keyboard = (create-sun-type5-keyboard)
+    $mouse = (create-sun-type5-mouse)
+    $scsi_bus = (create-std-scsi-bus)
+
+    $system.connect slot2 $pcibrd
+    $pcibrd.connect pci-slot0 $pgx64
+    $pcibrd.connect $scsi_bus
+    $system.connect keyboard $keyboard
+    $system.connect mouse $mouse
+
+    $gfxcon.connect $pgx64
+    $gfxcon.connect $keyboard
+    $gfxcon.connect $mouse
+}
+
+$save_slot2 = "yes"
+@solaris9_diffs = [["donut5.1.2-pgx64.craff", "ro", 0, 2128486400]]
+@solaris8_diffs = [["donut4.1.1-pgx64.craff", "ro", 0, 2128486400]]
+
+run-command-file "%script%/donut-common.simics"

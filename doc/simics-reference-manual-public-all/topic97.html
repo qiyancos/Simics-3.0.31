@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>generic-flash-memory</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(787, true);
+</script>
+<a name="label5887"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic96.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic98.html">Next</a></span></p>
+<h3 class="jdocu">generic-flash-memory</h3 class="jdocu">
+
+
+<a name="label5888"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2720">new-flash-memory</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>generic-flash-memory</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic541.html#label17994">translate</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The generic-flash-memory class simulates different types of flash-memory depending on which attributes are set.
+Refer to [simics]/home/scripts/flash_memory.py for a complete description of the features implemented and the flash chips that are pre-configured.
+
+</dd>
+
+</dl>
+<a name="label5889"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>accept_inquiries</i></b></dt><a name="label5890"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device will handled inquiries as normal accesses. If 0, it will ignore them. Default is 0.</dd></dl>
+<dl><dt><b><i>accept_smaller_reads</i></b></dt><a name="label5891"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device will accept smaller reads than the bus width. If 0, it will complain when receiving smaller reads. Default is 0.</dd></dl>
+<dl><dt><b><i>accept_smaller_writes</i></b></dt><a name="label5892"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device will accept smaller writes than the bus width. If 0, it will complain when receiving smaller writes. Default is 0.</dd></dl>
+<dl><dt><b><i>amd_ignore_cmd_address</i></b></dt><a name="label5893"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the address will be ignored when parsing AMD commands. Default is 0.</dd></dl>
+<dl><dt><b><i>big_endian</i></b></dt><a name="label5894"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device will behave as a big endian device. If 0, it will behave as a little endian device. Default is 0.</dd></dl>
+<dl><dt><b><i>bus_width</i></b></dt><a name="label5895"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Total width (in bits) of the data path connected to the flash device.</dd></dl>
+<dl><dt><b><i>busy_signal_targets</i></b></dt><a name="label5896"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[n|o|[os]*]</b>.
+<p>
+(dst_object, dst_signal)* The destination device and signal name to connect the busy signal of the chips to. The destinations should implement the <tt>signal</tt> interface. Without a timing model, the device will never raise the busy signal.</dd></dl>
+<dl><dt><b><i>cfi_query</i></b></dt><a name="label5897"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|d|[i+]</b>.
+<p>
+CFI query structure (if the device is CFI compatible). Default is none (device is not CFI compatible).</dd></dl>
+<dl><dt><b><i>chip_mode</i></b></dt><a name="label5898"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[s*]</b>.
+<p>
+Current state for all chips.</dd></dl>
+<dl><dt><b><i>chip_write_buffer</i></b></dt><a name="label5899"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[d|n*]</b>.
+<p>
+Current write buffer for all chips.</dd></dl>
+<dl><dt><b><i>chip_write_buffer_current_count</i></b></dt><a name="label5900"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>.
+<p>
+Current write buffer count for all chips.</dd></dl>
+<dl><dt><b><i>chip_write_buffer_start_address</i></b></dt><a name="label5901"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i*]</b>.
+<p>
+Current write buffer start address for all chips.</dd></dl>
+<dl><dt><b><i>command_set</i></b></dt><a name="label5902"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If no CFI structure is provided, this attribute should be set to indicate the command-set to use. Default is 0 (invalid command-set).</dd></dl>
+<dl><dt><b><i>device_id</i></b></dt><a name="label5903"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>i|[i+]</b>.
+<p>
+Device ID/code as used in Intel identifier codes and AMD autoselect mode. Default is 0.</dd></dl>
+<dl><dt><b><i>hardware_lock_status</i></b></dt><a name="label5904"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i*]*]</b>.
+<p>
+Hardware lock status for all units (for Intel advanced lock system).</dd></dl>
+<dl><dt><b><i>ignore_timing</i></b></dt><a name="label5905"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Obsolete attribute since timing is not modeled. Kept for backward compatibility only.</dd></dl>
+<dl><dt><b><i>intel_configuration</i></b></dt><a name="label5906"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device supports intel configuration operations. f 0, intel configuration operations are ignored. Default is 0.</dd></dl>
+<dl><dt><b><i>intel_lock</i></b></dt><a name="label5907"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 2, the flash device supports advanced lock/unlock/lock down operations. If 1, the flash device supports simple lock/unlock all operations. If 0, lock operations are ignored. Default is 0.</dd></dl>
+<dl><dt><b><i>intel_protection_program</i></b></dt><a name="label5908"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device supports intel protection program operations. If 0, intel protection program operations are ignored. Default is 0.</dd></dl>
+<dl><dt><b><i>intel_write_buffer</i></b></dt><a name="label5909"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 1, the flash device supports intel write buffer operations. If 0, intel write buffer operations are ignored. Default is 0.</dd></dl>
+<dl><dt><b><i>interleave</i></b></dt><a name="label5910"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interleave (number of parallel flash memory chips).</dd></dl>
+<dl><dt><b><i>lock_status</i></b></dt><a name="label5911"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i*]*]</b>.
+<p>
+Lock status for all units.</dd></dl>
+<dl><dt><b><i>manufacturer_id</i></b></dt><a name="label5912"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Manufacturer ID/code as used in Intel identifier codes and AMD autoselect mode. Default is 0.</dd></dl>
+<dl><dt><b><i>max_chip_width</i></b></dt><a name="label5913"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Maximum data width (for example, specified as 16 for a x8/x16 capable device).</dd></dl>
+<dl><dt><b><i>reset</i></b></dt><a name="label5914"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 in order to reset the device.</dd></dl>
+<dl><dt><b><i>storage_ram</i></b></dt><a name="label5915"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+RAM object providing the backing store area.</dd></dl>
+<dl><dt><b><i>strict_cmd_set</i></b></dt><a name="label5916"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to 1, warnings that the command-set is misused become errors. Default is 0.</dd></dl>
+<dl><dt><b><i>timing_model</i></b></dt><a name="label5917"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>D</b>; <b>string</b> indexed;  indexed type: <b>Float</b>.
+<p>
+Associates a flash state/operation with a time. The flash will remain in this state the given time allowing a more strict time model to be simulated. Sometimes flash drivers requires that an operation takes some time to for the software to work correctly.</dd></dl>
+<dl><dt><b><i>unit_erase_time</i></b></dt><a name="label5918"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+Obsolete attribute since timing is not modeled. Kept for backward compatibility only.</dd></dl>
+<dl><dt><b><i>unit_size</i></b></dt><a name="label5919"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>[i+]</b>.
+<p>
+A list of block/sector sizes.</dd></dl>
+<dl><dt><b><i>unit_status</i></b></dt><a name="label5920"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i*]*]</b>.
+<p>
+Status for all units.</dd></dl>
+<dl><dt><b><i>write_buffer_size</i></b></dt><a name="label5921"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Write buffer size *in bytes* for write buffer commands. Default is 32 (standard value for Intel Strataflash).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5922"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5924">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5926">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5923"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5924"></a><a name="label5925"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;generic-flash-memory&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;generic-flash-memory&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label5926"></a><a name="label5927"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;generic-flash-memory&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;generic-flash-memory&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic96.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic98.html">Next</a></span></p>
+</body>
+</html>

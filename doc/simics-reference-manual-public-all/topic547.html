@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Core_Asynchronous_Trap</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2291, true);
+</script>
+<a name="label18020"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic546.html">Previous</a> - <a class="jdocu" href="topic544.html">Up</a> - <a class="jdocu" href="topic548.html">Next</a></span></p>
+<h3 class="jdocu">Core_Asynchronous_Trap</h3 class="jdocu">
+
+
+<a name="label18021"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2886">Simics Core</a></dd>
+
+
+<dt class="jdocu_di"><b>Callback Type</b></dt><dd class="jdocu_di">
+    <tt>void (*)(lang_void *callback_data, <br>         conf_object_t *trigger_obj, integer_t trap_number);</tt></dd>
+
+
+<dt class="jdocu_di"><b>Index</b></dt><dd class="jdocu_di">
+trap_number</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+  SPARC: Called when an asynchronous trap occurs. This is either an external interrupt <i>trap number</i> == 0x60 or interrupt level n <i>trap number</i> 0x41 - 0x4F, or an asynchronous trap initiated by the user calling trap_cpu in the sparc-interrupt interface. The Core_External_Interrupt can also be used to catch interrupts, the difference is that Core_Asynchronous_Trap is only triggered if interrupts are enabled.
+<p>
+x86: Called when an asynchronous trap occurs. This is an <i>interrupt vector</i>. Core_Asynchronous_Trap is only triggered if interrupts are enabled.</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic546.html">Previous</a> - <a class="jdocu" href="topic544.html">Up</a> - <a class="jdocu" href="topic548.html">Next</a></span></p>
+</body>
+</html>

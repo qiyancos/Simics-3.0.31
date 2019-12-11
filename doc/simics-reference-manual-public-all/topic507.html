@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>keyboard</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2245, true);
+</script>
+<a name="label17764"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic506.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic508.html">Next</a></span></p>
+<h3 class="jdocu">keyboard</h3 class="jdocu">
+
+
+<a name="label17765"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic113.html#label6512">i8042</a>, <a class="jdocu" href="topic403.html#label14342">sun-keyboard</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   Interface implemented by keyboard controllers. Used by consoles to send
+   keyboard events to the controller.
+<p>
+   The function <b><i>keyboard_event()</i></b> takes the keyboard controller as
+   its first argument <i>obj</i>. The <i>key_up</i> argument specifies
+   whether the event is a key release (1) or a key press (0). The
+   <i>key</i> argument is the Simics internal keycode, as defined in
+   <tt>src/extension/common/keycodes.h</tt>.
+<p>
+   If the return value is 1 the keyboard controller accepted the event. If
+   return value is 0 the keyboard controller did not accept the event, and the
+   console should buffer the event until it gets a <b><i>keyboard_ready()</i></b>
+   call from the keyboard controller.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        int (*keyboard_event)(conf_object_t *obj, int key_up, uint8 key);
+} kbd_interface_t;
+
+#define KEYBOARD_INTERFACE "keyboard"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic506.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic508.html">Next</a></span></p>
+</body>
+</html>

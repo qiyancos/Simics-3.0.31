@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>PCI Express</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(241, true);
+</script>
+<a name="label547"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic108.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic110.html">Next</a></span></p>
+<h4 class="jdocu">20.6&nbsp;&nbsp;&nbsp;PCI Express</h4 class="jdocu">
+
+
+<p>
+At the level of simulation provided by Simics, there is very little difference
+between a PCI bus and a PCI Express switch. The major change is the extension
+of the configuration registers to 4096 bytes per device instead of 256. This is
+taken into account if you define a PCI Express system using the
+<b>pcie-switch</b> class instead of the <b>pci-bus</b>
+class. The PCIe switch will check if the device claims to be PCIe compatible
+(whether it implements the <tt>pci_express</tt> interface or not) before
+allowing it to be connected. Other PCIe features depend on the device used as
+root complex for the system.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic108.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic110.html">Next</a></span></p>
+</body>
+</html>

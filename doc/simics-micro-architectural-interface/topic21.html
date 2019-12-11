@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Getting Started with x86 MAI</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(50, true);
+</script>
+<a name="label274"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+<h2 class="jdocu">7&nbsp;&nbsp;&nbsp;Getting Started with x86 MAI</h2 class="jdocu">
+
+
+<p>
+The <i>Enterprise</i> in <tt>[simics]/targets/x86-440bx/</tt>
+comes pre-configured with a simple MAI model:
+<tt>enterprise-ma-common.simics</tt>. You can start it as you would start
+any Simics script:
+<p>
+<pre class="jdocu_small" style="color: black">
+# <b>./simics -ma targets/x86-440bx/enterprise-ma-common.simics</b>
+Checking out a license... done: academic license.
+                              
+  +----------------+    Copyright 1998-2005 by Virtutech, All Rights Reserved
+  |   Virtutech    |    Version: Simics 3.0.0
+  |     Simics     |    Build: trunk Tue Sep 13 10:03:44 2005 UTC
+  +----------------+
+    www.simics.com      "Virtutech" and "Simics" are trademarks of Virtutech AB
+
+Type 'copyright' for details on copyright.
+Type 'license' for details on warranty, copying, etc.
+Type 'readme' for further information about this version.
+Type 'help help' for info on the on-line documentation.
+
+simics&gt;
+</pre>
+<p>
+If the log level of the sample x86 model is set to 2, it will print out how
+many steps it has executed every 65536 cycles. Since the speed of the model
+depends a lot on the executed instructions, it is a useful indication of how
+far the simulation has run:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>ma_cpu0.log-level 2</b>
+[ma_cpu0] Changing log level: 1 -&gt; 2
+simics&gt; <b>c</b>
+[ma_cpu0 info] cycle: 65535, steps: 128584
+[ma_cpu0 info] cycle: 131071, steps: 325192
+[ma_cpu0 info] cycle: 196607, steps: 521800
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The P4 memory hierarchy example and the scripts to handle the change from
+in-order execution to MAI in Simics 2.x have not been ported yet to the new
+<tt>targets</tt> scripts, which is why they are not presented here.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+</body>
+</html>

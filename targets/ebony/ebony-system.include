@@ -1,0 +1,32 @@
+if not defined freq_mhz      {$freq_mhz      = 100}
+if not defined mac_address   {$mac_address   = "00:04:ac:00:50:00"}
+if not defined mac_address1  {$mac_address1  = "00:04:ac:00:50:01"}
+if not defined rtc_time      {$rtc_time      = "2003-09-03 11:17:00 UTC"}
+if not defined memory_megs   {$memory_megs   = 128}
+
+###
+
+add-directory "%simics%/targets/ebony/images"
+
+import-pci-components
+import-std-components
+import-memory-components
+import-ppc440gp-components
+
+$system = (create-ebony-board cpu_frequency = $freq_mhz
+                              mac_address0 = $mac_address
+                              mac_address1 = $mac_address1
+                              rtc_time = $rtc_time)
+
+$console = (create-std-text-console)
+$system.connect uart0 $console
+
+# Terminal color & font, optionally settable
+if defined terminal_bg_color   {$console->bg_color   = $terminal_bg_color}
+if defined terminal_fg_color   {$console->fg_color   = $terminal_fg_color}
+if defined terminal_win32_font {$console->win32_font = $terminal_win32_font}
+if defined terminal_x11_font   {$console->x11_font   = $terminal_x11_font}
+
+create-and-connect-ddr-memory $system $memory_megs "ab"
+
+$machine_defined = 1

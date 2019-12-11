@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Classes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(60, true);
+</script>
+<a name="label116"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+<h3 class="jdocu">6.2&nbsp;&nbsp;&nbsp;Classes</h3 class="jdocu">
+
+
+<p>
+<a name="label117"></a>
+<p>
+Each Simics class implemented by a module must be registered with
+Simics. Remember that classes registered in a module should be listed in the
+<tt>MODULE_CLASSES</tt> variable in the module's
+<tt>Makefile</tt><a name="label118"></a>. This allows Simics to
+automatically load the required modules when reading a configuration file.
+<p>
+Registering a class is done by creating and filling a <tt>class_data_t</tt>
+structure, and then call the function <b><i><a name="label119">SIM_register_class</a></i></b>
+with the new class name and the <tt>class_data_t</tt> structure that
+describes it. The members in the <tt>class_data_t</tt> structure are:
+<p>
+<dl><dt><b><i>new_instance</i></b></dt><dd><a name="label120"></a>A function
+called when creating an instance of the class. This function will be described
+in objects below.</dd><dt><b><i>finalize_instance</i></b></dt><dd><a name="label121"></a>
+<a name="label122"></a>This function is called once
+<b><i>new_instance</i></b> has returned, and all attributes in a configuration
+have been set.</dd><dt><b><i>description</i></b></dt><dd>A string that should contain a description
+of the class.</dd><dt><b><i>kind</i></b></dt><dd>The class kind tells Simics whether objects
+of this class should be saved when a checkpoint is created. Valid values are:
+<p>
+   <dl><a name="label123"></a><dt><b><tt>Sim_Class_Kind_Vanilla</tt></b></dt><dd>class instances will be
+   saved as part of checkpoints (this is the default if <i>kind</i> is not
+   given any value.)</dd><dt><b><tt>Sim_Class_Kind_Pseudo</tt></b></dt><dd>class instances will never be
+   saved.</dd><dt><b><tt>Sim_Class_Kind_Session</tt></b></dt><dd>is not used for the time
+   being, and thus has the same meaning as
+   <tt>Sim_Class_Kind_Pseudo</tt>.</dd></dl></dd></dl>
+<p>
+<a name="label124"></a><h4 class="jdocu">C/C++</h4 class="jdocu">
+
+
+<a name="label125"></a>
+<p>
+In C/C++, registration of classes is usually done from within the mandatory
+<em>init_local()</em> function. The C definition of <tt>class_data_t</tt>
+and <b><i>SIM_register_class()</i></b> is the following:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef struct class_data {
+        conf_object_t *(*new_instance)(parse_object_t *parse_obj);
+        int            (*delete_instance)(conf_object_t *obj);
+        void           (*finalize_instance)(conf_object_t *obj);
+        const char      *description;
+        class_kind_t     kind;
+} class_data_t;
+
+conf_class_t *
+SIM_register_class(const char *name, class_data_t *class_data);
+</pre>
+<p>
+<b><i>SIM_register_class()</i></b> returns a pointer to a
+<tt>conf_class_t</tt> structure which is used internally by Simics to keep
+track of the class information. This pointer can be used when referring to the
+class in calls to other functions.
+<p>
+A simple <b><i>init_local()</i></b> initialization function could look like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+void
+init_local(void)
+{
+        class_data_t cdata;
+        conf_class_t *my_class;
+
+        memset(&amp;cdata, 0, sizeof(cdata));
+        cdata.new_instance = my_new_instance;
+        cdata.description = "This is my class";
+        cdata.kind = Sim_Class_Kind_Session;
+
+        my_class = SIM_register_class("my-class", &amp;cdata);
+
+        // Other initializations...
+}
+</pre>
+<a name="label126"></a><h4 class="jdocu">Python</h4 class="jdocu">
+
+
+<a name="label127"></a>
+<p>
+In Python, the registration is done when the global statements of the module
+are executed (at load time):
+<p>
+<pre class="jdocu_small" style="color: black">
+def new_instance(parse_obj):
+    ...
+
+def finalize_instance(obj):
+    ...
+
+class_data = class_data_t()
+class_data.new_instance = new_instance
+class_data.finalize_instance = finalize_instance
+class_data.description = """
+    A sample class used for documentation purposes only.""";
+SIM_register_class("sample-doc-class", class_data)
+</pre>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+</body>
+</html>

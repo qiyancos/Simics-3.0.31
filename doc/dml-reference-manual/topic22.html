@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Methods</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(34, true);
+</script>
+<a name="label117"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+<h3 class="jdocu">4.6&nbsp;&nbsp;&nbsp;Methods</h3 class="jdocu">
+
+
+<a name="label118"></a>
+<p>
+Methods are similar to C functions, but also have an implicit
+(invisible) parameter which allows them to refer to the current device
+instance, i.e., the Simics configuration object representing the device.
+Methods also support exception handling in DML, using <tt>try</tt> and
+<tt>throw</tt>. The body of the method is a compound statement in an
+extended subset of C; see also Section <a class="jdocu" href="topic26.html#label173">4.10</a>.
+It is an error to have more than one method declaration using the same
+name within the same scope.
+<p>
+<a name="label119"></a><h4 class="jdocu">4.6.1&nbsp;&nbsp;&nbsp;Input and Output Parameters</h4 class="jdocu">
+
+
+<a name="label120"></a>
+<p>
+In addition to the input parameters, a DML method can have any number of
+output parameters, in contrast to C functions which have at most one
+return value. DML methods do not use the keyword <tt>void</tt> - an
+empty pair of parentheses always means "zero parameters", and can even
+be omitted. Apart from this, the parameter declarations of a method are
+ordinary C-style declarations.
+<p>
+For example,
+<ul>
+<li>
+<pre class="jdocu_small" style="color: black">
+    method m1 {...}
+</pre>
+and
+<pre class="jdocu_small" style="color: black">
+    method m1() {...}
+</pre>
+are equivalent, and define a method that takes no input parameters and
+returns nothing.
+</li>
+<li>
+<pre class="jdocu_small" style="color: black">
+    method m2(int a) -&gt; () {...}
+</pre>
+defines a method that takes a single input parameter, and also returns
+nothing.
+</li>
+<li>
+<pre class="jdocu_small" style="color: black">
+    method m3(int a, int b) -&gt; (int c) {
+      ...;
+      c = ...;
+    }
+</pre>
+defines a method with two input parameters and a single output
+parameter. Output parameters must be explicitly assigned before the
+method returns.
+</li>
+<li>
+<pre class="jdocu_small" style="color: black">
+    method m4() -&gt; (int c, int d) {
+      ...;
+      c = ...;
+      d = ...;
+      return;
+    }
+</pre>
+has no input parameters, but two output parameters. Ending the method
+body with a <tt>return</tt> statement is optional.
+</li>
+<p>
+</ul>
+<p>
+
+<a name="label121"></a><h4 class="jdocu">4.6.2&nbsp;&nbsp;&nbsp;Calling Methods</h4 class="jdocu">
+
+
+<a name="label122"></a>
+<p>
+In DML, a method call is performed with one of the <tt>call</tt> and
+<tt>inline</tt> keywords. (In DML 1.0, method calls can only be
+statements, not expressions; this limitation may be removed in later
+versions of DML.) For instance,
+<pre class="jdocu_small" style="color: black">
+    call $access(...) -&gt; (a, b)
+</pre>
+will call the method 'access' in the same object, assigning the values
+of the output parameters to variables <tt>a</tt> and <tt>b</tt>. (Note
+the '<tt>$</tt>' character which is necessary for referring to the
+method.) The call might be inline expanded depending on the C compiler
+used to compile the generated code, but there is no guarantee.
+<p>
+On the other hand,
+<pre class="jdocu_small" style="color: black">
+    inline $access(...) -&gt; (a, b)
+</pre>
+has the same semantics as the <tt>call</tt>, but will always inline
+expand the called method.
+<p>
+
+<a name="label123"></a><h4 class="jdocu">4.6.3&nbsp;&nbsp;&nbsp;Methods as Macros</h4 class="jdocu">
+
+
+<a name="label124"></a>
+<p>
+Methods can also be used as <a name="label125">macros</a>, by omitting the types on
+one or more of the input parameters. A method defined this way can only
+be called through an <tt><a name="label126">inline</a></tt> statement; see Section
+<a class="jdocu" href="topic27.html#label190">4.11.5</a>.
+<p>
+For example,
+<pre class="jdocu_small" style="color: black">
+    method twice(x) -&gt; (y) { y = x + x; }
+</pre>
+could be used to double any numeric value without forcing the result to
+be of any particular type, as in
+<pre class="jdocu_small" style="color: black">
+    int32_t x;
+    int64_t y;
+    inline twice(x) -&gt; (x);
+    inline twice(y) -&gt; (y);
+</pre>
+This is sometimes referred to as a <em>polymorphic</em> method.
+<p>
+This form of macros is particularly useful when writing
+<em>templates</em> (see Section <a class="jdocu" href="topic25.html#label144">4.9.2</a>).
+Note that the name scoping rules and the semantics of calls are the same
+as for normal methods; in other words, it is a form of "hygienic
+macros".
+<p>
+
+<a name="label127"></a><h4 class="jdocu">4.6.4&nbsp;&nbsp;&nbsp;External Methods</h4 class="jdocu">
+
+
+<a name="label128"></a>
+<p>
+A method can be declared <em>external</em>, which means that a C
+function corresponding to the method is guaranteed to be generated, and
+will have external linkage. This is done by prefixing the name of the
+method with the keyword <tt>extern</tt>; e.g.:
+<pre class="jdocu_small" style="color: black">
+    method extern my_method(int x) { ... }
+</pre>
+An external method must have a proper signature, i.e., the types of all
+its input and output parameters must be specified.
+<p>
+External methods are rarely used, since most of the needs for making DML
+methods accessible from outside the device model itself are covered by
+the <b>implement</b>, <b>event</b>, and
+<b>attribute</b> type objects.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+</body>
+</html>

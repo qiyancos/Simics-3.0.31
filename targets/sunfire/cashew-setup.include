@@ -1,0 +1,43 @@
+if not defined do_boot      {$do_boot    = "yes"}
+if not defined do_login     {$do_login   = "yes"}
+if not defined ip_address   {$ip_address = "10.10.0.19"}
+if not defined host_name    {$host_name  = "cashew"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+
+@if not 'linux_diffs' in dir():
+    linux_diffs = []
+
+@image.files = [["cashew1-aurora2.0.craff", "ro", 0, 8513945600]] + linux_diffs
+
+if $num_cpus > 1 {
+    $system.set-prom-env boot-command "boot disk1 linux-smp"
+} else {
+    $system.set-prom-env boot-command "boot disk1 linux"
+}
+
+if $do_boot == "no" {
+    $system.set-prom-env auto-boot? false
+}
+
+if $do_login == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+        $con.wait-for-string "ogin: "
+        $con.input "root\n"
+        $con.wait-for-string "word: "
+        $con.input "simics\n"
+    }
+}

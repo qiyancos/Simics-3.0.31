@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>context-switcher</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(613, true);
+</script>
+<a name="label4674"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+<h3 class="jdocu">context-switcher</h3 class="jdocu">
+
+
+<a name="label4675"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2570">context-switcher</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>context-switcher</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+<p>
+    This object makes sure that certain context objects are active when
+    certain simulated processes are active.
+
+</dd>
+
+</dl>
+<a name="label4676"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>contexts</i></b></dt><a name="label4677"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[i,o]*]</b>; <b>integer</b> indexed;  indexed type: <b>Object or Nil</b>.
+<p>
+Context to use for each tid. tids that are not mapped to a
+        context here use the default context. Mapping a tid to Nil
+        deletes any mapping from that tid to a context.</dd></dl>
+<dl><dt><b><i>default_context</i></b></dt><a name="label4678"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[o|s,o|n]*]</b>; <b>string</b> indexed;  indexed type: <b>Object or Nil</b>.
+<p>
+List of (<i>cpu</i>, <i>context</i>) pairs, specifying what
+        context to use for a processor when no interesting process is
+        active.</dd></dl>
+<dl><dt><b><i>exec_watch</i></b></dt><a name="label4679"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[s,[o,i|n]|n]*]</b>; <b>string</b> indexed;  indexed type: <b>[o,i|n]|n</b>.
+<p>
+Watch list for the <tt>exec</tt> syscall. This is a map
+        from binary name to context object and a counter. When a
+        process calls <tt>exec</tt> with a binary that is in this
+        watch list, its pid is mapped to the context in the
+        <b>contexts</b> attribute, so that the context will follow
+        that process. The counter is decremented; when it reaches
+        zero, the mapping is deleted from this watch list. (A Nil
+        counter makes the mapping last forever.)
+<p>
+        Mapping a binary name to Nil deletes any mapping from that
+        binary to a context.</dd></dl>
+<dl><dt><b><i>tracker</i></b></dt><a name="label4680"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Tracker that keeps track of simulated processes.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label4681"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4683">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4685">track-bin</a></b></td><td class="jdocu_noborder">track first use of a given binary</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label4687">track-pid</a></b></td><td class="jdocu_noborder">track the process with a given pid</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label4682"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label4683"></a><a name="label4684"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context-switcher&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context-switcher&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+
+<a name="label4685"></a><a name="label4686"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context-switcher&gt;.track-bin</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context-switcher&gt;.track-bin</b> <i>"binary"</i> [<i>"context"</i>] [-persistent] [-remove] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+After this command is given, the first process that
+                makes an <tt>exec</tt> syscall with the given binary
+                as argument will be associated to the given context
+                just as if the <b>track-pid</b> command had been used.
+                If no context is specified, a new one will be created.
+<p>
+                If the <tt>-persistent</tt> flag is given, all
+                processes &#8211; not just the first &#8211; that
+                <tt>exec</tt> the binary will be associated with the
+                context.
+<p>
+                If the <tt>-remove</tt> flag is given, any existing
+                mapping from this binary will be removed.
+<p>
+                This command requires the attached tracker to be a
+                UNIX process tracker.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4687">&lt;context-switcher&gt;.track-pid</a></dd>
+
+</dl>
+
+
+
+<a name="label4687"></a><a name="label4688"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;context-switcher&gt;.track-pid</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;context-switcher&gt;.track-pid</b> <i>pid</i> [<i>"context"</i>] [-remove] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Causes the given context to be active when a process
+                with the given pid is active; if no context is
+                specified, a new one will be created for this purpose.
+<p>
+                If the <tt>-remove</tt> flag is given, any existing
+                mapping from this pid will be removed.
+<p>
+                This command requires the attached tracker to be a
+                UNIX process tracker.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label4685">&lt;context-switcher&gt;.track-bin</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+</body>
+</html>

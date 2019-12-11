@@ -1,0 +1,20 @@
+# Enterprise start script that uses the DS12887-dml module instead of the
+# default DS12887 module.
+
+@try:
+    SIM_load_module("DS12887-dml")
+except Exception, msg:
+    print msg
+    print
+    print "This machine configuration requires the DML Toolkit package to run."
+    print "Make sure that you have installed the DML Toolkit package and that"
+    print "you have compiled the DS12887-dml module."
+    print
+    SIM_quit(1)
+
+# Use the DS12887-dml class instead of the DS12887 class.
+# Not a supported feature.
+@import base_components
+@base_components.use_DS12887_dml = True
+
+run-command-file "%script%/enterprise-common.simics"

@@ -1,0 +1,11 @@
+import-std-components
+$eth_link = (create-std-ethernet-link link)
+
+set-component-prefix c1_
+run-command-file "%script%/cosmo-common.simics"
+
+$mac_address = "10:10:10:10:10:31"
+$ip_address   = "10.10.0.16"
+$host_name    = "cosmo2"
+set-component-prefix c2_
+run-command-file "%script%/cosmo-common.simics"

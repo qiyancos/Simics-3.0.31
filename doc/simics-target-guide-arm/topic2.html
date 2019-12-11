@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label22"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting ARM-SA1110 machines are located in the
+<tt>[workspace]/targets/arm-sa1110/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/arm-sa1110/</tt>.
+<p>
+
+<a name="label23"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;sa1110-linux</h3 class="jdocu">
+
+
+<p>
+The sa1110-linux is a simple Intel StrongARM system, with a single ARMv5
+processor running at 30 MHz, and 32 MB of memory. It has a single serial port
+with a text console connected to it.
+<p>
+The sa1110-linux machine runs a Linux 2.4.12 kernel with a RAM disk, that both
+are loaded directly into the main memory, since there is no storage device
+modelled. There is no SimicsFS support in the supplied Linux kernel. As no
+bootloader is run, a faked bootloader information structure is also set up.
+<p>
+The following files are also required by sa1110-linux, but are not included in
+the Simics distribution. They must be downloaded separately from
+<nobr></nobr><a class="jdocu" href="http://www.simics.net/download" target="_top">http://www.simics.net/download</a> and placed in the
+<tt>[simics]/import/arm</tt> directory.
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>File</b></td><td class="jdocu_noborder"><b>Description</b></td></tr>
+<tr><td class="jdocu_noborder"><tt>vmlinux</tt></td><td class="jdocu_noborder">Linux kernel</td></tr>
+<tr><td class="jdocu_noborder"><tt>initrd</tt></td><td class="jdocu_noborder">RAM disk</td></tr>
+</table>
+<p>
+<a name="label24"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;sa1110-linux Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>sa1110-linux-common.simics</tt></b></dt><dd>Starts the sa1110-linux machine with the default configuration.</dd></dl>
+<p>
+
+<p>
+
+<a name="label25"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>sa1110-linux-common.simics</tt> script. Other <tt>.simics</tt>
+scripts may set some of the parameters unconditionally, and do not allow the
+user to override them.
+<p>
+<a name="label26"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;sa1110-linux-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$freq_mhz<a name="label27"></a></b></dt><dd>The clock frequency in MHz for the processor.</dd><dt><b>$initrd<a name="label28"></a></b></dt><dd>The file containing the initrd ram disk for Linux.  If set, this file is
+loaded directly into memory at address 0xc0400000.</dd><dt><b>$vmlinux<a name="label29"></a></b></dt><dd>The file containing the Linux kernel. If set, this file is loaded directly
+into memory, and the program counter is set to point to the entry point of the
+file.</dd></dl>
+<p>
+
+<p>
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

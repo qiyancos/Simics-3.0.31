@@ -1,0 +1,34 @@
+// interrupt.dml
+//
+// This module contains types needed when using or implementing the
+// ppc interface.
+dml 1.0;
+
+header %{
+#include <simics/arch/ppc.h> 
+%}
+
+constant Sim_PPC_Generic_MC = 0;
+constant Sim_PPC_MC_TEA = 1;
+constant Sim_PPC_MC_MCP = 2;
+constant Sim_PPC_Bus_Address_Parity = 3;
+constant Sim_PPC_Bus_Data_Parity = 4;
+constant Sim_PPC_Instruction_Cache_Parity = 5;
+constant Sim_PPC_Data_Cache_Parity = 6;
+constant Sim_PPC_L2_Data_Parity = 7;
+constant Sim_PPC_L3_Data_Parity = 8;
+constant Sim_PPC_L3_Address_Parity = 9;
+constant Sim_PPC970_Data_Cache_Parity = 10;
+constant Sim_PPC970_Data_Cache_Tag_Parity = 11;
+constant Sim_PPC970_D_ERAT_Parity = 12;
+constant Sim_PPC970_TLB_Parity = 13;
+constant Sim_PPC970_SLB_Parity = 14;
+constant Sim_PPC970_L2_Load_ECC_Parity = 15;
+constant Sim_PPC970_L2_Page_Table_ECC_Parity = 16;
+constant Sim_PPC970_Uncacheable_Load_Parity = 17;
+constant Sim_PPC970_MC_External = 18;
+
+typedef struct {
+    void clear_atomic_reservation_bit(conf_object_t *cpu);
+    void raise_machine_check_exception(conf_object_t *cpu, int exc);
+} ppc_interface_t;

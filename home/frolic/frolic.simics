@@ -1,0 +1,19 @@
+run-python-file ../scripts/extrapath.py
+
+read-configuration frolic.conf
+
+run-python-file "frolic.py"
+
+@init_sparc_mini_os()
+
+@environment = [ "HOME=" + os.getcwd(), "PATH=" + os.getcwd() ]
+
+# uncomment these lines to run 'sh' instead (from Solaris /sbin/sh)
+# @run_program(environment, ["sh"], "sh")
+# c
+
+@if not os.access("TESTFILE", os.F_OK):
+	print "There must be a dummy file called 'TESTFILE'"
+	SIM_quit(0)
+
+@run_program(environment, ["gzip", "TESTFILE"], "gzip")

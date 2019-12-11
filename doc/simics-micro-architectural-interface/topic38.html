@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_handle_exception()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(67, true);
+</script>
+<a name="label347"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic37.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic39.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_handle_exception()</h4 class="jdocu">
+
+<a name="label348"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label349"></a><b>SIM_instruction_handle_exception</b> &#8212; handle exception</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_handle_exception(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+When SIM_instruction_proceed or one of its shortcuts returns
+   <tt>Sim_IE_Exception</tt> an exception has occurred. The exception
+   should be handled by an explicit call to
+   <b><i>SIM_instruction_handle_exception</i></b> with the faulting instruction's
+   id as input.
+<p>
+   The CPU needs to be synchronized to handle an exception. This is achieved by
+   draining the instruction tree so that all instructions before the faulting
+   one are committed and all later instructions are discarded. Exceptions can
+   also be handled if the instruction is not inserted in the tree and the tree
+   is empty. This can happens if an instruction gets an exception in the fetch
+   or decode phase and the instruction is not inserted in the tree.
+<p>
+   Speculative instructions that cause exceptions cannot be handled. If this is
+   what the user wants <b><i>SIM_instruction_force_correct</i></b> can be used to
+   remove the speculative status before the exception is handled. This is
+   strongly discouraged since it may lead to incorrect execution.
+<p>
+   The effect of calling <b><i>SIM_instruction_handle_exception</i></b>
+   is to set the program counter to the first instruction in the
+   corresponding exception handler and to update other architectural
+   state that are affected when an exception occurs.
+<p>
+   The exception is automatically "committed" so there is no need to
+   call <b><i>SIM_instruction_proceed</i></b> or
+   <b><i>SIM_instruction_commit</i></b>.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is
+   illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+<tt>Sim_IE_OK</tt> on success,<br>
+                           <tt>Sim_IE_Code_Breakpoint</tt> if the
+                           instruction had a code breakpoint,<br>
+                           <tt>Sim_IE_Step_Breakpoint</tt> if a step
+                           breakpoint was encountered,<br>
+                           <tt>Sim_IE_Hap_Breakpoint</tt> if the
+                           exception caused an hap breakpoint,<br>
+                           <tt>Sim_IE_No_Exception</tt> if trying to
+                           handle an the exception on a non-faulting
+                           instruction,<br> <tt>Sim_IE_Speculative</tt>
+                           if trying to handle an exception from a speculative
+                           instruction,<br>
+                           <tt>Sim_IE_Illegal_Exception_Point</tt> if the
+                           tree contains other instructions.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic37.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic39.html">Next</a></span></p>
+</body>
+</html>

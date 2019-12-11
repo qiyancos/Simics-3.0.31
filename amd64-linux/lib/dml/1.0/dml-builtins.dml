@@ -1,0 +1,1001 @@
+
+dml 1.0;
+
+bitorder le;
+
+loggroup Register_Read;
+loggroup Register_Write;
+
+import "simics-api.dml";
+
+constant false = (1 == 0);
+constant true = (0 == 0);
+
+extern void *NULL;
+
+// This is the template for all things that are referred to as "objects"
+// in the documentation, and in the function mkobj() in structure.py.
+template object {
+    parameter parent                    auto;
+    parameter name                      auto;
+    parameter desc			default undefined;
+    parameter documentation             default undefined;
+    parameter objtype                   default undefined;
+
+    parameter index                     default undefined;
+    parameter indexvar                  default undefined;
+
+    parameter qname                     default
+        (defined $parent.qname ? $parent.qname + "." : "")
+        +
+        (defined $name ? $name : "")
+        +
+        (defined $index ? "[" + # $index + "]" : "");
+
+    parameter dev                       default $parent.dev;
+    parameter bank                      default $parent.bank;
+}
+
+template group {
+    is object;
+    parameter objtype = "group";
+    parameter log_group default $parent.log_group;
+}
+
+template device {
+    is object;
+
+    // structural info
+    parameter objtype = "device";
+    parameter banks                     auto;
+    parameter dev                       = $this;
+    parameter bank                      = undefined;
+
+    // automatic parameters
+    parameter obj                       auto;
+    parameter logobj                    auto;
+    parameter qname                     = undefined;
+    parameter classname                 default $name;
+
+    // register defaults
+    parameter register_size             default undefined;
+    parameter byte_order                default "little-endian";
+
+    parameter log_group                 default undefined;
+
+    method init() default { 
+	// TODO: this should be generalized; it will not be documented yet
+        foreach bank in ($banks)
+            call bank.init;
+    }
+    method post_init() default { }
+    method hard_reset() default {
+        foreach bank in ($banks)
+            call bank.hard_reset;
+    }
+    method soft_reset() default {
+        foreach bank in ($banks)
+            call bank.soft_reset;
+    }
+}
+
+template conf_attribute {
+    parameter configuration             default "optional";
+    parameter persistent                default false;
+
+    // required parameter
+    parameter attr_type;
+
+    method after_set default {
+    }
+}
+
+template attribute {
+    is object;
+    is conf_attribute;
+    parameter objtype = "attribute";
+
+    parameter attr_type                 = $type;
+    parameter allocate_type             default undefined;
+    parameter type                      default
+	(!defined $allocate_type ? undefined
+	 : $allocate_type == "string" ? "s"
+	 : $allocate_type == "uint8" ? "i"
+	 : $allocate_type == "uint16" ? "i"
+	 : $allocate_type == "uint32" ? "i"
+	 : $allocate_type == "uint64" ? "i"
+	 : $allocate_type == "int8" ? "i"
+	 : $allocate_type == "int16" ? "i"
+	 : $allocate_type == "int32" ? "i"
+	 : $allocate_type == "int64" ? "i"
+	 : $allocate_type == "bool" ? "i"
+	 : $allocate_type == "double" ? "f"
+	 : undefined);
+
+    method get -> (attr_value_t value) default {
+        if (!defined $allocate_type)
+            value = SIM_make_attr_invalid();
+        else if ($allocate_type == "bool")
+            value = SIM_make_attr_integer($this ? 1 : 0);
+        else if ($type == "i")
+            value = SIM_make_attr_integer($this);
+        else if ($type == "s")
+            value = SIM_make_attr_string($this);
+        else if ($type == "f")
+            value = SIM_make_attr_floating($this);
+        else
+            value = SIM_make_attr_invalid();
+    }
+    method set(attr_value_t value) default {
+        if (!defined $allocate_type)
+            throw;
+        else if ($allocate_type == "bool")
+            $this = value.u.boolean != 0;
+        else if ($type == "i")
+            $this = value.u.integer; // no check for range
+        else if ($type == "s") {
+            MM_FREE($this);
+            $this = MM_STRDUP(value.u.string);
+        } else if ($type == "f")
+            $this = value.u.floating;
+        else
+            throw;
+    }
+    method set_attribute(attr_value_t value) -> (set_error_t err) {
+        err = Sim_Set_Ok;
+        try {
+            inline $set(value);
+            inline $after_set;
+        } catch
+            err = Sim_Set_Illegal_Value;
+    }
+    method get_attribute -> (attr_value_t value) {
+        try
+            inline $get -> (value);
+        catch
+            value = SIM_make_attr_invalid();
+    }
+}
+
+template bank {
+    is object;
+
+    // structural info
+    parameter objtype = "bank";
+    parameter mapped_registers          auto;
+    parameter unmapped_registers        auto;
+    parameter bank                      = $this;
+
+    // optional parameters
+    parameter function                  default undefined;
+    parameter overlapping               default false;
+    parameter partial                   default false;
+
+    // register defaults
+    parameter signed                    default false;
+    parameter allocate                  default true;
+    parameter register_size             default $dev.register_size;
+    parameter byte_order                default $dev.byte_order;
+
+    parameter miss_bank                 default undefined;
+    parameter miss_bank_offset          default 0;
+
+    parameter log_group                 default $parent.log_group;
+
+    method init() default { }
+
+    method hard_reset default {
+        foreach reg in ($mapped_registers)
+            inline reg.hard_reset_register;
+        foreach reg in ($unmapped_registers)
+            inline reg.hard_reset_register;
+    }
+
+    method soft_reset default {
+        foreach reg in ($mapped_registers)
+            inline reg.soft_reset_register;
+        foreach reg in ($unmapped_registers)
+            inline reg.soft_reset_register;
+    }
+
+    method access(generic_transaction_t *memop, uint32 offset, uint32 size) default {
+        if (size > 8) {
+            log "error": "Oversized access to %s", defined $name ? $name : "device";
+            throw;
+        }
+        if (SIM_mem_op_is_read(memop)) {
+            inline $read_access_memop(memop, offset, size);
+        } else {
+            local uint64 writeval;
+            inline $get_write_value(memop) -> (writeval);
+            inline $write_access_memop(memop, offset, size, writeval);
+        }
+    }
+
+    method get_write_value(generic_transaction_t *memop) -> (uint64 writeval) default {
+	if ($byte_order == "little-endian")
+	    writeval = SIM_get_mem_op_value_le(memop);
+	else if ($byte_order == "big-endian")
+	    writeval = SIM_get_mem_op_value_be(memop);
+        else if (!defined $byte_order)
+            error "undefined byte order";
+	else
+            error "bad value for parameter 'byte_order'";
+    }
+
+    method set_read_value(generic_transaction_t *memop, uint64 value) default {
+	if ($byte_order == "little-endian")
+	    SIM_set_mem_op_value_le(memop, value);
+	else if ($byte_order == "big-endian")
+	    SIM_set_mem_op_value_be(memop, value);
+        else if (!defined $byte_order)
+            error "undefined byte order";
+	else
+            error "bad value for parameter 'byte_order'";
+    }
+
+    method read_access_memop(generic_transaction_t *memop, uint32 offset, uint32 size) default {
+	local bool success = false;
+	local uint64 val = 0;
+        call $read_access(memop, offset, size) -> (success, val);
+	if (!success) {
+	    inline $miss_read_access(offset, size) -> (success, val);
+	}
+	if (!success) {
+	    inline $miss_access(memop, offset, size);
+	} else {
+	    inline $finalize_read_access(memop, val);
+	}
+    }
+
+    method finalize_read_access(generic_transaction_t *memop, uint64 val) default {
+	inline $set_read_value(memop, val);
+    }
+
+    method read_access(generic_transaction_t *memop, uint32 offset, uint32 size) -> (bool success, uint64 readvalue) default {
+        inline $access2(memop, offset, size, true, undefined) -> (success, readvalue);
+    }
+
+    method read(generic_transaction_t *memop, uint32 offset, uint32 size) -> (uint64 readvalue) default {
+	local bool success = false; // will be ignored
+        call $read_access(memop, offset, size) -> (success, readvalue);
+    }
+
+    method miss_read_access(uint32 offset, uint32 size) -> (bool success, uint64 value) default {
+	success = false;
+    }
+
+    method write_access_memop(generic_transaction_t *memop, uint32 offset, uint32 size, uint64 value) default {
+	local bool success = false;
+	call $write_access(memop, offset, size, value) -> (success);
+	if (!success) {
+	    inline $miss_write_access(offset, size, value) -> (success);
+	}
+	if (!success) {
+	    inline $miss_access(memop, offset, size);
+	} else {
+	    inline $finalize_write_access(memop, value);
+	}
+    }
+
+    method finalize_write_access(generic_transaction_t *memop, uint64 val) default {
+	// do nothing
+    }
+
+    method write_access(generic_transaction_t *memop, uint32 offset, uint32 size, uint64 writevalue) -> (bool success) default {
+        inline $access2(memop, offset, size, false, writevalue) -> (success, undefined);
+    }
+
+    method write(generic_transaction_t *memop, uint32 offset, uint32 size, uint64 writevalue) default {
+	local bool success = false; // will be ignored
+        call $write_access(memop, offset, size, writevalue) -> (success);
+    }
+
+    method miss_write_access(uint32 offset, uint32 size, uint64 value) -> (bool success) default {
+	success = false;
+    }
+
+    // This is called with a constant 'isread'
+    method access2(memop, offset, size, isread, writevalue) -> (success, readvalue) {
+        // This method is intercepted by the DML compiler, and should
+        // never be invoked from outside this file.
+        error;
+    }
+
+    // miss_access must take over responsibility for updating the memop!
+    method miss_access(memop, offset, size) default {
+        if (defined $name)
+            log "info", 4: "Missed in bank %s", $name;
+        else
+            log "info", 4: "Missed in anonymous bank";
+        if (defined $miss_bank) {
+            call $miss_bank.access(memop, offset + $miss_bank_offset, size);
+        } else {
+            inline $log_miss(memop, offset, size);
+            throw;
+        }
+    }
+
+    method log_miss(memop, offset, size) {
+        if (SIM_mem_op_is_read(memop))
+            log "spec_violation", 1, Register_Read:
+                "%d byte %sread access at offset %#x%s outside registers or misaligned access",
+                size, memop->inquiry ? "inquiry " : "",
+                offset, defined $name ? " in "+$name : "";
+        else
+            log "spec_violation", 1, Register_Write:
+                "%d byte %swrite access at offset %#x%s outside registers or misaligned access",
+                size, memop->inquiry ? "inquiry " : "",
+                offset, defined $name ? " in "+$name : "";
+    }
+
+    method get(offset, size) -> (uint64 value) default {
+        local int32 diff;
+        value = 0;
+        if (size > 8) {
+            log "error": "Oversized get to %s", defined $name ? $name : "device";
+            throw;
+        }
+        foreach reg in ($mapped_registers) {
+            if ((offset + size > reg.offset) &&
+                (offset < reg.offset + reg.size))
+            {
+                local uint64 val;
+                inline reg.get -> (val);
+
+                // Truncate end if the last bits are not included
+                diff = (offset + size) - (reg.offset + reg.size);
+                if (diff < 0)
+                    val = val[reg.bitsize + diff * 8 - 1 : 0];
+
+                // Shift value if the offsets don't match
+                if (reg.offset > 0 && offset < reg.offset) {
+                    val = val << ((reg.offset - offset) * 8);
+                } else if (offset > reg.offset) {
+                    val = val >> ((offset - reg.offset) * 8);
+                }
+                value = value | val;
+            }
+        }
+    }
+
+    method set(offset, size, value) default {
+        local int32 diff;
+        if (size > 8) {
+            log "error": "Oversized set to %s", defined $name ? $name : "device";
+            throw;
+        }
+        foreach reg in ($mapped_registers) {
+            if ((offset + size > reg.offset) &&
+                (offset < reg.offset + reg.size))
+            {
+                // Assume that we can do a reg.set(reg.get()) without side effects
+                local typeof(reg) oldval;
+                local typeof(value) val = value;
+                local uint8 vallsb;
+                local uint8 valmsb;
+                local uint8 reglsb;
+                local uint8 regmsb;
+
+                inline reg.get -> (oldval);
+
+                // Adjust msb
+                diff = (offset + size) - (reg.offset + reg.size);
+
+                if (diff > 0)
+                    valmsb = (size - diff) * 8;
+                else
+                    valmsb = size * 8;
+
+                if (diff < 0)
+                    regmsb = (reg.size + diff) * 8;
+                else
+                    regmsb = reg.size * 8;
+
+                // Adjust lsb
+                diff = offset - reg.offset;
+
+                if (diff < 0)
+                    vallsb = (-diff) * 8;
+                else
+                    vallsb = 0;
+
+                if (diff > 0)
+                    reglsb = diff * 8;
+                else
+                    reglsb = 0;
+
+                oldval[regmsb:reglsb] = value[valmsb:vallsb];
+                inline reg.set(oldval);
+            }
+        }
+    }
+}
+
+template registerwithfields {
+    //method hard_reset() {}
+    //method soft_reset() {}
+    //method read() -> (value) {}
+    //method write(value) {}
+}
+
+template register {
+    is object;
+    is conf_attribute;
+
+    // set this in template for a field to check it's not used for registers
+    parameter notinregister = 0;
+
+    // structural info
+    parameter objtype = "register";
+    parameter fields                    auto;
+    parameter attr_type                 = "i";
+
+    // required parameters
+    parameter size                      default $bank.register_size;
+    parameter bitsize                   = $size * 8;
+
+    // optional parameters
+    parameter offset                    default undefined;
+
+    // Inherited parameters
+    parameter signed                    default $bank.signed;
+    parameter allocate                  default $bank.allocate;
+
+    // Resetting
+    parameter hard_reset_value          default 0;
+    parameter soft_reset_value          default $hard_reset_value;
+
+    // logging parameters
+    parameter logging                   default true;
+    parameter read_logging              default $logging;
+    parameter write_logging             default $logging;
+    parameter log_group                 default $parent.log_group;
+
+    method hard_reset_register default {
+	if ($fields[0].explicit) {
+	    foreach field in ($fields)
+		inline field.hard_reset;
+	} else {
+	    // No explicit fields
+	    inline $hard_reset;
+	}
+        inline $after_hard_reset;
+    }
+
+    method hard_reset() default {
+        if ($allocate)
+            $this = $hard_reset_value;
+    }
+
+    method after_hard_reset() default {
+    }
+
+    method soft_reset_register default {
+	if ($fields[0].explicit) {
+	    foreach field in ($fields)
+		inline field.soft_reset;
+	} else {
+	    // No explicit fields
+	    inline $soft_reset;
+	}
+        inline $after_soft_reset;
+    }
+
+    method soft_reset() default {
+        if ($allocate)
+            $this = $soft_reset_value;
+    }
+
+    method after_soft_reset() default {
+    }
+
+    method read() -> (value) default {
+        if ($allocate) {
+            value = $this;
+        } else {
+            log "unimplemented", 1, Register_Read: "Can't read from %s", $qname;
+            throw;
+        }
+    }
+
+    method write(value) default {
+        if ($allocate) {
+            $this = value;
+        } else {
+            log "unimplemented", 1, Register_Write: "Can't write to %s", $qname;
+            throw;
+        }
+    }
+
+    method set_attribute(attr_value_t value) -> (set_error_t err) {
+        try {
+            inline $set(value.u.integer);
+            inline $after_set;
+            err = Sim_Set_Ok;
+        } catch {
+            err = Sim_Set_Illegal_Value;
+        }
+    }
+
+    method get_attribute -> (attr_value_t value) {
+        value = SIM_make_attr_integer(0);
+        inline $get -> (value.u.integer);
+    }
+
+    method set(value) default {
+	if ($fields[0].explicit) {
+	    foreach field in ($fields) {
+		if ($bitsize == field.bitsize)
+		    // Only one field
+		    inline field.set(value);
+		else
+		    inline field.set(value[field.msb:field.lsb]);
+	    }
+	} else {
+	    // No explicit fields
+	    if ($allocate) {
+		$this = value;
+	    } else {
+		log "error": "set() not implemented for register %s", $qname;
+		throw;
+	    }
+	}
+    }
+
+    method get() -> (value) default {
+	if ($fields[0].explicit) {
+	    local typeof($this) fieldval = 0;
+	    foreach field in ($fields) {
+		if ($bitsize == field.bitsize)
+		    // Only one field
+		    inline field.get() -> (fieldval);
+		else {
+		    inline field.get() -> (fieldval[field.msb:field.lsb]);
+		}
+	    }
+	    value = fieldval;
+	} else {
+	    // No explicit fields
+	    if ($allocate) {
+		value = $this;
+	    } else {
+		log "error": "get() not implemented for register %s", $qname;
+		throw;
+	    }
+        }
+    }
+
+    method read_access(generic_transaction_t *memop,
+                       msb1, lsb) -> (uint64 value) default {
+	inline $read_access_main(memop, msb1, lsb) -> (value);
+	inline $after_read(memop);
+    }
+
+    method read_access_main(memop, msb1, lsb) -> (value) default {
+	if (defined msb1) {
+	    // Possibly partial register access
+	    local typeof($this) fieldval = 0;
+	    if ($fields[0].explicit) {
+		foreach field in ($fields) {
+		    if ($bitsize == field.bitsize) {
+			// Only one field
+			inline field.read_access() -> (fieldval);
+		    } else if ($bitsize == 8 || lsb <= field.msb && msb1 > field.lsb) {
+			inline field.read_access() -> (fieldval[field.msb:field.lsb]);
+		    }
+		}
+	    } else {
+		// No explicit fields
+		inline $read() -> (fieldval);
+	    }
+	    value = fieldval[msb1 - 1 : lsb];
+	} else {
+	    // Whole-register access
+	    if ($fields[0].explicit) {
+		foreach field in ($fields) {
+		    if ($bitsize == field.bitsize)
+			// Only one field
+			inline field.read_access() -> (value);
+		    else
+			inline field.read_access() -> (value[field.msb:field.lsb]);
+		}
+	    } else {
+		// No explicit fields
+		inline $read() -> (value);
+	    }
+	}
+	if ($read_logging)
+	    log "info", 4, Register_Read|(defined $log_group ? $log_group : 0):
+                "%s from register %s => %#x",
+		memop->inquiry ? "Inquiry read" : "Read",
+		$qname, value;
+    }
+
+    method write_access(generic_transaction_t *memop,
+                        msb1, lsb, uint64 value) default {
+	inline $write_access_main(memop, msb1, lsb, value);
+	inline $after_write(memop);
+    }
+
+    method write_access_main(memop, msb1, lsb, value) default {
+	if ($write_logging)
+	    log "info", 4, Register_Write|(defined $log_group ? $log_group : 0):
+                "%s to register %s <= %#x",
+		memop->inquiry ? "Inquiry write" : "Write",
+		$qname, value;
+	if (defined msb1) {
+	    // Possibly partial register access
+	    if ($fields[0].explicit) {
+		foreach field in ($fields) {
+		    if (lsb <= field.msb && (field.lsb == 0 || msb1 > field.lsb)) {
+			if (lsb > field.lsb || msb1 - lsb < field.bitsize) {
+			    // Partial access
+			    local typeof($this) fieldval = 0;
+			    if ($bitsize == field.bitsize) {
+				// Only one field
+				inline field.get -> (fieldval);
+				fieldval[msb1 - 1:lsb] = value;
+				inline field.write_access(fieldval);
+			    } else {
+				inline field.get -> (fieldval[field.msb:field.lsb]);
+				fieldval[msb1 - 1:lsb] = value;
+				inline field.write_access(fieldval[field.msb:field.lsb]);
+			    }
+			} else {
+			    // Whole-field access
+			    if ($bitsize == field.bitsize)
+				// Only one field
+				inline field.write_access(value);
+			    else
+				inline field.write_access((value << lsb)[field.msb:field.lsb]);
+			}
+		    }
+		}
+	    } else {
+		// No explicit fields
+		if (lsb > 0 || msb1 - lsb < $bitsize) {
+		    // Partial access
+		    local typeof($this) fieldval = 0;
+		    inline $get -> (fieldval);
+		    fieldval[msb1 - 1:lsb] = value;
+		    inline $write(fieldval);
+		} else {
+		    // Whole-field access
+		    inline $write(value);
+		}
+	    }
+	} else {
+	    // Whole-register access
+	    if ($fields[0].explicit) {
+		foreach field in ($fields) {
+		    if ($bitsize == field.bitsize)
+			// Only one field
+			inline field.write_access(value);
+		    else
+			inline field.write_access(value[field.msb:field.lsb]);
+		}
+	    } else {
+		// No explicit fields
+		inline $write(value);
+	    }
+	}
+    }
+
+    method after_read(memop) default {
+        // no default action
+    }
+
+    method after_write(memop) default {
+        // no default action
+    }
+}
+
+template field {
+    is object;
+
+    // set this in template for a register to check it's not used for fields
+    parameter notinfield = 0;
+
+    // structural info
+    parameter objtype = "field";
+    parameter reg                       = $parent;
+    parameter qname                     = ($explicit
+                                           ? $parent.qname + "." + $name
+                                           : $parent.qname);
+
+    // whether this field was explicitly declared
+    parameter explicit                  auto;
+
+    // required parameters
+    parameter lsb;
+    parameter msb;
+    parameter bitsize = $msb - $lsb + 1;
+    parameter hard_reset_value          default undefined;
+    parameter soft_reset_value          default $hard_reset_value;
+
+    // Inherited parameters
+    parameter signed                    default $reg.signed;
+    parameter allocate                  default $reg.allocate;
+
+    method hard_reset() default {
+	if ($allocate)
+	    if (defined $hard_reset_value)
+		$this = $hard_reset_value;
+	    else
+		$this = ($reg.hard_reset_value)[$msb:$lsb];
+    }
+
+    method soft_reset() default {
+	if ($allocate)
+	    if (defined $soft_reset_value)
+		$this = $soft_reset_value;
+	    else
+		$this = ($reg.soft_reset_value)[$msb:$lsb];
+    }
+
+    method read() -> (value) default {
+	if ($allocate) {
+	    value = $this;
+	} else {
+	    log "error", 1, Register_Read: "Can't read from %s", $qname;
+	    throw;
+	}
+    }
+
+    method write(value) default {
+        if ($allocate) {
+            $this = value;
+        } else {
+	    log "error", 1, Register_Write: "Can't write to %s", $qname;
+            throw;
+        }
+    }
+
+    method set(value) default {
+        if ($allocate)
+            $this = value;
+        else {
+            log "error": "set() not implemented for register %s", $qname;
+        }
+    }
+
+    method get() -> (value) default {
+        if ($allocate)
+            value = $this;
+        else {
+            log "error": "get() not implemented for register %s", $qname;
+            value = 0;
+        }
+    }
+
+    method read_access() -> (value) default {
+        inline $read -> (value);
+    }
+
+    method write_access(value) default {
+        inline $write(value);
+    }
+}
+
+template connect {
+    is object;
+    is conf_attribute;
+
+    parameter objtype = "connect";
+    parameter attr_type = $configuration == "required" ? "o" : "o|n";
+
+    parameter interfaces                auto;
+
+    method set_attribute(attr_value_t value) -> (set_error_t err) default {
+        local conf_object_t *obj = value.kind == Sim_Val_Object ? value.u.object : NULL;
+
+        if (obj) {
+            foreach iface in ($interfaces) {
+                try
+                    inline iface.verify(obj);
+                catch {
+                    err = Sim_Set_Interface_Not_Found;
+                    return;
+                }
+            }
+        }
+
+        // Commit the change
+        $this = obj;
+        foreach iface in ($interfaces)
+            inline iface.connect(obj);
+
+        inline $after_set;
+        err = Sim_Set_Ok;
+    }
+
+    method get_attribute -> (attr_value_t value) {
+        value = SIM_make_attr_object($this);
+    }
+}
+
+template interface {
+    is object;
+    parameter objtype = "interface";
+
+    parameter required                  default true;
+    parameter c_type                    default $name + "_interface_t";
+
+    // this is undocumented, and should usually not be used
+    parameter c_name                    default $name;
+
+    // Check that the interface exists, if required
+    method verify(conf_object_t *obj) {
+        obj = obj; // workaround for bug 5632
+        if ($required && SIM_get_interface(obj, $name) == NULL) {
+            SIM_clear_exception();
+            log "error": "The %s object does not implement the required %s interface",
+                obj->name, $name;
+            throw;
+        }
+    }
+
+    // Get the interface from another object
+    method connect(conf_object_t *obj) {
+        if (obj) {
+            $this = SIM_get_interface(obj, $name);
+            SIM_clear_exception();
+        } else
+            $this = NULL;
+    }
+}
+
+template event {
+    is object;
+    parameter objtype = "event";
+
+    parameter timebase                  default "seconds";
+
+    // this is undocumented, and should be considered experimental
+    parameter repeat                    default undefined;
+
+    // queue_frequency should really be initialized to 0 to mark that we have
+    // not gotten the frequency from the queue yet, but that is currently not
+    // possible in DML. Instead we rely on the device struct to be allocated
+    // with MM_ZALLOC.
+    data uint64 queue_frequency;
+
+    method get_queue_frequency() {
+        if ($queue_frequency == 0)
+            if ($dev.obj->queue == NULL) {
+                log "error": "Can not get the queue frequency, because the queue attribute is not set.";
+                $queue_frequency = 1;
+            }
+            else {
+                local clock_interface_t *clock_interface = SIM_get_interface($dev.obj->queue, "clock");
+                if (clock_interface == NULL) {
+                    log "error": "Can not get the queue frequency, because the queue object does not implement the clock interface.";
+                    $queue_frequency = 1;
+                }
+                else
+                    $queue_frequency = clock_interface->get_frequency($dev.obj->queue);
+            }
+    }
+
+    method describe_event(void *data) -> (char *description) default {
+        if (defined $desc)
+            description = $desc;
+        else
+            description = $qname;
+    }
+
+    method get_event_info(void *data) -> (attr_value_t info) default {
+        info = SIM_make_attr_nil();
+    }
+
+    method set_event_info(attr_value_t info) -> (void *data) default {
+        if (info.kind != Sim_Val_Nil) {
+            log "error": "Strange event info";
+        }
+    }
+
+    method post(when, void *data) {
+        if ($timebase == "steps")
+            SIM_step_post($dev.obj, when, &$this.callback, data);
+        else if ($timebase == "cycles")
+            SIM_time_post_cycle($dev.obj, when, 0, &$this.callback, data);
+        else if ($timebase == "seconds")
+            SIM_time_post($dev.obj, when, 0, &$this.callback, data);
+        else if ($timebase == "stacked")
+            SIM_stacked_post($dev.obj, &$this.callback, data);
+        else
+            error "bad value for parameter 'timebase'";
+    }
+
+    method post_on_queue(queue, when, void *data) {
+        assert when >= 0;
+        if ($timebase == "steps") {
+	    // no VT_step_post implemented yet
+            error "timebase 'steps' for post_on_queue not yet implemented";
+        } else if ($timebase == "cycles") {
+            // log "info": "Posting on queue %s in %d %s", queue->name, when, $timebase;
+            VT_time_post_cycle(queue, $dev.obj, when, 0, &$this.callback, data);
+        } else if ($timebase == "seconds") {
+            // log "info": "Posting on queue %s in %g %s", queue->name, when, $timebase;
+            VT_time_post(queue, $dev.obj, when, 0, &$this.callback, data);
+        } else
+            error "bad value for parameter 'timebase'";
+    }
+
+    method remove(void *data) {
+        if ($timebase == "steps")
+            SIM_step_clean($dev.obj, &$this.callback, data);
+        else if ($timebase == "cycles" || $timebase == "seconds")
+            SIM_time_clean($dev.obj, 0, &$this.callback, data);
+        else
+            error "bad value for parameter 'timebase'";
+    }
+
+    method extern callback(void *param) {
+        if (defined $repeat)
+            inline $post($repeat, param);
+        try
+            inline $event(param);
+        catch
+            log "error": "Error in %s event", $qname;
+    }
+
+    method event(void *param) default {
+	log "info": "Event %s triggered", $name;
+    }
+
+    method next(void *data) -> (when) {
+	// next() always returns negative for 'not in queue'
+        if ($timebase == "steps")
+            when = SIM_step_next_occurrence($dev.obj, &$this.callback, data) - 1;
+        else if ($timebase == "cycles")
+            when = SIM_time_next_occurrence($dev.obj, &$this.callback, data) - 1;
+        else if($timebase == "seconds") {
+            local cycles_t queue_cycles
+                = SIM_time_next_occurrence($dev.obj, &$this.callback, data);
+            if (queue_cycles == 0)
+                when = -1.0;
+            else {
+                inline $get_queue_frequency();
+                when = cast(queue_cycles - 1, double) / cast($queue_frequency, double);
+            }
+        }
+        else
+            error "bad value for parameter 'timebase'";
+    }
+
+    method posted(void *data) -> (bool truth) {
+        if ($timebase == "steps")
+            truth = (SIM_step_next_occurrence($dev.obj, &$this.callback, data) != 0);
+        else if ($timebase == "cycles" || $timebase == "seconds")
+            truth = (SIM_time_next_occurrence($dev.obj, &$this.callback, data) != 0);
+        else
+            error "bad value for parameter 'timebase'";
+    }
+
+    method start {
+        if (!defined $repeat) {
+            error "parameter 'repeat' is undefined";
+        } else {
+            local typeof($repeat) next;
+            inline $next(NULL) -> (next);
+            if (next == 0.0)
+                inline $post($repeat, NULL);
+        }
+    }
+
+    method stop {
+        if (!defined $repeat)
+            error "parameter 'repeat' is undefined";
+
+        inline $remove(NULL);
+    }
+}
+
+template implement {
+    is object;
+    parameter objtype = "implement";
+
+    parameter c_type default $name + "_interface_t";
+}

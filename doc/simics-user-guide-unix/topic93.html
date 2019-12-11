@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Understanding g-cache Statistics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(225, true);
+</script>
+<a name="label530"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic92.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic94.html">Next</a></span></p>
+<h4 class="jdocu">18.7&nbsp;&nbsp;&nbsp;Understanding g-cache Statistics</h4 class="jdocu">
+
+
+<p>
+The following statistics are available in a <b>g-cache</b>:
+<p>
+<dl><dt><b>Total number of transactions</b></dt><dd>Count of all transactions received by
+the cache, including all transactions listed below.</dd><dt><b>Device data read/write</b></dt><dd>Number of transactions, e.g., DMA
+transfers, performed by devices against the memory-space to which the cache is
+connected. Device accesses are otherwise ignored by the cache and passed as-is
+to the next level cache.</dd><dt><b>Uncacheable data read/write, instruction fetch</b></dt><dd>Number of
+uncacheable transactions performed by the processor. Uncacheable transactions
+are otherwise ignored by the cache and passed as-is to the next level
+cache.</dd><dt><b>Data read transactions</b></dt><dd>Cacheable read transactions counted by the
+cache.</dd><dt><b>Data read misses</b></dt><dd>Cacheable read transactions that missed in the
+cache.</dd><dt><b>Data read hit ratio</b></dt><dd>1 &minus; (cacheable read misses / cacheable read
+transactions)</dd><dt><b>Instruction fetch transactions</b></dt><dd>Cacheable instruction fetch
+transactions counted by the cache.</dd><dt><b>Instruction fetch misses</b></dt><dd>Cacheable instruction fetch transactions
+that missed in the cache.</dd><dt><b>Instruction fetch hit ratio</b></dt><dd>1 &minus; (cacheable instruction fetch
+misses / cacheable instruction fetch transactions)</dd><dt><b>Data write transactions</b></dt><dd>Cacheable write transactions counted by
+the cache.</dd><dt><b>Data write misses</b></dt><dd>Cacheable write transactions that missed in the
+cache. This is not directly related to the number of transactions sent to the
+next level cache, which also depends on the write allocation and write-back
+policies selected for the cache.</dd><dt><b>Data write hit ratio</b></dt><dd>1 &minus; (cacheable write misses / cacheable write
+transactions)</dd><dt><b>Copy-back transactions</b></dt><dd>Copy-back transactions performed by the
+cache to flush modified cache lines.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic92.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic94.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# -*- makefile -*-
+
+OPT_CFLAGS = -O2 -g
+DEBUG_CFLAGS = -O0 -g
+NO_OPT_CFLAGS = -O0 -g -Wno-unused
+PROF_CFLAGS = -O0 -g -pg
+LANG_CFLAGS = -std=gnu99
+
+WARN_CFLAGS = -Wall -Wwrite-strings
+WARN_CFLAGS += $(WARN_FAILED_INLINE) $(WARNING_AS_ERRORS)
+
+WARN_CXXFLAGS = -Wall -Wwrite-strings
+WARN_CXXFLAGS += $(WARN_FAILED_INLINE) $(WARNING_AS_ERRORS)
+
+WARN_FAILED_INLINE = -Winline
+# if WERROR_EXCEPTIONS is not defined, the werror-exceptions.mk 
+# has not been read and we should not try to compile with -Werror.
+ifneq ($(origin WERROR_EXCEPTIONS),undefined)
+  WARNING_AS_ERRORS = -Werror
+endif
+
+GULP_CFLAGS = -Wno-write-strings -Wno-unused
+
+CFLAGS_HOST = -fPIC
+
+EXPORTMAP = exportmap.elf
+
+CCLDFLAGS =
+CCLDFLAGS_DYN = -shared -Wl,--version-script,$(EXPORTMAP)
+
+LDFLAGS =
+LDFLAGS_DYN = -Bdynamic -G
+
+LDFLAGS_LOCAL = 
+LDFLAGS_LOCAL_FIRST =
+
+######## EXTRAS
+

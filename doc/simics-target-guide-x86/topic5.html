@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Installing an OS on Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(93, true);
+</script>
+<a name="label609"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Installing an OS on Simics</h2 class="jdocu">
+
+    
+<p>
+
+<a name="label610"></a>
+<a name="label611"></a>
+<a name="label612"></a>
+<a name="label613"></a>
+<a name="label614"></a>
+<p>
+The files <tt>dredd-cd-install1.simics</tt> and
+<tt>dredd-cd-install2.simics</tt>, that are supplied with the
+dredd simulated machine provide a way to install an operating system
+on Simics from a bootable CD-ROM. Before starting, please read the instructions
+in <tt>dredd-cd-install1.simics</tt>.
+<p>
+<hr class="jdocu_note"><b>Note:</b> If you plan to mount your finished disk using loopback, you should make
+sure that each simulated file system is small enough to fit uncompressed on
+your local machine.<hr class="jdocu_note">
+<p>
+<hr class="jdocu_note"><b>Note:</b> The instructions given here for installing from CD-ROM also apply to
+installing from DVD. The ISO format is the same for data CD-ROMs and DVDs and
+you can install from an ISO image of any size using the
+<b>new-file-cdrom</b> command described below.<hr class="jdocu_note">
+<p>
+<ol>
+<li>Create an ISO image file of the bootable CD-ROM you want to install from.
+Linux example:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>dd if=/dev/cdrom of=myos.iso</b>
+</pre>
+<p>
+On Windows, a third-party tool is necessary to create the ISO image.  For more
+information on how to deal with CD-ROMs and other disk images, see the chapter
+titled <i>Managing Disks, Floppies, and CD-ROMs</i> in the <i>Simics User
+Guide</i>.  On Linux and Solaris hosts it is not necessary to create the ISO
+file, Simics can also access the actual CD directly by specifying the device
+file.
+</li>
+<p>
+<li>Run Simics with the first script:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>./simics targets/x86-440bx/dredd-cd-install1.simics</b>
+</pre>    
+</li>
+<p>
+<li>Insert the ISO image with the OS into the simulated CD-ROM drive with the
+following two commands, and then start the simulation.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-file-cdrom myos.iso</b>
+cdrom 'myos' created
+simics&gt; <b>cd0.insert myos</b>
+simics&gt; <b>c</b>
+</pre>
+<p>
+To install from a CD that is inserted in the host CD-ROM unit instead of from
+an ISO file, replace the first line in the example above with the following
+example line. The argument <tt>/dev/cdrom</tt> is the path to the device and
+may be different depending on your host system. Note that this is <b>not</b>
+the path to the files on the CD, such as <tt>/mnt/cdrom</tt>. Accessing a CD
+on the host is not supported on Windows hosts.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-file-cdrom "/dev/cdrom" myos</b>
+</pre>
+</li>
+<p>
+<li>When the installation is finished, shutdown the simulated machine (a lot of
+OSes do this automatically when the install is complete). The way to shutdown
+the machine differs between operating systems, but there is usually some help
+available on the screen.
+</li>
+<p>
+<li>
+You may get a error message from Simics saying that reboot/suspend/shutdown
+is an experimental feature, but that can be ignored. At this point save the
+persistent state of the machine:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>save-persistent-state install-phase1.state</b>
+</pre>
+The persistent state contains all information on the disk, as well as the
+contents of NVRAMs and other devices that survive reboot. Finally exit Simics.
+</li>
+<p>
+<li>Start Simics using the second script, which will boot from the
+installation disk and not from the CD-ROM.  If the CD-ROM is needed, it has to
+be inserted into the machine in the same way as in the first phase of the
+installation.
+<p>
+If the installer program in the simulated machine asks for the path to the
+CD-ROM, give the path in the simulated machine. Since there is only one
+CD-ROM in the default machine setup, this should be quite easy to identify.
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>./simics targets/x86-440bx/dredd-cd-install2.simics</b>
+</pre>    
+<p>
+Then, before starting the simulation, load the persistent state that was saved
+at the end of the first phase.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>load-persistent-state install-phase1.state</b>
+</pre>
+</li>
+<p>
+<li>Since there are probably changes done to the disk in the second phase as
+well, reboot the simulated machine, and when it has completed the shut down,
+save the persistent state to a new file.</li>
+<p>
+<li>If there are several reboots during the installation process, save a new
+state file each time. Only the most recent one has to be loaded when Simics is
+restarted, but all state files must be kept since they depend on each other.
+</li>
+<p>
+<li>When the install is complete, you will have one or more persistent state
+files. To create a single one, use the <i>checkpoint-merge</i> utility to join
+them. After verifying that the combined persistent state works, the previous
+ones can be removed.</li>
+<p>
+<li>
+To run the machine with the newly installed operating system, start the
+<tt>dredd-common.simics</tt> and load the most recent persistent
+state file, or the combined state file that was created using the
+checkpoint-merge utility.</li>
+<p>
+<li>If you want to change the number of processors in the machine or some
+other machine parameters, you can do so now (provided that you have installed
+support for multiple processors or other hardware during your install). See
+chapter <a class="jdocu" href="topic2.html#label31">3.5</a>.</li>
+<p>
+</ol>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

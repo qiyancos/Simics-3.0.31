@@ -1,0 +1,61 @@
+# -*- shell-script -*-
+#
+# Copyright (c) 2001 Virtutech AB, All Rights Reserved
+#
+# Host-defaults for amd64-linux.
+#
+
+LIBPATH="/usr/lib64:$HOST_DIR/sys/lib"
+
+# ------------------------------------------------------------
+# Tools - add the documentation stuff
+# ------------------------------------------------------------
+## TODO, FIX tool path for AMD64
+if test $simics_distrib != yes; then
+    TOOLPATH=/usr/local/mozart/bin:/home/packages/teTeX-3.0/bin/i686-pc-linux-gnu/:$TOOLPATH
+fi
+
+# ------------------------------------------------------------
+# Libraries
+# ------------------------------------------------------------
+
+: ${LIBELF="-lelf"}
+: ${LIBBZ2="-lbz2"}
+: ${LIBREADLINE="-lreadline -lncurses"}
+: ${LIBZ="-lz"}
+: ${LIBPCAP="-lpcap"}
+: ${LIBDL="-ldl"}
+: ${LIBPTHREAD="-lpthread"}
+: ${LIBSDL="-lSDL -lpthread"}
+: ${LIBUTIL="-lutil"}
+
+# PKG_CONFIG_PATH is usually set from /etc/profile.d/gnome-filesystem.sh
+# at login, this ensures that MP will have the same variable set
+if test -z "$PKG_CONFIG_PATH" ; then
+    export PKG_CONFIG_PATH="/opt/gnome/lib64/pkgconfig"
+else
+    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/opt/gnome/lib64/pkgconfig"
+fi
+
+# ------------------------------------------------------------
+# Tools.
+# ------------------------------------------------------------
+
+: ${FLEXLM_PACKAGE="flexlm/v9.2/amd64_s8"}
+: ${PYTHON_PACKAGE="python-2.4.2/$HOST_TYPE"}
+
+# We need the PIC version of the FLEXlm libraries
+FLEXLM_LMGR=liblmgr_pic.a
+
+# Java (for non-JDocu uses, such as building JNI libs for use in Eclipse)
+: ${JAVAHOME=/home/packages/java/amd64-linux/jdk1.5.0_04}
+: ${JAVABIN=$JAVAHOME/bin/java}
+: ${JAVA_PLATFORM=linux}
+
+# JDocu
+: ${JDOCU_JAVA=$JAVAHOME}
+: ${JDOCU_JAVABIN=$JDOCU_JAVA/bin/java}
+: ${JDOCU_JAVAC=$JDOCU_JAVA/bin/javac}
+
+# Eclipse
+: ${ECLIPSE_ROOT=/home/packages/eclipse/amd64-linux/3.1_CDT-3.0}

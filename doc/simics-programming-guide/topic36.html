@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Argument Types</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(86, true);
+</script>
+<a name="label190"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+<h3 class="jdocu">7.3&nbsp;&nbsp;&nbsp;Argument Types</h3 class="jdocu">
+
+
+Following is a list of the available argument types. Note that some of them
+are "real" arguments, while some are generator functions which, when called
+with appropriate parameters, return an actual argument type.
+<p>
+
+<a name="label191"></a><h4 class="jdocu">addr_t</h4 class="jdocu">
+
+ 
+ Accepts a target machine address, optionally with an address space
+ prefix, such as <tt>v:</tt> for virtual addresses or <tt>p:</tt> for
+ physical.
+ <a name="label192"></a><h4 class="jdocu">bool_t(true_str, false_str)</h4 class="jdocu">
+
+ 
+<p>
+
+ Accepts only the two strings <i>true_str</i> and <i>false_str</i>,
+ the strings "TRUE" and "FALSE", and boolean values (that is, the
+ strings "0" and "1"). It passes True or False to the command
+ function depending on which string (or value) was given.
+<p>
+ Both arguments are optional; if not given, TRUE, FALSE, 1, and 0
+ will still be recognized.
+<p>
+ <a name="label193"></a><h4 class="jdocu">filename_t(dirs = 0, exist = 0, simpath = 0)</h4 class="jdocu">
+
+ 
+ Generator function for filename arguments. If the <i>dirs</i>
+ argument is zero (which is default), no directories will be
+ accepted. The <i>exist</i> flag, when set, forces the file to
+ actually exist. If <i>simpath</i> is true, files will be checked for
+ existence using <tt>SIM_lookup_file()</tt>, searching the Simics
+ search path. <i>simpath</i> implies <i>exist</i>. On Windows, if Cygwin path
+ conversion is performed (see <tt>SIM_native_path()</tt> for details), the
+ filename will be converted to host native format.
+ <a name="label194"></a><h4 class="jdocu">float_t</h4 class="jdocu">
+
+ 
+ Accepts floating-point numbers.
+ <a name="label195"></a><h4 class="jdocu">int32_t</h4 class="jdocu">
+
+ 
+ Accepts any integer that fits in 32 bits (signed or unsigned). The
+ value passed to the command function is cast into an unsigned value.
+ <a name="label196"></a><h4 class="jdocu">int64_t</h4 class="jdocu">
+
+ 
+ Accepts any integer that fits in 64 bits (signed or unsigned). The
+ value passed to the command function is the value cast to unsigned.
+ <a name="label197"></a><h4 class="jdocu">int_t</h4 class="jdocu">
+
+ 
+ Accepts any integer (regardless of size).
+ <a name="label198"></a><h4 class="jdocu">integer_t</h4 class="jdocu">
+
+ 
+ Accepts any integer that fits in 64 bits (signed or
+ unsigned). Corresponds to the Simics API's integer_t.
+ <a name="label199"></a><h4 class="jdocu">obj_t(desc, kind = None)</h4 class="jdocu">
+
+ 
+ Returns an argument which accepts any object.
+<p>
+ <i>desc</i> is the string returned as a description of the
+ argument.  <i>kind</i> can be used to limit the accepted objects to
+ only allow objects of a certain kind.  This parameter can either be
+ a class name that the object should be an instance of, or the name
+ of an interface that the object must implement.
+ <a name="label200"></a><h4 class="jdocu">range_t(min, max, desc, positive = 0)</h4 class="jdocu">
+
+ 
+ Returns an argument which accepts any integers <i>x</i>, such that
+ <i>min</i> &lt;= <i>x</i> &lt;= <i>max</i>. <i>desc</i>
+ is the string returned as a description of the argument.
+<p>
+ If <i>positive</i> is true, any negative values will be "cast" into
+ positive ones using the formula <i>max</i> + <i>v</i> +
+ 1, where <i>v</i> is the negative value.
+ <a name="label201"></a><h4 class="jdocu">sint32_t</h4 class="jdocu">
+
+ 
+ Accepts any signed integer that fits in 32 bits.
+ <a name="label202"></a><h4 class="jdocu">sint64_t</h4 class="jdocu">
+
+ 
+ Accepts any signed integer that fits in 64 bits.
+ <a name="label203"></a><h4 class="jdocu">str_t</h4 class="jdocu">
+
+ 
+ Accepts any one word or quoted string.
+ <a name="label204"></a><h4 class="jdocu">string_set_t(strings)</h4 class="jdocu">
+
+ 
+<p>
+ Accepts only strings from the given set. <i>strings</i> can be any
+ iterable, such as a tuple, list, or set, in which case the return
+ value is the exact string the user gave; or a dictionary mapping
+ acceptable user input strings to return values.
+<p>
+ The optional parameter <i>visible</i> is a list of strings. If
+ given, only strings in this list will be suggested by the expander.
+<p>
+ <a name="label205"></a><h4 class="jdocu">uint32_t</h4 class="jdocu">
+
+ 
+ Accepts any unsigned integer that fits in 32 bits.
+ <a name="label206"></a><h4 class="jdocu">uint64_t</h4 class="jdocu">
+
+ 
+ Accepts any unsigned integer that fits in 64 bits.
+ 
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+</body>
+</html>

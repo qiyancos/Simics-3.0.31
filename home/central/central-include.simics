@@ -1,0 +1,62 @@
+#
+# This file is included by other machine config scripts
+#
+
+@import os
+@import socket
+
+@if not "central_setup" in dir(): central_setup = "none"
+@if not "central_host"  in dir(): central_host = "localhost"
+@if not "central_min_latency" in dir(): central_min_latency = 5000000
+@if not "central_file"  in dir(): central_file = "../central/central-common.simics"
+@if not "real_network"  in dir(): real_network = 0
+@if not "port"          in dir(): port = 1909
+@if not "create_net0"   in dir(): create_net0 = 1
+
+@central_host_arg = SIM_get_class_attribute("central-client", "central_host")
+@if central_host_arg:
+    central_host = central_host_arg
+
+@def client_connect(port):
+    def fun(arg, obj):
+        if central_host[0] == ":" or central_host[0] == "/":
+            server = central_host
+        elif "AF_UNIX" in dir(socket) and central_host == "localhost":
+            server = "/tmp/simics-central.%s" % os.environ["USER"]
+        else:
+            server = "%s:%d" % (central_host, port)
+        print "Trying to connect to central server '%s'" % server
+        try:
+                # check if already created with -central
+                SIM_get_object("central-client")
+        except:
+                SIM_create_object("central-client", "central-client",
+                                  [["server", server]])
+        if create_net0:
+            SIM_create_object("ethernet-link", "net0",
+                              [["central", conf.central_client]])
+    return fun
+
+@if central_setup == "none":
+    create_central = 0
+elif central_setup == "local":
+    create_central = 1
+elif central_setup == "exported":
+    create_central = 1
+elif central_setup == "remote":
+    create_central = 0
+    SIM_hap_add_callback("Core_Initial_Configuration", client_connect(port), None)
+else:
+    create_central = 0
+    print "Unsupported central_setup value: %s" % repr(central_setup)
+    SIM_command_has_problem()
+
+@def real_nw_connect(arg, obj):
+    eval_cli_line("connect-real-network")
+
+@if create_central:
+    SIM_run_command_file(SIM_lookup_file(central_file))
+    if real_network:
+	if "default_pf_target" in dir() and default_pf_target != "":
+	    eval_cli_line("default-port-forward-target %s" % default_pf_target)
+        SIM_hap_add_callback("Core_Initial_Configuration", real_nw_connect, None)

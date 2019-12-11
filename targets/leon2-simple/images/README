@@ -1,0 +1,88 @@
+A number of builds of LEON2 software linked with the RTEMS exokernel.
+RTEMS comes from http://www.rtems.org/. Most parts are covered by the
+GPL; see http://www.rtems.org/license/. The licenses are distributed
+in the rtems-license subdirectory of this directory.
+
+Output is to the first UART. Expected behavior:
+
+rtems-hello2.elf
+
+  Simple hello world program, prints:
+
+  *** HELLO WORLD TEST ***
+  Hello World
+  *** END OF HELLO WORLD TEST ***
+
+rtems-irq3.elf
+
+  Boring application that forces an interrupt, but does not print any
+  info on the console. Typically, you would have to inspect interrupts
+  in some way to find this useful.
+
+rtems-nothing.elf
+
+  Does nothing, terminates after nothing has been done.
+
+rtems-unlimited.elf
+
+  Creates a lot of processes. RTEMS is however in this example
+  compiled with the unsuitable parameters (too little workspace). So
+  it ends with a message saying:
+
+  TEST3 : creating task 'aa50', failure, unsatisfied.
+   FAIL3 : not enough tasks created -
+           task created = 50, required number = 55
+
+rtems-base_sp.exe
+
+  Starts a single processor thread and prints:
+
+  *** SAMPLE SINGLE PROCESSOR APPLICATION ***
+  Creating and starting an application task
+  Application task was invoked with argument (0) and has id of 0xa010002
+  *** END OF SAMPLE SINGLE PROCESSOR APPLICATION ***
+
+rtems-hello.srec
+rtems-hello.elf
+
+  Hello world programs (including RTEMS gcc bug #921
+  https://www.rtems.com/cgi-bin/gnatsweb.pl?cmd=view&database=RTEMS&pr=921)
+
+rtems-minimum.elf
+rtems-irq.elf
+
+  Hangs after forcing an interrupt (interrupted I/O from an interrupt
+  handler), no output
+
+rtems-irq2.elf
+
+  Hangs after forcing an interrupt (interrupted I/O from an interrupt
+  handler) prints some stuff before the interrupt
+
+rtems-minimum_irq.exe
+
+  Working version of the hanging interrupt tests (uses polled I/O from
+  the isr's)
+
+rtems-paranois.elf
+
+  Tests the IEEE floating point conformance. Lots of printouts.
+
+rtems-cdtest.elf
+
+  Tests CPP constructors and destructors (ends with illegal instr due
+  to RTEMS gcc bug #921)
+
+rtems-tasks.elf
+
+  Tests the clock (uses the sleep mode).
+
+rtems-ticker.elf
+
+  Same as rtems-tasks, but does not go to sleep, uses a "ba,a 0" for
+  the delays, and is REALLY slow withqout turbo.
+
+rtems-dhrystone.elf
+
+  Dhrystone benchmark on RTEMS, you have to enter the number of
+  iterations in the console.

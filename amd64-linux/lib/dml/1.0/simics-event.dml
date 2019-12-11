@@ -1,0 +1,149 @@
+dml 1.0;
+
+/*
+ * simics-event.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+extern sync_t Sim_Sync_Processor;
+extern sync_t Sim_Sync_Machine;
+typedef int sync_t;
+
+typedef void (*event_handler_t)(conf_object_t *obj, void *param);
+typedef event_handler_t event_function_t;
+
+extern event_queue_type_t Sim_Queue_Step;
+extern event_queue_type_t Sim_Queue_Time;
+typedef int event_queue_type_t;
+
+extern void
+SIM_time_post(conf_object_t *obj,
+              double seconds,
+              sync_t sync,
+              event_handler_t func,
+              void *user_data);
+
+extern void
+SIM_time_post_cycle(conf_object_t *obj,
+                    cycles_t cycles,
+                    sync_t sync,
+                    event_handler_t func,
+                    void *user_data);
+
+extern cycles_t
+SIM_time_next_occurrence(conf_object_t *obj,
+                         event_handler_t func,
+                         void *user_data);
+
+extern void
+SIM_step_post(conf_object_t *obj,
+              pc_step_t steps,
+              event_handler_t func,
+              void *user_data);
+
+extern void
+VT_step_post(processor_t *cpu,
+             conf_object_t *poster,
+             pc_step_t steps,
+             event_handler_t func,
+             void *user_data);
+
+extern void
+VT_step_clean(processor_t *cpu,
+              conf_object_t *poster,
+              event_handler_t func,
+              void *user_data);
+
+extern void
+VT_time_post(processor_t *cpu,
+             conf_object_t *poster,
+             double seconds,
+             sync_t sync,
+             event_handler_t func,
+             void *user_data);
+
+extern void
+VT_time_post_cycle(processor_t *cpu,
+                   conf_object_t *poster,
+                   cycles_t delta,
+                   sync_t sync,
+                   event_handler_t fp,
+                   void *arg);
+
+extern void
+VT_time_clean(processor_t *cpu,
+              conf_object_t *poster,
+              sync_t sync,
+              event_handler_t func,
+              void *user_data);
+
+extern pc_step_t 
+SIM_step_next_occurrence(conf_object_t *obj,
+                         event_handler_t func,
+                         void *user_data);
+
+
+extern void
+SIM_step_clean(conf_object_t *obj, 
+               event_handler_t func,
+               void *user_data);
+
+extern void
+SIM_time_clean(conf_object_t *obj,
+               sync_t sync,
+               event_handler_t func,
+               void *user_data);
+
+extern cycles_t SIM_cycle_count(conf_object_t *obj);
+
+extern pc_step_t SIM_step_count(conf_object_t *obj);
+
+extern cycles_t VT_cycles_to_quantum_end(processor_t *cpu);
+
+extern double SIM_time(conf_object_t *p);
+
+extern void SIM_stall_cycle(conf_object_t *obj, cycles_t cycles);
+extern void SIM_stall(conf_object_t *obj, double seconds);
+extern cycles_t SIM_stalled_until(conf_object_t *obj);
+extern cycles_t SIM_stall_count(conf_object_t *obj);
+
+extern void VT_stall_cycle_counter(conf_object_t *cpu, pc_step_t steps);
+extern void VT_stop_cycle_counter(conf_object_t *cpu);
+extern void VT_unstall_cycle_counter(conf_object_t *cpu);
+
+extern void SIM_break_cycle(conf_object_t *obj, integer_t cycles);
+extern void SIM_break_step(conf_object_t *cpu, integer_t steps);
+
+extern void SIM_stacked_post(conf_object_t *obj,
+                             event_handler_t func, void *user_data);
+extern void VT_run_outside_instruction(conf_object_t *obj,
+                                       event_handler_t func,
+                                       void *user_data);
+extern void VT_post_first_in_step_queue(conf_object_t *obj,
+                                        event_handler_t func,
+                                        void *user_data);
+
+typedef struct {
+        simtime_t (*read)(conf_object_t *clockobj);
+        uint64 (*get_frequency)(conf_object_t *clockobj); /* Hz */
+        void (*post)(conf_object_t *clockobj,
+                     conf_object_t *poster,
+                     cycles_t cycles,
+                     sync_t sync,
+                     event_handler_t func,
+                     void *user_data);
+} clock_interface_t;
+constant CLOCK_INTERFACE = "clock";
+
+// extern int VT_signal_safe_callback(cb_func_no_t func, void *user_data);

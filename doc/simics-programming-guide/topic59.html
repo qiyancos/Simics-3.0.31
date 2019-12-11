@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Component Module</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(150, true);
+</script>
+<a name="label274"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic58.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic60.html">Next</a></span></p>
+<h3 class="jdocu">12.2&nbsp;&nbsp;&nbsp;Component Module</h3 class="jdocu">
+
+
+<p>
+A component module is a common Simics module containing the implementation of
+one or more related <em>component collections</em>. The
+<tt>sun-components</tt> module, for example, contains components for
+several different machine architectures from Sun Microsystems. Each
+architecture is represented by one <a name="label275">component collection</a>.
+<p>
+<a name="label276"></a><h4 class="jdocu">12.2.1&nbsp;&nbsp;&nbsp;Component Module Files</h4 class="jdocu">
+
+
+<p>
+A component module source directory may contain several
+<tt>&lt;name&gt;_components.py</tt> files, each implementing a component
+collection; one <tt>Makefile</tt>; and one <tt>gcommands.py</tt> file.
+<p>
+The <tt>Makefile</tt> looks the same for all component modules, it simply
+lists all components that are part of the module.
+<p>
+The <tt>gcommands.py</tt> is loaded when Simics starts. It is responsible
+for registering all component collections defined by the module using the
+<b><i><a name="label277">register_components()</a></i></b> function. A
+<tt>gcommands.py</tt> file may have the following contents:
+<pre class="jdocu_small" style="color: black">
+from components import register_components
+
+register_components('ppc440gp-components')
+</pre>
+This example registers the <b>ppc440gp-components</b> component
+collection and creates the <b>import-ppc440gp-components</b> command that
+must be run by the user to make any commands related to this collection
+available in the frontend.
+<p>
+<hr class="jdocu_note"><b>Note:</b> If the component collection does not exist, i.e., there is no .py file
+with the name given to register_components(), there will be no error message.
+The reason for this is that a component module may be distributed without some
+of the collections it define. A successful registration of a collection can be
+verified by checking that the <b><a name="label278">import-<collection></a></b>
+command was created.<hr class="jdocu_note">
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic58.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic60.html">Next</a></span></p>
+</body>
+</html>

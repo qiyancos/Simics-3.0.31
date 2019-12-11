@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_read_input_reg()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(77, true);
+</script>
+<a name="label382"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic47.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic49.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_read_input_reg()</h4 class="jdocu">
+
+<a name="label383"></a><a name="label384"></a><a name="label385"></a><a name="label386"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label387"></a><b>SIM_instruction_read_input_reg</b><b>, SIM_instruction_read_output_reg</b><b>, SIM_instruction_write_input_reg</b><b>, SIM_instruction_write_output_reg</b> &#8212; read/write register values</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">attr_value_t
+SIM_instruction_read_input_reg(instruction_id_t ii, 
+                               register_id_t ri);
+</pre><pre class="jdocu_small" style="color: black">attr_value_t
+SIM_instruction_read_output_reg(instruction_id_t ii,
+                                register_id_t ri);
+</pre><pre class="jdocu_small" style="color: black">void
+SIM_instruction_write_input_reg(instruction_id_t ii, 
+                                register_id_t ri,
+                                attr_value_t val);
+</pre><pre class="jdocu_small" style="color: black">instruction_error_t
+SIM_instruction_write_output_reg(instruction_id_t ii, 
+                                 register_id_t ri,
+                                 attr_value_t val);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+<b><i>SIM_instruction_read_input_reg</i></b> returns the value of an
+   input register for instruction <i>ii</i> identified by
+   the register id <i>ri</i>. The register id:s for
+   a particular instruction can be retrieved by a calling
+   <b><i>SIM_instruction_get_reg_info</i></b>.
+<p>
+   For integer and control registers the
+   <tt>attr_value_t</tt> will be of kind
+   <tt>Sim_Val_Integer</tt>.   
+   Floating point registers uses also the
+   <tt>Sim_Val_Integer</tt> kind but the floating point number
+   is stored as raw bits. Only single precision registers can be read,
+   thus to read a double precision register both its low and high half
+   must be read in separate calls. For quad precision registers four
+   calls are required (SPARC).
+<p>
+   <tt>Sim_Val_Nil</tt> will be
+   returned if the value has not yet been produced by earlier
+   instructions (see below).
+<p>
+   The value is not read from the architecturally register state but
+   from an internal renamed register which holds the input value of
+   the corresponding register.  Thus reading the same register from
+   different instructions may yield different values even in the same
+   cycle.
+<p>
+   The value read is either produced by an previously executed
+   instruction (this requires that the instructions are inserted in
+   the tree and decoded) or explicitly set by the user using
+   <b><i>SIM_instruction_write_input_reg</i></b>. In the later case the
+   instruction will be regarded as speculative until an earlier
+   non-speculative instruction produces the same value. If this never
+   happens the instruction cannot be committed without the risk of
+   executing incorrectly. This is how value prediction can be modeled
+   (see the description of <b><i>SIM_instruction_write_output_reg</i></b>
+   below as well).
+<p>
+   <b><i>SIM_instruction_proceed</i></b> and
+   <b><i>SIM_instruction_commit</i></b> will not accept a speculative
+   instruction to commit. If this is requested the user needs to call
+   <b><i>SIM_instruction_force_correct</i></b> first to redirect the
+   correct execution path. This is however strongly discouraged since
+   it may lead to incorrect execution.
+<p>
+   <b><i>SIM_instruction_read_output_reg</i></b> reads the output value
+   of a register from the instruction. This requires the instruction
+   to be executed first.
+<p>
+   <b><i>SIM_instruction_write_output_reg</i></b> writes the output
+   register for an instruction. This is a convenient way of handling
+   value speculation. The value written will propagate down the
+   instruction tree exactly as if
+   <b><i>SIM_instruction_write_input_reg</i></b> had been used for all
+   instructions that use the value. This function can only be used for
+   instructions that have not yet reached the execution phase.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal or 
+                         if <i>ri</i> is an illegal register.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+<tt>attr_value_t/Sim_Val_Integer</tt> on success,<br>
+                           <tt>attr_value_t/Sim_Val_Nil</tt> if the 
+                           value is not yet produced,<br>
+                           SIM_instruction_write_output_reg returns 
+                           <tt>Sim_IE_Illegal_Phase</tt> if the instruction has 
+                           reached the execution phase.</dd>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic36.html#label341">SIM_instruction_get_reg_info</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic47.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic49.html">Next</a></span></p>
+</body>
+</html>

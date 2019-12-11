@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Inspecting State</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(53, true);
+</script>
+<a name="label280"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic23.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic25.html">Next</a></span></p>
+<h3 class="jdocu">8.2&nbsp;&nbsp;&nbsp;Inspecting State</h3 class="jdocu">
+
+
+<p>
+A command called <b><a name="label281">print-instruction-queue</a></b> is provided to
+print out the current execution tree, displaying input and output
+register values according to the phase of execution of the
+instructions in flight. Continue using the started Simics session from
+section <a class="jdocu" href="topic23.html#label276">8.1</a> and run for a while, then
+inspect the instruction tree by issuing the following commands:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; run-cycles 2000
+simics&gt; print-instruction-queue
+</pre>
+<p>
+This will print all the inserted instructions in the tree.  Branches
+will be indented if they exists. Using the <b>-v</b> flag to
+<b>print-instruction-queue</b> will tell the command to print the
+values of input and output registers and the contents of the <a name="label282">LSQ</a> as
+well.
+<p>
+<b>print-instruction-queue</b> can also be invoked for a special
+processor, e.g.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; cpu0.print-instruction-queue
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic23.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic25.html">Next</a></span></p>
+</body>
+</html>

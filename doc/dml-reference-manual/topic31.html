@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Standard Methods</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(92, true);
+</script>
+<a name="label403"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+<h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Standard Methods</h3 class="jdocu">
+
+
+<a name="label404"></a>
+<p>
+This section describes the built-in methods of the different object
+types. Most methods can be redefined by the user, unless otherwise
+stated.
+<p>
+<a name="label405"></a><h4 class="jdocu">5.2.1&nbsp;&nbsp;&nbsp;Array Methods</h4 class="jdocu">
+
+
+<a name="label406"></a>
+<p>
+<dl><dt><b>hard_reset()</b></dt><a name="label407"></a><dd>Invokes the <b><i>hard_reset</i></b> method on each element of the
+array.</dd><dt><b>soft_reset()</b></dt><a name="label408"></a><dd>Invokes the <b><i>soft_reset</i></b> method on each element of the
+array.</dd><dt><b>get_attribute() -&gt; (attr_value_t val)</b></dt><a name="label409"></a><dd>Not intended to be used directly. Implements reading of an array
+attribute as a Simics vector, by calling the <b><i>get_attribute</i></b>
+methods on individual elements of the array.</dd><dt><b>set_attribute(attr_value_t val) -&gt; (set_error_t err)</b></dt><a name="label410"></a><dd>Not intended to be used directly. Implements assignment of a Simics
+vector to an array attribute, by calling the <b><i>set_attribute</i></b>
+methods on individual elements of the array.</dd></dl>
+<p>
+
+<a name="label411"></a><h4 class="jdocu">5.2.2&nbsp;&nbsp;&nbsp;Device Methods</h4 class="jdocu">
+
+
+<a name="label412"></a>
+<p>
+<dl><dt><b>init()</b></dt><a name="label413"></a><dd>Called when the device object is loaded, but before its
+configuration-object attributes have been initialized.</dd><dt><b>post_init()</b></dt><a name="label414"></a><dd>Called when the device object is loaded, <em>after</em> its
+configuration-object attributes have been initialized.</dd><dt><b>hard_reset()</b></dt><a name="label415"></a><dd>Called by Simics when a hard reset is performed on the device.
+Invokes the <b><i>hard_reset</i></b> method on each <b>bank</b> of
+the device.</dd><dt><b>soft_reset()</b></dt><a name="label416"></a><dd>Called by Simics when a soft reset is performed on the device.
+Invokes the <b><i>soft_reset</i></b> method on each <b>bank</b> of
+the device.</dd></dl>
+<p>
+
+<a name="label417"></a><h4 class="jdocu">5.2.3&nbsp;&nbsp;&nbsp;Attribute Methods</h4 class="jdocu">
+
+
+<a name="label418"></a>
+<p>
+<dl><dt><b>get() -&gt; (attr_value_t value)</b></dt><a name="label419"></a><dd>Returns the value of the attribute.</dd><dt><b>set(attr_value_t value)</b></dt><a name="label420"></a><dd>Sets the value of the attribute.</dd><dt><b>after_set()</b></dt><a name="label421"></a><dd>Called by <b><i>set_attribute</i></b> just after the <b><i>set</i></b> method
+has been called. The default implementation does nothing.</dd><dt><b>get_attribute -&gt; (attr_value_t value)</b></dt><a name="label422"></a><dd>Not intended to be used directly. Called by Simics for reading the
+attribute value. Calls the <b><i>get</i></b> method to read the value, and
+handles any exceptions that may occur.</dd><dt><b>set_attribute(attr_value_t value) -&gt; (set_error_t err)</b></dt><a name="label423"></a><dd>Not intended to be used directly. Called by Simics for setting the
+attribute value. Calls the <b><i>set</i></b> method to set the value, and
+afterwards calls the <b><i>after_set</i></b> method if <b><i>set</i></b>
+succeeded. Handles any exceptions that may occur.</dd></dl> 
+<p>
+
+<a name="label424"></a><h4 class="jdocu">5.2.4&nbsp;&nbsp;&nbsp;Bank Methods</h4 class="jdocu">
+
+
+<a name="label425"></a>
+<p>
+<dl><dt><b>access(generic_transaction_t *memop, uint32 offset, uint32 size)</b></dt><a name="label426"></a><dd>Called when the bank is accessed via the <tt>io_memory</tt>
+interface. Depending on the <tt>memop</tt> contents, the
+<b><i>read_access</i></b> or <b><i>write_access</i></b> method is called. For a
+write access, the method <b><i>get_write_value</i></b> is called to extract
+the value from the memop. If the access succeeded, the corresponding
+<b><i>finalize_read_access</i></b> or <b><i>finalize_read_access</i></b> method is
+called, updating the <tt>memop</tt> before the <b><i>access</i></b> method
+returns; otherwise, the <b><i>miss_read_access</i></b> or
+<b><i>miss_write_access</i></b> method, respectively, is called. If this also
+fails to handle the access, the generic <b><i>miss_access</i></b> method is
+called, and gets full responsibility for updating the <tt>memop</tt>.
+<p>
+To signal a complete failure to handle the access, the <b><i>access</i></b>
+method (or any method that it calls, such as <b><i>miss_access</i></b>)
+should raise an exception instead of returning. This will be caught and
+handled by the <tt>io-memory.dml</tt> library.</dd><dt><b>read_access(generic_transaction_t *memop, uint32 offset, uint32 size)
+-&gt; (bool success, uint64 value)</b></dt><a name="label427"></a><dd>Performs a read access by calling the corresponding
+<b><i>read_access</i></b> method of the addressed register (or registers, for
+overlapping accesses). Does not update the <tt>memop</tt>. If the access
+is valid, the <tt>success</tt> output parameter is set to <tt>true</tt>,
+otherwise to <tt>false</tt>.</dd><dt><b>read(generic_transaction_t *memop, uint32 offset, uint32 size) -&gt; (uint64 value)</b></dt><a name="label428"></a><dd>Utility method; equivalent to calling <b><i>read_access</i></b>, but does
+not return a success flag. E.g., can be used to read directly from a bank
+when it is known that the access will always succeed.</dd><dt><b>write_access(generic_transaction_t *memop, uint32 offset, uint32 size,
+uint64 value) -&gt; (bool success)</b></dt><a name="label429"></a><dd>Performs a write access by calling the corresponding
+<b><i>write_access</i></b> method of the addressed register (or registers,
+for overlapping accesses). Does not update the <tt>memop</tt>. If the
+access is valid, the <tt>success</tt> output parameter is set to
+<tt>true</tt>, otherwise to <tt>false</tt>.</dd><dt><b>write(generic_transaction_t *memop, uint32 offset, uint32 size, uint64 value)</b></dt><a name="label430"></a><dd>Utility method; equivalent to calling <b><i>write_access</i></b>, but
+does not return a success flag. E.g., can be used to write directly to a
+bank when it is known that the access will always succeed.</dd><dt><b>miss_read_access(uint32 offset, uint32 size) -&gt; (bool success,
+uint64 value)</b></dt><a name="label431"></a><dd>Called from <b><i>access</i></b> upon a missed read access. By default,
+this function only sets the <tt>success</tt> output parameter to
+<tt>false</tt> and returns. Provides a simple hook for handling read
+misses.</dd><dt><b>miss_write_access(uint32 offset, uint32 size, uint64 value)
+-&gt; (bool success)</b></dt><a name="label432"></a><dd>Called from <b><i>access</i></b> upon a missed write access. By default,
+this function only sets the <tt>success</tt> output parameter to
+<tt>false</tt> and returns. Provides a simple hook for handling write
+misses.</dd><dt><b>miss_access(generic_transaction_t *memop, uint32 offset, uint32 size)</b></dt><a name="label433"></a><dd>Called from <b><i>access</i></b> when the access could not be handled.
+This method takes over the responsibility for either updating the
+<tt>memop</tt> and returning, or raising an exception; see
+<b><i>access</i></b> for further details.
+<p>
+By default, an info message will be logged. If the parameter
+<tt>miss_bank</tt> of the bank is not <tt>undefined</tt>, then the
+access is redirected to the bank referred to by <tt>miss_bank</tt>,
+adding the value of the parameter <tt>miss_bank_offset</tt> (default 0)
+to the offset for the access. Otherwise, a specification violation
+message is logged and an exception is raised.</dd><dt><b>finalize_read_access(generic_transaction_t *memop, uint64 val)</b></dt><a name="label434"></a><dd>Called by <b><i>access</i></b> when a read access has succeeded. By
+default, this method calls <b><i>set_read_value</i></b> to update the
+<tt>memop</tt>. This method may also be useful to call when overriding
+<b><i>miss_access</i></b>.</dd><dt><b>finalize_write_access(generic_transaction_t *memop, uint64 val)</b></dt><a name="label435"></a><dd>Called by <b><i>access</i></b> when a write access has succeeded. By
+default it has no effect, since the <tt>memop</tt> normally does not
+need updating after a write; cf. <b><i>finalize_read_access</i></b>.</dd><dt><b>get_write_value(generic_transaction_t *memop) -&gt; (uint64 writeval)</b></dt><a name="label436"></a><dd>Extracts the value to be written from the <tt>memop</tt>. How this
+is done depends on the <tt>byte_order<a name="label437"></a></tt> parameter.</dd><dt><b>set_read_value(generic_transaction_t *memop, uint64 value)</b></dt><a name="label438"></a><dd>Stores the read value in the <tt>memop</tt>. How this is done
+depends on the <tt>byte_order<a name="label439"></a></tt> parameter.</dd><dt><b>hard_reset()</b></dt><a name="label440"></a><dd>Called automatically from the <b><i>hard_reset</i></b> method of the
+device. Invokes the <b><i>hard_reset</i></b> method on each
+<b>register</b> of the bank.</dd><dt><b>soft_reset()</b></dt><a name="label441"></a><dd>Called automatically from the <b><i>soft_reset</i></b> method of the
+device. Invokes the <b><i>soft_reset</i></b> method on each
+<b>register</b> of the bank.</dd></dl>
+<p>
+
+<a name="label442"></a><h4 class="jdocu">5.2.5&nbsp;&nbsp;&nbsp;Register Methods</h4 class="jdocu">
+
+
+<a name="label443"></a>
+<p>
+<dl><dt><b>get() -&gt; (value)</b></dt><a name="label444"></a><dd>Returns the value of the register, without any other effects. If the
+register contains fields, this is done by calling the <b><i>get</i></b>
+method on each <b>field</b> of the register and composing the
+results into a single value.</dd><dt><b>set(value)</b></dt><a name="label445"></a><dd>Sets the value of the register, without any other effects. If the
+register contains fields, this is done by calling the <b><i>set</i></b>
+method on each <b>field</b> of the register, for the
+corresponding components of the value.</dd><dt><b>read_access(generic_transaction_t *memop, msb1, lsb) -&gt; (value)</b></dt><a name="label446"></a><dd>Performs a read access by invoking the <b><i>read</i></b> method of
+the register, or if the register contains fields, by invoking the
+<b><i>read_access</i></b> method on each of its fields and composing the
+results into a single value. For a partial access, only affected
+fields are read.  The fields are read in order, starting with the
+field containing the least significant bits of the register and ending
+with the field containing the most significant bits of the
+register. Finally, the <b><i>after_read</i></b> method of the register is
+called. This method is called from the <b><i>access</i></b> method of the
+bank.</dd><dt><b>write_access(generic_transaction_t *memop, msb1, lsb, value)</b></dt><a name="label447"></a><dd>Performs a write access by invoking the <b><i>write</i></b> method of
+the register, or if the register contains fields, by invoking the
+<b><i>write_access</i></b> method on each of its fields for the
+corresponding components of the value. For a partial access, only
+affected fields are written. The fields are written in order, starting
+with the field containing the least significant bits of the register
+and ending with the field containing the most significant bits of the
+register. Finally, the <b><i>after_write</i></b> method of the register
+is called. This method is called from the <b><i>access</i></b> method of
+the bank.</dd><dt><b>read() -&gt; (value)</b></dt><a name="label448"></a><dd>Called by <b><i>read_access</i></b> for reading the actual value of the
+register. This is not used if the register contains fields.</dd><dt><b>write(value)</b></dt><a name="label449"></a><dd>Called by <b><i>write_access</i></b> for performing the actual write to
+the register. This is not used if the register contains fields.</dd><dt><b>after_read(generic_transaction_t *memop)</b></dt><a name="label450"></a><dd>Called at the very end of the <b><i>read_access</i></b> method. The
+default implementation does nothing.</dd><dt><b>after_write(generic_transaction_t *memop)</b></dt><a name="label451"></a><dd>Called at the very end of the <b><i>write_access</i></b> method. The
+default implementation does nothing.</dd><dt><b>hard_reset_register()</b></dt><a name="label452"></a><dd>Called automatically from the <b><i>hard_reset</i></b> method of the
+bank. Invokes the <b><i>hard_reset</i></b> method of the register, or if the
+register contains fields, invokes the <b><i>hard_reset</i></b> method on each
+of its fields. Finally, the <b><i>after_hard_reset</i></b> method of the
+register is called.</dd><dt><b>soft_reset_register()</b></dt><a name="label453"></a><dd>Called automatically from the <b><i>soft_reset</i></b> method of the
+bank. Invokes the <b><i>soft_reset</i></b> method of the register, or if the
+register contains fields, invokes the <b><i>soft_reset</i></b> method on each
+of its fields. Finally, the <b><i>after_soft_reset</i></b> method of the
+register is called.</dd><dt><b>hard_reset()</b></dt><a name="label454"></a><dd>Called by <b><i>hard_reset_register</i></b> for performing the actual
+hard reset. This is not used if the register contains fields.</dd><dt><b>soft_reset()</b></dt><a name="label455"></a><dd>Called by <b><i>hard_reset_register</i></b> for performing the actual
+soft reset. This is not used if the register contains fields.</dd><dt><b>after_hard_reset()</b></dt><a name="label456"></a><dd>Called at the very end of the <b><i>hard_reset</i></b> method. The
+default implementation does nothing.</dd><dt><b>after_soft_reset()</b></dt><a name="label457"></a><dd>Called at the very end of the <b><i>soft_reset</i></b> method. The
+default implementation does nothing.</dd><dt><b>get_attribute -&gt; (attr_value_t value)</b></dt><a name="label458"></a><dd>Not intended to be used directly. Called by Simics for reading the
+value of the register as an attribute. Calls the <b><i>get</i></b> method to
+read the value, and handles any exceptions that may occur.</dd><dt><b>set_attribute(attr_value_t value) -&gt; (set_error_t err)</b></dt><a name="label459"></a><dd>Not intended to be used directly. Called by Simics for setting the
+value of the register as an attribute. Calls the <b><i>set</i></b> method to
+set the value, and finally calls the <b><i>after_set</i></b> method if
+<b><i>set</i></b> succeeded. Handles any exceptions that may occur.</dd><dt><b>after_set()</b></dt><a name="label460"></a><dd>Called by <b><i>set_attribute</i></b> just after the <b><i>set</i></b> method
+has been called, if it succeeded. The default implementation does
+nothing.</dd></dl>
+<p>
+
+<a name="label461"></a><h4 class="jdocu">5.2.6&nbsp;&nbsp;&nbsp;Field Methods</h4 class="jdocu">
+
+
+<a name="label462"></a>
+<p>
+<dl><dt><b>get() -&gt; (value)</b></dt><a name="label463"></a><dd>Returns the value of the field, without any other effects.</dd><dt><b>set(value)</b></dt><a name="label464"></a><dd>Sets the value of the field, without any other effects.</dd><dt><b>read() -&gt; (value)</b></dt><a name="label465"></a><dd>Performs an actual read from the field. Called from the
+<b><i>read_access</i></b> method.</dd><dt><b>write(value)</b></dt><a name="label466"></a><dd>Performs an actual write to the field. Called from the
+<b><i>write_access</i></b> method.  The <b><i>write</i></b> functions
+for the fields in a register are called in a defined order.  
+The field containing the least significant bits of the register are
+called first, and the field containing the most significant bits are
+called last. See the documentation for <b><i>write_access</i></b> on a
+register for more information.</dd><dt><b>read_access() -&gt; (value)</b></dt><a name="label467"></a><dd>Usually not used directly. Performs a read access on the field by
+calling the <b><i>read</i></b> method. Called from the <b><i>read_access</i></b>
+method of the containing register.</dd><dt><b>write_access(value)</b></dt><a name="label468"></a><dd>Usually not used directly. Performs a write access to the field by
+calling the <b><i>write</i></b> method. Called from the <b><i>write_access</i></b>
+method of the containing register.</dd><dt><b>hard_reset()</b></dt><a name="label469"></a><dd>Performs a hard reset on the field. Called from the
+<b><i>hard_reset_register</i></b> method of the containing register.</dd><dt><b>soft_reset()</b></dt><a name="label470"></a><dd>Performs a soft reset on the field. Called from the
+<b><i>soft_reset_register</i></b> method of the containing register.</dd></dl>
+<p>
+
+<a name="label471"></a><h4 class="jdocu">5.2.7&nbsp;&nbsp;&nbsp;Connect Methods</h4 class="jdocu">
+
+
+<a name="label472"></a>
+<p>
+<dl><dt><b>after_set()</b></dt><a name="label473"></a><dd>Called at the very end of the <b><i>set_attribute</i></b> method. The
+default implementation does nothing.</dd><dt><b>get_attribute -&gt; (attr_value_t value)</b></dt><a name="label474"></a><dd>Not intended to be used directly. Called by Simics for reading the
+value of the connect as an attribute.</dd><dt><b>set_attribute(attr_value_t value) -&gt; (set_error_t err)</b></dt><a name="label475"></a><dd>Not intended to be used directly. Called by Simics for setting the
+value of the connect as an attribute. Afterwards calls the
+<b><i>after_set</i></b> method. Handles any exceptions that may occur.</dd></dl>
+<p>
+
+<a name="label476"></a><h4 class="jdocu">5.2.8&nbsp;&nbsp;&nbsp;Interface Methods</h4 class="jdocu">
+
+
+<a name="label477"></a>
+<p>
+Interfaces have no documented standard methods in DML 1.0.
+<p>
+
+<a name="label478"></a><h4 class="jdocu">5.2.9&nbsp;&nbsp;&nbsp;Event Methods</h4 class="jdocu">
+
+
+<a name="label479"></a>
+<p>
+<dl><dt><b>event(void *data)</b></dt><a name="label480"></a><dd>The method called when the event is triggered. The default event
+method logs a short info message noting that the event occurred.</dd><dt><b>get_event_info(void *data) -&gt; (attr_value_t info)</b></dt><dd>This method is called once for each pending event instance when
+saving a checkpoint.  It should create an attribute value that can be
+used to restore the event.  The <i>data</i> parameter is the
+user data provided in the <b><i>post</i></b> call.  The default
+implementation always returns a nil value.</dd><dt><b>set_event_info(attr_value_t info) -&gt; (void *data)</b></dt><dd>This method is used to restore event information when loading a
+checkpoint.  It should use the attribute value to create a user data
+pointer, as if it had been provided in a <b><i>post</i></b>. The default
+implementation only checks that the checkpointed information is
+nil.</dd><dt><b>post(time, void *data)</b></dt><a name="label481"></a><dd>Posts the event on the associated queue of the device, with the
+specified time (relative to the current time, in the unit specified by
+the <tt>timebase</tt> parameter), and additional data.</dd><dt><b>post_on_queue(conf_object_t *queue, when, void *data)</b></dt><a name="label482"></a><dd>Like <b><i>post</i></b>, but posts the event on the specified queue.
+This is very rarely needed, since the events should usually always be
+posted to the queue that the device belongs to, as configured by the
+<i>queue</i> attribute.</dd><dt><b>remove(void *data)</b></dt><a name="label483"></a><dd>Removes the event from the queue.</dd><dt><b>posted(void *data) -&gt; (flag)</b></dt><a name="label484"></a><dd>Returns <tt>true</tt> if the event is in the queue, and
+<tt>false</tt> otherwise.</dd><dt><b>next(void *data) -&gt; (time)</b></dt><a name="label485"></a><dd>Returns the time to the next occurrence of the event in the queue
+(relative to the current time, in the unit specified by the
+<tt>timebase</tt> parameter). If there is no such event in the queue, a
+negative value is returned.</dd></dl>
+<p>
+
+<a name="label486"></a><h4 class="jdocu">5.2.10&nbsp;&nbsp;&nbsp;Implement Methods</h4 class="jdocu">
+
+
+<a name="label487"></a>
+<p>
+Implements have no documented standard methods in DML 1.0.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+</body>
+</html>

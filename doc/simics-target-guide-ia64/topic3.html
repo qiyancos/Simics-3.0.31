@@ -1,0 +1,1310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Supported Components</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(25, true);
+</script>
+<a name="label27"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Supported Components</h2 class="jdocu">
+
+
+<p>
+The following sections list components that are supported for the IA64-460GX
+architecture. There also exist other components in Simics, such as various
+PCI devices, that may work for IA64-460GX but that have not been tested.
+<p>
+The default machines are constructed from components in the
+<tt>-system.include</tt> files in
+<tt>[simics]/targets/ia64-460gx/</tt>. See the
+Configuration and Checkpointing chapter in the Simics User Guide for
+information on how to define your own machine, or make modifications
+to an existing machine.
+<p>
+
+<a name="label28"></a><h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;Ia64 Components</h3 class="jdocu">
+
+
+<a name="label29"></a><h4 class="jdocu">4.1.1&nbsp;&nbsp;&nbsp;ia64-460gx-system</h4 class="jdocu">
+
+
+<a name="label30"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "ia64-460gx-system" component represents a system based on the Itanium processor with the 460GX chipset</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>memory_megs</i></b></dt><a name="label31"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The amount of RAM in mega-bytes in the machine.</dd></dl>
+<dl><dt><b><i>processor_list</i></b></dt><a name="label32"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o|n{32}]</b>.
+<p>
+Processors connected to the system.</dd></dl>
+<dl><dt><b><i>rtc_time</i></b></dt><a name="label33"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The date and time of the Real-Time clock.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label34"></a><a name="label35"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-ia64-460gx-system</b> [<i>"name"</i>] <i>memory_megs</i> <i>"rtc_time"</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "ia64-460gx-system". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label36"></a><a name="label37"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-ia64-460gx-system</b> [<i>"name"</i>] <i>memory_megs</i> <i>"rtc_time"</i> </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "ia64-460gx-system". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label38"></a><a name="label39"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ia64-460gx-system&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label40"></a><a name="label41"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ia64-460gx-system&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">cpu[0-31]</td><td class="jdocu_noborder">ia64-cpu</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">pci-slot[2-23]</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label42"></a><h4 class="jdocu">4.1.2&nbsp;&nbsp;&nbsp;itanium-cpu</h4 class="jdocu">
+
+
+<a name="label43"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "itanium-cpu" component represents an Itanium processor</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cpu_frequency</i></b></dt><a name="label44"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor frequency in MHz.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label45"></a><a name="label46"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-itanium-cpu</b> [<i>"name"</i>] <i>cpu_frequency</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "itanium-cpu". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label47"></a><a name="label48"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;itanium-cpu&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label49"></a><a name="label50"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;itanium-cpu&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">backplane</td><td class="jdocu_noborder">ia64-cpu</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label51"></a><h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;PCI Device Components</h3 class="jdocu">
+
+
+<a name="label52"></a><h4 class="jdocu">4.2.1&nbsp;&nbsp;&nbsp;pci-sym53c810</h4 class="jdocu">
+
+
+<a name="label53"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C810" component represents a SYM53C810PCI based SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label54"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label55"></a><a name="label56"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c810</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c810". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label57"></a><a name="label58"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c810&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label59"></a><a name="label60"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c810&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label61"></a><h4 class="jdocu">4.2.2&nbsp;&nbsp;&nbsp;pci-sym53c875</h4 class="jdocu">
+
+
+<a name="label62"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-sym53C875" component represents a SYM53C875PCI based SCSI controller.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label63"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 SCSI BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label64"></a><a name="label65"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-sym53c875</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-sym53c875". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label66"></a><a name="label67"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c875&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label68"></a><a name="label69"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-sym53c875&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label70"></a><h4 class="jdocu">4.2.3&nbsp;&nbsp;&nbsp;pci-dec21143</h4 class="jdocu">
+
+
+<a name="label71"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-dec21143" component represents a DEC21143 PCI based fast Ethernet adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label72"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The x86 BIOS file to use.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label73"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The MAC address of the Ethernet adapter.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label74"></a><a name="label75"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-dec21143</b> [<i>"name"</i>] <i>"mac_address"</i> [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-dec21143". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label76"></a><a name="label77"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21143&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label78"></a><a name="label79"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-dec21143&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">ethernet</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label80"></a><h4 class="jdocu">4.2.4&nbsp;&nbsp;&nbsp;pci-ragexl</h4 class="jdocu">
+
+
+<a name="label81"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pci-ragexl" component represents a Rage XL PCI based VGA compatible graphics adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label82"></a><a name="label83"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pci-ragexl</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pci-ragexl". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label84"></a><a name="label85"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-ragexl&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label86"></a><a name="label87"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pci-ragexl&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">pci-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label88"></a><h3 class="jdocu">4.3&nbsp;&nbsp;&nbsp;PC Legacy Components</h3 class="jdocu">
+
+
+<a name="label89"></a><h4 class="jdocu">4.3.1&nbsp;&nbsp;&nbsp;ps2-keyboard-mouse</h4 class="jdocu">
+
+
+<a name="label90"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "ps2-keyboard-mouse" component represents the PS/2 8042 keyboard controller with a connected 105 key keyboard and three button mouse.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label91"></a><a name="label92"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-ps2-keyboard-mouse</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "ps2-keyboard-mouse". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label93"></a><a name="label94"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ps2-keyboard-mouse&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label95"></a><a name="label96"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;ps2-keyboard-mouse&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">reset</td><td class="jdocu_noborder">x86-reset-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">kbd-console</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">down</td></tr>
+<tr><td class="jdocu_noborder">mse-console</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label97"></a><h4 class="jdocu">4.3.2&nbsp;&nbsp;&nbsp;pc-dual-serial-ports</h4 class="jdocu">
+
+
+<a name="label98"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "pc-dual-serial-ports" component represents two PC compatible serial ports.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label99"></a><a name="label100"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-pc-dual-serial-ports</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "pc-dual-serial-ports". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label101"></a><a name="label102"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-dual-serial-ports&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label103"></a><a name="label104"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;pc-dual-serial-ports&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">com[1-2]</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label105"></a><h4 class="jdocu">4.3.3&nbsp;&nbsp;&nbsp;isa-vga</h4 class="jdocu">
+
+
+<a name="label106"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "isa-vga" component represents an ISA bus based VGA compatible graphics adapter.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bios</i></b></dt><a name="label107"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The VGA BIOS file to use.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label108"></a><a name="label109"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-isa-vga</b> [<i>"name"</i>] [<i>"bios"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "isa-vga". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label110"></a><a name="label111"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;isa-vga&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label112"></a><a name="label113"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;isa-vga&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">isa-bus</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">console</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">down</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label114"></a><h3 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Standard Components</h3 class="jdocu">
+
+
+<a name="label115"></a><h4 class="jdocu">4.4.1&nbsp;&nbsp;&nbsp;std-ethernet-link</h4 class="jdocu">
+
+
+<a name="label116"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-ethernet-link" component represents a standard Ethernet link.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>frame_echo</i></b></dt><a name="label117"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set this attribute to echo frames back to the sender. Default is not to echo frames.</dd></dl>
+<dl><dt><b><i>link_name</i></b></dt><a name="label118"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The name to use for the <b>ethernet-link</b> object. An error will be raised at instantiation time if the link cannot be given this name.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label119"></a><a name="label120"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-ethernet-link</b> [<i>"name"</i>] [<i>"link_name"</i>] [<i>frame_echo</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-ethernet-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label121"></a><a name="label122"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-ethernet-link</b> [<i>"name"</i>] [<i>"link_name"</i>] [<i>frame_echo</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-ethernet-link". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label123"></a><a name="label124"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ethernet-link&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label125"></a><a name="label126"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-ethernet-link&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">ethernet-link</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label127"></a><h4 class="jdocu">4.4.2&nbsp;&nbsp;&nbsp;std-service-node</h4 class="jdocu">
+
+
+<a name="label128"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-service-node" component represents a network service node that can be connected to Ethernet links to provide services such as DNS, DHCP/BOOTP, RARP and TFTP. A service node component does not have any connectors by default. Instead, connectors have to be added using the <b>&lt;std-service-node&gt;.add-connector</b> command.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>dynamic_connectors</i></b></dt><a name="label129"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[iss]*]</b>.
+<p>
+List of user added connectors</dd></dl>
+<dl><dt><b><i>next_connector_id</i></b></dt><a name="label130"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Next service-node device ID.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label131"></a><a name="label132"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-service-node</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-service-node". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label133"></a><a name="label134"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-service-node</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-service-node". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label135"></a><a name="label136"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.add-connector</b> <i>"ip"</i> [<i>"netmask"</i>] </b></dt><dd class="jdocu_di">
+Adds a connector to the service-node with specified IP address and netmask. A connector must be created for the service-node before an Ethernet link can be connected to it. The <i>ip</i> argument is the IP address that the service node will use on the link. The <i>netmask</i> argument is optional, and defaults to <tt>255.255.255.0</tt>.<br>The name of the new connector is returned.</dd>
+
+</dl>
+
+
+
+<a name="label137"></a><a name="label138"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label139"></a><a name="label140"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-service-node&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+</dl>
+
+<a name="label141"></a><h4 class="jdocu">4.4.3&nbsp;&nbsp;&nbsp;std-scsi-bus</h4 class="jdocu">
+
+
+<a name="label142"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-bus" component represents a 16 slot SCSI bus.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label143"></a><a name="label144"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-bus</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-bus". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label145"></a><a name="label146"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-bus&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label147"></a><a name="label148"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-bus&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">any</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label149"></a><h4 class="jdocu">4.4.4&nbsp;&nbsp;&nbsp;std-scsi-disk</h4 class="jdocu">
+
+
+<a name="label150"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-disk" component represents a SCSI-2 disk.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>file</i></b></dt><a name="label151"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+File with disk contents for the full disk Either a raw file or a CRAFF file.</dd></dl>
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label152"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+<dl><dt><b><i>size</i></b></dt><a name="label153"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the SCSI disk in bytes.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label154"></a><a name="label155"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-disk</b> [<i>"name"</i>] <i>scsi_id</i> <i>size</i> [<i>"file"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-disk". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label156"></a><a name="label157"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-disk&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label158"></a><a name="label159"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-disk&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label160"></a><h4 class="jdocu">4.4.5&nbsp;&nbsp;&nbsp;std-scsi-cdrom</h4 class="jdocu">
+
+
+<a name="label161"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-scsi-cdrom" component represents a SCSI-2 CD-ROM.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>scsi_id</i></b></dt><a name="label162"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The ID on the SCSI bus.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label163"></a><a name="label164"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-scsi-cdrom</b> [<i>"name"</i>] <i>scsi_id</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-scsi-cdrom". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+
+<a name="label165"></a><a name="label166"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-cdrom&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label167"></a><a name="label168"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-scsi-cdrom&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">scsi-bus</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label169"></a><h4 class="jdocu">4.4.6&nbsp;&nbsp;&nbsp;std-text-console</h4 class="jdocu">
+
+
+<a name="label170"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-console" component represents a serial text console.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>bg_color</i></b></dt><a name="label171"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The background color.</dd></dl>
+<dl><dt><b><i>fg_color</i></b></dt><a name="label172"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The foreground color.</dd></dl>
+<dl><dt><b><i>height</i></b></dt><a name="label173"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The height of the console window.</dd></dl>
+<dl><dt><b><i>title</i></b></dt><a name="label174"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The Window title.</dd></dl>
+<dl><dt><b><i>width</i></b></dt><a name="label175"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The width of the console window.</dd></dl>
+<dl><dt><b><i>win32_font</i></b></dt><a name="label176"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console on Windows host.</dd></dl>
+<dl><dt><b><i>x11_font</i></b></dt><a name="label177"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Font to use in the console when using X11 (Linux/Solaris host).</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label178"></a><a name="label179"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label180"></a><a name="label181"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-console</b> [<i>"name"</i>] [<i>"title"</i>] [<i>"bg_color"</i>] [<i>"fg_color"</i>] [<i>"x11_font"</i>] [<i>"win32_font"</i>] [<i>width</i>] [<i>height</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label182"></a><a name="label183"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label184"></a><a name="label185"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label186"></a><h4 class="jdocu">4.4.7&nbsp;&nbsp;&nbsp;std-server-console</h4 class="jdocu">
+
+
+<a name="label187"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-server-console" component represents a serial console accessible from the host using telnet.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>telnet_port</i></b></dt><a name="label188"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+TCP/IP port to connect the telnet service of the console to.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label189"></a><a name="label190"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-server-console</b> [<i>"name"</i>] <i>telnet_port</i> </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-server-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label191"></a><a name="label192"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-server-console</b> [<i>"name"</i>] <i>telnet_port</i> </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-server-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label193"></a><a name="label194"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-server-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label195"></a><a name="label196"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-server-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">serial</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label197"></a><h4 class="jdocu">4.4.8&nbsp;&nbsp;&nbsp;std-graphics-console</h4 class="jdocu">
+
+
+<a name="label198"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-graphics-console" component represents a graphical console for displaying output from a simulated graphics adapters and getting input for mouse and keyboard devices.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>window</i></b></dt><a name="label199"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Try to open window if TRUE (default). FALSE disabled the window.</dd></dl>
+</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label200"></a><a name="label201"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-graphics-console</b> [<i>"name"</i>] [<i>window</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label202"></a><a name="label203"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-graphics-console</b> [<i>"name"</i>] [<i>window</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label204"></a><a name="label205"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-graphics-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label206"></a><a name="label207"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-graphics-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">mouse</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label208"></a><h4 class="jdocu">4.4.9&nbsp;&nbsp;&nbsp;std-text-graphics-console</h4 class="jdocu">
+
+
+<a name="label209"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+The "std-text-graphics-console" component represents a text console for use with VGA instead of a graphics console.</dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+
+
+<a name="label210"></a><a name="label211"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>create-std-text-graphics-console</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates a non-instantiated component of the class "std-text-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label212"></a><a name="label213"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>new-std-text-graphics-console</b> [<i>"name"</i>] </b></dt><dd class="jdocu_di">
+Creates an instantiated component of the class "std-text-graphics-console". If <i>name</i> is not specified, the component will get a class-specific default name. The other arguments correspond to class attributes.</dd>
+
+</dl>
+
+
+
+<a name="label214"></a><a name="label215"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-graphics-console&gt;.info</b></b></dt><dd class="jdocu_di">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label216"></a><a name="label217"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b><b>&lt;std-text-graphics-console&gt;.status</b></b></dt><dd class="jdocu_di">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+<p>
+</dd>
+
+
+<dt class="jdocu_di"><b>Connectors</b></dt><dd class="jdocu_di">
+<br>
+<table>
+<tr><td class="jdocu_noborder"><b>Name</b></td><td class="jdocu_noborder"><b>Type</b></td><td class="jdocu_noborder"><b>Direction</b></td></tr>
+<tr><td class="jdocu_noborder">device</td><td class="jdocu_noborder">graphics-console</td><td class="jdocu_noborder">up</td></tr>
+<tr><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">keyboard</td><td class="jdocu_noborder">up</td></tr>
+</table>
+</dd>
+
+</dl>
+
+
+<a name="label218"></a><h3 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Base Components</h3 class="jdocu">
+
+
+The base components are abstract classes that contain generic component
+attributes and commands available for all components.
+<a name="label219"></a><h4 class="jdocu">4.5.1&nbsp;&nbsp;&nbsp;component</h4 class="jdocu">
+
+
+<a name="label220"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Base component class, should not be instantiated.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>connections</i></b></dt><a name="label221"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[sos]*]</b>.
+<p>
+List of connections for the component. The format is a list of lists, each containing the name of the connector, the connected component, and the name of the connector on the other component.</dd></dl>
+<dl><dt><b><i>connectors</i></b></dt><a name="label222"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>D</b>.
+<p>
+Dictionary of dictionaries with connectors defined by this component class, indexed by name. Each connector contains the name of the connector "type", a "direction" ("up", "down" or "any"), a flag indicating if the connector can be "empty", another flag that is set if the connector is "hotplug" capable, and finally a flag that is TRUE if muliple connections to this connector is allowed.</dd></dl>
+<dl><dt><b><i>instantiated</i></b></dt><a name="label223"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE if the component has been instantiated.</dd></dl>
+<dl><dt><b><i>object_list</i></b></dt><a name="label224"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>D</b>.
+<p>
+Dictionary with objects that the component consists of.</dd></dl>
+<dl><dt><b><i>object_prefix</i></b></dt><a name="label225"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Object prefix string used by the component. The prefix is typically set by the <b>set-component-prefix</b> command before the component is created.</dd></dl>
+<dl><dt><b><i>top_component</i></b></dt><a name="label226"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The top level component. Attribute is not valid until the component has been instantiated.</dd></dl>
+<dl><dt><b><i>top_level</i></b></dt><a name="label227"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Set to TRUE for top-level components, i.e. the root of a hierarchy.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label228"></a><h4 class="jdocu">4.5.2&nbsp;&nbsp;&nbsp;top-component</h4 class="jdocu">
+
+
+<a name="label229"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Base top-level component class, should not be instantiated.</dd>
+
+
+<dt class="jdocu_di"><b>Attributes</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>components</i></b></dt><a name="label230"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of components below the the top-level component. This attribute is not valid until the object has been instantiated.</dd></dl>
+<dl><dt><b><i>cpu_list</i></b></dt><a name="label231"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of all processors below the the top-level component. This attribute is not valid until the object has been instantiated.</dd></dl>
+</dd>
+
+</dl>
+
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

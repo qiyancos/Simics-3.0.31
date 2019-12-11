@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_rewind()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(79, true);
+</script>
+<a name="label391"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_rewind()</h4 class="jdocu">
+
+<a name="label392"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label393"></a><b>SIM_instruction_rewind</b> &#8212; rewind phase of instructions</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_rewind(instruction_id_t ii, instruction_phase_t phase);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function is used to undo the action taken by one or more phases of an
+   instruction. Contrary to <b><i>SIM_instruction_squash</i></b>, the instruction
+   is not removed from the tree and deallocated. This can by useful if for
+   example speculative data was used during a phase and it has been proved
+   wrong later. It is then possible to rewind that phase and try again.
+<p>
+   <i>phase</i> is the phase to rewind instruction
+   <i>ii</i> to.
+<p>
+   Currently the only phase that can be rewinded is the execution phase.
+   <p>
+   It is not possible to rewind a stalling instruction. The stalling
+   must be finished before the instruction can be rewinded.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+Returns Sim_IE_OK on success, Sim_IE_Illegal_Rewind_Phase 
+                           if this phase cannot be rewinded, or Sim_IE_Stalling if the 
+                           instruction is stalling.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+</body>
+</html>

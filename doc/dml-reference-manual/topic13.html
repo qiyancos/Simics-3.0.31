@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Connects</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(21, true);
+</script>
+<a name="label97"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+<h3 class="jdocu">3.9&nbsp;&nbsp;&nbsp;Connects</h3 class="jdocu">
+
+
+<p>
+A <em>connect</em> object is a container for a reference to an arbitrary
+Simics configuration object. An attribute with the same name as the
+connect, that can be assigned a value of type "Simics object", is added
+to the Simics configuration class generated from the device model. A
+connect is thus similar to a simple <b>attribute</b> object.
+<p>
+Typically, the connected object is expected to implement one or more
+particular Simics-interfaces, such as <tt>simple_interrupt</tt> (see the
+<em>Simics Reference Manual</em> for details).
+<p>
+Initialization of the connect (i.e., setting the object reference) is
+typically done from outside the device, usually in a Simics
+configuration file. As for attributes, the parameter
+<tt>configuration</tt> controls whether the value must be initialized
+when the object is created, and whether it is automatically saved when a
+checkpoint is created; see Section <a class="jdocu" href="topic30.html#label383">5.1.8</a>.
+<p>
+<a name="label98"></a><h4 class="jdocu">3.9.1&nbsp;&nbsp;&nbsp;Interfaces</h4 class="jdocu">
+
+
+<p>
+In order to use the Simics interfaces that a connected object
+implements, they must be declared within the <b>connect</b>.
+This is done through <em>interface</em> objects, which name the expected
+interfaces and may also specify additional properties.
+<p>
+An important property of an interface object is whether or not a
+connected object is <em>required</em> to implement the interface. This
+can be controlled through the interface parameter <tt>required</tt>,
+which is <tt>true</tt> by default; see Section <a class="jdocu" href="topic30.html#label391">5.1.9</a>. Attempting to connect an object that does not fulfill the
+requirement will cause a runtime error.
+<p>
+By default, the C type of the Simics interface corresponding to a
+particular interface object is assumed to be the name of the object
+itself with the string <tt>"_interface_t"</tt> appended. (The C type is
+typically a <tt>typedef</tt>:ed name for a struct containing function
+pointers). This can be changed by specifying an explicit <tt>c_type</tt>
+parameter in the interface object.
+<p>
+The following is an example of a connect with two interfaces, one of
+which is not required:
+<pre class="jdocu_small" style="color: black">
+    connect plugin {
+      interface serial_device;
+      interface rs232_device { parameter required = false; }
+    }
+</pre>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+</body>
+</html>

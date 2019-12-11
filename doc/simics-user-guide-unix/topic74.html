@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics's Search Path</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(200, true);
+</script>
+<a name="label473"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic73.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic75.html">Next</a></span></p>
+<h4 class="jdocu">15.4&nbsp;&nbsp;&nbsp;Simics's Search Path</h4 class="jdocu">
+
+
+<p>
+Many Simics commands will look up files based on the current directory. This
+may be impractical when writing scripts or building new configurations, so
+Simics provides two features to ease directory handling:
+<p>
+<ul>
+<p>
+<li>Simics recognizes some special path markers that are translated before
+being used:
+<p>
+<dl><dt><b><tt>%simics%</tt></b></dt><dd>Translated to the current Simics
+installation directory, so that
+<tt>%simics%/scripts/foo.simics</tt> will be translated to, for
+example, 
+<tt>/home/joe/simics/scripts/foo.simics</tt>.
+Note that
+if you change the version of Simics you are using,
+<tt>%simics%</tt> will change as well, so you should use it to
+refer only to files that you know are present in all Simics
+versions.</dd>.<dt><b><tt>%script%</tt></b></dt><dd>Translated to the directory where the
+currently running script is located. A possible usage is to let a script call
+another one in the same directory, independently of what the current directory
+is.
+<p>
+For example, if the directory
+<tt>/home/joe/scripts/</tt>
+contains the scripts <tt>foo.simics</tt> and
+<tt>bar.simics</tt>, even if the user
+uses Simics with 
+<tt>/home/joe/workspace/</tt>
+as current directory, it
+will be possible for <tt>foo.simics</tt> to call <tt>bar.simics</tt> by
+issuing the command:
+<p>
+<pre class="jdocu_small" style="color: black">run-command-file %script%/bar.simics</pre></dd></dl> 
+<p>
+<tt>%simics%</tt> and <tt>%script%</tt> are always translated to
+absolute paths, so they never interact with the next feature, called
+<em>Simics's search path</em>.</li>
+<p>
+<li>Simics has a list of paths called <em>Simics's search path</em> where files
+will be looked up when using some specific commands (among others,
+<b>load-binary</b>, <b>load-file</b>, <b>run-command-file</b>, and
+<b>run-python-file</b>). The file is first looked up in the current
+directory, then in all entries of Simics's search path, in order.
+<p>
+Let us assume for example that Simics's search path contains<br>
+<tt>/home/joe/scripts/</tt> and that the current directory is
+<tt>/home/joe/workspace</tt>. If the command:
+<p>
+<pre class="jdocu_small" style="color: black">simics&gt; run-command-file test/start-test.simics</pre>
+<p>
+is issued, Simics will look for the following files to run:
+<p>
+<ol>
+<li><tt>/home/joe/workspace/test/start-test.simics</tt></li>
+<li><tt>/home/joe/scripts/test/start-test.simics</tt></li>
+</ol> </li>
+<p>
+</ul>
+<p>
+
+Simics's search path can be manipulated using the <b>add-directory</b>,
+<b>clear-directories</b> and <b>list-directories</b> commands. Simics's
+search path is also used when looking for images files belonging to checkpoints
+or new configuration. This is described in section <a class="jdocu" href="topic26.html#label127">Image Search Path</a>.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Although the Simics search path is saved in the <tt>sim</tt> object in
+checkpoints, allowing image files that were found through it to be opened again
+by the checkpoint, it is not available until the object creation phase. Module
+initialization code should not rely on the Simics path since that code is run
+before the <tt>sim</tt>object object from the checkpoint has been created.
+<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic73.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic75.html">Next</a></span></p>
+</body>
+</html>

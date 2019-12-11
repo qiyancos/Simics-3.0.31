@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(147, true);
+</script>
+<a name="label270"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic57.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic59.html">Next</a></span></p>
+<h3 class="jdocu">12.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+This chapter describes how to design and write new <a name="label271">components</a>. The
+reader is assumed to be familiar with Simics components and how they are used,
+as well as configuration classes, objects and attributes. The
+<em>Configuration and Checkpointing</em> chapter in the <em>Simics User
+Guide</em> contains relevant documentation.
+<p>
+<a name="label272"></a><h4 class="jdocu">12.1.1&nbsp;&nbsp;&nbsp;Component Basics</h4 class="jdocu">
+
+
+<p>
+Components are implemented in Python and are handled like any other Simics
+objects. While a component object represents a hardware unit such as a
+processor board, or PCI card, there are one or more configuration objects
+associated with it that implement the actual functionality.
+<p>
+Components can be created, deleted, and connected to and disconnected from each
+other. Each component defines a number of connectors that define how it can be
+connected to other components. Connectors have direction, up or down. As a
+result, the connected components form a tree-like hierarchy with a single
+<em>top-level</em> component. There are also special connectors that are
+neither up nor down: these connectors, called "any", can be used to connect
+component hierarchies together.  
+<a name="label273"></a><h4 class="jdocu">12.1.2&nbsp;&nbsp;&nbsp;Designing Components</h4 class="jdocu">
+
+
+<p>
+Before writing new components it is important to define the system component
+hierarchy. This includes deciding: what should the components contain; what
+connectors are needed between them; if any new connector types are needed; and
+in a large system, what component is the top-level one. A component should
+typically have connectors that correspond to real-world connections that are
+accessible to users. There is no point in having a connector between the
+processor and the motherboard if, for example, the processor is soldered to it
+and cannot be replaced. Connections on such a low level are handled by the
+configuration objects that actually model the hardware.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic57.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic59.html">Next</a></span></p>
+</body>
+</html>

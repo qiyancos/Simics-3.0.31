@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Hindsight</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(41, true);
+</script>
+<a name="label76"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic15.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic17.html">Next</a></span></p>
+<h4 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Hindsight</h4 class="jdocu">
+
+
+<p>
+<hr class="jdocu_note"><b>Note:</b> Hindsight requires a special license. This section can be
+skipped if Hindsight is not available.<hr class="jdocu_note">
+<p>
+<i>Hindsight</i> enables the simulation to run backwards in time. To enable
+Hindsight, we have to set an initial <i>time bookmark</i>.
+Time bookmarks are set with the <b>set-bookmark</b> command.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>set-bookmark booted</b>
+simics&gt;  <b>c</b>
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> Typing <b>c</b> is a shorthand for <b>continue</b>.
+<hr class="jdocu_note">
+<p>
+To demonstrate the possibilities Hindsight gives, we will accidentally
+remove an important file on the simulated system. Enter the following
+commands in the simulated system's terminal:
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>rm /bin/ls</b>
+root@firststeps: ~# <b>ls /</b>
+ls: No such file or directory
+</pre>
+<p>
+The program <b>ls</b> has been removed. You can no longer list
+the contents of a directory.
+Let us use Hindsight to recover <b>ls</b>.
+<p>
+<b>ptime</b> is a useful command that shows the number of executed
+instructions and the current simulated time.
+We will use it to show that the time have advanced backwards.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>[press control-C]</b>
+simics&gt;  <b>ptime</b>
+processor                 steps             cycles    time [s]
+cpu0                16667617210        16667617210     166.676
+simics&gt; 
+</pre>
+<p>
+The <b>skip-to</b> command can be used to quickly jump to a
+previous point in time.
+We will use the bookmark we created before as our
+time-travel destination.
+Note that it is not possible to reverse past the first bookmark.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>skip-to bookmark = booted</b>
+simics&gt;  <b>ptime</b>
+processor                 steps             cycles    time [s]
+cpu0                13586370338        13586370338     135.864
+simics&gt; 
+</pre>
+<p>
+The system is now in the state it was before the file was erased.
+Now, we run forward again.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>c</b>
+</pre>
+<p>
+When you type something in the terminal, you will notice that it
+does not respond any longer! Instead the same commands as before will
+be replayed.
+<p>
+This behavior is intentional, and keeps the deterministic property
+of the simulation,
+which is invaluable when debugging.
+Keystrokes, network traffic and any other input is replayed until
+the last known time is reached.
+<p>
+In our example, this is not what we want. To erase all knowledge
+about the future, run the <b>clear-recorder</b> command.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>[press control-C]</b>
+simics&gt;  <b>skip-to bookmark = booted</b>
+simics&gt;  <b>clear-recorder</b>
+Replay of recorded input finished; Simics is now running normally
+simics&gt;  <b>c</b>
+</pre>
+<p>
+Resume the simulation and enter the following command:
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>ls /</b>
+LICENSE     dev         host        lost+found  proc        tmp
+bin         etc         lib         mnt         root        usr
+boot        home        linuxrc     opt         sbin        var
+root@firststeps: ~#
+</pre>
+<p>
+<b>ls</b> works again!
+<p>
+You can read more about Hindsight in chapter
+<a class="jdocu" href="topic115.html#label573">22</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic15.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic17.html">Next</a></span></p>
+</body>
+</html>

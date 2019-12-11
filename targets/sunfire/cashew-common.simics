@@ -1,0 +1,16 @@
+if not defined rtc_time       {$rtc_time       = "2005-09-06 17:00:00 UTC"}
+if not defined create_network {$create_network = yes}
+
+###
+
+$disk_size = 8513945600
+
+run-command-file "%script%/sunfire-6500-system.include"
+
+instantiate-components
+
+$eth_comp = $sbusbrd
+$eth_cnt = ""
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/cashew-setup.include"

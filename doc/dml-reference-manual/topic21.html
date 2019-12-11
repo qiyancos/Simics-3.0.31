@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Parameter Declarations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(33, true);
+</script>
+<a name="label115"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+<h3 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Parameter Declarations</h3 class="jdocu">
+
+
+<a name="label116"></a>
+<p>
+A parameter declaration has the general form "<tt>parameter </tt><i>name</i><tt>
+</tt><i>specification</i><tt>;</tt>", where <tt></tt><i>specification</i><tt></tt> is
+either "<tt>= </tt><i>expr</i><tt></tt>" or "<tt>default </tt><i>expr</i><tt></tt>".
+For example:
+<pre class="jdocu_small" style="color: black">
+    parameter function = 1;
+    parameter byte_order default "little-endian";
+</pre>
+<p>
+A default value is overridden by an assignment (<tt>=</tt>). There can
+be at most one assignment, and at most one default value, for each
+parameter. Typically, a default value for a parameter is specified in a
+template, and the programmer may then choose to override it where the
+template is used. See Section <a class="jdocu" href="topic25.html#label144">4.9.2</a> for
+more information about templates.
+<p>
+The <tt></tt><i>specification</i><tt></tt> part is in fact optional; if omitted,
+it means that the parameter is declared to exist (and <em>must</em> be
+given a value, or the program will not compile). This is sometimes
+useful in templates, as in:
+<pre class="jdocu_small" style="color: black">
+    template constant {
+        parameter value;
+        method get -&gt; (v) {
+            v = $value;
+        }
+    }
+</pre>
+so that wherever the template <tt>constant</tt> is used, the programmer
+is also forced to define the parameter <tt>value</tt>. E.g.:
+<pre class="jdocu_small" style="color: black">
+    register r0 size 2 @ 0x0000 is (constant) {
+        parameter value = 0xffff;
+    }
+</pre>
+<p>
+Note that simply leaving out the parameter declaration from the template
+definition can have unwanted effects if the programmer forgets to
+specify its value where the template is used. At best, it will only
+cause a more obscure error message, such as "unknown identifier"; at
+worst, the scoping rules will select an unrelated definition of the same
+parameter name.
+<p>
+You may see the following special form in some standard library files:
+<pre class="jdocu_small" style="color: black">
+    parameter <i>name</i> auto;
+</pre>
+for example,
+<pre class="jdocu_small" style="color: black">
+    parameter parent auto;
+</pre>
+This is used to explicitly declare the built-in automatic parameters,
+and should never be used outside the libraries.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+</body>
+</html>

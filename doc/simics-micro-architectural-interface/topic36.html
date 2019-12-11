@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_get_reg_info()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(65, true);
+</script>
+<a name="label339"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_get_reg_info()</h4 class="jdocu">
+
+<a name="label340"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label341"></a><b>SIM_instruction_get_reg_info</b> &#8212; get info about instruction register</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">reg_info_t *
+SIM_instruction_get_reg_info(instruction_id_t ii, 
+                             int n);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function can by used to get information about which register
+   an instruction uses as input and/or output. The function takes as
+   arguments the instruction id, <i>ii</i>, and a number for the
+   <i>n</i>:th used register. If successful, a pointer to a
+   <tt>reg_info_t</tt> will be returned. The structure is only
+   available for immediate use. 0 is return if there is no n:th
+   register. Typically this function is used in a loop to retrieve all
+   registers until it returns 0.
+<p>
+   The <tt>reg_info_t</tt> is defined like this:
+<p>
+   <a name="label342"></a>
+<pre class="jdocu_small" style="color: black">struct reg_info {
+        register_type_t type;   /* register type */
+        register_id_t id;       /* register id */
+        unsigned input:1;       /* used as input */
+        unsigned output:1;      /* used as output */
+};</pre>
+
+<p>
+   The <tt>register_id_t</tt> refers to the different registers of
+   the architecture in question.
+   Only registers that are targets for register renaming are reported
+   by this function.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>General</b> If the instruction is not decoded.<br>
+                         <b>Index</b> Thrown if <i>ii</i> is
+                         illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+pointer to a <tt>reg_info_t</tt> structure or
+                           NULL if there is no n:th register.</dd>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic48.html#label387">SIM_instruction_read_input_reg</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic35.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic37.html">Next</a></span></p>
+</body>
+</html>

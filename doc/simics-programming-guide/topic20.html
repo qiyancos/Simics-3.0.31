@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Interfaces</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(49, true);
+</script>
+<a name="label98"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+<h3 class="jdocu">5.3&nbsp;&nbsp;&nbsp;Interfaces</h3 class="jdocu">
+
+
+<p>
+<a name="label99"></a><h4 class="jdocu">5.3.1&nbsp;&nbsp;&nbsp;Using Interfaces</h4 class="jdocu">
+
+
+<a name="label100"></a>
+<p>
+Using an interface in a module implemented in DML, is done by
+<em>connecting</em> an object to the device model you are developing,
+specifying which interfaces you are planning to use. 
+<p>
+The <tt>connect</tt> statement actually perform two steps at the same time: it
+defines an attribute that can take an object as a value, and it tells the DML
+compiler that a number of interfaces belonging to this object can be used in
+the current device model.
+<p>
+The following code will create an <i>irq_dev</i> attribute that accepts
+only objects implementing the <tt>simics_interrupt</tt> interface as a
+value.
+<p>
+<pre class="jdocu_small" style="color: black">
+connect irq_dev {
+    parameter documentation = "The device that interrupts are sent to.";
+    parameter configuration = "required";
+
+    interface simple_interrupt;
+}
+</pre>
+<p>
+Once an object has been connected, using the interfaces that were specified is
+simple:
+<p>
+<pre class="jdocu_small" style="color: black">
+    ...
+    if ($irq_raised == 0 &amp;&amp; irq == 1) {
+        log "info", 3: "Raising interrupt.";
+        $irq_dev.simple_interrupt.interrupt($irq_dev, $irq_level);
+    }
+    ...
+</pre>
+<p>
+
+<a name="label101"></a><h4 class="jdocu">5.3.2&nbsp;&nbsp;&nbsp;Implementing an Existing Interface</h4 class="jdocu">
+
+
+<p>
+Implementing an existing interface in DML is done with the <em>implement</em>
+statement, which contains the implementation of all the functions listed in the
+interface. The interface is automatically registered by the DML compiler so
+that other objects can use it on the current device model:
+<p>
+<pre class="jdocu_small" style="color: black">
+implement ethernet_device {
+    // Called when a frame is received from the network.
+    method receive_frame(conf_object_t *link, dbuffer_t *frame) {
+        inline $receive_packet(frame);
+    }
+
+    // Link speed negotiation functions. Unimplemented, we accept any speed.
+    method auto_neg_request(phy_speed_t req_speed)-&gt;(phy_speed_t speed) {
+        log "unimplemented", 2:
+            "Link auto negotiation request (0x%llx)", cast(req_speed, uint64);
+        speed = req_speed;
+    }
+    method auto_neg_reply(phy_speed_t speed) {
+        log "unimplemented", 2:
+            "Auto negotiation reply (0x%llx)", cast(speed, uint64);
+    }
+}
+</pre>
+<p>
+
+<a name="label102"></a><h4 class="jdocu">5.3.3&nbsp;&nbsp;&nbsp;Implementing an New Interface</h4 class="jdocu">
+
+
+<p>
+Implementing a new interface is pretty much the same as implementing an
+existing interface, except that you must declare the structure defining the
+interface first:
+<p>
+<pre class="jdocu_small" style="color: black">
+struct myifc_interface_t {
+    int (*my_function)(conf_object_t *o, int i);
+}
+
+implement myifc {
+    method my_function(int i) -&gt; (int j) {
+        j = i + 1;
+    }
+}
+</pre>
+<p>
+There are a few things to remember:
+<p>
+<ul>
+<p>
+<li>The <tt>implement</tt> statement assumes that an interface called
+<tt>foo</tt> is defined in a structure called
+<tt>foo_interface_t</tt>. In our case we define a structure called
+<tt>myifc_interface_t</tt> to implement the interface <tt>myifc</tt>. All the
+predefined Simics interfaces already follow to that rule.</li>
+<p>
+<li>The <tt>implement</tt> statement is done using DML <em>methods</em>, but
+the interface is declared in a C-like structure with C function pointers. This
+implies that all functions in the interface must take a <tt>conf_object_t
+*</tt> pointer as first argument, since that's the standard declaration
+implied by the keyword <tt>method</tt>. This argument corresponds to the object
+the interface is applied upon.</li>
+<p>
+<li>To share an interface definition between DML and C code, the structure
+definition must be moved in an external <tt>.h</tt> that will be included
+in both the C code and the <tt>%header</tt> statement of the DML code. Refer to
+the <em>DML Reference Manual</em> for more information.</li>
+<p>
+</ul>
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic19.html">Previous</a> - <a class="jdocu" href="topic17.html">Up</a> - <a class="jdocu" href="topic21.html">Next</a></span></p>
+</body>
+</html>

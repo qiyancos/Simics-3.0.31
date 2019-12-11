@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>AM79C960</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(501, true);
+</script>
+<a name="label3134"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+<h3 class="jdocu">AM79C960</h3 class="jdocu">
+
+
+<a name="label3135"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2524">AM79C960</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>AM79C960</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic495.html#label17725">ethernet_device</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The AM79C960 device is a 10Mbit/s Ethernet controller, also known as LANCE, or le on Sun machines. The AM79C960 can be connected to a real network using Simics central. Limitations:  The device does not support ethernet frames that are larger than the memory buffer size, and internal loopback is not implemented.
+
+</dd>
+
+</dl>
+<a name="label3136"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>add_crc_on_inject</i></b></dt><a name="label3137"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Frames injected using the 'inject_packet' will get a correctly calculated CRC added at the end when this attribute is set to 1 (default). When set to 0, the user has to supply a CRC field with the injected frame. Note that you must always provide room for the CRC field, even when this attribute is set to 1.</dd></dl>
+<dl><dt><b><i>csr0</i></b></dt><a name="label3138"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Control and status register 0.</dd></dl>
+<dl><dt><b><i>csr1</i></b></dt><a name="label3139"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Control and status register 1.</dd></dl>
+<dl><dt><b><i>csr2</i></b></dt><a name="label3140"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Control and status register 2.</dd></dl>
+<dl><dt><b><i>csr3</i></b></dt><a name="label3141"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Control and status register 3.</dd></dl>
+<dl><dt><b><i>current_packet</i></b></dt><a name="label3142"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+(Obsolete - see the "last-frame" attribute instead). The packet that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>initialized</i></b></dt><a name="label3143"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to non-zero when the device instance is initialized (boolean).</dd></dl>
+<dl><dt><b><i>inject_packet</i></b></dt><a name="label3144"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Data</b>.
+<p>
+Attribute used to send a packet to the network device. Writing this attribute at any time injects a new packet into the device (without involving the network simulation). Injecting a packet copies the packet data, allowing the caller to reuse or dispose of the buffer used for creating the packet, after the attribute is written.</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label3145"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Interrupt device implementing the simple-interrupt interface.</dd></dl>
+<dl><dt><b><i>irq_issued</i></b></dt><a name="label3146"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Keeps track of whether an interrupt is currently issued or not.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label3147"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt level.</dd></dl>
+<dl><dt><b><i>last_frame</i></b></dt><a name="label3148"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+The frame that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>last_rx</i></b></dt><a name="label3149"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Last receive descriptor.</dd></dl>
+<dl><dt><b><i>last_tx</i></b></dt><a name="label3150"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Last transmit descriptor.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label3151"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The Ethernet link that the network device is connected to.</dd></dl>
+<dl><dt><b><i>log_addr</i></b></dt><a name="label3152"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>i|d</b>.
+<p>
+64-bit logical address mask.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label3153"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|[i{6}]|n</b>.
+<p>
+Ethernet (MAC) address of the network interface.</dd></dl>
+<dl><dt><b><i>mac_read_only</i></b></dt><a name="label3154"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to 1, the mac address cannot be changed by the target software, i.e. it is set in the ROM.</dd></dl>
+<dl><dt><b><i>memory</i></b></dt><a name="label3155"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Memory space object used for DMA memory access.</dd></dl>
+<dl><dt><b><i>mode</i></b></dt><a name="label3156"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Mode register.</dd></dl>
+<dl><dt><b><i>model_crc</i></b></dt><a name="label3157"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to 1, the device will calculate and include an Ethernet CRC on all transmitted frames, and check the CRC on received frames.</dd></dl>
+<dl><dt><b><i>network</i></b></dt><a name="label3158"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Obsolete attribute. Use link instead.</dd></dl>
+<dl><dt><b><i>pkt_rec</i></b></dt><a name="label3159"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of received packets.</dd></dl>
+<dl><dt><b><i>pkt_snt</i></b></dt><a name="label3160"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of sent packets.</dd></dl>
+<dl><dt><b><i>poll_delay</i></b></dt><a name="label3161"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+Specifies how often (in seconds) that the device polls for new packets from the host to send out on the network.</dd></dl>
+<dl><dt><b><i>rap</i></b></dt><a name="label3162"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Register address port (RAP), selecting one of the control and status registers.</dd></dl>
+<dl><dt><b><i>recorder</i></b></dt><a name="label3163"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Recorder object that allows recording and later playback of network traffic to the interface.</dd></dl>
+<dl><dt><b><i>reliability</i></b></dt><a name="label3164"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+This value determined how reliable an established connection is. If set to N it means that with a probability of 1 out of N a package will be lost (not sent to the receiver). The default value is 0 which means that no packages will be lost.</dd></dl>
+<dl><dt><b><i>reliability_seed</i></b></dt><a name="label3165"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The seed value for the randomization of packet loss. See the reliability attribute</dd></dl>
+<dl><dt><b><i>rx_len</i></b></dt><a name="label3166"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Receive descriptor ring length.</dd></dl>
+<dl><dt><b><i>rx_ptr</i></b></dt><a name="label3167"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Receive descriptor ring address.</dd></dl>
+<dl><dt><b><i>send_delay</i></b></dt><a name="label3168"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+The time (in seconds) between a packet is sent from the device until the processor is notified with an interrupt.</dd></dl>
+<dl><dt><b><i>tx_len</i></b></dt><a name="label3169"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Transmit descriptor ring length.</dd></dl>
+<dl><dt><b><i>tx_ptr</i></b></dt><a name="label3170"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Transmit descriptor ring address.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label3171"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3173">connect</a></b></td><td class="jdocu_noborder">connect to a simulated Ethernet link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3175">disconnect</a></b></td><td class="jdocu_noborder">disconnect from simulated link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3177">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label3179">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label3172"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label3173"></a><a name="label3174"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;AM79C960&gt;.connect</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;AM79C960&gt;.connect</b> [-auto] (<i>link</i>|<i>"link-name"</i>) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Connect the device to a simulated Ethernet link.
+                The flag '-auto' is deprecated and shouldn't be used.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label3175">&lt;AM79C960&gt;.disconnect</a></dd>
+
+</dl>
+
+
+
+<a name="label3175"></a><a name="label3176"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;AM79C960&gt;.disconnect</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;AM79C960&gt;.disconnect</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Disconnect the device from a simulated Ethernet link.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label3173">&lt;AM79C960&gt;.connect</a></dd>
+
+</dl>
+
+
+
+<a name="label3177"></a><a name="label3178"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;AM79C960&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;AM79C960&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label3179"></a><a name="label3180"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;AM79C960&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;AM79C960&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic20.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic22.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,82 @@
+// usb.dml
+//
+// This module contains types needed when implementing usb devices.
+//
+
+dml 1.0;
+
+header %{
+#include <simics/devs/usb.h>
+%}
+
+
+extern usb_transfer_completion_t USB_Transfer_Completed;
+extern usb_transfer_completion_t USB_Transfer_Not_Ready;
+typedef int usb_transfer_completion_t;
+
+extern usb_direction_t USB_Direction_None;
+extern usb_direction_t USB_Direction_In;
+extern usb_direction_t USB_Direction_Out;
+typedef int usb_direction_t;
+
+extern usb_status_t USB_Status_Undef;
+extern usb_status_t USB_Status_Ack;
+extern usb_status_t USB_Status_Nak;
+extern usb_status_t USB_Status_Stall;
+typedef int usb_status_t;
+
+extern usb_type_t USB_Type_Control;
+extern usb_type_t USB_Type_Interrupt;
+extern usb_type_t USB_Type_Isochronous;
+extern usb_type_t USB_Type_Bulk;
+typedef int usb_type_t;
+
+extern usb_speed_t USB_Speed_Low;
+extern usb_speed_t USB_Speed_Full;
+extern usb_speed_t USB_Speed_High;
+typedef int usb_speed_t;
+
+typedef struct {
+        uint8  bmRequestType;
+        uint8  bRequest;
+        uint16 wValue;
+        uint16 wIndex;
+        uint16 wLength;
+} usb_device_request_t;
+
+typedef struct {
+        /* Endpoint/function specific information */
+        uint8                 function_address;
+        uint8                 endpoint_number;
+        /* Type specific information */
+        usb_type_t            type;
+        struct { // actually an union
+                usb_device_request_t   control_request;
+                nano_secs_t            periodic_time;
+        } u;
+        /* Data specific */
+        usb_direction_t       direction;
+        int                   size;
+        dbuffer_t             *buf;
+        /* Status */
+        usb_status_t          status;
+} usb_transfer_t;
+
+typedef struct {
+        usb_transfer_completion_t (*submit_transfer)(conf_object_t *dev_obj,
+                                                     usb_transfer_t *transfer);
+        void (*abort_transfer)(conf_object_t *dev_obj,
+                               usb_transfer_t *transfer);
+        void (*reset)(conf_object_t *dev_obj);
+} usb_device_interface_t;
+
+typedef struct {
+        int (*connect_device)(conf_object_t *bus_obj,
+                              conf_object_t *dev_obj,
+                              usb_speed_t speed);
+        int (*disconnect_device)(conf_object_t *bus_obj,
+                                 conf_object_t *dev_obj);
+        void (*complete_transfer)(conf_object_t *bus_obj,
+                                  conf_object_t *dev_obj,
+                                  usb_transfer_t *transfer);
+} usb_interface_t;

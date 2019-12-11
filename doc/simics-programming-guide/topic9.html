@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Programming Concepts</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(33, true);
+</script>
+<a name="label75"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Programming Concepts</h2 class="jdocu">
+
+
+<p>
+A Simics module is just some executable code loaded dynamically into the
+simulator, so it could virtually perform any operation. To be of any practical
+use however, a module has to interact with Simics, other modules, or the
+user. Simics provides a set of functions (the Simics API) for the modules to
+work within the simulator framework. The API defines a number of concepts like
+classes, objects, interfaces, haps and events, which will be presented
+below. The <em>Simics Reference Manual</em> provides the complete API
+documentation.
+<p>
+Simics modules can be written using different programming languages:
+<p>
+<dl><dt><b>DML (Device Modeling Language)</b></dt><dd>DML has been designed to make
+writing new device model as simple as possible. It integrates in the language
+many of the concepts defined by the Simics API so that the user can focus on
+the model rather than on the interaction with Simics. <em>This is by far the
+best language to write a device model</em>. Note that although it was designed
+with device models in mind, DML can be used to develop other types of
+modules.</dd><dt><b>Python</b></dt><dd>Python can be used to quickly write a new Simics module. It
+is well suited for Simics extensions that are not called very often, like some
+types of statistics gathering, or BIOS emulation. It can also be used for fast
+prototyping of more complex extensions that later on will be rewritten in a
+compiled language like C or DML. Note that in all cases, DML is easier to use
+than Python to write a device model.</dd><dt><b>C/C++</b></dt><dd>C/C++ can be used for writing any type of Simics
+modules. Writing in C/C++ exposes all interactions with Simics, which can be
+sometimes cumbersome. C/C++ development is only recommended if the
+functionality being developed could seriously impact Simics performance (by
+being called very often during execution, by manipulating large quantities of
+data, ...). A few specialized functions in the API (like the
+Micro-Architectural Interface) are only available to C/C++ modules.</dd></dl>
+<p>
+This chapter will cover the concepts that the Simics API defines. It will also
+present how to use them, first in DML, then in Python and C/C++.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic10.html#label76" target="main">4.1&nbsp;&nbsp;&nbsp;Classes and Objects</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic11.html#label80" target="main">4.2&nbsp;&nbsp;&nbsp;Attributes</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic12.html#label85" target="main">4.3&nbsp;&nbsp;&nbsp;Interfaces</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic13.html#label86" target="main">4.4&nbsp;&nbsp;&nbsp;Logging</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic14.html#label90" target="main">4.5&nbsp;&nbsp;&nbsp;Events</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic15.html#label91" target="main">4.6&nbsp;&nbsp;&nbsp;Haps</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic16.html#label92" target="main">4.7&nbsp;&nbsp;&nbsp;Commands</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+</body>
+</html>

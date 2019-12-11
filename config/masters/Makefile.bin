@@ -1,0 +1,165 @@
+#                                                              -*- makefile -*-
+# Copyright (c) 1998-2004 Virtutech AB, All Rights Reserved
+#
+# Makefile for binaries
+#
+
+#
+#  NOTE: This file is typically linked, so edit with care
+# (You should not have to edit this file!)
+#
+
+# HOST_DIR is the absolute path of the build directory. We should only use
+# it to get the host-config, and then use BUILD_DIR instead. (this avoids
+# path problems when doing rsh)
+HOST_DIR:=$(shell dirname `pwd`)
+include $(HOST_DIR)/config/host-config
+
+BIN_FILES = $(filter-out Makefile,$(wildcard *))
+
+CORE_DIR := $(SIMICS_BASE)/src/core
+MISC_DIR := $(SIMICS_BASE)/src/misc
+
+ifeq ($(wildcard $(CORE_DIR) $(MISC_DIR)),)
+
+.DEFAULT:
+	@echo;							\
+        echo "Running make from here is not supported.";	\
+        echo;							\
+        echo "If you intend to build modules, you should be";	\
+        echo "running 'make' in the 'lib/' subdirectory.";	\
+        echo;							\
+        echo "For further info, see the Simics User Guide.";	\
+	echo
+
+else # $(wildcard $(CORE_DIR) $(MISC_DIR)) != ''
+
+#################
+
+# TODO: propagate these by exporting them instead of passing them on the
+# command line
+MAKE_OPTIONS := TARGET_DIR=$(shell pwd) HOST_DIR=$(BUILD_DIR) HOST_TYPE=$(HOST_TYPE)
+
+SUPPORT_TARGETS=clean list clobber
+
+#################
+
+default: SHELL=$(BASH)
+
+default: help
+	@echo ;									\
+	echo "Please enter make target:" ;					\
+	export PS3="target ? " ;						\
+	select tgt in $(sort $(GROUPS) $(BINARIES) $(SUPPORT_TARGETS)); do	\
+	  $(MAKE) --no-print-directory $$tgt ;					\
+	  break ;								\
+	done
+
+# TODO: the list-<group> targets do not seem to work
+# TODO: test the TGT and FLG variables
+help:
+	@echo
+	@echo "This is the bin/ subdirectory. From here you can do the following:"
+	@echo
+	@echo "- Build a specific binary:              make <binary-name>"
+	@echo "- Build a group of binaries:            make <group-name>"
+	@echo "- List all binaries and groups:         make list"
+	@echo "- List all binaries in a group:         make list-<group>"
+	@echo "- Clean generated build files:          make clean"
+	@echo "- Clean a specific group/module:        make clean-<group/binary>"
+	@echo "- Clean everything except the Makefile: make clobber"
+	@echo "- Show this help:                       make help"
+	@echo
+	@echo "Options:"
+	@echo "  TGT=<sub-target>    - Build sub-target in target Makefile"
+	@echo "  FLG=<make flags>    - flags to make for the target"
+
+#################
+
+BINARY_DIRS:=$(wildcard $(SIMICS_BASE)/src/core)
+BINARY_DIRS+=$(wildcard $(SIMICS_BASE)/src/misc)
+
+ifneq ($(wildcard $(SIMICS_BASE)/config/binaries.list),)
+# this is only used internally at virtutech
+BINARY_LIST:=$(SIMICS_BASE)/config/binaries.list
+else
+# file in distributions
+BINARY_LIST:=$(SIMICS_BASE)/config/binaries.list-local
+endif
+
+binaries.cache: $(BINARY_LIST) $(SIMICS_BASE)/scripts/module-list.py
+	@echo "Generating: $(FILE_COLOR)$@$(NO_COLOR)"
+	@if [ "x$(PYTHON)" = "x" ] ; then				\
+		echo "Python was not configured properly. "		\
+			"Please check the configure scripts" ;		\
+                exit 1 ;						\
+	else								\
+		$(PYTHON) $(SIMICS_BASE)/scripts/module-list.py -b	\
+			--host=$(HOST_TYPE).$(CC_TYPE)			\
+			--module-list=$(BINARY_LIST) $(BINARY_DIRS) ;	\
+	fi
+
+-include binaries.cache
+GROUPS:=$(BIN_GROUPS)
+BINARIES:=$(BIN_MODULES)
+
+#################
+
+clean:
+	@rm -f binaries.cache targets.cache ;				\
+	if [ -d ../obj/binaries ] ; then				\
+		cd ../obj/binaries ;					\
+		moddirs=`ls` ;   					\
+		for tgt in $$moddirs _dummy; do				\
+			for dir in $$tgt* ; do				\
+				if [ -d $$dir ]; then			\
+					echo "Removing: $$dir" ;	\
+					rm -rf $$dir ;			\
+				fi ;					\
+			done ;						\
+		done ;							\
+	fi
+
+clobber: clean
+	@for bf in $(BIN_FILES) _ ; do		\
+		echo "Removing: `pwd`/$$bf" ;	\
+		$(RM) -r $$bf ;			\
+	done
+
+list:
+	@echo ;						\
+	echo "Groups:" ;				\
+	echo ;						\
+	echo $(GROUPS) | tr ' ' '\012' | $(COLUMN) ;	\
+	echo ;						\
+	echo "Binaries:" ;				\
+	echo ;						\
+	echo $(BINARIES) | tr ' ' '\012' | $(COLUMN) ;	\
+	echo
+
+#################
+
+.PHONY: acdeps $(BINARIES) $(GROUPS)
+
+# TODO: is this still used, or even functional?
+ifeq ($(ENABLE_ACDEPS),yes)
+
+# Must be *after* ".DEFAULT".
+include $(SIMICS_BASE)/acremake.mk
+
+endif # ENABLE_ACDEPS
+
+acdeps:
+	@if [ "$(ENABLE_ACDEPS)" = "yes" ]; then			\
+		echo "Checking that configure files are up-to-date";	\
+		$(MAKE) -r do_acremake;					\
+	fi
+
+dep-clean:
+	@echo "Removing all dependencies..."
+	find .. -name '*.d' -print -exec rm -f {} \;
+	find .. -name '*.dmldep' -print -exec rm -f {} \;
+	find .. -name '*.ddldep' -print -exec rm -f {} \;
+
+
+endif # $(wildcard $(CORE_DIR) $(MISC_DIR)) != ''

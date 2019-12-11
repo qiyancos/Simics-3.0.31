@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>rn-eth-bridge-raw</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1589, true);
+</script>
+<a name="label12733"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic315.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic317.html">Next</a></span></p>
+<h3 class="jdocu">rn-eth-bridge-raw</h3 class="jdocu">
+
+
+<a name="label12734"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2828">real-network</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>rn-eth-bridge-raw</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic495.html#label17725">ethernet_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+Ethernet bridge using raw interface access.
+
+</dd>
+
+</dl>
+<a name="label12735"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>connected</i></b></dt><a name="label12736"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 if the object is connected to the real network and configured properly. Also used to initiate a new connection.</dd></dl>
+<dl><dt><b><i>filter_own_packets</i></b></dt><a name="label12737"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If non-zero, Simics central will not listen to packets sent from the host it is running on.</dd></dl>
+<dl><dt><b><i>host_mac</i></b></dt><a name="label12738"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+The MAC address of the network device connected to the real network.</dd></dl>
+<dl><dt><b><i>iface_helper</i></b></dt><a name="label12739"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Full path name of helper executable that opens the host network interface. The same helper is used for both the real-network-router and real-network-bridge classes. This attribute is not used on Windows hosts.</dd></dl>
+<dl><dt><b><i>interface</i></b></dt><a name="label12740"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The name of the host network interface to use.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label12741"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Simulated Ethernet link to connect to.</dd></dl>
+<dl><dt><b><i>link_status_devices</i></b></dt><a name="label12742"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+List of devices that should be notified of link status changes (on the host interface). The devices must implement the link-status interface.</dd></dl>
+<dl><dt><b><i>link_status_enabled</i></b></dt><a name="label12743"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Enables host link status propagation. Note that disabling is not supported.</dd></dl>
+<dl><dt><b><i>link_status_inject</i></b></dt><a name="label12744"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Generates a link-status change event. Used for testing of host link status propagation. The value written should be a ieee_802_3_link_status_t value.</dd></dl>
+<dl><dt><b><i>tx_bandwidth</i></b></dt><a name="label12745"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The transmit bandwidth of the network interface in bits per second. The network interface will limit the rate at which it sends packets to remain below this bandwidth. Set to 0 for unlimited bandwidth. Default limit is 10Mbit/s.</dd></dl>
+<dl><dt><b><i>tx_packet_rate</i></b></dt><a name="label12746"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The maximum transmit rate of the network interface in packets per second. The network interface will limit the rate at which it sends packets to remain below this rate. Set to 0 for unlimited rate, which is the default.</dd></dl>
+<dl><dt><b><i>use_pcap</i></b></dt><a name="label12747"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 if PCAP should be used instead of direct access of the host device interface.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label12748"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label12750">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label12752">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label12749"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label12750"></a><a name="label12751"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;rn-eth-bridge-raw&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;rn-eth-bridge-raw&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label12752"></a><a name="label12753"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;rn-eth-bridge-raw&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;rn-eth-bridge-raw&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic315.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic317.html">Next</a></span></p>
+</body>
+</html>

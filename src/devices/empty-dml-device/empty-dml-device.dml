@@ -1,0 +1,15 @@
+// Copyright 2005-2007 Virtutech AB
+dml 1.0;
+
+device empty_dml_device;
+
+import "utility.dml";
+
+attribute counter {
+	parameter documentation = "A simple counter.";
+        parameter allocate_type = "int32";
+        parameter configuration = "optional";
+}
+
+method init() {
+}

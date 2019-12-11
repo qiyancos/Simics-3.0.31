@@ -1,0 +1,277 @@
+
+================================
+| RELEASE NOTES FOR SIMICS 3.0 |
+================================
+
+General
+=======
+
+This is the generic Simics 3.0 RELEASENOTES file, containing release notes
+that are relevant for most Simics packages. There may also be a
+package/customer specific README file in the same directory.
+
+
+Major Changes
+=============
+
+ * New DML toolkit provided in add-on package: The Device Modeling Language
+   (DML) supports developing device models to be used with Simics. A compiler,
+   example code and documentation is included. See doc/dmlc-tutorial.pdf for
+   more information. A model builder license is required to use the DML
+   toolkit.
+
+ * New feature "Simics Hindsight", that makes it possible to run the simulation
+   backwards. Refer to the documentation for more information. A special
+   license is required to enable reverse execution.
+
+ * Infrastructure for target process tracking. Among other things, this makes
+   it possible to restrict statistics gathering or virtual breakpoints to one
+   specific simulated process. There are three example of process trackers for
+   Linux on PowerPC and x86 included with sources:
+   src/extensions/ppc32-linux-process-tracker,
+   src/extensions/ppc64-linux-process-tracker, and
+   src/extensions/x86-linux-process-tracker.
+
+ * The simulated machines for most supported targets are setup in the
+   [simics]/targets/ directory instead of [simics]/home/, and they are created
+   using the new component based configuration system. The [simics]/home/
+   directories are still distributed for backward compatibility.
+
+ * New Eclipse-based user interface in Beta status. Distributed as a separate
+   add-on package, except for a few packages where it is included by default.
+
+ * New component based configuration system that simplifies the creation of
+   complex machines. The [simics]/home/scripts/<arch>_conf.py scripts have been
+   replaced by CLI commands for creating and connecting components.
+
+ * Improved command-line interface (CLI). For example:
+     New control flow statements: if/else and while.
+     New commands such as 'not', 'and', 'or'.
+     New operators, +=, -=, ==, !=, <, >, <=, >=.
+     Script branches can now be written in CLI.
+
+ * It is recommended that Simics is installed in a read-only directory, such as
+   /opt/virtutech/simics-<version>/ and that each user creates a separate
+   workspace directory for his/her own files. User workspaces are documented in
+   the Installation and Programming guides. The old way of installing and
+   running Simics is still supported, but deprecated.
+
+ * Major updates of the User Guide, Programming Guide, and Target Guides.
+
+ * Clearer separation of the generic Simics base and the simulated models as
+   add-on packages. Most packages will still be distributed with both the base
+   and models included.
+
+ * Simics now uses Python 2.4. See Python section below for more information.
+
+
+Minor Changes
+=============
+
+ * Simics has a memory-limit for image data set by default, see the
+   'set-memory-limit' command.
+
+ * "Fast" versions of the Alpha and ARM processor models added.
+
+ * The ethernet-link modules contains new commands for interfacing the tcpdump
+   and ethereal programs (not on Win32 host).
+
+ * The new 'add-module-directory' command can be used to add a directory where
+   Simics will look for modules.
+
+ * When Simics starts, commands in the '[simics]/config/startup-commands' and
+   './startup-commands' files are run before any other commands. The first of
+   these two files is intended for global setup in multi-user environments,
+   for example search path configurations. (The old '.simics' file
+   functionality has been removed as a result of this change.)
+
+ * Integer, string, object and boolean attributes can be accessed in the
+   front-end using the object->attribute syntax. E.g.:
+
+     simics> sim->cpu_switch_time = 1000
+
+ * The in-order issue rate (step rate) can be set to a rational number. It is
+   1 by default, causing one step to execute every cycle. The step rate can
+   also be set to zero, suspending time while executing steps. A specific
+   license is required to enable non-unity step rates.
+
+ * The %simics% shortcut for the Simics base directory can be used with the
+   run-command-file and run-python-file commands. (Used to be add-directory
+   only.) There is also a new %script% shortcut that expands to the directory
+   of the Simics script file where it is used.
+
+ * The simulation may be stopped and started from script branches, using the
+   stop and run commands.
+
+ * Persistent state files are written in the standard configuration file
+   format, instead of in Python.
+
+ * The network services in the service-node can be enabled and disabled
+   individually using the new '<service-node>.enable-service' and
+   '<service-node>.disable-service' commands. The current status is reported by
+   the '<service-node>.status' command.
+
+ * Class names with + and / in  them have been changed. This affects the
+   ultrasparc-iii+, cheetah+mmu and I/O-APIC classes. (New names are
+   ultrasparc-iii-plus, cheetah-plus-mmu and io-apic.) Old checkpoints do not
+   need to be changed.
+
+ * When using Simics from the command line, severe error messages are printed
+   to standard error instead of to standard output.  This means that care needs
+   to be taken when redirecting output from batch jobs.
+
+ * Obsolete API functions are not visible in Python except when the correct API
+   compatibility module has been imported first (simics_2_2_api for example).
+
+ * The address width of the serial ROM can now be set for all DEC21x4x classes
+   using the "srom-address-width" attribute.
+
+ * On Windows hosts, simicsfs assumes that all readable files on the host are
+   executable.
+
+ * The use of argument keywords in Python-wrapped Simics API functions has
+   been deprecated.
+
+ * The tfdecode utility from older Simics versions can not be used to decrypt
+   Simics 3.0 packages. The new version of tfdecode does handle old packages.
+
+ * Multi-line input in CLI can be interrupted using control-C, and then
+   pressing return to get a new prompt.
+
+ * The command '<image>.limit-memory', deprecated in previous releases, was
+   removed. Use the global command 'set-memory-limit' instead.
+
+ * Bugs in the MIPS instructions maddu, msub and msubu have been fixed.
+
+ * The global print-tlb commands are deprecated to avoid confusion on multi-
+   machine setups. The commands that act on processor objects are preferred.
+
+ * Hardware assisted TCP/UDP checksum support added to the HME network device.
+   Used by some newer Linux versions.
+
+ * SPARC targets only: The 'sparc_break_on_error_state' attribute in the sim
+   class was replaced by a 'break_on_error_state' class attribute in all SPARC
+   processor classes.
+
+ * SPARC targets only: Block ASI accesses are sent to the memory system as
+   eight separate operations where only the first is stallable. The MMU still
+   only gets a single call for each access.
+
+ * PPC targets only: Improved floating point instructions correctness. Affected
+   instructions are fcmpo, fcmpu, fctiw, fctiwz, fsel, and frsp.
+
+ * PPC targets only: Floating point arithmetic instructions with two input
+   operands with NaNs as input now return the correct NaN.
+
+ * PPC targets only: Exceptions on floating point instruction now set SRR0.
+
+
+Minor Changes - Programming
+===========================
+
+ * The Simics API has been improved and cleaned up. Several obsolete functions
+   have been deprecated and unused defines and types in the headers have been
+   removed. A few previously not deprecated functions have also been renamed,
+   but in those cases the old ones are still available. Modules written for
+   Simics 2.0 and 2.2 can be compiled without modifications by simply
+   specifying the appropriate API version in the Makefile before building.
+   See the Programming Guide for more information.
+
+ * New attr_value_t kind 'Sim_Val_Boolean' that maps to the Python bool data
+   type. Simics will automatically convert between integer and boolean types
+   for "typed" configuration attributes.
+
+ * New attr_value_t kind 'Sim_Val_Dict' that is typically used to checkpoint
+   Python dictionaries as a Simics configuration attribute.
+
+ * New field in the conf_object_t struct: 'object_data', that can be used by
+   configuration objects implemented in Python to keep a reference to a Python
+   data structure.
+
+ * The <simics/first.h> file should not be included by modules anymore.
+
+ * Format string warnings are now always enabled, as if the configure option
+   --with-format-warnings had been used.
+
+ * Compiling modules for an older API version is specified in the module
+   Makefile using the SIMICS_API variable, instead of in the file
+   config/modules.list-local.
+
+ * The SIM_get_attribute_attributes() function now takes a class_data_t *
+   instead of conf_object_t * as first argument. The old behavior is still
+   supported when compiling for the 2.2 API or older.
+
+ * The functions in the map-demap interface now use the same return values.
+
+ * The name of the MEMORY_SPACE_INTERFACE is now "memory_space" instead of
+   "lookup", but the old name can still be used with SIM_get_interface().
+
+ * The following already obsoleted functions have been moved to the 2.2 API:
+     SIM_raise_general_exception()
+     SIM_check_exception()
+     SIM_exception_has_occurred()
+     SIM_c_frontend_exception()
+     VT_get_history_match()
+
+ * The C/C++ macros IS_CPU_MEM_OP(), IS_DEV_MEM_OP(), IS_OTH_MEM_OP() have been
+   moved to the 2.2 API, and were replaced by SIM_mem_op_is_from_cpu(),
+   SIM_mem_op_is_from_device() and SIM_mem_op_is_from_cache().
+
+ * The following obsolete pseudo exceptions have been removed:
+   Sim_PE_Continue, Sim_PE_Error, Sim_PE_IO_Break.
+
+ * The C/C++ types u_char, u_int and u_long have been removed from the API
+   header files.
+
+ * The following functions have been renamed or deprecated. The renamed
+   functions are still available in the 3.0 API.
+   SIM_processor_break()       -> SIM_break_step()
+   SIM_get_proc_no()           -> SIM_get_processor_number()
+   SIM_proc_no_2_ptr()         -> SIM_get_processor()
+   SIM_dump_caches()           -> SIM_flush_all_caches()
+   SIM_cpu_enabled()           -> SIM_processor_enabled()
+   SIM_cpu_privilege_level()   -> SIM_processor_privilege_level()
+   SIM_get_current_proc_no()      deprecated
+   SIM_no_windows()               deprecated
+   SIM_register_attribute()       deprecated
+   SIM_register_class_attribute() deprecated
+   SIM_get_simics_home()          deprecated, use sim->simics_home instead
+
+ * The following API functions have been replaced with similar ones. The old
+   functions are still available in the 3.0 API.
+   SIM_for_all_processors()     -> SIM_get_all_processors()
+   SIM_for_all_hap_types()      -> SIM_get_all_hap_types()
+   SIM_all_classes()            -> SIM_get_all_classes()
+   SIM_all_objects()            -> SIM_get_all_objects()
+   SIM_for_all_modules()        -> SIM_get_all_modules()
+   SIM_for_all_modules_failed() -> SIM_get_all_failed_modules()
+
+ * SIM_notify_on_socket(), SIM_notify_on_descriptor() and
+   SIM_notify_on_object() may now be called from a callback that was registered
+   by one of these functions to run in a thread.
+
+ * Real-time events can now be cancelled before they occur, using
+   SIM_cancel_realtime_event().
+
+ * Direct use of the conf_class_t structure has been deprecated.
+   SIM_get_class_name() should be used instead.
+
+
+Notes on Python 2.4
+===================
+
+Simics, since version 1.2, has used Python 2.2. New features in Python 2.4 are
+listed on the following web pages:
+
+  http://www.python.org/2.4/highlights.html
+  http://www.python.org/2.3/highlights.html
+
+Most changes are new features that do not affect backward compatibility,
+with a few exceptions:
+
+* The most noticeable change for Simics users is the unification of integers
+  and long integers. For example, 1 << 32 is not 0 anymore (but 0x100000000),
+  and 0xffffffff is a positive value even on 32-bit hosts.
+
+* Some deprecated Python modules have been removed, such as pre, TERMIOS,
+  dospath, rotor, xreadlines, fpectl, pcre, and knee.

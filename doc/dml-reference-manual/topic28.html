@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Expressions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(68, true);
+</script>
+<a name="label213"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+<h3 class="jdocu">4.12&nbsp;&nbsp;&nbsp;Expressions</h3 class="jdocu">
+
+
+<a name="label214"></a>
+<p>
+All ISO C operators are available in DML, except for certain limitations
+on the comma-operator, the <tt>sizeof</tt> operator, and type casts; see
+Section <a class="jdocu" href="topic26.html#label173">4.10</a>. Operators have the same
+precedences and semantics as in C
+<p>
+DML adds the following expressions:
+<p>
+<a name="label215"></a><h4 class="jdocu">4.12.1&nbsp;&nbsp;&nbsp;The Undefined Constant</h4 class="jdocu">
+
+
+<a name="label216"></a>
+<a name="label217"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+undefined
+</pre>
+<p>
+The constant <tt>undefined</tt> is an abstract <em>compile-time
+only</em> value, mostly used as a default for parameters that are
+intended to be overridden. See also the <tt>defined </tt><i>expr</i><tt></tt>
+test, below.
+<p>
+
+<a name="label218"></a><h4 class="jdocu">4.12.2&nbsp;&nbsp;&nbsp;References</h4 class="jdocu">
+
+
+<a name="label219"></a>
+<a name="label220"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+$<i>identifier</i>
+</pre>
+<p>
+To make a reference to a component of the DML object structure from
+within a method, the reference (an object-context identifier) must be
+prefixed by a <tt>$</tt> character; see also Section <a class="jdocu" href="topic18.html#label103">4.2</a>. Following the identifier, components may be selected using
+<tt>.</tt> and <tt>-&gt;</tt> as in C. (However, most components in the DML
+object structure are proper substructures selected with the <tt>.</tt>
+operator.) For example,
+<pre class="jdocu_small" style="color: black">
+    $this.size
+    $dev.bank1
+    $bank1.r0.hard_reset
+</pre>
+<p>
+
+<a name="label221"></a><h4 class="jdocu">4.12.3&nbsp;&nbsp;&nbsp;New Expressions</h4 class="jdocu">
+
+
+<a name="label222"></a>
+<a name="label223"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+new <i>type</i>
+</pre>
+<p>
+Allocates a chunk of memory large enough for a value of the specified
+type. The result is a pointer to the allocated memory. (The pointer is
+never null; if allocation should fail, the Simics application will be
+terminated.)
+<p>
+When the memory is no longer needed, it should be deallocated using a
+<tt>delete</tt> statement.
+<p>
+
+<a name="label224"></a><h4 class="jdocu">4.12.4&nbsp;&nbsp;&nbsp;Cast Expressions</h4 class="jdocu">
+
+
+<a name="label225"></a>
+<a name="label226"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+cast(<i>expr</i>, <i>type</i>)
+</pre>
+<p>
+Type casts in DML must be written with the above explicit <tt>cast</tt>
+operator, for syntactical reasons.
+<p>
+Semantically, <tt>cast(</tt><i>expr</i><tt>, </tt><i>type</i><tt>)</tt> is equivalent to
+the C expression <tt>(</tt><i>type</i><tt>) </tt><i>expr</i><tt></tt>.
+<p>
+
+<a name="label227"></a><h4 class="jdocu">4.12.5&nbsp;&nbsp;&nbsp;Sizeoftype Expressions</h4 class="jdocu">
+
+
+<a name="label228"></a>
+<a name="label229"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+sizeoftype <i>type</i>
+</pre> 
+<p>
+The <tt>sizeof</tt> operator in DML 1.0 can only be used on expressions,
+not on types, for syntactical reasons. To take the size of a datatype,
+the <tt>sizeoftype</tt> operator must be used, as in
+<pre class="jdocu_small" style="color: black">
+    int size = sizeoftype io_memory_interface_t;
+</pre>
+<p>
+Semantically, <tt>sizeoftype </tt><i>type</i><tt></tt> is equivalent to the C
+expression <tt>sizeof (</tt><i>type</i><tt>)</tt>.
+<p>
+
+<a name="label230"></a><h4 class="jdocu">4.12.6&nbsp;&nbsp;&nbsp;Defined Expressions</h4 class="jdocu">
+
+
+<a name="label231"></a>
+<a name="label232"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+defined <i>expr</i>
+</pre> 
+<p>
+This compile-time test evaluates to <tt>false</tt> if
+<tt></tt><i>expr</i><tt></tt> has the value <tt>undefined</tt>, and to
+<tt>true</tt> otherwise.
+<p>
+
+<a name="label233"></a><h4 class="jdocu">4.12.7&nbsp;&nbsp;&nbsp;List Expressions</h4 class="jdocu">
+
+
+<a name="label234"></a>
+<a name="label235"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+[<i>e1</i>, ..., <i>eN</i>]
+</pre>
+<p>
+A list is a <em>compile-time only</em> value, and is an ordered sequence
+of zero or more compile-time constant values. Lists are in particular
+used in combination with <tt>foreach</tt> and <tt>select</tt>
+statements, and are often provided by built-in methods or parameters,
+such as the <tt>fields</tt> parameter of <b>register</b>
+objects.
+<p>
+
+<a name="label236"></a><h4 class="jdocu">4.12.8&nbsp;&nbsp;&nbsp;Bit Slicing Expressions</h4 class="jdocu">
+
+
+<a name="label237"></a>
+<a name="label238"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+<i>expr</i>[<i>e1</i>:<i>e2</i>]
+
+<i>expr</i>[<i>e1</i>:<i>e2</i>, <i>bitorder</i>]
+
+<i>expr</i>[<i>e1</i>]
+
+<i>expr</i>[<i>e1</i>, <i>bitorder</i>]
+</pre>
+<p>
+If <tt></tt><i>expr</i><tt></tt> is of integer type, then the above
+<em>bit-slicing</em> syntax can be used in DML to simplify extracting or
+updating particular bit fields of the integer. Bit slice syntax can be
+used both as an expression producing a value, or as the target of an
+assignment (an L-value), e.g., on the left-hand side of an <tt>=</tt>
+operator.
+<p>
+Both <tt></tt><i>e1</i><tt></tt> and <tt></tt><i>e2</i><tt></tt> must be integers. The
+syntax <tt></tt><i>expr</i><tt>[</tt><i>e1</i><tt>]</tt> is a short-hand for
+<tt></tt><i>expr</i><tt>[</tt><i>e1</i><tt>:</tt><i>e1</i><tt>]</tt> (but only evaluating
+<tt></tt><i>e1</i><tt></tt> once).
+<p>
+The <tt></tt><i>bitorder</i><tt></tt> part is optional, and selects the bit
+numbering scheme (the "endianism") used to interpret the values of
+<tt></tt><i>e1</i><tt></tt> and <tt></tt><i>e2</i><tt></tt>. If present, it must be an
+identifier such as <tt>be32</tt>, as in a <tt>bitorder</tt> device-level
+declaration, and in that case it overrides any global bit order
+declaration in the program.
+<p>
+The first bit index <tt></tt><i>e1</i><tt></tt> always indicates the <em>most
+significant bit</em> of the field, regardless of the bit numbering
+scheme; cf. Section <a class="jdocu" href="topic24.html#label137">4.8.3</a>. If the default
+little-endian bit numbering is used, the least significant bit of the
+integer has index zero, and the most significant bit of the integer has
+index <i>n</i> - 1, where <i>n</i> is the width of the integer type.
+<p>
+If big-endian bit numbering is used, e.g., due to a "<tt>bitorder
+be32;</tt>" declaration in the file, or using a specific local bit
+numbering as in <tt></tt><i>expr</i><tt>[</tt><i>e1</i><tt>:</tt><i>e2</i><tt>, be32]</tt>, then
+the bit corresponding to the little-endian bit number <i>n</i> - 1 has
+index zero, and the least significant bit has the index <i>n</i> - 1,
+where <i>n</i> is the specified base width - in this case 32. Note that
+this is <em>not</em> affected by the width of the integer type, in order
+to avoid subtle errors; e.g., a 16-bit big-endian value could be
+represented by a 32-bit integer type, but bit slice operations should
+use <tt>be16</tt> in order to interpret the bit indexes correctly.
+<p>
+
+<a name="label239"></a><h4 class="jdocu">4.12.9&nbsp;&nbsp;&nbsp;Stringify Expressions</h4 class="jdocu">
+
+
+<a name="label240"></a>
+<a name="label241"></a>
+<a name="label242"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+# <i>expr</i>
+</pre>
+<p>
+Translates the value of <tt></tt><i>expr</i><tt></tt> (which must be a
+compile-time constant) into a string constant. This is similar to the
+use of <tt>#</tt> in the C preprocessor, but is performed on the level
+of compile time values, not tokens. The result is often used with the
+<tt>+</tt> string operator.
+<p>
+
+<a name="label243"></a><h4 class="jdocu">4.12.10&nbsp;&nbsp;&nbsp;String Concatenation Expressions</h4 class="jdocu">
+
+
+<a name="label244"></a>
+<a name="label245"></a>
+<a name="label246"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+<i>expr1</i> + <i>expr2</i>
+</pre>
+<p>
+If both <tt></tt><i>expr1</i><tt></tt> and <tt></tt><i>expr2</i><tt></tt> are compile-time
+string constants, the expression <tt></tt><i>expr1</i><tt> + </tt><i>expr2</i><tt></tt>
+concatenates the two strings at compile time. This is often used in
+combination with the <tt>#</tt> operator.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic27.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic29.html">Next</a></span></p>
+</body>
+</html>

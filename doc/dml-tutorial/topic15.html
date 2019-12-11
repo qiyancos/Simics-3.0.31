@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Connecting Objects</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label21"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic13.html">Up</a> - Next</span></p>
+<h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Connecting Objects</h3 class="jdocu">
+
+
+<p>
+As mentioned previously in this chapter, the usual way to make one
+object accessible from another object, so that the latter (the caller)
+may communicate with the former (the callee) via the interfaces it
+implements, is to let the caller have an attribute that can hold an
+object reference, and set that attribute to point to the callee object
+(typically done in an initialization script). Although it is possible to
+write an <tt>attribute</tt> definition by hand, suitable for connecting
+an object with a particular interface, it is much better to use a
+<tt>connect</tt> definition, which creates such an attribute with
+minimal effort.
+<p>
+An interface, in Simics, is a struct containing function pointers, and
+the definition of the struct must be visible both to the caller and the
+callee. (The standard Simics API interface definitions are included
+automatically by the DML compiler.) The convention in the Simics API is
+to use a C <tt>typedef</tt> to name the struct type, using the suffix
+<tt>_interface_t</tt>, and the DML compiler by default follows this
+convention when it generates interface-related code. E.g., the
+<tt>io_memory</tt> interface is described by a datatype
+<tt>io_memory_interface_t</tt>, which is a struct containing two
+function pointers <b><i>map</i></b> and <b><i>operation</i></b>. If the user wants
+to create new interfaces, he must write his own struct definitions; this
+is demonstrated below.
+<p>
+<a name="label22"></a><h4 class="jdocu">5.2.1&nbsp;&nbsp;&nbsp;Connect Example</h4 class="jdocu">
+
+
+<p>
+In the following example, we will create a second device and connect it
+to the first device via a user-defined interface. We start with the
+example device in section <a class="jdocu" href="topic6.html#label10">2.1</a>, and add the
+following declaration:
+<pre class="jdocu_small" style="color: black">
+    connect plugin {
+        interface talk {
+            parameter required = true;
+        }
+    }
+</pre>
+Then, we replace the line "<tt>log "info": ...;</tt>" with the following
+C function call:
+<pre class="jdocu_small" style="color: black">
+    $plugin.talk.hello($plugin);
+</pre>
+<p>
+The members of an interface are C functions, not DML methods, so do
+not use the <tt>call</tt> or <tt>inline</tt> keywords here. Also note
+that <tt>$plugin</tt> itself is given as the first argument to the
+function.  This is standard in most interfaces used in Simics.
+<p>
+Our device will now have an attribute named <i>plugin</i>, which can
+hold object references; the attached objects are required to implement
+the <tt>talk</tt> interface. However, we cannot yet compile the module,
+since it is missing the definition of the interface.
+<p>
+
+<a name="label23"></a><h4 class="jdocu">5.2.2&nbsp;&nbsp;&nbsp;Sharing Definitions</h4 class="jdocu">
+
+
+<p>
+There are two main kinds of source files that may be shared by modules:
+<ul>
+  <li>DML files to be imported</li>
+  <li>C header files to be included by the generated sources</li>
+</ul>
+<p>
+We will put the definition of our simple <tt>talk</tt> interface in a
+shared DML file. First of all, we need a place to put the file. Create a
+new directory <tt>[home]/workspace/include</tt> (e.g., using
+<tt>mkdir</tt> on a Unix system), and open the new file
+<tt>[home]/workspace/include/talk.dml</tt> in your editor. Put the
+following text in the file and save it:
+<pre class="jdocu_small" style="color: black">
+    dml 1.0;
+
+    struct talk_interface_t {
+        void (*hello)(conf_object_t *obj);
+    }
+</pre>
+(such a <tt>struct</tt> declaration in DML will both inform the DML
+compiler about the existence of the struct type, as well as cause a
+corresponding <tt>typedef</tt>-declaration in the generated C code).
+<p>
+Then, add this line to the example device code, to import the new file:
+<pre class="jdocu_small" style="color: black">
+    import "talk.dml";
+</pre>
+<p>
+Finally, edit the <tt>Makefile</tt> for the example device:
+<tt>[home]/workspace/modules/simple_device/Makefile</tt>, and add the
+following option to the definition of <tt>DMLC_FLAGS</tt>:
+<pre class="jdocu_small" style="color: black">
+    -I$(SIMICS_WORKSPACE)/include
+</pre>
+(telling <tt>dmlc</tt> where to look for additional include files).
+<p>
+You should now be able to compile the example device with the
+<tt>connect</tt> added as described above.
+<p>
+Sharing C header files (when necessary) is similar to the above: just
+add a C compiler "<tt>-I...</tt>" flag to the makefile, and instead of
+the DML <tt>import</tt> directive, use a C <tt>#include</tt> within a
+<tt>header</tt> section, as in:
+<pre class="jdocu_small" style="color: black">
+    header %{
+      #include "stuff.h"
+    %}
+</pre>
+    <p>
+
+
+<a name="label24"></a><h4 class="jdocu">5.2.3&nbsp;&nbsp;&nbsp;A Plug-in Module</h4 class="jdocu">
+
+
+<p>
+To complete the example, we need an object that speaks the <tt>talk</tt>
+interface, which we can use to connect to our device. For this purpose,
+we add a new module to our workspace, as follows (cf. Section <a class="jdocu" href="topic6.html#label10">2.1</a>):
+<pre class="jdocu_small" style="color: black">
+  $ <b>[simics]/bin/workspace-setup --force --dml=plugin_module \
+      [home]/workspace</b>
+</pre>
+(note that the <tt>--force</tt> flag is needed to add a module to an
+existing workspace).
+<p>
+Edit the generated skeleton file
+<tt>[home]/workspace/modules/plugin_module/plugin_module.dml</tt> to look
+like this:
+<pre class="jdocu_small" style="color: black">
+  dml 1.0;
+  device plugin_module;
+
+  import "talk.dml";
+
+  implement talk {
+      method hello {
+          log "info": "Hi there!";
+      }
+  }
+</pre>
+The only way to use the objects of this class is through the
+<tt>talk</tt> interface - there are no memory-mapped registers or
+similar connections. (Do not take the term "device" too literally; a DML
+source file does not have to model a piece of hardware - it just defines
+a component class that can be loaded in Simics.)
+<p>
+Also edit the device makefile:
+<tt>[home]/workspace/modules/plugin_module/Makefile</tt>, and add the
+option <tt>-I$(SIMICS_WORKSPACE)/include</tt> to the definition of
+<tt>DMLC_FLAGS</tt>, just like we did previously for the first example
+device.
+<p>
+
+<a name="label25"></a><h4 class="jdocu">5.2.4&nbsp;&nbsp;&nbsp;Testing the Connect</h4 class="jdocu">
+
+
+<p>
+Simply running <tt>make</tt> (or <tt>gmake</tt>) from the
+<tt>[home]/workspace</tt> directory should now compile both modules. Do
+this and restart Simics as before. (We assume that you have by now added
+the commands from Section <a class="jdocu" href="topic7.html#label11">2.2</a> to the
+startup script, as described in Section <a class="jdocu" href="topic8.html#label12">2.3</a>, so
+that you do not have to enter them manually each time you run Simics.)
+<p>
+Enter the following command in the Simics console:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>@SIM_create_object("plugin_module", "dev2", [])</b>
+</pre>
+to create an instance of the plugin device. (Simics loads the module
+automatically.)
+<p>
+Then, set the <i>plugin</i> attribute of the first example device to
+point to the new object:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>dev1-&gt;plugin = dev2</b>
+</pre>
+<p>
+We are now ready to run. Make a memory access to the first device:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.get 0x1000</b>
+</pre>
+and you should see the following output:
+<pre class="jdocu_small" style="color: black">
+  [dev2 info] Hi there!
+  42
+</pre>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic13.html">Up</a> - Next</span></p>
+</body>
+</html>

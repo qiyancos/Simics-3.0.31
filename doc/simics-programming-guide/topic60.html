@@ -1,0 +1,472 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Implementing Components</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(152, true);
+</script>
+<a name="label279"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic59.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic61.html">Next</a></span></p>
+<h3 class="jdocu">12.3&nbsp;&nbsp;&nbsp;Implementing Components</h3 class="jdocu">
+
+
+<p>
+<a name="label280"></a><h4 class="jdocu">12.3.1&nbsp;&nbsp;&nbsp;Component Class</h4 class="jdocu">
+
+
+A component file contains Python classes that define all the component classes in a
+component collection. These classes inherit from the component base class
+<b><a name="label281">component_object</a></b>, or from one of its sub classes.
+<p>
+Component classes are registered with Simics using the
+<b><i><a name="label282">register_component_class()</a></i></b> function. When a component
+class is registered, a corresponding Simics class is created with the supplied
+list of attributes. The Simics class uses the name stored in the
+<tt>classname</tt> data member of the Python class.
+<pre class="jdocu_small" style="color: black">
+
+def register_component_class(python_class,
+                             attributes, checkpoint_attributes = [],
+                             top_level = False)
+</pre>
+The first argument, <i>python_class</i>, is the Python component class,
+<i>attributes</i> is a list of attributes that can be used to configure
+the component at creation time. All attributes in this list will be available
+as command arguments in the <b><a name="label283">create-<component></a></b> and
+<b><a name="label284">new-<component></a></b> CLI commands. The format of each
+attribute list entry is [&lt;name&gt;, &lt;kind&gt;, &lt;type&gt;, &lt;description&gt;].
+See the documentation of <b><i><a name="label285">SIM_register_typed_attribute()</a></i></b>
+for an explanation of these entries.
+<p>
+The <i>checkpoint_attributes</i> is a list with the same format as
+<i>attributes</i>. The difference is that
+<i>checkpoint_attributes</i> is only intended for attributes
+representing internal state that has to be checkpointed. The attributes in this
+list are not visible as arguments to the creation commands. This means that
+the attributes can not be of the pseudo or required kinds.
+<p>
+The last argument, <i>top_level</i>, should be set to <tt>True</tt> for
+top level components; the default value is <tt>False</tt>. The register
+function will add some additional attributes for
+<a name="label286">top level components</a>, and also check that the component class
+implements all top-level-only methods.
+<p>
+
+<a name="label287"></a><h4 class="jdocu">12.3.2&nbsp;&nbsp;&nbsp;Component Class Data Members</h4 class="jdocu">
+
+
+There are a number of data members required in the Python component class that
+are used by the generic component system. <a name="label288"></a>
+<p>
+<dl><dt><b><tt>classname</tt></b></dt><dd>The name of the Simics configuration class representing the component
+class.
+</dd><dt><b><tt>basename</tt></b></dt><dd>Default name for instances of this class if none is given when the user
+creates a component. The complete default instance name is
+&lt;basename&gt;_cmp&lt;number&gt;.
+</dd><dt><b><tt>description</tt></b></dt><dd>A description of the component class. This will be the help text for the
+configuration class in Simics.
+</dd><dt><b><tt>connectors</tt></b></dt><dd>A list of all connectors for components of this class. The format of the
+list is described in the next sub-section.
+</dd></dl>
+<p>
+Example of a component class:
+<pre class="jdocu_small" style="color: black">
+class ide_disk_component(component_object):
+    classname = 'std-ide-disk'
+    basename = 'ide_disk'
+    description = ('The "std-ide-disk" component represents an IDE disk.')
+    connectors = {
+        'ide-slot' : {'type' : 'ide-slot', 'direction' : 'up',
+                      'empty_ok' : False, 'hotplug' : False, 'multi' : False}}
+
+    ... <i>&lt;class method code removed&gt;</i> ...
+
+register_component_class(
+    ide_disk_component,
+    [['size', Sim_Attr_Required, 'i',
+      'The size of the IDE disk in bytes.'],
+     ['file', Sim_Attr_Optional, 's',
+      'File with disk contents for the full disk Either a raw file '
+      'or a CRAFF file.']])
+</pre>
+<p>
+
+<a name="label289"></a><h4 class="jdocu">12.3.3&nbsp;&nbsp;&nbsp;Defining Connectors</h4 class="jdocu">
+
+
+<p>
+The <tt><a name="label290">connectors</a></tt> member is a dictionary indexed by connector
+name. For each connector there is another dictionary describing it with the
+keywords <tt>type</tt>, <tt>direction</tt>, <tt>empty_ok</tt>, <tt>hotplug</tt>
+and <tt>multi</tt>:
+<p>
+<dl><dt><b><tt>type</tt></b></dt><dd>The name of the connector type. The connector can only be connected to
+other connectors of the same type.
+</dd><dt><b><tt>direction</tt></b></dt><dd>One of <tt>up</tt>, <tt>down</tt> and <tt>any</tt>. Defines the direction
+of the connector. A connector can only be connected with connectors of a
+different direction; this is checked by the generic component connection code.
+</dd><dt><b><tt>empty_ok</tt></b></dt><dd><tt>True</tt> if the connector may be empty after instantiation. The
+component system will not allow instantiation of components that have empty
+connectors with <tt>empty_ok</tt> set to <tt>False</tt>.
+</dd><dt><b><tt>hotplug</tt></b></dt><dd><tt>True</tt> if the connector supports connecting and disconnecting after
+the component has been instantiated. A hotplug connector must have empty_ok
+set to <tt>True</tt>. A component where all connectors are either
+<tt>hotplug</tt> or <tt>empty_ok</tt> is called a <i><a name="label291">standalone</a></i>
+component.
+</dd><dt><b><tt>multi</tt></b></dt><dd><tt>True</tt> if the connector supports multiple connections. A few
+connectors allow several other connectors to be connected to them. One such
+example is the ISA bus in legacy PC systems.
+</dd></dl>
+<p>
+
+<a name="label292"></a><h4 class="jdocu">12.3.4&nbsp;&nbsp;&nbsp;Required Class Methods</h4 class="jdocu">
+
+
+<p>
+There are a few class methods that have to be implemented by the component
+class since they are used by the base class when the component is created:
+<a name="label293"></a>
+<p>
+<dl><dt><b><tt><a name="label294">add_objects(self)</a></tt></b></dt><dd>Responsible for adding <a name="label295">pre-configuration objects</a> to the
+component. The pre-configuration objects are Python objects that represent the
+configuration objects before the component has been instantiated and the
+actual configuration objects are created. The pre-configuration objects allow
+attributes to be set without any side-effects and simplifies adding and
+removing objects before the instantiation. A more detailed description of how
+to add objects follows in the <a class="jdocu" href="#label310">12.3.7</a>
+section. This method is not called when a checkpoint is loaded, since then the
+object references will be set with real objects directly.
+</dd><dt><b><tt><a name="label296">add_connector_info(self)</a></tt></b></dt><dd>Adds dynamic information about all connectors, such as what objects that
+are involved in the connection and other connector specific data, for example
+the slot number for PCI buses. This dynamic connector information is sent as
+arguments to the corresponding connect method
+(<a class="jdocu" href="#label315">12.3.9</a>) in the component being connected to. The
+information is stored in the <tt>connector_info</tt> data member that is a
+dictionary indexed with the connector name, and described in section
+<a class="jdocu" href="#label312">12.3.8</a>.
+</dd><dt><b><tt><a name="label297">connect_<connector-type>(self, connector, <connector arguments>)</a></tt></b></dt><dd> For each connector type that the component implements, there must be a
+corresponding connect method. The second argument is the name of the actual
+connector, and any following arguments are connector-type specific and provided
+by the <b><i>add_connector_info()</i></b> method of the other component in the
+connection. If the connector has hot-plug support, it must support connections
+for both the instantiated and non-instantiated component.
+</dd><dt><b><tt><a name="label298">disconnect_<connector-type>(self, connector)</a></tt></b></dt><dd>For each connector type that has hot-plug support that the component
+implements, there must be a corresponding disconnect method. The second
+argument is the name of the actual connector. The method must support
+disconnections for both the instantiated and non-instantiated component.
+</dd></dl>
+<p>
+
+<a name="label299"></a><h4 class="jdocu">12.3.5&nbsp;&nbsp;&nbsp;Optional Class Methods</h4 class="jdocu">
+
+
+<p>
+There are several methods that have a default implementation in the base
+component class, but that the component sub class may override.
+<p>
+<dl><dt><b><tt><a name="label300">__init__(self, parse_obj)</a></tt></b></dt><dd>The standard Python object constructor. Called when the object is created,
+it may be used to initialize some state before any other method in the object
+is called. If this method is implemented, it has to call the
+<b><i>__init__()</i></b> method of the parent class.  </dd><dt><b><tt><a name="label301">finalize_instance(self)</a></tt></b></dt><dd>Called when the component object in Simics has been created. The first
+thing <b><i>finalize_instance(self)</i></b> in the base class does is to call
+<b><i>add_objects()</i></b> if the component is not instantiated. If this
+method is implemented, it has to call the <b><i>finalize_instance()</i></b> method
+of the parent class.
+</dd><dt><b><tt><a name="label302">instantiation_done(self)</a></tt></b></dt><dd>Called when the component is instantiated. Note that this method is not
+called when loading a checkpoint with already instantiated components.
+If this method is implemented, it has to call the
+<b><i>instantiation_done()</i></b> method of the parent class.
+</dd></dl>
+<p>
+
+<a name="label303"></a><h4 class="jdocu">12.3.6&nbsp;&nbsp;&nbsp;Top-level Class Methods</h4 class="jdocu">
+
+
+<p>
+Top-level components need two additional methods that are used by the component
+system to handle clock domain configuration and to keep track of all processors
+in the component hierarchy. There is also one optional method that is used to
+restore the processor list from a checkpoint.
+<p>
+<dl><dt><b><tt><a name="label304">get_clock(self)</a></tt></b></dt><dd>
+Should return the processor object that is the default <i><a name="label305">clock</a></i>
+in the component hierarchy, that is, in the top-level component and all
+components below it. All configuration objects within this component hierarchy,
+also called a <em><a name="label306">timing domain</a></em>, will have the same clock
+object set as <i><a name="label307">queue</a></i>.  
+</dd><dt><b><tt><a name="label308">get_processors(self)</a></tt></b></dt><dd>
+Similar to <b><i>get_clock()</i></b> but should return a list of all processors in
+the component hierarchy.
+</dd><dt><b><tt><a name="label309">set_processors(self, cpu_list)</a></tt></b></dt><dd>
+Optional method that is called when a checkpoint is loaded with a list of all
+processors previously returned by <b><i>get_processors()</i></b>. If this method
+is not implemented, the component should make sure that that it can recreate
+the processor list after a checkpoint for use in <b><i>get_processors()</i></b>.
+</dd></dl>
+<p>
+
+<a name="label310"></a><h4 class="jdocu">12.3.7&nbsp;&nbsp;&nbsp;Adding Configuration Objects</h4 class="jdocu">
+
+
+<p>
+When the component object has been created, the <b><i>add_objects()</i></b> method
+is called. Its responsibility is to create pre-configuration objects
+representing the configuration objects that implement the functionality of the
+component. The <b>pre_obj()</b> Python class is typically used instead
+of <b>pre_conf_object()</b>, since it provides improved name handling,
+as described in <a class="jdocu" href="#label324">12.3.11</a>.
+<p>
+The pre-configuration objects should be added to the <tt>o</tt> namespace of
+the component. When the component later is instantiated, all object references
+in this namespace are converted to configuration objects.
+<p>
+The <tt><a name="label311">o</a></tt> namespace may contain simple pre-configuration
+objects, and also arrays of objects.
+<p>
+Example from a Serengeti processor board component:
+<pre class="jdocu_small" style="color: black">
+def add_objects(self):
+    for i in range(self.num_cores):
+        self.o.mmu[i] = pre_obj('mmu(x + %d)' % i, self.mmuclass)
+        self.o.cpu[i] = pre_obj('cpu(x + %d)' % i, self.cpuclass)
+        self.o.cpu[i].processor_number = get_next_cpu_number()
+        self.o.cpu[i].mmu = self.o.mmu[i]
+        self.o.cpu[i].control_registers = [['mid', i]]
+        self.o.cpu[i].freq_mhz = self.freq_mhz
+</pre>
+<p>
+After instantiation, the <tt>o</tt> namespace will contain references to the
+newly created Simics configuration objects instead.
+<p>
+
+<a name="label312"></a><h4 class="jdocu">12.3.8&nbsp;&nbsp;&nbsp;Providing Connection Information</h4 class="jdocu">
+
+
+<p>
+For each connector, some information must be supplied to the other component of
+the connection. This usually includes a configuration object that implements a
+Simics interface, which is needed by some configuration object in the other
+component. The information is stored in the <tt><a name="label313">connector_info</a></tt>
+data member of the component, and passed to the other component in the call to
+its connect method. The <tt>connector_info</tt> dictionary is indexed by
+connector name. This dictionary should be filled in by the
+<b><i><a name="label314">add_connector_info()</a></i></b> method that is called directly after
+<b><i>add_objects()</i></b>, and is also called when restoring an instantiated
+component from a checkpoint.
+<p>
+The format of the values in the connector_info dictionary is a list in the
+common case. It may be a tuple as well, described in
+<a class="jdocu" href="#label322">12.3.10</a>. The length of the list, and the types
+of the values, depends on the kind of the connector. The up and the down part
+of a connector may have different arguments in the list.
+<p>
+At instantiation, any pre-configuration references in <tt>connect_info</tt>
+will be converted to configuration object references.
+<p>
+A dual-function PCI device with two SCSI controllers may have the following
+<b><i>add_connector_info()</i></b> method. The first controller is implemented
+by configuration object <tt>sym0</tt> and the second by <tt>sym1</tt>.
+<p>
+<pre class="jdocu_small" style="color: black">
+def add_connector_info(self):
+    self.connector_info['pci-bus'] = [[[0, self.o.sym0], [1, self.o.sym1]]]
+    self.connector_info['scsi-bus0'] = [self.o.sym0, 7]
+    self.connector_info['scsi-bus1'] = [self.o.sym1, 7]
+</pre>
+<p>
+For the <tt>pci-bus</tt> connector type, the argument is a list with PCI
+function number and object implementing the <tt>PCI_DEVICE_INTERFACE</tt>
+interface. The <tt>scsi-bus</tt> connector type have two arguments, the object
+implementing the <tt>SCSI_TARGET_INTERFACE</tt> and the initial SCSI ID
+of the component on the SCSI bus.
+<p>
+
+<a name="label315"></a><h4 class="jdocu">12.3.9&nbsp;&nbsp;&nbsp;Connection Methods</h4 class="jdocu">
+
+
+<p>
+For each connector type that a component implements, it must also have a
+corresponding <b><i>connect_&lt;connection-type&gt;()</i></b> method.
+<p>
+<a name="label316"></a><h5 class="jdocu">12.3.9.1&nbsp;&nbsp;&nbsp;Arguments</h5 class="jdocu">
+
+<p>
+
+<p>
+The first argument (excluding the Python <tt>self</tt> reference) to the
+connect method is the name of the connector. The following arguments come
+from the <tt><a name="label317">connector_info</a></tt> list of the other component in the
+connection. The connector method typically sets attributes in the objects of
+the component that are related to the connection.
+<p>
+In the example in the previous section, the <tt>connector_info</tt> for an
+up-directed <tt>pci-bus</tt> connector in a PCI device was shown. The
+corresponding connect method in the component that has a down-directed
+<tt>pci-bus</tt> connector may look like the following. The component in the
+example has four <tt>pci-bus</tt> connectors, called <tt>pci-slot0</tt>, etc.
+<pre class="jdocu_small" style="color: black">
+def add_connector_info(self):
+    for i in range(4):
+        self.connector_info['pci-slot%d' % i] = [i, self.o.pcibus]
+
+def connect_pci_bus(self, connector, device_list):
+    slot = self.connector_info[connector][0]
+    bus = self.connector_info[connector][1]
+    for dev in device_list:
+        bus.pci_devices += [[slot, dev[0], dev[1]]]
+</pre>
+This method first reads some data for the components own connector, to know
+what PCI <tt>slot</tt> and <tt>bus</tt> object it has associated with the
+connector. It then iterates over <tt>device_list</tt>, that is the list with
+PCI functions and objects from the previous example. This list, together with
+the PCI slot number, is used to set the <tt>pci_devices</tt> attribute in the
+bus object.
+<p>
+A connect method should make as few assumptions as possible about the objects
+that are passed to it. This makes it easier for developers to add new
+components that use the same standard connector definitions, so that they can
+be connected to existing components.
+<p>
+
+<a name="label318"></a><h5 class="jdocu">12.3.9.2&nbsp;&nbsp;&nbsp;Method Invocation Time</h5 class="jdocu">
+
+
+<p>
+The connect methods are called when the components are instantiated, and not
+when the CLI command <b>&lt;component&gt;.connect</b>, or
+<b>connect-components</b>, is invoked. This simplifies coding
+the connect methods, since they are only called once, and implementing 
+disconnection of components before instantiation is simpler.
+<p>
+
+<a name="label319"></a><h5 class="jdocu">12.3.9.3&nbsp;&nbsp;&nbsp;Method Invocation Order</h5 class="jdocu">
+
+
+<p>
+The connect methods are called starting from the top-level component and
+working down the hierarchy. The connect method in the lower component of a
+connection is called while traversing down the hierarchy downwards. When the
+leaves have been reached, the connect methods are called in reverse order
+back up the hierarchy. This way components may pass data down the hierarchy
+which can be used to by lower components to determine what data to pass up the
+hierarchy.
+<p>
+
+<a name="label320"></a><h5 class="jdocu">12.3.9.4&nbsp;&nbsp;&nbsp;Connect Failures</h5 class="jdocu">
+
+
+A connect method may not fail. If a connection isn't possible, it should be
+prevented by the standard connector mechanisms, such as connector type and
+direction checking. In cases where this isn't enough, it is also possible to
+have a connector check method that is called before the connect method. This is
+described in section <a class="jdocu" href="#label322">12.3.10</a>.
+
+<a name="label321"></a><h5 class="jdocu">12.3.9.5&nbsp;&nbsp;&nbsp;Hotplug Support</h5 class="jdocu">
+
+
+For connectors that support hotplugging, there must also be a disconnect
+method. It is similar to the connect method, but only takes the connector name
+as argument. This method should restore all object attributes related to the
+connection to their initial state. To properly support hotplugging, the connect
+and disconnect methods also have to handle the case of objects in the
+<tt>o</tt> namespace being real Simics configuration objects and not
+pre-configuration ones.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Components may only be connected to other components sharing the same
+instantiation state, i.e., instantiated components may only be connected to
+other instantiated components, and non-instantiated components may only be
+connected to other non-instantiated components.<hr class="jdocu_note">
+<p>
+
+<p>
+
+<a name="label322"></a><h4 class="jdocu">12.3.10&nbsp;&nbsp;&nbsp;Disallowing Connections</h4 class="jdocu">
+
+
+<p>
+Sometimes the generic connector mechanism does not provide sufficient support
+for determining when a connection is allowed or not. For example, it may
+require device specific knowledge. To solve this, the component may have a
+check method that, unlike the connect method, is called when the connect
+command is invoked. The check method is called with the same arguments as the
+connect method by default. Optionally the other component may supply a tuple
+of two different argument lists. Then the first list is supplied to the connect
+method, and the second list to the check method.
+<p>
+Check methods are often used for connectors that support multiple connections,
+i.e. they have the <tt>multi</tt> attribute set to <tt>True</tt>. One example
+is the ISA bus component that has a <a name="label323">multi-connector</a> where the check
+method makes sure that ports of the attached devices do not collide.
+<p>
+If a check method determines that a connection is not allowed, it should raise
+a Python exception with a message saying why the connection failed.
+<p>
+
+<a name="label324"></a><h4 class="jdocu">12.3.11&nbsp;&nbsp;&nbsp;Naming of Configuration Objects</h4 class="jdocu">
+
+
+<p>
+Components set the names of configuration objects when the corresponding
+<b>pre_obj</b> object is created, for example:
+<pre class="jdocu_small" style="color: black">
+self.o.cpu = pre_obj('cpu', 'x86-p2')
+</pre>
+The <b>x86-p2</b> processor object will get the name <b>cpu</b>
+unless there already exist another object with the same name. In that case, an
+underscore and a unique number will be appended to the name, for example
+<b>cpu_0</b> for the first duplicate and <b>cpu_1</b> for the second.
+<p>
+<a name="label325"></a><h5 class="jdocu">12.3.11.1&nbsp;&nbsp;&nbsp;Automatic Object Name Numbering</h5 class="jdocu">
+
+
+<p>
+The component can decide where in the name the unique number should appear by
+including a <tt>$</tt> sign in the name. Underscores are not added in that case.
+<p>
+<pre class="jdocu_small" style="color: black">
+self.o.cpu = pre_obj('cpu$', 'x86-p2')
+self.o.tlb = pre_obj('cpu$_tlb', 'x86-tlb')
+</pre>
+The first set of objects created by this code will be called <b>cpu0</b>
+and <b>cpu0_tlb</b>, and the second <b>cpu1</b> and
+<b>cpu1_tlb</b>. As with the <tt>_&lt;number&gt;</tt> suffix, the number for
+the name is assigned when the <b>pre_obj</b> object is created.
+<p>
+
+<a name="label326"></a><h5 class="jdocu">12.3.11.2&nbsp;&nbsp;&nbsp;User-defined Object Name Numbering</h5 class="jdocu">
+
+
+<p>
+In some cases, a simple automatic numbering of objects is not sufficient, but
+object names are still unknown at creation time. A typical example is a large
+server with processor boards and a backplane, where processors should be
+numbered depending on what slot of the backplane the processor
+board is connected to. The component system solves this by allowing simple
+parentheses-enclosed expressions in the object name, where <tt>x</tt> is
+replaced with a supplied value. This expression can be re-evaluated at anytime
+until the component is instantiated, by calling the
+<b><i><a name="label327">rename_component_objects()</a></i></b> method.
+<p>
+The following example creates four processors, numbered from 4 up to 7. The
+non-evaluated name is <tt>cpu(x + 0)</tt>, <tt>cpu(x + 1)</tt>, etc. When
+<b><i>rename_component_objects()</i></b> is called, <tt>x</tt> is replaced by 4,
+and the final object names will be <tt>cpu4</tt>, <tt>cpu5</tt>, etc.
+<p>
+<pre class="jdocu_small" style="color: black">
+for i in range(4):
+    self.o.cpu[i] = pre_obj('cpu(x + %d)' % i, 'x86-p2')
+
+self.rename_component_objects('4')
+</pre>
+<p>
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic59.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic61.html">Next</a></span></p>
+</body>
+</html>

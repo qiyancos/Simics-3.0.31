@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>io_memory</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2244, true);
+</script>
+<a name="label17759"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic505.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic507.html">Next</a></span></p>
+<h3 class="jdocu">io_memory</h3 class="jdocu">
+
+
+<a name="label17760"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic20.html#label3128">AM29F016</a>, <a class="jdocu" href="topic21.html#label3134">AM79C960</a>, <a class="jdocu" href="topic22.html#label3181">AM79C960-dml</a>, <a class="jdocu" href="topic23.html#label3245">AM79C973</a>, <a class="jdocu" href="topic33.html#label3549">BCM5703C</a>, <a class="jdocu" href="topic34.html#label3762">BCM5704C</a>, <a class="jdocu" href="topic45.html#label4524">CL-PD6729</a>, <a class="jdocu" href="topic60.html#label4834">CS8900A</a>, <a class="jdocu" href="topic61.html#label4873">CY82C693_0</a>, <a class="jdocu" href="topic62.html#label4881">CY82C693_1</a>, <a class="jdocu" href="topic63.html#label4887">CY82C693_2</a>, <a class="jdocu" href="topic67.html#label4946">DEC21041</a>, <a class="jdocu" href="topic68.html#label5001">DEC21140A</a>, <a class="jdocu" href="topic69.html#label5056">DEC21140A-dml</a>, <a class="jdocu" href="topic70.html#label5114">DEC21143</a>, <a class="jdocu" href="topic71.html#label5170">DS12887</a>, <a class="jdocu" href="topic72.html#label5217">DS12887-dml</a>, <a class="jdocu" href="topic74.html#label5273">DS1743P</a>, <a class="jdocu" href="topic75.html#label5289">DS17485</a>, <a class="jdocu" href="topic84.html#label5512">FAS366U</a>, <a class="jdocu" href="topic99.html#label5989">GT64120</a>, <a class="jdocu" href="topic100.html#label6318">GT64120-pci</a>, <a class="jdocu" href="topic135.html#label7170">ISP1040</a>, <a class="jdocu" href="topic136.html#label7221">ISP2200</a>, <a class="jdocu" href="topic152.html#label7644">LX164-IRQ-PLD</a>, <a class="jdocu" href="topic153.html#label7651">LX164-NVRAM</a>, <a class="jdocu" href="topic154.html#label7659">M5823</a>, <a class="jdocu" href="topic157.html#label7724">MD1535D-acpi</a>, <a class="jdocu" href="topic158.html#label7728">MD1535D-cfg</a>, <a class="jdocu" href="topic159.html#label7738">MD1535D-ide</a>, <a class="jdocu" href="topic160.html#label7761">MD1535D-isa</a>, <a class="jdocu" href="topic161.html#label7775">MD1535D-power</a>, <a class="jdocu" href="topic162.html#label7787">MD1535D-smb</a>, <a class="jdocu" href="topic163.html#label7791">MD1535D-unknown</a>, <a class="jdocu" href="topic170.html#label8079">MK48T08</a>, <a class="jdocu" href="topic183.html#label8304">NS16450</a>, <a class="jdocu" href="topic184.html#label8340">NS16550</a>, <a class="jdocu" href="topic198.html#label8626">PCF8584</a>, <a class="jdocu" href="topic224.html#label8893">PCI0646</a>, <a class="jdocu" href="topic324.html#label12912">SA1110-device</a>, <a class="jdocu" href="topic371.html#label13958">SIO82378ZB</a>, <a class="jdocu" href="topic434.html#label14860">SYM53C810</a>, <a class="jdocu" href="topic435.html#label14885">SYM53C875</a>, <a class="jdocu" href="topic483.html#label17656">Z8530</a>, <a class="jdocu" href="topic24.html#label3340">apic</a>, <a class="jdocu" href="topic25.html#label3378">apic-bus</a>, <a class="jdocu" href="topic26.html#label3389">apm</a>, <a class="jdocu" href="topic29.html#label3484">artesyn-pm-ppc</a>, <a class="jdocu" href="topic35.html#label3977">bitmask-translator</a>, <a class="jdocu" href="topic37.html#label4005">cassini</a>, <a class="jdocu" href="topic38.html#label4214">cassini_sub</a>, <a class="jdocu" href="topic41.html#label4264">cheerio-e2bus</a>, <a class="jdocu" href="topic42.html#label4282">cheerio-hme</a>, <a class="jdocu" href="topic43.html#label4377">cheetah-mmu</a>, <a class="jdocu" href="topic44.html#label4450">cheetah-plus-mmu</a>, <a class="jdocu" href="topic52.html#label4689">cpc700-gpt</a>, <a class="jdocu" href="topic53.html#label4706">cpc700-iic</a>, <a class="jdocu" href="topic54.html#label4731">cpc700-mc</a>, <a class="jdocu" href="topic55.html#label4766">cpc700-pci</a>, <a class="jdocu" href="topic56.html#label4795">cpc700-pi</a>, <a class="jdocu" href="topic57.html#label4804">cpc700-uic</a>, <a class="jdocu" href="topic78.html#label5360">ebony-fpga</a>, <a class="jdocu" href="topic79.html#label5364">empty-device</a>, <a class="jdocu" href="topic87.html#label5632">fiesta-tomatillo</a>, <a class="jdocu" href="topic89.html#label5681">flash-memory</a>, <a class="jdocu" href="topic91.html#label5727">fourport</a>, <a class="jdocu" href="topic102.html#label6343">hostfs</a>, <a class="jdocu" href="topic103.html#label6365">i21150</a>, <a class="jdocu" href="topic104.html#label6385">i21152</a>, <a class="jdocu" href="topic105.html#label6405">i21554-prim</a>, <a class="jdocu" href="topic106.html#label6422">i21554-scnd</a>, <a class="jdocu" href="topic107.html#label6435">i21555-prim</a>, <a class="jdocu" href="topic108.html#label6452">i21555-scnd</a>, <a class="jdocu" href="topic113.html#label6512">i8042</a>, <a class="jdocu" href="topic114.html#label6602">i82077</a>, <a class="jdocu" href="topic115.html#label6647">i8237x2</a>, <a class="jdocu" href="topic116.html#label6673">i82443bx</a>, <a class="jdocu" href="topic117.html#label6687">i82443bx_agp</a>, <a class="jdocu" href="topic118.html#label6703">i82461GX</a>, <a class="jdocu" href="topic119.html#label6713">i82468GX_0</a>, <a class="jdocu" href="topic120.html#label6720">i8254</a>, <a class="jdocu" href="topic121.html#label6755">i8259x2</a>, <a class="jdocu" href="topic123.html#label6794">ia64-itanium</a>, <a class="jdocu" href="topic124.html#label6853">ia64-itanium2</a>, <a class="jdocu" href="topic127.html#label6927">ide</a>, <a class="jdocu" href="topic131.html#label7118">io-apic</a>, <a class="jdocu" href="topic138.html#label7277">jaguar-mmu</a>, <a class="jdocu" href="topic139.html#label7352">jalapeno-mmu</a>, <a class="jdocu" href="topic143.html#label7530">leon2_cfg</a>, <a class="jdocu" href="topic144.html#label7546">leon2_ioport</a>, <a class="jdocu" href="topic145.html#label7553">leon2_irq</a>, <a class="jdocu" href="topic146.html#label7563">leon2_timer</a>, <a class="jdocu" href="topic147.html#label7577">leon2_uart</a>, <a class="jdocu" href="topic155.html#label7706">malta</a>, <a class="jdocu" href="topic173.html#label8161">niagara-dram-ctl</a>, <a class="jdocu" href="topic174.html#label8165">niagara-iob</a>, <a class="jdocu" href="topic175.html#label8171">niagara-l2c</a>, <a class="jdocu" href="topic187.html#label8432">open-pic</a>, <a class="jdocu" href="topic188.html#label8445">opencores_eth</a>, <a class="jdocu" href="topic190.html#label8487">panther-mmu</a>, <a class="jdocu" href="topic191.html#label8563">pc-config</a>, <a class="jdocu" href="topic195.html#label8594">pc-shadow</a>, <a class="jdocu" href="topic204.html#label8688">pci-bus</a>, <a class="jdocu" href="topic226.html#label8913">pcie-switch</a>, <a class="jdocu" href="topic241.html#label9092">piix4_ide</a>, <a class="jdocu" href="topic242.html#label9116">piix4_isa</a>, <a class="jdocu" href="topic243.html#label9133">piix4_power</a>, <a class="jdocu" href="topic244.html#label9159">piix4_usb</a>, <a class="jdocu" href="topic245.html#label9218">piix4_usb_dummy</a>, <a class="jdocu" href="topic255.html#label9471">ppc405gp-cpc</a>, <a class="jdocu" href="topic256.html#label9483">ppc405gp-ebc</a>, <a class="jdocu" href="topic257.html#label9508">ppc405gp-emac</a>, <a class="jdocu" href="topic258.html#label9568">ppc405gp-gpio</a>, <a class="jdocu" href="topic259.html#label9576">ppc405gp-iic</a>, <a class="jdocu" href="topic260.html#label9605">ppc405gp-mal</a>, <a class="jdocu" href="topic261.html#label9640">ppc405gp-mc</a>, <a class="jdocu" href="topic262.html#label9659">ppc405gp-pci</a>, <a class="jdocu" href="topic263.html#label9690">ppc405gp-uic</a>, <a class="jdocu" href="topic265.html#label9902">ppc440gp-cpc</a>, <a class="jdocu" href="topic266.html#label9927">ppc440gp-dma</a>, <a class="jdocu" href="topic267.html#label9976">ppc440gp-ebc</a>, <a class="jdocu" href="topic268.html#label10026">ppc440gp-emac</a>, <a class="jdocu" href="topic269.html#label10088">ppc440gp-gpio</a>, <a class="jdocu" href="topic270.html#label10099">ppc440gp-iic</a>, <a class="jdocu" href="topic271.html#label10131">ppc440gp-mal</a>, <a class="jdocu" href="topic272.html#label10171">ppc440gp-mc</a>, <a class="jdocu" href="topic273.html#label10204">ppc440gp-pci</a>, <a class="jdocu" href="topic274.html#label10297">ppc440gp-plb</a>, <a class="jdocu" href="topic275.html#label10306">ppc440gp-sram</a>, <a class="jdocu" href="topic276.html#label10323">ppc440gp-uic</a>, <a class="jdocu" href="topic277.html#label10352">ppc440gp-zmii</a>, <a class="jdocu" href="topic279.html#label10555">ppc440gx-cpc</a>, <a class="jdocu" href="topic280.html#label10580">ppc440gx-cpr</a>, <a class="jdocu" href="topic281.html#label10593">ppc440gx-dma</a>, <a class="jdocu" href="topic282.html#label10642">ppc440gx-ebc</a>, <a class="jdocu" href="topic283.html#label10692">ppc440gx-emac</a>, <a class="jdocu" href="topic284.html#label10755">ppc440gx-gpio</a>, <a class="jdocu" href="topic285.html#label10766">ppc440gx-iic</a>, <a class="jdocu" href="topic286.html#label10798">ppc440gx-l2c</a>, <a class="jdocu" href="topic287.html#label10810">ppc440gx-mal</a>, <a class="jdocu" href="topic288.html#label10854">ppc440gx-opb</a>, <a class="jdocu" href="topic289.html#label10863">ppc440gx-pci</a>, <a class="jdocu" href="topic290.html#label10956">ppc440gx-plb</a>, <a class="jdocu" href="topic291.html#label10965">ppc440gx-rgmii</a>, <a class="jdocu" href="topic292.html#label10971">ppc440gx-sdr</a>, <a class="jdocu" href="topic293.html#label11011">ppc440gx-sdram</a>, <a class="jdocu" href="topic294.html#label11041">ppc440gx-sram</a>, <a class="jdocu" href="topic295.html#label11058">ppc440gx-uic</a>, <a class="jdocu" href="topic296.html#label11087">ppc440gx-zmii</a>, <a class="jdocu" href="topic311.html#label12601">pyxis</a>, <a class="jdocu" href="topic312.html#label12614">ragexl</a>, <a class="jdocu" href="topic323.html#label12907">rom-device</a>, <a class="jdocu" href="topic325.html#label12927">sample-device</a>, <a class="jdocu" href="topic326.html#label12943">sample-device-python</a>, <a class="jdocu" href="topic332.html#label12994">sample-pci-device</a>, <a class="jdocu" href="topic337.html#label13045">sb16</a>, <a class="jdocu" href="topic338.html#label13055">sbbc-pci</a>, <a class="jdocu" href="topic339.html#label13085">sbus-hme</a>, <a class="jdocu" href="topic353.html#label13557">serengeti-schizo</a>, <a class="jdocu" href="topic364.html#label13830">set-memory</a>, <a class="jdocu" href="topic367.html#label13913">simple-byte-dump</a>, <a class="jdocu" href="topic399.html#label14299">strata-flash</a>, <a class="jdocu" href="topic414.html#label14473">sun4u-ac</a>, <a class="jdocu" href="topic415.html#label14489">sun4u-clockregs</a>, <a class="jdocu" href="topic416.html#label14499">sun4u-counter</a>, <a class="jdocu" href="topic417.html#label14519">sun4u-fasdma</a>, <a class="jdocu" href="topic418.html#label14531">sun4u-fhc</a>, <a class="jdocu" href="topic419.html#label14555">sun4u-sbus-speed</a>, <a class="jdocu" href="topic420.html#label14559">sun4u-simm-status</a>, <a class="jdocu" href="topic421.html#label14567">sun4u-systemregs</a>, <a class="jdocu" href="topic422.html#label14588">sun4u-temperature</a>, <a class="jdocu" href="topic424.html#label14617">sun4v-rtc</a>, <a class="jdocu" href="topic430.html#label14742">sunfire-psycho</a>, <a class="jdocu" href="topic432.html#label14798">sunfire-sysio</a>, <a class="jdocu" href="topic438.html#label14988">telos-basic-clock</a>, <a class="jdocu" href="topic441.html#label15015">telos-io-ports</a>, <a class="jdocu" href="topic443.html#label15067">telos-sfr</a>, <a class="jdocu" href="topic444.html#label15079">telos-timer</a>, <a class="jdocu" href="topic445.html#label15109">telos-usart</a>, <a class="jdocu" href="topic461.html#label15942">uPD66566S1016</a>, <a class="jdocu" href="topic463.html#label15970">vga</a>, <a class="jdocu" href="topic464.html#label16014">vga_pci</a>, <a class="jdocu" href="topic465.html#label16063">voodoo3</a>, <a class="jdocu" href="topic466.html#label16147">voodoo3-agp</a>, <a class="jdocu" href="topic481.html#label17628">x87_exception</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <a name="label17761"></a>
+   <a name="label17762"></a>
+<p>
+   This interface is implemented by devices that can be mapped into
+   address spaces (including port spaces). The <b><i>map()</i></b>
+   function is called for an object when it initially is mapped into
+   the address space, and <b><i>operation()</i></b> is called when the object
+   is accessed through an address space.
+<p>
+   The <i>obj</i> argument is a pointer to the mapped object and
+   <i>map_info</i> contains information about how and where
+   the device is mapped into memory. The <i>memory_or_io</i>
+   argument to <b><i>map()</i></b> identifies the type of the address
+   space where the device is mapped. The <i>mem_op</i> argument
+   to <b><i>operate()</i></b> contains information about the access.
+<p>
+   The offset into the device mapping for the access is typically
+   calculated in the following way:
+<p>
+   <span class="jdocu_small">
+   <tt>offset = mem_op-&gt;physical_address - map_info.base + map_info.start</tt>
+   </span>
+<p>
+   The return value from <b><i>map()</i></b> is currently not used
+   and should be always be 0.
+<p>
+   The <tt>exception_type_t</tt> type, that is the same as
+   <tt>pseudo_exception_t</tt>, returned by the
+   <b><i>operation()</i></b> function may be used to signal errors to
+   Simics, but should in most cases be <tt>Sim_PE_No_Exception</tt>.
+   If the device does not support inquiry accesses, it should return
+   <tt>Sim_PE_Inquiry_Unhandled</tt> if <tt>mem_op-&gt;inqury</tt> is 1.
+<p>
+   <a name="label17763"></a>
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Addr_Space_Conf,
+        Sim_Addr_Space_IO,
+        Sim_Addr_Space_Memory
+} addr_space_t;</pre>
+
+   <pre class="jdocu_small" style="color: black">typedef int (*map_func_t)(conf_object_t *NOTNULL obj,
+                          addr_space_t memory_or_io,
+                          map_info_t map_info);
+typedef exception_type_t (*operation_func_t)(
+        conf_object_t *NOTNULL obj,
+        generic_transaction_t *NOTNULL mem_op,
+        map_info_t map_info);
+
+typedef struct io_memory_interface {
+        map_func_t map;
+        operation_func_t operation;
+} io_memory_interface_t;
+
+#define IO_MEMORY_INTERFACE "io_memory"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic505.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic507.html">Next</a></span></p>
+</body>
+</html>

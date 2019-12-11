@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Distributed Network Simulation</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(124, true);
+</script>
+<a name="label287"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic42.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic44.html">Next</a></span></p>
+<h4 class="jdocu">9.4&nbsp;&nbsp;&nbsp;Distributed Network Simulation</h4 class="jdocu">
+
+<a name="label288"></a>
+
+<p>
+The simulation of systems connected over an Ethernet network can be
+distributed over several Simics instances in a distributed simulation,
+as described in Chapter <a class="jdocu" href="topic52.html#label340">11</a>.  A link object
+can be configured to have global distribution, which means that
+several link object in separate Simics instances can form a shared
+link, over which all connected systems can communicate even if they
+are simulated by different Simics instances.
+<p>
+A link object with global distribution is automatically joined with
+any other link object in another Simics instance if it also has global
+distribution and has the same name.
+<p>
+The way to make a link object have global distribution is to set its
+<em>central</em> attribute to point to the
+<b>central-client</b> object.  The <b>&lt;ethernet-link&gt;.info</b> shows the current setting.
+(Note that you must set up a central server and client as 
+described in Chapter <a class="jdocu" href="topic52.html#label340">11</a> for
+these examples to work.)
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.ethlink0.central = conf.central_client</b>
+simics&gt; <b>ethlink0.info</b>
+Information about ethlink0 [class ethernet-link]
+================================================
+
+                       Latency : 1 us
+                  Distribution : global
+                     Filtering : enabled
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic42.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic44.html">Next</a></span></p>
+</body>
+</html>

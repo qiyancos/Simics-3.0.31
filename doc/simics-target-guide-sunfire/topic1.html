@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/SunFire Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/SunFire Overview</h2 class="jdocu">
+
+
+<p>
+<a name="label20"></a><h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics/SunFire models the <i>Sun Enterprise 3500 - 6500</i> class of servers. A
+SunFire server can be configured with up to 30 UltraSPARC II processors and
+60GB of memory. A variety of SBus and PCI-bus based devices are supported. Both
+Solaris and Linux are supported as target Operating Systems.
+<p>
+Virtutech does not provide any disk images with Solaris for SunFire, due
+to licensing issues. However, scripts are included for installing Solaris 8,
+9 or 10 on the virtual machine. Installing Solaris is described in chapter
+<a class="jdocu" href="topic5.html#label447">6.1</a>.
+
+<a name="label21"></a><h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Supported Hardware</h3 class="jdocu">
+
+
+<p>
+SunFire machines have up to 16 board slots depending on the model. Simics
+models the largest machine, Sun Enterprise 6500, by default, but this is
+configurable. Each board slot can hold a CPU, SBus or PCI board.
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>System Backplane</b></td><td class="jdocu_noborder"># of Boards</td><td class="jdocu_noborder">Board slot numbers</td></tr>
+<tr><td class="jdocu_noborder">Sun Enterprise 3500</td><td class="jdocu_noborder">5</td><td class="jdocu_noborder">1, 3, 5, 7, 9</td></tr>
+<tr><td class="jdocu_noborder">Sun Enterprise 4500</td><td class="jdocu_noborder">8</td><td class="jdocu_noborder">0 - 7</td></tr>
+<tr><td class="jdocu_noborder">Sun Enterprise 5500</td><td class="jdocu_noborder">8</td><td class="jdocu_noborder">0 - 7</td></tr>
+<tr><td class="jdocu_noborder">Sun Enterprise 6500</td><td class="jdocu_noborder">16</td><td class="jdocu_noborder">0 - 15</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Supported Boards</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">CPU</td><td class="jdocu_noborder">2 UltraSPARC II CPUs</td><td class="jdocu_noborder">4GB of memory</td></tr>
+<tr><td class="jdocu_noborder">SBus</td><td class="jdocu_noborder">3 free SBus slots</td><td class="jdocu_noborder">On board 'fas' and 'hme' adapters</td></tr>
+<tr><td class="jdocu_noborder">PCI</td><td class="jdocu_noborder">2 free PCI slots</td><td class="jdocu_noborder">On board 'isp' and 'hme' adapters</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Supported SBus Devices</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">'fas'</td><td class="jdocu_noborder">SCSI controller</td><td class="jdocu_noborder">(FAS366U)</td></tr>
+<tr><td class="jdocu_noborder">'hme'</td><td class="jdocu_noborder">Ethernet controller</td><td class="jdocu_noborder">(FEPS, Happy Meal)</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Supported PCI Devices</b></td><td class="jdocu_noborder"></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">'ce'</td><td class="jdocu_noborder">Gb Ethernet controller</td><td class="jdocu_noborder">(Cassini+)</td></tr>
+<tr><td class="jdocu_noborder">'bge'</td><td class="jdocu_noborder">Gb Ethernet controller</td><td class="jdocu_noborder">(BCM5703C)</td></tr>
+<tr><td class="jdocu_noborder">'bge'</td><td class="jdocu_noborder">Dual Gb Ethernet controller</td><td class="jdocu_noborder">(BCM5704C)</td></tr>
+<tr><td class="jdocu_noborder">'hme'</td><td class="jdocu_noborder">Ethernet controller</td><td class="jdocu_noborder">(Cheerio)</td></tr>
+<tr><td class="jdocu_noborder">'isp'</td><td class="jdocu_noborder">SCSI controller</td><td class="jdocu_noborder">(ISP1040)</td></tr>
+<tr><td class="jdocu_noborder">'pgx64'</td><td class="jdocu_noborder">24-Bit Frame Buffer</td><td class="jdocu_noborder">(pgx64)</td></tr>
+<tr><td class="jdocu_noborder">'qlc'</td><td class="jdocu_noborder">Fibre-Channel controller</td><td class="jdocu_noborder">(ISP2200)</td></tr>
+<tr><td class="jdocu_noborder"></td><td class="jdocu_noborder">PCI-to-PCI bridge</td><td class="jdocu_noborder">(i21152)</td></tr>
+</table>
+<p>
+<table>
+<tr><td class="jdocu_noborder"><b>Other Supported Devices</b></td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Sun Type 5 Keyboard</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Sun Type 5 Mouse</td><td class="jdocu_noborder"></td></tr>
+<tr><td class="jdocu_noborder">Serial ports</td><td class="jdocu_noborder">(Z8530)</td></tr>
+</table>
+<p>
+A good guide to the Sun Enterprise servers and what boards and devices that are
+supported can be found in the "Sun System Handbook", available online at:
+<a class="jdocu" href="http://sunsolve.sun.com/handbook_pub/" target="_top">http://sunsolve.sun.com/handbook_pub/</a>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

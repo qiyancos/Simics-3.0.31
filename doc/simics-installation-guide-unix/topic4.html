@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>FLEXlm Floating Licenses</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(27, true);
+</script>
+<a name="label29"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;FLEXlm Floating Licenses</h2 class="jdocu">
+
+
+<p>
+<a name="label30"></a>
+<a name="label31"></a>
+<a name="label32"></a>
+<p>
+Simics needs a license server for <i>floating licenses</i>. The license server
+used is <i>FLEXlm v9.2</i><a name="label33"></a> from Macrovision. Below is a brief
+description on how to set up the license server. For further information on how
+to manage the server please consult the <em>FLEXlm End Users Guide</em> which
+can be found at
+<a class="jdocu" href="http://www.macrovision.com/services/support/index.shtml" target="_top">http://www.macrovision.com/services/support/index.shtml</a>.
+<p>
+<hr class="jdocu_note"><b>Note:</b> FLEXlm is a very common license technology, and if you are a corporate
+user then it is likely that you already have a centrally managed corporate
+server. Ask your system administrator.<hr class="jdocu_note">
+<p>
+All files needed to setup the FLEXlm license server are included in the Simics
+distribution in <tt>[simics]/</tt><i>host</i><tt>/sys/flexlm/bin</tt>, e.g.,
+<tt>[simics]/x86-linux/sys/flexlm/bin</tt>:
+<p>
+<ul>
+<li><tt>lmgrd</tt> &#8212; The License Manager Daemon (server)</li>
+<li><tt>lmutil</tt> &#8212; FLEXlm utility program(s)</li>
+<li><tt>vtech</tt> &#8212; The vendor daemon from Virtutech</li>
+</ul>
+<p>
+A license file from Virtutech is also needed (usually sent by e-mail), that
+specifies your licenses. The license file is typically called
+<tt>simics.lic</tt>.
+<p>
+<tt>lmgrd</tt>, <tt>lmutil</tt> and <tt>vtech</tt> can be installed anywhere
+in the system, for example in <tt>/usr/local/flexlm/bin/</tt>. The license
+file, e.g., <tt>simics.lic</tt>, should then be placed in the
+<tt>[simics]/licenses/</tt> directory. This is the default location for a
+license file, meaning that Simics will find it automatically. To override this,
+the environment variable <tt>VTECH_LICENSE_FILE</tt> can be set to the name of
+the license file or to the directory where it resides. It can also be set to
+<tt></tt><i>@license-host</i><tt></tt> (i.e., the machine running the license
+server) if the license file cannot be reached through the file system. In this
+case the license server will know the location of the license file. A typical
+license file looks like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+SERVER server ANY
+USE_SERVER
+# change the path to where the license daemon (vtech) is located
+VENDOR vtech /usr/local/flexlm/bin/vtech
+#
+FEATURE p_developer vtech 3.0 30-sep-2005 10 03DBBBBC9607 \
+        VENDOR_STRING=Tc;Gcm HOSTID=ANY SIGN=30C8A736AB4A
+#
+FEATURE eclipse vtech 3.0 30-sep-2005 10 5E347B88E389 HOSTID=ANY \
+        SIGN=421DDD8207A2
+#
+FEATURE host_rh6-x86 vtech 3.0 30-sep-2005 uncounted 3A06239E1993 \
+        HOSTID=ANY SIGN=BC67891604C4
+#
+</pre>
+<p>
+where <tt>server</tt> is the name of the host that will run the license server.
+This can be changed by the user if the line ends with ANY, otherwise the
+license server need to be run on a special host.  The <tt>VENDOR</tt> line
+specifies the vendor and where to find the vendor daemon. Edit this line to
+point to the <tt>vtech</tt> daemon file. <tt>FEATURE</tt> specifies the
+type of license and for what it is used. In this case it is 10 commercial
+floating licenses for the <em>developer</em> product in Simics 3.0 on x86
+Linux host with expire date 30-sep-2005. The last hexadecimal codes are
+checksums which assert that the license file is not altered in an unauthorized
+way by the user.
+<p>
+To be able to build user modules that can be loaded into Simics a
+<em>Simics model builder license</em> is needed. If you have such a license,
+the <em>p_modelbuilder</em> feature and <em>builder</em> feature will be
+present in the license file as well.
+<p>
+The license server can be started in the following way:
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@server:~$ <b>lmgrd -c simics.lic</b>
+</pre>
+<p>
+Remember to run <tt>lmgrd</tt> on the <tt>server</tt> host specified in the
+license file; in the example it is "server". Since <tt>lmgrd</tt> does not need
+root privileges it is recommended to run it as an ordinary user.
+<p>
+The server will log all actions to <tt>stdout</tt>, unless a log file is
+specified by the <tt>-l </tt><i>log-file</i><tt></tt> option.
+<p>
+<tt>lmgrd</tt> will find the vendor daemon and start it. All communication
+between the licensed software and the vendor daemon goes via the license server
+(<tt>lmgrd</tt>). It is the vendor daemon that keeps track of products and
+number of licenses from a particular vendor, thus only one license server is
+needed to run software from several vendors.
+<p>
+<hr class="jdocu_note"><b>Note:</b> When upgrading the license on an already running license server, it is
+recommended that the server is stopped and then restarted, instead of using the
+"reread" feature in the FLEXlm utilities. The reason is that the
+FLEXlm server can't handle some license changes properly. <em>Stopping and
+restarting is required if you have a server with still valid licenses for
+Simics 2.x.</em>
+<hr class="jdocu_note">
+<p>
+When the license server is running, Simics can be run like any program and the
+communication with the license server should be transparent to the user. When
+Simics is started, it will contact the server and, if the user is authorized
+and available licenses exist, Simics will <em>check-out</em> a license and run.
+On exit, Simics will give back the license to the daemon (<em>check-in</em>).
+<p>
+<hr class="jdocu_note"><b>Note:</b> A model builder license is only checked out the first time a new module
+(compiled by a user) is loaded into Simics. Further use of the same module does
+not require a model builder license. Model builder licenses will be kept for
+24 hours before they are returned to the license pool, but can be reused an
+unlimited number of times by the same user.<hr class="jdocu_note">
+<p>
+If Simics ever crashes or exits abnormally, a license may be lost for a while
+but will return to the license pool after about 2 hours.
+<p>
+To shut down the license server and the vendor daemon type:
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@enterprise:~$ <b>lmutil lmdown</b>
+</pre>
+<p>
+and the server will go down.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

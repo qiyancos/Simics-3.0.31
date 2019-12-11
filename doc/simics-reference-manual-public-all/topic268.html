@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ppc440gp-emac</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1412, true);
+</script>
+<a name="label10026"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic267.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic269.html">Next</a></span></p>
+<h3 class="jdocu">ppc440gp-emac</h3 class="jdocu">
+
+
+<a name="label10027"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2496">440gp-devices</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ppc440gp-emac</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic495.html#label17725">ethernet_device</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+
+<dt class="jdocu_di"><b>Ports</b></dt><dd class="jdocu_di">
+Reset (<a class="jdocu" href="topic529.html#label17946">signal</a>)</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The ppc440gp-emac class models the ethernet media access controller (EMAC) of the ppc440gp system-on-chip processor.
+
+</dd>
+
+</dl>
+<a name="label10028"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>EMACx_GAHT1</i></b></dt><a name="label10029"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Group Address Hash Table 1</dd></dl>
+<dl><dt><b><i>EMACx_GAHT2</i></b></dt><a name="label10030"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Group Address Hash Table 2</dd></dl>
+<dl><dt><b><i>EMACx_GAHT3</i></b></dt><a name="label10031"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Group Address Hash Table 3</dd></dl>
+<dl><dt><b><i>EMACx_GAHT4</i></b></dt><a name="label10032"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Group Address Hash Table 4</dd></dl>
+<dl><dt><b><i>EMACx_IAHR</i></b></dt><a name="label10033"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Individual Address High</dd></dl>
+<dl><dt><b><i>EMACx_IAHT1</i></b></dt><a name="label10034"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Individual Address Hash Table 1</dd></dl>
+<dl><dt><b><i>EMACx_IAHT2</i></b></dt><a name="label10035"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Individual Address Hash Table 2</dd></dl>
+<dl><dt><b><i>EMACx_IAHT3</i></b></dt><a name="label10036"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Individual Address Hash Table 3</dd></dl>
+<dl><dt><b><i>EMACx_IAHT4</i></b></dt><a name="label10037"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Individual Address Hash Table 4</dd></dl>
+<dl><dt><b><i>EMACx_IALR</i></b></dt><a name="label10038"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Individual Address Low</dd></dl>
+<dl><dt><b><i>EMACx_IPGVR</i></b></dt><a name="label10039"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Inter-Packet Gap Value Register</dd></dl>
+<dl><dt><b><i>EMACx_ISER</i></b></dt><a name="label10040"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt Status Enable Register</dd></dl>
+<dl><dt><b><i>EMACx_ISR</i></b></dt><a name="label10041"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt Status Register</dd></dl>
+<dl><dt><b><i>EMACx_LSAH</i></b></dt><a name="label10042"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Last Source Address High</dd></dl>
+<dl><dt><b><i>EMACx_LSAL</i></b></dt><a name="label10043"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Last Source Address Low</dd></dl>
+<dl><dt><b><i>EMACx_MR0</i></b></dt><a name="label10044"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Mode Register 0</dd></dl>
+<dl><dt><b><i>EMACx_MR1</i></b></dt><a name="label10045"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Mode Register 1</dd></dl>
+<dl><dt><b><i>EMACx_OCRX</i></b></dt><a name="label10046"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of Octets Received</dd></dl>
+<dl><dt><b><i>EMACx_OCTX</i></b></dt><a name="label10047"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of Octets Transmitted</dd></dl>
+<dl><dt><b><i>EMACx_PTR</i></b></dt><a name="label10048"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Pause Timer Register</dd></dl>
+<dl><dt><b><i>EMACx_RMR</i></b></dt><a name="label10049"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Receive Mode Register</dd></dl>
+<dl><dt><b><i>EMACx_RWMR</i></b></dt><a name="label10050"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Receive Low/High Mark Register</dd></dl>
+<dl><dt><b><i>EMACx_STACR</i></b></dt><a name="label10051"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+STA Control Register</dd></dl>
+<dl><dt><b><i>EMACx_TMR0</i></b></dt><a name="label10052"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Transmit Mode Register 0</dd></dl>
+<dl><dt><b><i>EMACx_TMR1</i></b></dt><a name="label10053"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Transmit Mode Register 1</dd></dl>
+<dl><dt><b><i>EMACx_TRTR</i></b></dt><a name="label10054"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Transmit Request Threshold Register</dd></dl>
+<dl><dt><b><i>EMACx_VTCI</i></b></dt><a name="label10055"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+VLAN TCI Register</dd></dl>
+<dl><dt><b><i>EMACx_VTPID</i></b></dt><a name="label10056"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+VLAN TPID Register</dd></dl>
+<dl><dt><b><i>add_crc_on_inject</i></b></dt><a name="label10057"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Frames injected using the 'inject_packet' will get a correctly calculated CRC added at the end when this attribute is set to 1 (default). When set to 0, the user has to supply a CRC field with the injected frame. Note that you must always provide room for the CRC field, even when this attribute is set to 1.</dd></dl>
+<dl><dt><b><i>anar</i></b></dt><a name="label10058"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>aner</i></b></dt><a name="label10059"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>anlpar</i></b></dt><a name="label10060"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>bmcr</i></b></dt><a name="label10061"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>bmsr</i></b></dt><a name="label10062"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>cs_conf</i></b></dt><a name="label10063"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>current_packet</i></b></dt><a name="label10064"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+(Obsolete - see the "last-frame" attribute instead). The packet that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>inject_packet</i></b></dt><a name="label10065"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Data</b>.
+<p>
+Attribute used to send a packet to the network device. Writing this attribute at any time injects a new packet into the device (without involving the network simulation). Injecting a packet copies the packet data, allowing the caller to reuse or dispose of the buffer used for creating the packet, after the attribute is written.</dd></dl>
+<dl><dt><b><i>last_frame</i></b></dt><a name="label10066"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+The frame that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label10067"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The Ethernet link that the network device is connected to.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label10068"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|[i{6}]|n</b>.
+<p>
+Ethernet (MAC) address of the network interface.</dd></dl>
+<dl><dt><b><i>mal</i></b></dt><a name="label10069"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+MAL object to be used for packet transfers.</dd></dl>
+<dl><dt><b><i>mode</i></b></dt><a name="label10070"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>model_crc</i></b></dt><a name="label10071"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to 1, the device will calculate and include an Ethernet CRC on all transmitted frames, and check the CRC on received frames.</dd></dl>
+<dl><dt><b><i>network</i></b></dt><a name="label10072"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Obsolete attribute. Use link instead.</dd></dl>
+<dl><dt><b><i>poll_reg</i></b></dt><a name="label10073"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+<dl><dt><b><i>recorder</i></b></dt><a name="label10074"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Recorder object that allows recording and later playback of network traffic to the interface.</dd></dl>
+<dl><dt><b><i>reliability</i></b></dt><a name="label10075"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+This value determined how reliable an established connection is. If set to N it means that with a probability of 1 out of N a package will be lost (not sent to the receiver). The default value is 0 which means that no packages will be lost.</dd></dl>
+<dl><dt><b><i>reliability_seed</i></b></dt><a name="label10076"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The seed value for the randomization of packet loss. See the reliability attribute</dd></dl>
+<dl><dt><b><i>tp10_conf</i></b></dt><a name="label10077"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Internal Register</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label10078"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label10080">connect</a></b></td><td class="jdocu_noborder">connect to a simulated Ethernet link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label10082">disconnect</a></b></td><td class="jdocu_noborder">disconnect from simulated link</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label10084">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label10086">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label10079"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label10080"></a><a name="label10081"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp-emac&gt;.connect</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp-emac&gt;.connect</b> [-auto] (<i>link</i>|<i>"link-name"</i>) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Connect the device to a simulated Ethernet link.
+                The flag '-auto' is deprecated and shouldn't be used.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label10082">&lt;ppc440gp-emac&gt;.disconnect</a></dd>
+
+</dl>
+
+
+
+<a name="label10082"></a><a name="label10083"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp-emac&gt;.disconnect</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp-emac&gt;.disconnect</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Disconnect the device from a simulated Ethernet link.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label10080">&lt;ppc440gp-emac&gt;.connect</a></dd>
+
+</dl>
+
+
+
+<a name="label10084"></a><a name="label10085"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp-emac&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp-emac&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label10086"></a><a name="label10087"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp-emac&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp-emac&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic267.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic269.html">Next</a></span></p>
+</body>
+</html>

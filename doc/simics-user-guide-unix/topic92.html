@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Using g-cache</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(224, true);
+</script>
+<a name="label529"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic91.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic93.html">Next</a></span></p>
+<h4 class="jdocu">18.6&nbsp;&nbsp;&nbsp;Using g-cache</h4 class="jdocu">
+
+
+<p>
+Let us have a more detailed look at <b>g-cache</b>. It has the
+following features:
+<p>
+<ul>
+<p>
+<li>Configurable number of lines, line size and associativity. Note that the
+line size must be a power of 2, but the only restriction on the cache structure
+is that the number of lines divided by the associativity must be a power of
+two.</li>
+<p>
+<li>Physical/virtual index and tag.</li>
+<p>
+<li>Configurable write allocate/write back policy.</li>
+<p>
+<li>Random, true LRU or cyclic replacement policies. It is
+easy to add new replacement policies.</li>
+<p>
+<li>Sample MESI protocol.</li>
+<p>
+<li>Support for several processors connected to one cache.</li>
+<p>
+<li>Configurable penalties for read/write accesses to the cache, and read/write
+accesses initiated by the cache to the next level cache.</li>
+<p>
+<li>Cache miss profiling.</li>
+<p>
+</ul>
+<p>
+Transactions are handled one at a time; all operations are done in order, at
+once, and a total stall time is returned. The transaction is not reissued
+afterward. Here's a short description of the way <b>g-cache</b> handles
+a transaction (we assume a write-back, write allocate cache):
+<p>
+<ul>
+<p>
+<li>If the transaction is uncacheable, <b>g-cache</b> ignores it.</li>
+<p>
+<li>If the transaction is a read hit, <b>g-cache</b> returns
+<i>penalty_read</i> cycles of penalty.</li>
+<p>
+<li>If the transaction is a read miss, <b>g-cache</b> asks the
+replacement policy to provide a cache line to allocate.</li>
+<p>
+<li>The new cache line is emptied. If necessary, a copy-back transaction is
+initiated to the next level cache. In this case, a penalty of
+<i>penalty_write_next</i> is counted, added to the penalty returned by
+the next level.</li>
+<p>
+<li>The new data is fetched from the next level, incurring
+<i>penalty_read_next</i> cycles penalty added to the penalty returned by
+the next level.</li>
+<p>
+<li>The total penalty returned is the sum of <i>penalty_read</i>, plus
+the penalties associated with the copy-back (if any), plus the penalties
+associated with the line fetch.</li>
+<p>
+</ul>
+<p>
+Note the usage of <i>penalty_read/write</i> and
+<i>penalty_read/write_next</i>: a write-through cache would always take a
+<i>penalty_write_next</i> penalty independently of the fact that a write
+is a hit or a miss, but <b>g-cache</b> always reports hits and misses
+according to the line lookup, not based on the fact that a transaction is
+propagated to the next level.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic91.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic93.html">Next</a></span></p>
+</body>
+</html>

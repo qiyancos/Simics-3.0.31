@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_force_correct()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(63, true);
+</script>
+<a name="label332"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic33.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic35.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_force_correct()</h4 class="jdocu">
+
+<a name="label333"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label334"></a><b>SIM_instruction_force_correct</b> &#8212; remove speculative status</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_instruction_force_correct(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Note: this function was previously called
+   <b><i><a name="label335">SIM_instruction_set_right_path</a></i></b>.
+<p>
+   This function removes the speculative status of the instruction. This can be
+   used to model an architecture which is not consistent with program order
+   execution. Use this function with care since it may lead to incorrect
+   results.
+ <p>
+   <i>ii</i> is the id of the instruction to check,</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is
+   illegal.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic33.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic35.html">Next</a></span></p>
+</body>
+</html>

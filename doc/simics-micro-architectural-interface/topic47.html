@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_proceed()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(76, true);
+</script>
+<a name="label374"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic46.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic48.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_proceed()</h4 class="jdocu">
+
+<a name="label375"></a><a name="label376"></a><a name="label377"></a><a name="label378"></a><a name="label379"></a><a name="label380"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label381"></a><b>SIM_instruction_proceed</b><b>, SIM_instruction_fetch</b><b>, SIM_instruction_decode</b><b>, SIM_instruction_execute</b><b>, SIM_instruction_retire</b><b>, SIM_instruction_commit</b> &#8212; proceed to next instruction phase</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_proceed(instruction_id_t ii);
+</pre><pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_fetch(instruction_id_t ii);
+</pre><pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_decode(instruction_id_t ii);
+</pre><pre class="jdocu_small" style="color: black">instruction_error_t
+SIM_instruction_execute(instruction_id_t ii);
+</pre><pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_retire(instruction_id_t ii);
+</pre><pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_commit(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function advances the instruction <i>ii</i> to the
+   next stop phase as set by
+   <b><i>SIM_instruction_set_stop_phase</i></b>.
+<p>
+   The defined phases are the following:
+<p>
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum instruction_phase {
+        Sim_Phase_Initiated,
+        Sim_Phase_Fetched,
+        Sim_Phase_Decoded,
+        Sim_Phase_Executed,
+        Sim_Phase_Retired,
+        Sim_Phase_Committed,
+        Sim_Phases
+} instruction_phase_t;</pre>
+
+   <p>
+   For convenience there are some predefined functions that can be
+   used to proceed to the phases above. 
+<p>
+   <b><i>SIM_instruction_fetch(id)</i></b> will proceed to Sim_Phase_Fetch.
+ <p>
+   <b><i>SIM_instruction_decode(id)</i></b> will proceed to Sim_Phase_Decoded.
+ <p>
+   <b><i>SIM_instruction_execute(id)</i></b> will proceed to Sim_Phase_Executed.
+<p>
+   <b><i>SIM_instruction_retire(id)</i></b> will proceed to Sim_Phase_Retired.
+ <p>
+   <b><i>SIM_instruction_commit(id)</i></b> will proceed to Sim_Phase_Committed.
+<p>
+   Fetching an instruction means that the memory used by the instruction is
+   loaded. This may stall the CPU and <b><i>SIM_instruction_proceed</i></b> will
+   signal this by returning <tt>Sim_IE_Stalling</tt>. The instruction can
+   then be proceeded to the next phase as soon as the stalling period is over
+   (see <b><i>SIM_instruction_remaining_stall_time</i></b>).
+<p>
+   To fetch an instruction a valid program counter is needed. The
+   value of the program counter is read from the register bank for the
+   first instruction in the tree and for instructions not inserted in
+   the tree. For instructions that have an executed parent the program
+   counter will have the value produced by the
+   parent. <b><i>SIM_instruction_write_input_reg</i></b> can also be used
+   to explicitly set the program counter. This is the only way to
+   fetch instructions whose parent has not yet executed and thus not
+   produced a new program counter. This will also mark the instruction
+   as speculative. As soon as the parent instruction is executed the
+   child will become non-speculative again if the produced value
+   matches the one set (if the parent was non-speculative). For
+   miss-matches we will get a speculative instructions that needs
+   to be squashed.
+<p>
+   All the above also apply to the next program counter if the
+   architecture has delay slots.
+<p>
+   When an instruction is fetched <b><i>SIM_instruction_opcode</i></b> can
+   be used to retrieve the opcode.
+<p>
+   Decoding means interpreting the fetched data and translate it to a
+   determined instruction. It is then possible to use
+   <b><i>SIM_instruction_type</i></b> to determine the type of the
+   instruction and <b><i>SIM_instruction_get_reg_info</i></b> to find the
+   registers used by the instruction.
+<p>
+   Executing an instruction means that the actual operation is
+   performed. Thus input values are used to produce output values. The
+   input values used are collected from previously executed
+   instructions (or the register bank) and the output values will be
+   available for later instructions. Simics has no restrictions on the
+   number of temporal values that can exists between instruction. This
+   can be viewed as an unlimited resource of internal registers for
+   register renaming.
+<p>
+   To be able to execute the instruction all the input values must
+   have been produced, i.e. all dependences must be fulfilled. This
+   is done either by executing all instructions that the instruction
+   depends on or explicitly set the value of an input register by
+   using <b><i>SIM_instruction_write_input_reg</i></b>. As with the
+   program counter above the latter case will also make the
+   instruction speculative until an earlier instruction produces the
+   same value. This is how value speculation can be handled.
+<p>
+   <tt>Sim_IE_Unresolved_Dependences</tt> will be returned if an
+   instruction is not ready for execution.
+<p>
+   Instructions that access memory may stall and
+   <tt>Sim_EI_Stalling</tt> will be returned. As with
+   instruction fetches the instruction can be proceeded again as soon
+   as the stalling period is over.
+<p>
+   Retiring an instruction sends all speculative stores to memory. The
+   instruction must be non-speculative to enter this phase. The instruction may
+   stall since the stores are sent to the memory hierarchy. The instruction may
+   also get an exception (like a memory parity error). Retiring an instruction
+   can be done out-of-order.
+<p>
+   When committing an instruction the output values produced by the
+   instruction are copied to the register bank.  The instruction is
+   automatically removed from the instruction tree, but it must be
+   deallocated explicitly by calling <b><i>SIM_instruction_end</i></b>.
+   Instructions marked as speculative cannot be committed. This can be
+   forced by the user by calling
+   <b><i>SIM_instruction_force_correct</i></b> to remove the speculative
+   status before committing. This is strongly discouraged since it may
+   lead to incorrect execution.  Also, the instruction may only have one valid
+   execution path left, all alternative branches have to be squashed
+   before the instruction can be committed.
+<p>
+   Certain return values needs special actions to be taken. If some of
+   the functions returns <tt>Sim_IE_Exception</tt> an exception
+   occurred and the execution of the instruction is aborted. The
+   exception should be handled by calling
+   <b><i>SIM_instruction_handle_exception</i></b> on the faulting
+   instruction. This call will set the program counter to the first
+   instruction in the corresponding exception handler.
+<p>
+   If <tt>Sim_IE_Speculative</tt> is returned it means a
+   speculative instruction tried to commit. 
+<p>
+   If <tt>Sim_IE_Sync_Instruction</tt> is returned it means that
+   a synchronizing instruction was executed in a speculative
+   state. Synchronizing instructions have to be executed in
+   non-speculative state since they cannot be squashed.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+<tt>Sim_IE_OK</tt> on success,<br>
+                           <tt>Sim_IE_Code_Breakpoint</tt> if a code breakpoint was encountered in the
+                           commit phase,<br>
+                           <tt>Sim_IE_Step_Breakpoint</tt> if a step breakpoint was encountered in the
+                           commit phase,<br>
+                           <tt>Sim_IE_Exception</tt> if the instruction raised an exception,<br>
+                           <tt>Sim_IE_Unresolved_Dependencies</tt> if the
+                           instruction are not allowed to execute due to unresolved dependences,<br>
+                           <tt>Sim_IE_Speculative</tt> if trying to commit a speculative instruction,<br>
+                           <tt>Sim_IE_Stalling</tt> if the instruction stalled on a memory access,<br>
+                           <tt>Sim_IE_Sync_Instruction</tt> if trying to execute a synchronizing instruction 
+                           in an illegal way.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic46.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic48.html">Next</a></span></p>
+</body>
+</html>

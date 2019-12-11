@@ -1,0 +1,14 @@
+// microwire.dml
+// Copyright 2005-2007 Virtutech AB
+dml 1.0;
+
+header %{
+#include "microwire.h"
+%}
+
+typedef struct {
+        void set_cs(conf_object_t *obj, int cs);
+        void set_sk(conf_object_t *obj, int sk);
+        void set_di(conf_object_t *obj, int di);
+        int  get_do(conf_object_t *obj);
+} microwire_interface_t;

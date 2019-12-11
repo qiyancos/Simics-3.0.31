@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Attributes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(35, true);
+</script>
+<a name="label80"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+<h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;Attributes</h3 class="jdocu">
+
+
+<p>
+A Simics class can register <i>attributes</i> <a name="label81"></a> that will
+act as data members for all objects instantiated from this class. For Simics,
+an attribute is an abstraction, defined by its type and a pair of
+<b><i>get()/set()</i></b> functions. When an attribute is read (i.e., when the
+<b><i>SIM_get_attribute()</i></b> function is used on the object), the
+corresponding <b><i>get()</i></b> function is called. Likewise, when an attribute
+is written to, the <b><i>set()</i></b> function is executed. These functions can
+perform any kind of operation provided they return a value (for
+<b><i>get()</i></b>) or accept a value to be written (for <b><i>set()</i></b>).
+<p>
+Attributes have different types and properties. The <em>Simics User
+Guide</em> presents a high level description of attributes. Let us here have
+a closer look at their definition.
+<p>
+<a name="label82"></a><h4 class="jdocu">Definition</h4 class="jdocu">
+
+
+<p>
+The C and DML definition of the structures representing an attribute are the
+following:
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef enum {
+        Sim_Val_Invalid  = 0,
+        Sim_Val_String   = 1,
+        Sim_Val_Integer  = 2,
+        Sim_Val_Floating = 3,
+        Sim_Val_List     = 4,
+        Sim_Val_Data     = 5,
+        Sim_Val_Nil      = 6,
+        Sim_Val_Object   = 7,
+        Sim_Val_Dict     = 8,
+        Sim_Val_Boolean  = 9
+} attr_kind_t;
+
+typedef struct {
+        integer_t          size;
+        struct attr_value *vector;
+} attr_list_t;
+
+typedef struct {
+        integer_t          size;
+        uint8             *data;
+} attr_data_t;
+
+typedef struct {
+        struct attr_value key;
+        struct attr_value value;
+} attr_dict_pair_t;
+
+typedef struct {
+        integer_t         size;
+        attr_dict_pair_t *vector;
+} attr_dict_t;
+
+typedef struct attr_value {
+        attr_kind_t kind;
+        union {
+                const char    *string;
+                integer_t      integer;
+                integer_t      boolean;
+                double         floating;
+                attr_list_t    list;
+                attr_dict_t    data;
+                attr_data_t    data;
+                conf_object_t *object;
+        } u;
+} attr_value_t;
+</pre>
+<p>
+When using an attribute in C or DML, one should take care of only using the
+union member that corresponds to the attribute type in the
+<tt>attr_value_t</tt> structure. Here are some example of attribute
+manipulation in C and DML:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>// create an integer attribute</b>
+attr_value_t a;
+a.kind = Sim_Val_Integer;
+a.u.integer = 4711;
+
+<b>// or better, using help functions</b>
+attr_value_t a;
+a = SIM_make_attr_integer(4711);
+
+<b>// create a list attribute</b>
+attr_value_t l;
+l = SIM_alloc_attr_list(2);
+
+<b>// writing to the first element</b>
+l.u.list.vector[0] = SIM_make_attr_integer(1)
+
+<b>// reading the second element of the list</b>
+integer_t other = l.u.list.vector[1].u.integer;
+</pre>
+<p>
+A complete documentation of attributes related functions is provided in the
+<em>Simics Reference Manual</em>.
+<p>
+In Python, attributes are automatically converted to or from the corresponding
+Python type, so manipulating attributes is completely transparent:
+<p>
+<table>
+<tr><td class="jdocu_border">Attribute Type</td><td class="jdocu_border">Python Equivalent</td></tr>
+<tr><td class="jdocu_border">Invalid</td><td class="jdocu_border">Cast a <tt>SimExc_Attribute</tt> exception.</td></tr>
+<tr><td class="jdocu_border">String</td><td class="jdocu_border"><tt>str</tt> (a Python string)</td></tr>
+<tr><td class="jdocu_border">Integer</td><td class="jdocu_border"><tt>int</tt> or <tt>long</tt></td></tr>
+<tr><td class="jdocu_border">Floating</td><td class="jdocu_border"><tt>float</tt></td></tr>
+<tr><td class="jdocu_border">List</td><td class="jdocu_border"><tt>list</tt></td></tr>
+<tr><td class="jdocu_border">Data</td><td class="jdocu_border"><tt>tuple</tt></td></tr>
+<tr><td class="jdocu_border">Nil</td><td class="jdocu_border"><tt>None</tt></td></tr>
+<tr><td class="jdocu_border">Object</td><td class="jdocu_border">An object from the <b>conf</b> namespace.</td></tr>
+<tr><td class="jdocu_border">Dict</td><td class="jdocu_border"><tt>dict</tt></td></tr>
+<tr><td class="jdocu_border">Boolean</td><td class="jdocu_border"><tt>bool</tt></td></tr>
+</table>
+<p>
+
+<a name="label83"></a><h4 class="jdocu">Type</h4 class="jdocu">
+
+
+<p>
+When registering an attribute, a type definition should be provided for Simics
+to check that the attribute is always set properly. This type definition is a
+string defined by to the following rules:
+<p>
+<ul>
+<p>
+<li>A simple type is represented by a single letter: <tt>i</tt> (integer),
+<tt>f</tt> (floating), <tt>s</tt> (string), <tt>b</tt> (boolean), <tt>d</tt>
+(data), <tt>o</tt> (object), <tt>D</tt> (dictionary), <tt>n</tt> (nil) or
+<tt>a</tt> (all).</li>
+<p>
+<li>You can match several types by using the operator <tt>|</tt> like in
+<tt>s|o</tt> (string OR object). Note that if you provide a string when an
+object is expected, Simics will call the <b><i>SIM_get_object()</i></b> function
+to try to translate the string into a valid object.</li>
+<p>
+<li>Lists are defined by square brackets: <tt>[</tt> and <tt>]</tt>. Lists can
+be specified in three ways:
+<p>
+   <ul>
+<p>
+   <li>Lists with a fixed amount of elements: <tt>[iffsf]</tt>
+   matches (integer, floating, floating, string, floating).</li>
+<p>
+   <li>lists of an arbitrary number of elements: <tt>[i*]</tt> and
+   <tt>[i+]</tt> both match any list containing only integers, with
+   the difference that <tt>[i*]</tt> will match an empty list, while
+   <tt>[i+]</tt> requires at least one list element.</li>
+<p>
+   <li>lists with a size specifier: <tt>[i{1:4}]</tt> matches lists of
+   integers with 1 to 4 elements. <tt>[i{4}]</tt> is the same as
+   <tt>[i{4:4}]</tt>, i.e. a list of four integers.</li>
+<p>
+   </ul>
+<p>
+<em>When you specify a size, the list definition can have only one
+element.</em>
+<p>
+</li>
+<p>
+<li><tt>|</tt> has higher priority then concatenation in list description, so
+<tt>[i|si|s]</tt> should be read as matching any two-elements list with integer
+or string elements. For clarity you can use a comma anywhere in the type
+definition, it will be ignored.  The example could be written as
+<tt>[i|s,i|s]</tt></li>
+<p>
+</ul>
+<p>
+As an example, the type for <tt>sim.simics_path</tt> is
+<tt>"s|[s*]"</tt>, which means that it can either match a string or a
+(possibly empty) list of strings.
+<p>
+When writing complex attributes, you may notice that the type description
+strings don't cover all the possibilities offered by the attribute structure
+definition. If you need to register attributes that can not be described in a
+type string (like complex variable size lists), you will need to use the
+<tt>a</tt> type and perform the type checking by yourself in the
+<b><i>set()</i></b> function. You may also want to review your attribute and
+change its definition to match a possible type description, or divide your
+attribute into several simpler attributes.
+<p>
+For example, an attribute accepting a list composed of one object and one or
+more integers can not be described in a type string (list definition with
+variable size can only have one element). You may want to rewrite your
+attribute to use a sub-list for the integers: <tt>[o[i+]]</tt>, or you can
+perform type checking yourself.
+<p>
+To learn more about attributes in DML, refer to section <a class="jdocu" href="topic19.html#label95">5.2</a>. For C and Python, refer to section <a class="jdocu" href="topic28.html#label139">6.4</a>.
+<p>
+
+<a name="label84"></a><h4 class="jdocu">Attribute Data Ownership</h4 class="jdocu">
+
+
+Attributes of the <tt>Sim_Val_String</tt> and <tt>Sim_Val_Data</tt> types
+contain references to data that does not fit in the attribute structure itself.
+In addition, the types <tt>Sim_Val_List</tt> and <tt>Sim_Val_Dict</tt> have an
+extended attribute structure allocated. To avoid memory leaks and corruption,
+it is important to keep track of ownership of this data.
+<p>
+When the <tt>attr_value_t</tt> type is used for function arguments, it is the
+caller that owns the data, and that is responsible for freeing it after the
+call. If the called function wants to keep a reference to the attribute value,
+it should make a copy of it.
+<p>
+When a function returns an <tt>attr_value_t</tt>, it may return a reference to
+a static data area, that will be reused in future calls. The caller has to use
+the returned data, or create a copy of it, before calling any other functions.
+If an attribute get function allocates new memory every time the attribute is
+read, it will leak memory.
+<p>
+When an <tt>attr_value_t</tt> is returned, the attribute structure used for
+lists and dictionaries should be freed by the caller using
+<b><i>SIM_free_attribute()</i></b>. This function will only free the attribute
+structure, not any string or data memory.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Code written in Python does not have to handle attribute data
+ownership as described in this section.<hr class="jdocu_note">
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic10.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic12.html">Next</a></span></p>
+</body>
+</html>

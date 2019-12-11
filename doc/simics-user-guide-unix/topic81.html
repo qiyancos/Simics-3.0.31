@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Summary of Simics Memory System</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(207, true);
+</script>
+<a name="label482"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic80.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic82.html">Next</a></span></p>
+<h4 class="jdocu">16.5&nbsp;&nbsp;&nbsp;Summary of Simics Memory System</h4 class="jdocu">
+ 
+
+<p>
+To summarize the different concepts introduced in this chapter, here is a
+description of the path followed by a processor transaction through Simics memory
+system.
+<p>
+<a name="label483"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+    <img src="simics-memory-path.png">
+    
+</center>
+</td></tr>
+<tr><td style="text-align: center">Figure 4. Transaction Path through Simics Memory System</td></tr>
+</table>
+
+<p>
+<ol>
+<p>
+<li>The CPU executes a load instruction.</li>
+<p>
+<li>A memory transaction is created.</li>
+<p>
+<li>If the address is in the STC, the data is read and returned to the CPU
+using the cached information.</li>
+<p>
+<li>If the address is not in the STC, the transaction is passed along to the
+CPU memory-space.</li>
+<p>
+<li>If a timing-model is connected to the memory-space, it receives the
+transaction.
+<p>
+    <ol>
+<p>
+    <li>If the timing model returns a non-zero stalling time, the processor is
+    stalled and the transaction will be reissued when the stall time is
+    finished.</li>
+<p>
+    <li>If the timing model return a zero stall time, the memory-space is free
+    to execute the transaction.</li>
+<p>
+    </ol></li>
+<p>
+<li>The memory-space determines the target object (in this example, a RAM
+object).</li>
+<p>
+<li>The RAM object receives the transactions and executes it.</li>
+<p>
+<li>If possible, the transaction is inserted in the STC.</li>
+<p>
+<li>If a snoop-memory is connected to the memory-space, it receives the
+transaction.</li>
+<p>
+<li>The transaction is returned to the CPU with the correct data.</li>
+<p>
+</ol>
+<p>
+Store operations works in the same way, but no data is returned to the CPU.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Simics's memory system is more complex than what is presented here, but
+from the point of view of a user timing-model or snoop-memory, this diagram
+explains correctly at which point the main different events happen.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic80.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic82.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>FAS366U</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(739, true);
+</script>
+<a name="label5512"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic83.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic85.html">Next</a></span></p>
+<h3 class="jdocu">FAS366U</h3 class="jdocu">
+
+
+<a name="label5513"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2610">FAS366U</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>FAS366U</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The FAS366U is a SCSI-2 controller.
+
+</dd>
+
+</dl>
+<a name="label5514"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>allow_resel</i></b></dt><a name="label5515"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if reselection is currently allowed.</dd></dl>
+<dl><dt><b><i>bd_buffer</i></b></dt><a name="label5516"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Backdoor access: Pointer to buffer in simulated memory.</dd></dl>
+<dl><dt><b><i>bd_length</i></b></dt><a name="label5517"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Backdoor access: Length of access.</dd></dl>
+<dl><dt><b><i>bd_sector</i></b></dt><a name="label5518"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Backdoor access: Sector to access.</dd></dl>
+<dl><dt><b><i>bd_target</i></b></dt><a name="label5519"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Backdoor access: Target id.</dd></dl>
+<dl><dt><b><i>bus_id</i></b></dt><a name="label5520"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+SCSI ID of selected target.</dd></dl>
+<dl><dt><b><i>clock</i></b></dt><a name="label5521"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Clock Conversion Register</dd></dl>
+<dl><dt><b><i>command</i></b></dt><a name="label5522"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The current SCSI command executing.</dd></dl>
+<dl><dt><b><i>command_name</i></b></dt><a name="label5523"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>String</b>.
+<p>
+Supplies conversion between SCSI command number and name.</dd></dl>
+<dl><dt><b><i>command_state</i></b></dt><a name="label5524"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The current Command State</dd></dl>
+<dl><dt><b><i>conf1</i></b></dt><a name="label5525"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Conf1 Register</dd></dl>
+<dl><dt><b><i>conf2</i></b></dt><a name="label5526"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Conf2 Register</dd></dl>
+<dl><dt><b><i>conf3</i></b></dt><a name="label5527"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Conf3 Register</dd></dl>
+<dl><dt><b><i>data_prerequest</i></b></dt><a name="label5528"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set if the target has requested data before the controller is ready to send it</dd></dl>
+<dl><dt><b><i>dma_callback</i></b></dt><a name="label5529"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Number (internal) of the callback to use next time</dd></dl>
+<dl><dt><b><i>dma_channel</i></b></dt><a name="label5530"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The number of the DMA channel that is sent to the DMA device.</dd></dl>
+<dl><dt><b><i>dma_command</i></b></dt><a name="label5531"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if the current command uses DMA, else 0.</dd></dl>
+<dl><dt><b><i>dma_dev</i></b></dt><a name="label5532"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Name of a DMA device. This object must implement the 'common-dma' interface.</dd></dl>
+<dl><dt><b><i>encodid</i></b></dt><a name="label5533"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if reselection value should be encoded when put in the fifo.</dd></dl>
+<dl><dt><b><i>fifo</i></b></dt><a name="label5534"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The contents of the FIFO.</dd></dl>
+<dl><dt><b><i>fifo_h_odd_byte</i></b></dt><a name="label5535"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Value of the fifo odd head byte</dd></dl>
+<dl><dt><b><i>fifo_have_h_odd</i></b></dt><a name="label5536"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if fifo contains odd byte at head.</dd></dl>
+<dl><dt><b><i>fifo_have_t_odd</i></b></dt><a name="label5537"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if fifo contains odd byte at tail.</dd></dl>
+<dl><dt><b><i>fifo_head</i></b></dt><a name="label5538"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Position of the head in the fifo.</dd></dl>
+<dl><dt><b><i>fifo_t_odd_byte</i></b></dt><a name="label5539"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Value of the fifo odd tail byte</dd></dl>
+<dl><dt><b><i>fifo_tail</i></b></dt><a name="label5540"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Position of the tail in the fifo.</dd></dl>
+<dl><dt><b><i>first_msg</i></b></dt><a name="label5541"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if controller has received only one message</dd></dl>
+<dl><dt><b><i>interrupt</i></b></dt><a name="label5542"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Interrupt Register</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label5543"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The external interrupt level.</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label5544"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Name of an interrupt device. This object must implement the 'simple-interrupt' interface.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label5545"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The interrupt level that is sent to the interrupt device.</dd></dl>
+<dl><dt><b><i>out_buffer</i></b></dt><a name="label5546"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Value in the out buffer.</dd></dl>
+<dl><dt><b><i>queued_command</i></b></dt><a name="label5547"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Any queued SCSI command</dd></dl>
+<dl><dt><b><i>rec_counter</i></b></dt><a name="label5548"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Recommand Counter Registers</dd></dl>
+<dl><dt><b><i>recommand_used</i></b></dt><a name="label5549"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 of recommand counter is used, or set to 0 if it still contains device id after reset.</dd></dl>
+<dl><dt><b><i>req_len</i></b></dt><a name="label5550"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Length of requested data.</dd></dl>
+<dl><dt><b><i>reselected</i></b></dt><a name="label5551"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 of the device was reselected.</dd></dl>
+<dl><dt><b><i>scsi_bus</i></b></dt><a name="label5552"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The name of the SCSI bus that the device is connected to. This object must implement the 'scsi-bus' interface.</dd></dl>
+<dl><dt><b><i>scsi_target</i></b></dt><a name="label5553"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The SCSI target id of the device itself.</dd></dl>
+<dl><dt><b><i>seq_step</i></b></dt><a name="label5554"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Sequence Step Register</dd></dl>
+<dl><dt><b><i>stat_gross_err</i></b></dt><a name="label5555"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if a Gross Error has occurred.</dd></dl>
+<dl><dt><b><i>stat_interrupt</i></b></dt><a name="label5556"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if any interrupt is raised.</dd></dl>
+<dl><dt><b><i>stat_tc</i></b></dt><a name="label5557"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Set to 1 if Terminal Count was reached.</dd></dl>
+<dl><dt><b><i>sync_offset</i></b></dt><a name="label5558"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Sync Offset Reguster</dd></dl>
+<dl><dt><b><i>sync_period</i></b></dt><a name="label5559"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Sync Period Register</dd></dl>
+<dl><dt><b><i>test</i></b></dt><a name="label5560"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Test Register</dd></dl>
+<dl><dt><b><i>threshold</i></b></dt><a name="label5561"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Not used</dd></dl>
+<dl><dt><b><i>timeout</i></b></dt><a name="label5562"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Timeout Register</dd></dl>
+<dl><dt><b><i>transfer_count</i></b></dt><a name="label5563"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The current transfer count.</dd></dl>
+<dl><dt><b><i>transfer_counter</i></b></dt><a name="label5564"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The Transfer Counter Register</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5565"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5567">info</a></b></td><td class="jdocu_noborder">information about current state of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5566"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5567"></a><a name="label5568"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;FAS366U&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;FAS366U&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print information about the state of the SCSI controller.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic83.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic85.html">Next</a></span></p>
+</body>
+</html>

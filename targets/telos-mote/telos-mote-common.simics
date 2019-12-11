@@ -1,0 +1,21 @@
+#
+# Main file that creates a mote and load software on it. 
+# This can be used multiple times to create multiple motes. 
+# 
+# To give each mote its own name, use "set-component-prefix", 
+# as seen in the telos-mote-blink-x2.simics file
+#
+# To change its behavior, use Simics variables, as listed at the top
+# of each .include file.
+#
+# Hardware setup
+#
+run-command-file "%script%/telos-mote-system.include"
+
+instantiate-components
+
+# Software setup
+run-command-file "%script%/telos-mote-setup.include"
+
+# optimization for parallel simulations
+sim->cpus_may_share_memory = 0

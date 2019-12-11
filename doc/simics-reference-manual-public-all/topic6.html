@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Frontend Exceptions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(58, true);
+</script>
+<a name="label60"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Frontend Exceptions</h3 class="jdocu">
+
+    
+<p>
+    Whenever an error occurs in a Simics API function, that function will raise
+    an <i>exception</i>. An exception consists of an <i>exception type</i> and
+    an error message.
+<p>
+    The following exception types are defined in the Simics API:
+<p>
+    <a name="label61"></a>
+<pre class="jdocu_small" style="color: black">typedef enum sim_exception {
+        SimExc_No_Exception,
+        SimExc_General,
+        SimExc_Arithmetic,
+        SimExc_Lookup,
+        SimExc_Attribute,
+        SimExc_IOError,
+        SimExc_Index,
+        SimExc_Memory,
+        SimExc_Inquiry,
+        SimExc_InquiryOutsideMemory,
+        SimExc_InquiryUnhandled,
+        SimExc_Overflow,
+        SimExc_Syntax,
+        SimExc_Type,
+        SimExc_ZeroDivision,
+        SimExc_RuntimeError,
+        SimExc_Break,
+        SimExc_PythonTranslation,
+        SimExc_IllegalValue,
+        SimExc_ObjectNotFound,
+        SimExc_InterfacedNotFound,
+        SimExc_AttrNotFound,
+        SimExc_AttrNotReadable,
+        SimExc_AttrNotWritable,
+        SimExc_NeedInteger,
+        SimExc_NeedFloating,
+        SimExc_NeedBoolean,
+        SimExc_NeedString,
+        SimExc_NeedList,
+        SimExc_NeedDict,
+        SimExc_NeedData,
+        SimExc_NeedObject,
+        SimExc_InternalRevexecBreak,
+} sim_exception_t;</pre>
+
+<p>
+    Note that API users writing in C must use <b><i>SIM_clear_exception()</i></b>
+    and <b><i>SIM_last_error()</i></b> since C does not support exceptions. In
+    Python, the Simics API exceptions will trigger actual Python exceptions,
+    which you can capture using <tt>try ... except</tt>.
+<p>
+    To raise exceptions from C, use <b><i>SIM_frontend_exception()</i></b>. From
+    Python, use the normal <tt>raise</tt> statement.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

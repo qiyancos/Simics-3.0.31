@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>arm</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2225, true);
+</script>
+<a name="label17692"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic488.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic490.html">Next</a></span></p>
+<h3 class="jdocu">arm</h3 class="jdocu">
+
+
+<a name="label17693"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic28.html#label3410">armv5te</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface is implemented by ARM processors to provide various
+   functionality that is specific for this class of processors.
+<p>
+   The <b><i>read_register_mode</i></b> and <b><i>write_register_mode</i></b>
+   functions are used to access banked copies of the registers. They are used
+   just like the <b><i>SIM_read_register</i></b> and <b><i>SIM_write_register</i></b>
+   functions, except that they take an extra parameter <i>mode</i> that
+   specifies which register bank should be used. <i>mode</i> should be
+   the mode bits in the cpsr corresponding to the mode shifted right to bits
+   0-4.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct arm_interface {
+        uinteger_t (*read_register_mode)(conf_object_t *processor_obj,
+                                         int reg_num,
+                                         int mode);
+        void (*write_register_mode)(conf_object_t *processor_obj,
+                                    int reg_num,
+                                    int mode,
+                                    uinteger_t value);
+} arm_interface_t;
+
+#define ARM_INTERFACE "arm"
+
+#define ARM_INT_IRQ 0 /* Used by simple-interrupt to raise an IRQ */
+#define ARM_INT_FIQ 1 /* Used by simple-interrupt to raise an FIQ */
+
+</pre>
+<p>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17695">pscc-regs</a></td><td class="jdocu_noborder">print coprocessor 15 (scc) registers.</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17694"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17695"></a><a name="label17696"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;arm&gt;.pscc-regs</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;arm&gt;.pscc-regs</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the current scc register file of coprocessor 15 (scc).</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2207">pregs</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic488.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic490.html">Next</a></span></p>
+</body>
+</html>

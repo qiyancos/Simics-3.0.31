@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Events</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(41, true);
+</script>
+<a name="label90"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+<h3 class="jdocu">4.5&nbsp;&nbsp;&nbsp;Events</h3 class="jdocu">
+
+
+<p>
+Sometimes a module needs to execute some code a fixed amount of simulated time
+into the future. This can be achieved by posting an event, which will cause a
+callback function to be called when a specified amount of time has
+passed. There are two event queues in Simics, the time queue which measures
+simulated time, and the step queue that measures simulated steps. Devices
+should generally use the time queue, unless they are interested in the exact
+number of CPU steps. A device that wants to raise a timer interrupt every
+<nobr>10 ms</nobr> is an example of a module that should use the time queue. A
+profiling module that wants to sample the program counter every 10th step
+should on the other hand use the step queue. You can print out the current
+event queue by using the <b>print-event-queue</b> or <b>piq</b>
+command.
+<p>
+The <em>Simics User Guide</em> describes event scheduling and timing in
+more detail. For more information about event handling in DML, refer to section
+<a class="jdocu" href="topic22.html#label107">5.5</a>. For C and Python, refer to section <a class="jdocu" href="topic31.html#label161">6.7</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+</body>
+</html>

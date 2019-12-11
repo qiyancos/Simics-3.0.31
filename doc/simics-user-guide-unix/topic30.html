@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Managing Disks, Floppies, and CD-ROMs</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(71, true);
+</script>
+<a name="label151"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+<h3 class="jdocu">7&nbsp;&nbsp;&nbsp;Managing Disks, Floppies, and CD-ROMs</h3 class="jdocu">
+
+
+<a name="label152"></a>
+<p>
+In order to use Simics, you must have <em>images</em> (also called <em>disk
+dumps</em>) with the operating system and the applications you plan to
+run. Depending on the type of machine you are using, these images will
+corresponds to the contents of a disk, a flash memory, a CD-ROM, etc. Virtutech
+provides images that work with the example machines located in the
+<tt>targets</tt> directory.
+<p>
+Simics images are usually stored in a special format called <tt>craff</tt>
+(for Compressed Random Access File Format) to save disk space. Simics also
+accepts a raw binary dump as an image. This is sometimes more practical if you
+are manipulating images outside Simics. Simics comes with the
+<tt>craff</tt> utility to manipulate and convert images in
+<tt>craff</tt> format (see section <a class="jdocu" href="topic31.html#label164">7.1.7</a>).
+<p>
+This chapter will explain the following:
+<p>
+<ul>
+<p>
+<li>How to work with images in general</li>
+<li>How to use CD-ROMs and floppies with Simics</li>
+<li>How to use the SimicsFS filesystem</li>
+<li>How to import the contents of a real disk inside Simics</li>
+<p>
+</ul>
+<p>
+To provide you with a more practical overview, here are the ways you can
+install and modify the operating system and the applications you wish to run:
+<p>
+<dl><dt><b>Using Simics:</b></dt><dd>
+<p>
+<ul>
+<p>
+
+  <li>You can install a completely new OS or simply copy files using a
+  simulated CD-ROM drive, by linking it to a real CD-ROM drive on your host
+  machine or by using a CD image file (refer to sections <a class="jdocu" href="topic32.html#label168">7.2.1</a> 
+  and <a class="jdocu" href="topic32.html#label172">7.2.2</a>).</li>
+<p>
+  <li>You can copy files from the simulated floppy drive by linking it to the
+  real host floppy device or by using a floppy image file (see sections 
+  <a class="jdocu" href="topic32.html#label175">7.2.3</a> and 
+  <a class="jdocu" href="topic32.html#label178">7.2.4</a>).</li>
+<p>
+
+  <li>You can use SimicsFS to directly access your real file systems from the
+  simulated machine (see section <a class="jdocu" href="topic33.html#label181">7.3</a>).</li>
+<p>
+  <li>You can download files over the simulated network (see chapter <a class="jdocu" href="topic45.html#label293">10</a>).</li>
+<p>
+</ul> 
+<p>
+<b>Don't forget to read more about <em>images</em> in section <a class="jdocu" href="topic31.html#label154">7.1.1</a> to learn how to save or re-use your
+changes.</b></dd><dt><b>Using External Programs</b></dt><dd>
+<p>
+<ul>
+<p>
+<li>You can install a new OS along with new programs on a real machine and
+create an image from the real machine storage (disk, flash memory,
+etc.). Section <a class="jdocu" href="topic34.html#label185">7.4</a> shows how to perform this with
+a disk.</li>
+<p>
+
+<li>You can modify an image directly with Mtools (see section <a class="jdocu" href="topic31.html#label157">7.1.4</a>).</li>
+<p>
+<li>You can modify an image directly via a loopback device (see section <a class="jdocu" href="topic31.html#label158">7.1.5</a>).</li>
+<p>
+
+</ul></dd></dl>
+<p>
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic31.html#label153" target="main">7.1&nbsp;&nbsp;&nbsp;Working with Images</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic32.html#label167" target="main">7.2&nbsp;&nbsp;&nbsp;CD-ROMs and Floppies</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic33.html#label181" target="main">7.3&nbsp;&nbsp;&nbsp;Using SimicsFS</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic34.html#label185" target="main">7.4&nbsp;&nbsp;&nbsp;Importing a Real Disk into Simics</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(129, true);
+</script>
+<a name="label252"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic53.html">Previous</a> - <a class="jdocu" href="topic53.html">Up</a> - <a class="jdocu" href="topic55.html">Next</a></span></p>
+<h3 class="jdocu">11.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics provides support for writing your own PCI devices, both in DML and in
+C/C++.
+<p>
+<ul>
+<p>
+<li>In DML, <em>templates</em> are provided to make it easy to generate a PCI
+device and re-use the existing code to handle the configuration registers,
+generate PCI interrupts, etc. Section <a class="jdocu" href="topic55.html#label253">11.2</a> present
+these templates in more details. An example of a DML PCI device is the
+DEC21140A model described in section <a class="jdocu" href="topic52.html#label247">10.3</a>.</li>
+<p>
+<li>In C or C++, Simics provides a <i>PCI Device API</i> defined in
+<tt>pci-device.h</tt> and implemented in <tt>pci-device.c</tt>. The
+<tt>pci-device.c</tt> provides several generic PCI device functions and
+interfaces to communicate with the <b>pci-bus</b>. There is a sample
+PCI device included with Simics called <b>sample-pci-device</b> that
+shows how the PCI Device API can be used. Section <a class="jdocu" href="topic56.html#label263">11.3</a>
+provides an overview of the API. Function and type specific information can be
+found in the <em>Simics Reference Manual</em>.</li>
+<p>
+</ul>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic53.html">Previous</a> - <a class="jdocu" href="topic53.html">Up</a> - <a class="jdocu" href="topic55.html">Next</a></span></p>
+</body>
+</html>

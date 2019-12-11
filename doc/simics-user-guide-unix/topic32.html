@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>CD-ROMs and Floppies</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(80, true);
+</script>
+<a name="label167"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+<h4 class="jdocu">7.2&nbsp;&nbsp;&nbsp;CD-ROMs and Floppies</h4 class="jdocu">
+
+
+<p>
+<a name="label168"></a><h5 class="jdocu">7.2.1&nbsp;&nbsp;&nbsp;Accessing a Host CD-ROM Drive</h5 class="jdocu">
+
+
+<a name="label169"></a><a name="label170"></a><a name="label171"></a>
+<p>
+Accessing the CD-ROM of the host machine from inside the simulation is
+supported on Linux and Solaris hosts. This is done by creating a
+<b>file-cdrom</b> object using the <b>new-file-cdrom</b>
+command. First, you should insert the CD in the host machine and figure out
+which device name it uses.
+<p>
+On a Linux host, this is typically <tt>/dev/cdrom</tt>, which is a symbolic
+link to the actual CD-ROM device, e.g., <tt>/dev/hdc</tt>. Note that you
+need read/write access to the CD-ROM device for this to work.
+<p>
+On a Solaris host, you need to specify the raw disk device, which can be found
+by using the <tt>mount</tt> command. The line that shows where the CD is
+mounted will look something like this:
+<p>
+<span class="jdocu_small">
+<pre class="jdocu_small" style="color: black">
+    /cdrom/mydisk on /vol/dev/dsk/c0t2d0/mydisk read only/nosuid
+       on Fri Jul 26 11:52:52 2002
+</pre>
+</span>
+<p>
+This means that the corresponding <i>raw</i> disk device will be called
+<tt>/vol/dev/rdsk/c0t2d0/mydisk</tt>. Note the <tt>rdsk</tt> instead of
+<tt>dsk</tt>.
+<p>
+When you have the correct device file name, you create a
+<b>file-cdrom</b> object and insert it into the simulated CD-ROM drive:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-file-cdrom /dev/cdrom file-cd0</b>
+cdrom 'file-cd0' created
+simics&gt; <b>cd0.insert file-cd0</b>
+Inserting media 'file-cd0' into CDROM drive
+</pre>
+<p>
+Note that you must replace <tt>/dev/cdrom</tt> with the correct host device
+name as mentioned above, and <b>cd0</b> with the correct Simics object
+name. Use the <b>list-objects</b> command to find the correct object of
+class <b>scsi-cdrom</b> or <b>ide-cdrom</b>.
+<p>
+The <b>cd0.insert</b> command simulates inserting a new disk into the
+CD-ROM drive, and there is also a corresponding <b>cd0.eject</b> command
+that simulates ejecting the disk.
+<p>
+
+<a name="label172"></a><h5 class="jdocu">7.2.2&nbsp;&nbsp;&nbsp;Accessing a CD-ROM Image File</h5 class="jdocu">
+
+
+<a name="label173"></a>
+<a name="label174"></a>
+<p>
+A file containing an ISO-9660 image can be used as medium in the simulated
+CD-ROM.  This image file can be created from real CD-ROM disks, or from
+collections of files on any disk.
+<p>
+
+An image can be created from a set of files with the <tt>mkisofs</tt>
+program, which is available on both Linux and Solaris. For example:
+<p>
+<pre class="jdocu_small" style="color: black">
+mkisofs -l -L -o <i>image</i> -r <i>dir</i>
+</pre>
+<p>
+
+Once you have an image file, a <b>file-cdrom</b> object can be created,
+and then inserted into a simulated CD-ROM device in the same way as above:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-file-cdrom myimage.iso</b>
+cdrom 'myimage' created
+simics&gt; <b>cd0.insert myimage</b>
+Inserting media 'myimage' into CDROM drive
+</pre>
+<p>
+Note that <b>cd0</b> above refers to the Simics object name of the CD-ROM
+drive. This may, or may not be called <b>cd0</b>. To see which object name
+to use, try the <b>list-objects</b> command and look for an object of class
+<b>scsi-cdrom</b> or <b>ide-cdrom</b>.
+<p>
+
+<a name="label175"></a><h5 class="jdocu">7.2.3&nbsp;&nbsp;&nbsp;Accessing a Host Floppy Drive</h5 class="jdocu">
+
+
+<a name="label176"></a><a name="label177"></a>
+<p>
+It is possible to access a floppy on the host machine from within Simics if the
+host is running Linux or Solaris.  For example (assuming the floppy device
+object is called <b>flp0</b>):
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>flp0.insert-floppy A /dev/fd0</b>
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> To boot directly from the floppy on a simulated x86 architecture you need
+to select the "A" drive to be the boot device (in, for example,
+<tt>enterprise-common.simics</tt>):
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.cmos-boot-dev A</b>
+</pre>
+<hr class="jdocu_note">
+<p>
+
+<a name="label178"></a><h5 class="jdocu">7.2.4&nbsp;&nbsp;&nbsp;Accessing a Floppy Image File</h5 class="jdocu">
+
+
+<a name="label179"></a><a name="label180"></a>
+<p>
+
+Sometimes it can be convenient to have copies of boot floppies as image
+files. To create an image of a floppy you can use the Unix command <tt>dd</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+dd if=/dev/fd0 of=floppy.img
+</pre>
+<p>
+
+It is then possible to use this image file in Simics:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>flp0.insert-floppy A floppy.img</b>
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> To boot directly from the floppy on a simulated x86 architecture you need
+to select the "A" drive to be the boot device (in, for example,
+<tt>enterprise-common.simics</tt>):
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.cmos-boot-dev A</b>
+</pre>
+<hr class="jdocu_note">
+<p>
+Floppies are also a convenient way to move small amounts of data out of the
+simulated machine. Write the data to the simulated floppy inside the simulated
+machine, and then extract it from the image.
+<p>
+If it is formatted as FAT filesystem, a floppy image can be manipulated with
+Mtools (see section <a class="jdocu" href="topic31.html#label157">7.1.4</a> for more information).
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+</body>
+</html>

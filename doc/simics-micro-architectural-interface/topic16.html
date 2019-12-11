@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Atomic Instructions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(45, true);
+</script>
+<a name="label220"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic15.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic17.html">Next</a></span></p>
+<h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Atomic Instructions</h3 class="jdocu">
+
+
+<p>
+<a name="label221"></a><a name="label222"></a><a name="label223"></a>There is a memory locking mechanism implemented for atomic
+instructions that prevents processors in a multi-processor system from
+breaking atomic properties. An atomic instruction typically consists
+of a load and a store part that must be performed without any
+intervening conflicting transactions. MAI handles this by locking a
+ram region at a configurable granularity when the first access is
+issued. The lock is released as soon as the second access is finished
+or if the instruction is squashed. Any conflicting transaction to the
+same memory region issued between the two by any processor will stall
+until the lock is released. The granularity can be set in each ram
+object to control the size of a region. If the size is set to 0 no
+locking will be performed and it is then up to the timing model to
+handle the locking.  The default granularity is set to 8 bytes.
+<a name="label224"></a>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic15.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic17.html">Next</a></span></p>
+</body>
+</html>

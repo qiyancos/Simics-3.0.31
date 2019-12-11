@@ -1,0 +1,29 @@
+$initrd_image = ""
+$boot_command = "setenv bootargs root=/dev/sda1; bootm ffc00000"
+$disk_image = "ebony-scsi-2.craff"
+
+script-branch {
+
+    wait-for-variable machine_defined
+
+    if not (lookup-file $disk_image) {
+        echo "This script requires a disk image containing 3:rd party software,"
+        echo "not distributed with Simics. This script is just intended as an"
+        echo "example."
+        quit
+    }
+	
+    $sym = (create-pci-sym53c810)
+    $scsi_bus = (create-std-scsi-bus)
+    $scsi_disk = (create-std-scsi-disk scsi_id = 0
+                                       size = 0xc0000000
+                                       file = $disk_image)
+
+    $system.connect pci-slot2 $sym
+    $scsi_bus.connect $sym
+    $scsi_bus.connect $scsi_disk
+}
+
+run-command-file "%script%/ebony-linux-common.simics"
+
+

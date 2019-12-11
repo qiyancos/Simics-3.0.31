@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Methodology</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(23, true);
+</script>
+<a name="label33"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Methodology</h2 class="jdocu">
+
+
+<p>
+   The typical development <a name="label34">methodology</a> can be summed up in
+   the phrase <i>the device model is the inverse of the
+   <a name="label35">driver</a></i>.  In short, it works as follows: Starting
+   with a skeleton model, boot up the driver in Simics and use the
+   inspection facilities to see what device registers it accesses
+   first.  Model those, and if necessary the subsystem behind them,
+   using the hardware documentation for reference. With the additions
+   in place, run the driver again to find the next part of the device
+   that needs modeling.  This is repeated until no more
+   unaccounted-for references are found, at which time the device is
+   declared finished. 
+<p>
+   The skeleton model needs to be detailed enough to allow logging of
+   the activities of the driver with respect to the device.  For
+   example, all interface registers may be modeled, but their
+   semantics may be left unimplemented.
+<p>
+   Running the software will also help the developer understand what
+   modes of functioning will or will not be used in the device model,
+   such as commands or setup options that are never used.
+<p>
+   If the hardware documentation is not available, it is often
+   possible to use a well documented open source device driver for
+   reference when implementing the semantics of the device.
+<p>
+   See section <a class="jdocu" href="topic19.html#label59">8</a> for more on how to test device
+   models during development.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>int_register</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2241, true);
+</script>
+<a name="label17750"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic502.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic504.html">Next</a></span></p>
+<h3 class="jdocu">int_register</h3 class="jdocu">
+
+
+<a name="label17751"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic18.html#label3033">alpha-ev5</a>, <a class="jdocu" href="topic28.html#label3410">armv5te</a>, <a class="jdocu" href="topic46.html#label4554">clock</a>, <a class="jdocu" href="topic123.html#label6794">ia64-itanium</a>, <a class="jdocu" href="topic124.html#label6853">ia64-itanium2</a>, <a class="jdocu" href="topic141.html#label7428">leon2</a>, <a class="jdocu" href="topic168.html#label7886">mips-4kc</a>, <a class="jdocu" href="topic169.html#label7982">mips-5kc</a>, <a class="jdocu" href="topic171.html#label8101">msp430</a>, <a class="jdocu" href="topic254.html#label9330">ppc405gp</a>, <a class="jdocu" href="topic264.html#label9716">ppc440gp</a>, <a class="jdocu" href="topic278.html#label10365">ppc440gx</a>, <a class="jdocu" href="topic297.html#label11100">ppc603e</a>, <a class="jdocu" href="topic299.html#label11254">ppc7400</a>, <a class="jdocu" href="topic300.html#label11410">ppc7447</a>, <a class="jdocu" href="topic301.html#label11589">ppc7450</a>, <a class="jdocu" href="topic302.html#label11750">ppc7457</a>, <a class="jdocu" href="topic303.html#label11936">ppc750</a>, <a class="jdocu" href="topic304.html#label12083">ppc750fx</a>, <a class="jdocu" href="topic305.html#label12247">ppc750gx</a>, <a class="jdocu" href="topic307.html#label12425">ppc970fx</a>, <a class="jdocu" href="topic453.html#label15309">ultrasparc-ii</a>, <a class="jdocu" href="topic454.html#label15397">ultrasparc-iii</a>, <a class="jdocu" href="topic455.html#label15487">ultrasparc-iii-i</a>, <a class="jdocu" href="topic456.html#label15577">ultrasparc-iii-plus</a>, <a class="jdocu" href="topic457.html#label15667">ultrasparc-iv</a>, <a class="jdocu" href="topic458.html#label15757">ultrasparc-iv-plus</a>, <a class="jdocu" href="topic459.html#label15847">ultrasparc-t1</a>, <a class="jdocu" href="topic468.html#label16229">x86-486sx</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a>, <a class="jdocu" href="topic475.html#label16876">x86-p2</a>, <a class="jdocu" href="topic476.html#label17148">x86-p4</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+ The <tt>int-register</tt>
+   interface is used for fast access to registers in a processor.  It
+   can be used to access any kind of integer register, not only the
+   "normal" registers.  This includes all kinds of control registers,
+   hidden registers and anything else that might be useful to access as
+   a register.  The only limitation is that the register value should
+   be representable as an <tt>uinteger_t</tt>.
+ <p>
+   This interface can be implemented by other classes than processors,
+   but it is likely to be found mostly in processors.
+ <p>
+   Registers are identified by a number, and there are two functions
+   to translate from register names to register numbers and back.  The
+   translation need not be one-to-one, which means that one register
+   can have several names.  A register name can, however, only
+   translate to a single register number.
+<p>
+   Often, registers are grouped in <i>register banks</i>, where
+   registers in the bank are numbered from 0 up. Registers in a bank
+   should have consecutive numbers (unless their numbering is very sparse).
+   This allows a user to deduce register numbers by calling
+   <b><i>get_number</i></b> for the first register only.
+   The first register numbers should be used for the general-purpose integer 
+   registers, if possible (so that integer register <b>r</b>N has number N).
+<p>
+   Using this interface to read or write registers does not cause any
+   side effects, such as triggering interrupts or signalling haps.
+<p>
+   <b>get_number</b> translates a register name to its number.
+   <p>
+   <b>get_name</b> translates a register number to its canonical name.
+<p>
+   <b>read</b> reads a register value.
+<p>
+   <b>write</b> writes a new register value.
+<p>
+   <b>all_registers</b> returns a list of all register numbers that can
+   be used for this object.
+<p>
+   <b>register_info</b> returns information about a single register.
+   The information return depends on the <i>info</i> parameter.
+<p>
+   <dl><dt><b>Sim_RegInfo_Catchable</b></dt><dd>Return 1 if
+   <tt>Core_Control_Register_Write</tt> and
+   <tt>Core_Control_Register_Read</tt> are triggered when this
+   register is written or read.</dd>  Return 0 otherwise.</dl>
+<p>
+   <span class="jdocu_small">
+   <a name="label17752"></a><pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_RegInfo_Catchable
+} ireg_info_t;</pre>
+
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        int (*get_number)(conf_object_t *NOTNULL obj,
+                          const char *NOTNULL name);
+        const char *(*get_name)(conf_object_t *NOTNULL obj, int reg);
+        uinteger_t (*read)(conf_object_t *NOTNULL obj, int reg);
+        void (*write)(conf_object_t *NOTNULL obj, int reg, uinteger_t val);
+        attr_value_t (*all_registers)(conf_object_t *NOTNULL obj);
+        int (*register_info)(conf_object_t *NOTNULL obj, int reg,
+                             ireg_info_t info);
+} int_register_interface_t;
+
+#define INT_REGISTER_INTERFACE "int_register"
+</pre>
+<p>
+   </span>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic502.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic504.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>image</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2240, true);
+</script>
+<a name="label17747"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic501.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic503.html">Next</a></span></p>
+<h3 class="jdocu">image</h3 class="jdocu">
+
+
+<a name="label17748"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic130.html#label7090">image</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface is used for handling big data images.
+   <b><i>read()</i></b> and <b><i>write</i></b> access a block of data at a time.
+   Iteration over all pages can be done with <b><i>for_all_spages()</i></b>.
+   The iteration stops when <b><i>f()</i></b> returns non-zero,
+   and the return value from <b><i>for_all_spages()</i></b> is the last return
+   value from the callback function.
+   <a name="label17749"></a>
+<pre class="jdocu_small" style="color: black">typedef uint64 vdisk_addr_t;</pre>
+
+<pre class="jdocu_small" style="color: black">typedef struct image_interface {
+        void (*read)(conf_object_t *img, void *to_buf, vdisk_addr_t start,
+                     size_t length);
+        void (*write)(conf_object_t *img, void *from_buf, vdisk_addr_t start,
+                      size_t length);
+        int (*for_all_spages)(conf_object_t *img,
+                              int (*f)(image_spage_t *, vdisk_addr_t, void *),
+                              void *arg);
+        void (*set_persistent)(conf_object_t *obj);
+        void (*save_to_file)(conf_object_t *NOTNULL obj,
+                             const char *NOTNULL file,
+                             uint64 start, uint64 length);
+        void (*save_diff)(conf_object_t *NOTNULL obj,
+                          const char *NOTNULL file);
+        void (*clear_range)(conf_object_t *NOTNULL obj,
+                            uint64 start, uint64 length);
+} image_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic501.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic503.html">Next</a></span></p>
+</body>
+</html>

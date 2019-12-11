@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>AM79C960-dml</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(118, true);
+</script>
+<a name="label241"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic49.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+<h3 class="jdocu">10.1&nbsp;&nbsp;&nbsp;AM79C960-dml</h3 class="jdocu">
+
+
+<p>
+AM79C960 was a rather common ISA Ethernet card, used mostly in PCs. It may be a
+little out-dated by now, but still serves as a good example.
+<p>
+Normally the module and device class would both have been named
+<b>AM79C960</b>, but because Virtutech already had a AM79C960 device
+model written in C, the sample DML module and the device class are named
+<b>AM79C960-dml</b>.
+<p>
+It may be good to have the documentation for the AM79C960 chip when looking at
+the sample code, so that you can compare the code to the specification. The
+documentation can be found on the Internet, search for <tt>am79c960.pdf</tt> on
+<tt>www.google.com</tt> and you will get lots of links to it.
+<p>
+The source code for the sample device can be found in the directory
+<tt>[simics]/src/devices/AM79C960-dml</tt>. If you want to try modifying
+the <b>AM79C960-dml</b> module yourself, we recommend that you set up
+a user workspace and copy the source code there, as described in section <a class="jdocu" href="topic4.html#label20">3</a>.
+<p>
+If you compile the <b>AM79C960-dml</b>
+module yourself, you will see some compilation
+warnings like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+/home/mve/simics/src/devices/AM79C960-dml/AM79C960.dml:567: <img src="nextline.png">
+In AM79C960_dml.mac_address.set
+/home/mve/simics/src/devices/AM79C960-dml/AM79C960.dml:567: <img src="nextline.png">
+warning: not a function: sscanf
+</pre>
+<p>
+They do not indicate any error. They are caused by a limitation in the current
+DML compiler. There is currently no support for proper declarations of C
+functions with variable numbers of arguments, which causes the warnings.
+<p>
+<a name="label242"></a><h4 class="jdocu">10.1.1&nbsp;&nbsp;&nbsp;Running the AM79C960 model</h4 class="jdocu">
+
+
+<p>
+If your distribution contains the simulated machine <em>enterprise</em>, you
+can find the Simics script <tt>enterprise-AM79C960-dml.simics</tt> in the
+directory <tt>[simics]/targets/x86-440bx</tt>. This file creates an
+enterprise machine using the <b>AM79C960-dml</b> module instead of
+the default <b>AM79C960 module</b>. The AM79C960 object is called
+<b>lance0</b>.
+<p>
+To do something interesting with the AM79C960 model we need to connect it to
+something that it can talk to. We can use a <b>service-node</b> for
+this. These commands create an <b>ethernet-link</b>, a
+<b>service-node</b> and connect the AM79C960 device to the
+<b>ethernet-link</b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics&gt; <b>new-service-node link = ethlink0 ip = 10.10.0.1 <img src="nextline.png">
+netmask = 255.255.255.0</b>
+Created service-node ethlink0_sn0
+Connecting ethlink0_sn0 to ethlink0
+Setting IP address of ethlink0_sn0 on network ethlink0 to 10.10.0.1
+ethlink0_sn0
+simics&gt; <b>lance0.connect ethlink0</b>
+</pre>
+<p>
+Start the simulation and let the machine boot and login as the user
+<tt>root</tt>. No password is required. Stop the simulation and set the log
+level of the <b>lance0</b> object to 2:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>lance0.log-level 2</b>
+[lance0] Changing log level: 1 -&gt; 2
+</pre>
+<p>
+You can now start the simulation again and send a ping packet to the
+<b>service-node</b> by entering <tt>ping -c 1 10.10.0.1</tt> in the
+console on the simulated machine. The <b>lance0</b> object will log what
+happens:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>c</b>
+[lance0 info] Packet sent, dst ff:ff:ff:ff:ff:ff, <img src="nextline.png">
+src 10:10:10:10:10:30, length 64 bytes.
+[lance0 info] Packet received, dst 10:10:10:10:10:30, <img src="nextline.png">
+src 20:20:20:20:20:00, length 64 bytes.
+[lance0 info] MAC address matches, packet accepted.
+[lance0 info] Packet sent, dst 20:20:20:20:20:00, <img src="nextline.png">
+src 10:10:10:10:10:30, length 102 bytes.
+[lance0 info] Packet received, dst 10:10:10:10:10:30, <img src="nextline.png">
+src 20:20:20:20:20:00, length 102 bytes.
+[lance0 info] MAC address matches, packet accepted.
+</pre>
+<p>
+We can see that the enterprise machine first sends a 64-byte packet to the
+broadcast address ff:ff:ff:ff:ff:ff and then receives a 64-byte reply from
+20:20:20:20:20:00, the MAC address of the <b>service-node</b>. These
+are an ARP request and an ARP reply to get the MAC address of the
+<b>service-node</b>.
+<p>
+After this the enterprise machines sends a 102-byte packet to the
+<b>service-node</b> and receives a 102-byte reply. These are the actual
+ping request and ping reply.
+<p>
+If you try to ping again you may not see the ARP packets, since the simulated
+machine may already have the MAC address of the <b>service-node</b>.
+<p>
+If you want more detailed logs you can change the log level to 3 or 4. At log
+level 3 a lot more information about what is going on in the device will be
+logged. The device polls for packets to transmit regularly, so this will cause
+a lot of output. At log level 4 all accesses that the processor does to the
+device will also be logged.
+<p>
+
+<a name="label243"></a><h4 class="jdocu">10.1.2&nbsp;&nbsp;&nbsp;Comments to the Code</h4 class="jdocu">
+
+
+<p>
+The source code of the AM79C960 module is quite richly commented, so if you
+have the documentation for the AM79C960 chip you should hopefully be able to
+understand most of the code without too much problem.
+<p>
+The AM79C960 model is far from complete, it implements just enough
+functionality that the device model can be used with Linux 2.4. A list of known
+limitations can be found at the top of the source file.
+<p>
+The implementation of the model is quite straight forward. There is one unusual
+design, though. The AM79C960 device has many 32-bit and 64-bit values that are
+split into multiple 16-bit register. The model stores many of these values in a
+separate attributes, and makes the registers reflect the attribute by using the
+<i>data_accessor</i> template.
+<p>
+For example, the 64-bit <em>Logical Address Filter</em> that resides in CSR8 -
+CSR11 is stored in the <i>logical_address_filter</i> attribute. Some of the
+registers, for example, CSR24 and CSR 25 that contain <em>Base Address of
+Receive Ring</em>, are not even implemented and the values are only stored in
+separate attributes.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic49.html">Previous</a> - <a class="jdocu" href="topic49.html">Up</a> - <a class="jdocu" href="topic51.html">Next</a></span></p>
+</body>
+</html>

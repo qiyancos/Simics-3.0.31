@@ -1,0 +1,136 @@
+@if not "do_login"          in dir(): do_login = 1
+@if not "cdrom_path"        in dir(): cdrom_path = ""
+@if not "central_host"    in dir(): central_host = "localhost"
+# one of: none, local, exported and remote
+@if not "central_setup"     in dir(): central_setup = "none"
+@if not "real_network"      in dir(): real_network = 0
+@if not "cpu_spaces"        in dir(): cpu_spaces = 0
+@if not "use_dhcp"          in dir(): use_dhcp = 0
+@if not "ethernet"          in dir(): ethernet = "10:10:10:10:10:14"
+@if not "use_generic_cache" in dir(): use_generic_cache = 0
+@if not "use_fb"	    in dir(): use_fb = 0
+@if not "use_hostfs"	    in dir(): use_hostfs = 0
+@if not "use_ttyb_console"  in dir(): use_ttyb_console = 0
+
+@from text_console_common import wait_for_string
+
+@if use_generic_cache: 
+    cpu_spaces = 1
+
+@if use_fb and use_dhcp:
+    msg = "Graphics console (framebuffer) and DHCP cannot be used together."
+    if VT_remote_control():
+        VT_send_control_msg(['startup-failure', 0, msg])
+    else:
+	print msg
+    SIM_quit(1)
+
+# handle the extra_simics_path variable
+run-python-file ../scripts/extrapath.py
+
+add-directory ../../import/sunfire
+
+run-python-file ../scripts/sunfire_conf.py
+
+@if not "boards" in dir(): boards = [[0, 1, 256]]
+
+@set_global_config(slots = 16,
+                   hostid = 0x80804a6c,
+                   cpu_freq = 168,
+                   mac_address = ethernet,
+                   tod = "2001-09-05 11:00.00 UTC",
+                   ttyb_console = use_ttyb_console)
+
+# the io board includes one onboard 'hme' ethernet adapter, and
+# one 'fas' SCSI controller on sbus slot 3.
+@add_sbus_board(board_no = 1, mac_address = ethernet)
+
+# there are three available sbus slots on each I/O-board: 0, 1 and 2.
+# the following line adds a Sunswift sbus card in slot 2
+# (reason we add it is that linux cannot handle an empty sysio controller on
+#  the io board, and the builtin devices are on the other sysio)
+@add_sbus_fas_hme(board_no = 1, slot_no = 2, mac_address = ethernet)
+
+@for brd in boards:
+    add_cpu_board(board_no = brd[0], num_cpus = brd[1], mb = brd[2])
+
+@bagle_files = [["bagle5-suse73.craff", "ro", 0, 2128486400]]
+@if use_dhcp == 1:
+    bagle_files += [["bagle5.2-dhcp.craff", "ro", 0, 2128486400]]
+
+# Uncomment the following line when starting from a new installation!
+# @bagle_files = [["bagle-install.disk", "ro", 0, 2128486400]]
+
+# create a disk on the on-board 'fas' controller.
+@add_scsi_disk(board_no = 1, slot_no = 3, scsi_target = 0,
+               size = 2128486400, files = bagle_files)
+
+@add_scsi_cdrom(board_no = 1, slot_no = 3, scsi_target = 6, file = cdrom_path)
+
+@if use_fb:
+    pci_board = get_free_board()
+    if pci_board == None:
+        handle_error("No free slot to add PCI board for framebuffer device")
+        SIM_quit(1)
+    if pci_board != 2:
+        print "Configuration note: PCI board for the graphics card was "
+	print "added on a different slot than the default 2."
+    add_pci_board(board_no = pci_board, mac_address = "10:10:10:10:10:14")
+    add_pci_pgx64(board_no = pci_board, slot_no = 0)
+
+default-port-forward-target 10.10.0.6
+
+run-command-file ../central/central-include.simics
+
+# call the user configuration function before finishing
+@if "user_config" in dir(): user_config()
+
+# simplify some object names
+@rename_object(conf_list, "hme2_2",    "hme0")
+@rename_object(conf_list, "sd3_3_0",    "sd0")
+@rename_object(conf_list, "cd3_3_6",    "cd0")
+
+@if cpu_spaces == 1:
+    create_cpu_spaces()
+
+@finish_configuration()
+
+hme0.connect -auto net0
+
+# use this to get a copy of the configuration
+# @write_configuration(conf_list, "bagle.conf")
+
+# override some default values
+system.set-prom-env "boot-command" "boot disk linux"
+
+# system.set-prom-env "auto-boot?"   "false"  # stop at the OBP prompt
+
+@conf.fhc0.workaround_linux_bug = 1
+
+# Note: Although linux correctly identifies the Sun Type 5 keyboard, it
+# expects key-codes from a pc keyboard. Setting the 'send_pc_codes'
+# attribute will work around this problem. X however will correctly use
+# keycodes from the Sun keyboard. I.e set the attribute to 0 once X
+# has started.
+@if use_fb:
+    eval_cli_line("sd0.add-diff-file bagle5.1-pgx64.craff")
+    conf.keyboard.send_pc_codes = 1
+    print 
+    print "NOTE: After starting X on the simulated machine, issue the following"
+    print "      command in Simics:"
+    print "      simics> @conf.keyboard.send_pc_codes = 0"
+    print
+
+@if use_generic_cache:
+    eval_cli_line("run-python-file ../scripts/cache.py")
+    add_g_caches()
+
+@def do_boot():
+    wait_for_string(conf.con0, "ogin: ")
+    conf.con0.input = "root\n"
+    wait_for_string(conf.con0, "word: ")
+    conf.con0.input = "\n"
+
+# set do_login to 0 to avoid the automatic login
+@if do_login == 1:
+    start_branch(do_boot)

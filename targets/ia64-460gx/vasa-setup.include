@@ -1,0 +1,44 @@
+if not defined ip_address   {$ip_address   = "10.10.0.14"}
+if not defined host_name    {$host_name    = "vasa"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+
+@image.files = [["vasa5-rh72.craff", 1, 0, 18351959552]]
+
+####
+
+# Hack to get ia64_fakeprom work in multi-machine configurations
+pselect ($first_cpu.get-component-object cpu)
+
+run-python-file "%script%/ia64_fakeprom.py"
+
+@kernel = "vmlinux-smp"
+
+# Load the ia64-fakeprom
+@mem = sim.objects[simenv.system].object_list['phys_mem']
+@salentry = SIM_load_binary(mem, "ia64-fakeprom", 0, 0, 0)
+
+# Load the kernel
+@try:
+    entry = SIM_load_binary(mem, kernel, 0, 1, 0)
+except SimExc_IOError:
+    print "Error: Could not load", kernel
+    SIM_command_has_problem()
+    entry = 0
+
+@sal_setup(sim.objects[simenv.system].cpu_list,
+           simenv.num_cpus, simenv.memory_megs,
+	   salentry, linuxentry = entry,
+           cmdline = "single")

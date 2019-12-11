@@ -1,0 +1,54 @@
+if not defined do_boot       {$do_boot  = "yes"}
+if not defined do_login      {$do_login = "yes"}
+if not defined ip_address    {$ip_address   = "10.10.0.6"}
+if not defined host_name     {$host_name    = "walnut"}
+if not defined disk_perm     {$disk_perm    = "ro"}
+if not defined service_node  {}
+if not defined linux_boot_bug {$linux_boot_bug = "no"}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+@image.files = [[simenv.disk_file, simenv.disk_perm, 0, simenv.disk_size]]
+
+# linux incorrectly resets the fhc while it is still used
+$irq = `sim.objects[simenv.system].object_list['serial'].irq_dev`
+$irq->workaround_linux_bug = 1
+
+if $do_boot == "no" {
+    $system.set-prom-env auto-boot? false
+}
+
+if $do_login == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+        $con.wait-for-string "ogin: "
+        $con.input "root\n"
+        $con.wait-for-string "word: "
+        $con.input "\n"
+    }
+}
+
+if $linux_boot_bug == "yes" {
+    script-branch {
+        echo "This patch probably only works with some Linux 2.4/2.6 versions."
+        local $bpid = (break v:0x40004370)
+        wait-for-hap Core_Breakpoint (current-processor)->current_context $bpid
+        if (get (l2p %pc)) == 0x842cc012 {
+            echo "Patching Linux kernel..."
+            write-reg l2 0x3fffff
+            delete $bpid
+        } else {
+            echo "Unsupported Linux kernel version."
+        }
+    }
+}

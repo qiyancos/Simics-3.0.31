@@ -1,0 +1,10 @@
+run-command-file "%script%/ppc-simple-system.include"
+
+instantiate-components
+
+run-command-file "%script%/ppc-simple-setup.include"
+
+echo "This is an example of a simple PPC based machine, with one processor,"
+echo "memory and a serial device. There is no software loaded on the machine"
+echo "as a result, it is not possible to advance the simulation."
+echo

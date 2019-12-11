@@ -1,0 +1,159 @@
+# The following script installs Solaris 10 from the free CD available from
+# Sun's web site. The script has been tested with Solaris 10 version 3/05
+# and 1/06 (Update 1).
+#
+# There is currently only support for installing from the first two CDs.
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    wait-for-variable solaris10_phase1
+    #
+    $con.wait-for-string "ok "
+    $con.input "boot cdrom -v\n"
+    # language
+    $con.wait-for-string "help: "
+    $con.input "0\n"
+    # terminal
+    $con.wait-for-string "Return: "
+    $con.input "12\n"
+    #
+    $con.wait-for-string "Installation Program"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Identify This"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Network Connectivity"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "DHCP"
+    $con.input "\033OA \0332"
+    #
+    $con.wait-for-string "IPv6"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Configure Security Policy"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Name Service"
+    $con.input "\033OB\033OB \0332"
+    #
+    $con.wait-for-string "Domain Name"
+    $con.input "network.sim\0332"
+    #
+    $con.wait-for-string "DNS Server"
+    $con.input "10.10.0.1\0332"
+    #
+    $con.wait-for-string "DNS Search"
+    $con.input "network.sim\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Time Zone"
+    $con.input "\033OB \0332"
+    #
+    $con.wait-for-string "Country or Region"
+    $con.input " \0332"
+    #
+    $con.wait-for-string "Time Zone"
+    $con.input " \0332"
+    #
+    $con.wait-for-string "Date and Time"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Confirm Information"
+    $con.input "\0332"
+    #
+    # No root password
+    #
+    # Add the following two lines if installing older Solaris 10 than 6/06
+    # $con.wait-for-string "word:"
+    # $con.input "\n\n\0332"
+    #
+    # "System identification is completed."
+    #
+    $con.wait-for-string "Interactive Installation"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Eject"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Reboot After Installation"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "License"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Geographic Regions"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Locale"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Products"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Additional Products"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Select Software"
+    # Select Developer System
+    $con.input "\033OB \0332"
+    #
+    $con.wait-for-string "Select Disks"
+    $con.input " \0332"
+    #
+    $con.wait-for-string "Preserve Data"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Layout File Systems"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Layout File Systems"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Disk Layout"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Remote File Systems"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Profile"
+    $con.input "\0332"
+    #
+    $con.wait-for-string "Warning" # Change of default boot device
+    $con.input "\0332"
+    #
+    # "Preparing system for Solaris install"
+    #
+}
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    wait-for-variable solaris10_phase2
+    #
+    # Override NFS version 4 domain name
+    #
+    $con.wait-for-string "yes/no"
+    $con.input "\n"
+    # CD 3 software
+    $con.wait-for-string "Media"
+    $con.input "1\n"
+}
+
+script-branch {
+    local $con = ($console.get-component-object con)
+    wait-for-variable solaris10_phase3
+    $con.wait-for-string "ogin: "
+    $con.input "root\n"
+    $con.wait-for-string "# "
+    # take the machine down again
+    $con.input "init 0\n"
+}

@@ -1,0 +1,38 @@
+// This module defines the io_memory interface
+
+dml 1.0;
+
+implement io_memory {
+    method map(addr_space_t memory_or_io,
+               map_info_t info) -> (int status)
+    {
+        status = 0; // not used
+
+        select bank in ($banks) where (defined bank.function
+                                       && info.function == bank.function)
+        {
+            log "info", 4: "Mapping %s at %#x", defined bank.qname ? bank.qname : "bank" , info.base;
+        } else {
+            log "error": "Unknown mapping of function %d", info.function;
+        }
+    }
+
+    method operation(generic_transaction_t *mem_op,
+                     map_info_t map_info) -> (exception_type_t ex)
+    {
+        ex = Sim_PE_No_Exception;
+        select bank in ($banks) where (defined bank.function
+                                       && map_info.function == bank.function)
+        {
+            local uint32 offset = (mem_op->physical_address - map_info.base + map_info.start);
+            local uint32 size = mem_op->size;
+            try
+                call bank.access(mem_op, offset, size);
+            catch
+                ex = Sim_PE_IO_Not_Taken;
+        } else {
+            log "error": "Unknown access to function %d", map_info.function;
+            ex = Sim_PE_IO_Not_Taken;
+        }
+    }
+}

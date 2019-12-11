@@ -1,0 +1,16 @@
+This, openif, is a small helper program that is used by Simics when
+connecting to the network of the host machine. It performs the actions
+for which super-user privileges are needed (opening the raw network
+interface).
+
+It needs to be run as root, and should therefore be installed as
+setuid root. Source code is provided, to allow for inspection and
+audit for security problems. The code has been subjected to reasonable
+scrutiny, but if you find a problem with it, please tell us
+immediately.
+
+Of course, letting any user run openif as root is equivalent to giving
+her/him full access to the network interfaces. This may not be enough
+for a privilege escalation, but it should not be installed that way in
+an untrusted or hostile environment.
+

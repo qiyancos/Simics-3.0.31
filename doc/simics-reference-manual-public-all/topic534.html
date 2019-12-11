@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>sparc_u3</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2275, true);
+</script>
+<a name="label17963"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic533.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic535.html">Next</a></span></p>
+<h3 class="jdocu">sparc_u3</h3 class="jdocu">
+
+
+<a name="label17964"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic454.html#label15397">ultrasparc-iii</a>, <a class="jdocu" href="topic455.html#label15487">ultrasparc-iii-i</a>, <a class="jdocu" href="topic456.html#label15577">ultrasparc-iii-plus</a>, <a class="jdocu" href="topic457.html#label15667">ultrasparc-iv</a>, <a class="jdocu" href="topic458.html#label15757">ultrasparc-iv-plus</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <a name="label17965"></a>
+<p>
+   This interface contains <nobr>UltraSPARC III</nobr> specific
+   functions. Currently, the only one is the <b><i>cause_error</i></b>
+   function, which is used to cause errors. Its arguments are the
+   following:
+<p>
+   <i>obj</i> is the CPU to which the error should be reported.
+<p>
+   <i>afsr_status_bit</i> is the number of the bit in the
+   Asynchronous Fault Status Register that this error sets, or
+   &#8211;1 if none. Valid values are 33 through 53.
+<p>
+   <i>trap</i> is the trap that should be taken (if enabled; see
+   below), or &#8211;1 if none. Valid values are
+   <tt>Instruction_Access_Error</tt>,
+   <tt>Data_Access_Error</tt>,
+   <tt>Corrected_ECC_Error</tt>, and
+   <tt>Fast_ECC_Error</tt>.
+<p>
+   <i>estate_error_enable_bit</i> is the number of the bit in the
+   E-cache Error Enable Register (<tt>ESTATE_ERROR_EN</tt>) that
+   controls whether the trap in the <i>trap</i> argument should be
+   taken (unless it is &#8211;1), or &#8211;1 if none.
+<p>
+   <i>m_synd_priority</i> is the priority level of the MTag ECC
+   syndrome data supplied in the <i>m_synd</i> argument, or 0 if
+   none. Valid values are 0, 1, and 2.
+<p>
+   <i>m_synd</i> is the 4-bit MTags ECC syndrome data, or 0 if
+   none.
+<p>
+   <i>e_synd_priority</i> is the priority level of the system bus
+   and E-cache ECC syndrome data supplied in the <i>e_synd</i>
+   argument, or 0 if none. Valid values are 0, 1, and 2.
+<p>
+   <i>e_synd</i> is the 9-bit system bus and E-cache ECC syndrome
+   data, or 0 if none.
+<p>
+   <i>afar_priority</i> is the priority level of the
+   <i>afar</i> argument, or 0 if none. Valid values are 0 through 4.
+<p>
+   <i>afar</i> should contain the address that will be written to
+   the Asynchronous Fault Address Register (<tt>AFAR</tt>),
+   given that the <i>afar_priority</i> is high enough.
+<p>
+   <i>set_priv</i> should be non-zero if the
+   <tt>AFSR.PRIV</tt> bit should be set if the
+   <tt>PSTATE.PRIV</tt> bit is set at the time of the error.
+<p>
+   <i>set_me</i> should be non-zero if the <tt>AFSR.ME</tt>
+   bit should be set if the <tt>AFSR</tt> bit indicated by the
+   <i>afsr_status_bit</i> argument already was set.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef void (*sparc_u3_error_t)(conf_object_t *obj,
+                                 int afsr_status_bit,
+                                 exception_type_t trap,
+                                 int estate_error_enable_bit,
+                                 int m_synd_priority,
+                                 unsigned m_synd,
+                                 int e_synd_priority,
+                                 unsigned e_synd,
+                                 int afar_priority,
+                                 uint64 afar,
+                                 int set_priv,
+                                 int set_me);
+
+typedef struct sparc_u3_interface {
+        sparc_u3_error_t cause_error;
+} sparc_u3_interface_t;
+
+#define SPARC_U3_INTERFACE "sparc-u3"
+</pre>
+ 
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic533.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic535.html">Next</a></span></p>
+</body>
+</html>

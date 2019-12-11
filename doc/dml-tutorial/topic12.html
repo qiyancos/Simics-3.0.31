@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Events and Time</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(15, true);
+</script>
+<a name="label18"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;Events and Time</h2 class="jdocu">
+
+
+<p>
+In a hardware simulation, it can often be useful to let something happen
+only after a certain amount of (simulated) time. This can be done in
+Simics by "posting an event", which means that a callback function is
+placed in a queue, to be executed later on in the simulation. The amount
+of simulated time before the event is triggered is usually specified in
+a number of seconds (as a floating-point number), but other units are
+possible; see the <em>DML Reference Manual</em> for more
+information.
+<p>
+We can modify our example to post an event when the register is written
+to, as follows:
+<pre class="jdocu_small" style="color: black">
+    dml 1.0;
+    device simple_device;
+    import "io-memory.dml";
+
+    data int32 delay;
+    bank b {
+        parameter function = 0;
+        register r0 size 4 @0x0000 {
+            method write(val) {
+                $this = 0;
+                $delay = val;
+                inline $ev.post($delay, NULL);
+                log "info": "Posted tick event"; 
+            }
+            event ev {
+                method event(void *data) {
+                    ++$r0;
+                    log "info": "Tick: %d.", $r0;
+                    inline $this.post($delay, NULL);
+                }
+            }
+        }
+    }
+</pre>
+We use the register itself as a counter, which is reset to zero upon a
+write access; the written value is used as the delay in seconds. Once
+the event happens, it re-posts itself after the same interval. Note the
+use of a <tt>data</tt> field to store the delay internally; we could
+also have chosen to put the counter in the data field instead, or in a
+more realistic example we could have modeled the counter as an
+additional register. Also, the <b><i>post</i></b> method must be called with
+the <tt>inline</tt> keyword, because its argument can be of varying
+types.
+<p>
+After recompiling and restarting Simics, just enter the command
+<b>continue</b> (or <b>c</b> for short). This simply runs the
+simulation of the hardware. You should see no messages, since there is
+nothing exciting going on in the machine, except that the clock is
+ticking away. Press <tt>Ctrl-C</tt> to pause the simulation and get back
+to the prompt.
+<p>
+Now write a large value to the register:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.set 0x1000 10000</b>
+</pre>
+(ignore any error messages about "no associated queue") and enter
+<b>c</b> again. You should see "Tick"-messages being written at
+fairly short intervals. Press <tt>Ctrl-C</tt> and write a lower value to
+the register:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.set 0x1000 1</b>
+</pre>
+then start the simulation again. The messages are now printed at high
+speed (although not ten thousand times as fast). The lesson from this is
+that simulated time is not strictly proportional to real time, and if a
+machine has very little to do, even 10,000 seconds can be simulated in a
+very short time.
+<p>
+For simple cases of posting a callback after a specific time, you don't
+even need to go through the trouble of declaring an event object and its
+<b><i>event</i></b> method, and then call <b><i>post</i></b>. The following DML
+statement creates and posts an anonymous event which calls a method
+after a given time <tt>t</tt> in seconds:
+<pre class="jdocu_small" style="color: black">
+    after (t) call $my_callback;
+</pre>
+Note that just like calling <b><i>post</i></b>, the effect is that the
+callback is placed on a queue, and the DML program continues immediately
+with the next statement following <tt>after</tt>, i.e., events are
+executed <em>asynchronously</em>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic11.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic13.html">Next</a></span></p>
+</body>
+</html>

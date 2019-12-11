@@ -1,0 +1,43 @@
+For more details on the leon2-simple machine, see the leon2-simple
+target guide. 
+
+The scripts provided here allows you to start some Virtutech-provided
+sample binaries with the option of skipping the memory zeroing when
+RTEMS boots, as discussed in the leon2-simple target guide.  To load a
+particular program, create a small script in your
+WORKSPACE/targets/leon2-simple/ directory, containing something like
+the following:
+
+#----
+$binary_to_load = "rtems-tasks.elf"
+$skip_memory_zero = 1
+run-command-file "%script%/leon2-simple-rtems.simics"
+#----
+
+
+The programs provided by Virtutech are:
+
+rtems-hello2.elf
+
+  Simple hello world program, prints:
+
+  *** HELLO WORLD TEST ***
+  Hello World
+  *** END OF HELLO WORLD TEST ***
+
+rtems-paranois.elf
+
+  Tests the IEEE floating point conformance. Lots of printouts.
+
+rtems-dhrystone.elf
+
+  Dhrystone benchmark on RTEMS, you have to enter the number of
+  iterations in the console.
+
+rtems-tasks.elf
+
+  Tests the clock (uses the sleep mode).
+
+
+
+

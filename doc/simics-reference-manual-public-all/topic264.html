@@ -1,0 +1,697 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ppc440gp</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1396, true);
+</script>
+<a name="label9716"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic263.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic265.html">Next</a></span></p>
+<h3 class="jdocu">ppc440gp</h3 class="jdocu">
+
+
+<a name="label9717"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2774">ppc440gp</a>, <a class="jdocu" href="topic14.html#label2778">ppc440gp-turbo</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ppc440gp</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic530.html#label17948">simple_interrupt</a>, <a class="jdocu" href="topic498.html#label17737">exception</a>, <a class="jdocu" href="topic503.html#label17750">int_register</a>, <a class="jdocu" href="topic522.html#label17816">ppc</a>, <a class="jdocu" href="topic523.html#label17819">processor</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+
+<dt class="jdocu_di"><b>Ports</b></dt><dd class="jdocu_di">
+SRESET (<a class="jdocu" href="topic529.html#label17946">signal</a>), HRESET (<a class="jdocu" href="topic529.html#label17946">signal</a>)</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+ppc440gp processor simulation
+
+</dd>
+
+</dl>
+<a name="label9718"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>address_width</i></b></dt><a name="label9719"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+(<i>phys-bits</i>, <i>virt-bits</i>) Number of bits in physical and virtual addresses.</dd></dl>
+<dl><dt><b><i>aprof_views</i></b></dt><a name="label9720"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[o,i]*]</b>.
+<p>
+((<i>address profiler</i>, <i>view</i>)*) Address profiler views selected for this processor. Affects only the display of profiling information, and has nothing to do with collecting it.
+<p>
+This attribute should contain a list of lists: one list for each address profiler view you want to select (in the order they are to appear), each containing first the address profiler object, then the index of the desired view.</dd></dl>
+<dl><dt><b><i>architecture</i></b></dt><a name="label9721"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Implemented architecture (ppc32)</dd></dl>
+<dl><dt><b><i>available_timebase_modes</i></b></dt><a name="label9722"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>.
+<p>
+Lists all available timebase modes (except the default 'null' mode)</dd></dl>
+<dl><dt><b><i>big_endian</i></b></dt><a name="label9723"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>b</b>.
+<p>
+This attribute is TRUE if the processor uses big-endian byte order and FALSE if it uses little-endian.</dd></dl>
+<dl><dt><b><i>bootstrap_tlb_entry</i></b></dt><a name="label9724"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i,i,i]</b>.
+<p>
+(w0,w1,w2) Initial TLB entry at reset in shadow TLB</dd></dl>
+<dl><dt><b><i>branch_prof_support</i></b></dt><a name="label9725"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>b</b>.
+<p>
+True if this processor supports branch profiling in <tt>-stall</tt> mode, false otherwise.</dd></dl>
+<dl><dt><b><i>ccr0</i></b></dt><a name="label9726"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Core Configuration register 0</dd></dl>
+<dl><dt><b><i>chip_reset_target</i></b></dt><a name="label9727"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|o|[os]</b>.
+<p>
+Object listening to the chip reset signal. The object should implement the signal interface.</dd></dl>
+<dl><dt><b><i>core_reset_target</i></b></dt><a name="label9728"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|o|[os]</b>.
+<p>
+Object listening to the core reset signal. The object should implement the signal interface.</dd></dl>
+<dl><dt><b><i>cpu_group</i></b></dt><a name="label9729"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The group that this processor belongs to. A cpu group is a collection if cpus that may share memory and/or send interrupts between them. The group must implement the "cpu_group"interface and the ppc-broadcast-businterface.</dd></dl>
+<dl><dt><b><i>cr</i></b></dt><a name="label9730"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Condition register</dd></dl>
+<dl><dt><b><i>csrr0</i></b></dt><a name="label9731"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Critical save/restore reg 0</dd></dl>
+<dl><dt><b><i>csrr1</i></b></dt><a name="label9732"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Critical save/restore reg 1</dd></dl>
+<dl><dt><b><i>ctr</i></b></dt><a name="label9733"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Counter register</dd></dl>
+<dl><dt><b><i>current_context</i></b></dt><a name="label9734"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Current context object.</dd></dl>
+<dl><dt><b><i>cycle_fractions</i></b></dt><a name="label9735"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Modeling parameter related to processor scheduling.</dd></dl>
+<dl><dt><b><i>cycles</i></b></dt><a name="label9736"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Time measured in cycles from machine start.</dd></dl>
+<dl><dt><b><i>dac1</i></b></dt><a name="label9737"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data Address Compare 1</dd></dl>
+<dl><dt><b><i>dac2</i></b></dt><a name="label9738"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data Address Compare 2</dd></dl>
+<dl><dt><b><i>dbcr0</i></b></dt><a name="label9739"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Debug Control register 0</dd></dl>
+<dl><dt><b><i>dbcr1</i></b></dt><a name="label9740"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Debug Control register 1</dd></dl>
+<dl><dt><b><i>dbcr2</i></b></dt><a name="label9741"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Debug Control register 2</dd></dl>
+<dl><dt><b><i>dbdr</i></b></dt><a name="label9742"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Debug Data Register</dd></dl>
+<dl><dt><b><i>dbg_compile_block</i></b></dt><a name="label9743"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+Force compile of block.</dd></dl>
+<dl><dt><b><i>dbsr</i></b></dt><a name="label9744"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Debug Status register</dd></dl>
+<dl><dt><b><i>dcache</i></b></dt><a name="label9745"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Cache object affected by data cache control instructions.</dd></dl>
+<dl><dt><b><i>dcdbtrh</i></b></dt><a name="label9746"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data Cache Debug Tag Register High</dd></dl>
+<dl><dt><b><i>dcdbtrl</i></b></dt><a name="label9747"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data Cache Debug Tag Register Low</dd></dl>
+<dl><dt><b><i>dcr_space</i></b></dt><a name="label9748"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Device control register space mappings</dd></dl>
+<dl><dt><b><i>dear</i></b></dt><a name="label9749"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data exception address</dd></dl>
+<dl><dt><b><i>dec</i></b></dt><a name="label9750"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Decrementer register</dd></dl>
+<dl><dt><b><i>dec_at_zero</i></b></dt><a name="label9751"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Decrementer unarmed and at zero</dd></dl>
+<dl><dt><b><i>dec_remainder</i></b></dt><a name="label9752"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Decrementer remainder</dd></dl>
+<dl><dt><b><i>decar</i></b></dt><a name="label9753"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Decrementer Auto-reload</dd></dl>
+<dl><dt><b><i>disable_watchdog_reboots</i></b></dt><a name="label9754"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+(temporary) Disable reboot feature when watchdog triggers</dd></dl>
+<dl><dt><b><i>dnv0</i></b></dt><a name="label9755"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache normal victim 0</dd></dl>
+<dl><dt><b><i>dnv1</i></b></dt><a name="label9756"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache normal victim 1</dd></dl>
+<dl><dt><b><i>dnv2</i></b></dt><a name="label9757"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache normal victim 2</dd></dl>
+<dl><dt><b><i>dnv3</i></b></dt><a name="label9758"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache normal victim 3</dd></dl>
+<dl><dt><b><i>do_allocate_target_registers</i></b></dt><a name="label9759"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Target register allocation enable.</dd></dl>
+<dl><dt><b><i>do_reissue</i></b></dt><a name="label9760"></a><dd><b>Session</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Obsolete attribute that was used to keep information about the current memory transaction if is_stalling is set.</dd></dl>
+<dl><dt><b><i>dtv0</i></b></dt><a name="label9761"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache transient victim 0</dd></dl>
+<dl><dt><b><i>dtv1</i></b></dt><a name="label9762"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache transient victim 1</dd></dl>
+<dl><dt><b><i>dtv2</i></b></dt><a name="label9763"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache transient victim 2</dd></dl>
+<dl><dt><b><i>dtv3</i></b></dt><a name="label9764"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache transient victim 3</dd></dl>
+<dl><dt><b><i>dvc1</i></b></dt><a name="label9765"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data Value Compare 1</dd></dl>
+<dl><dt><b><i>dvc2</i></b></dt><a name="label9766"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data Value Compare 2</dd></dl>
+<dl><dt><b><i>dvlim</i></b></dt><a name="label9767"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Data cache victim limit</dd></dl>
+<dl><dt><b><i>enabled_flag</i></b></dt><a name="label9768"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+TRUE if the processor is enabled. If FALSE, it will see time (cycles) pass but not execute steps.</dd></dl>
+<dl><dt><b><i>esr</i></b></dt><a name="label9769"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Exception syndrome Register</dd></dl>
+<dl><dt><b><i>event_desc</i></b></dt><a name="label9770"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[[o|n,s,i]*]</b>.
+<p>
+ ((<i>object</i>, <i>description</i>, <i>time</i>)*). All events in queue with a human-readable description. The attribute is indexed by queue (Sim_Queue_Step/Time).</dd></dl>
+<dl><dt><b><i>freq_mhz</i></b></dt><a name="label9771"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>i|f</b>.
+<p>
+Processor clock frequency in MHz.</dd></dl>
+<dl><dt><b><i>gprs</i></b></dt><a name="label9772"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{32}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+(r0, r1, ..., r31) General purpose registers</dd></dl>
+<dl><dt><b><i>halt_steps</i></b></dt><a name="label9773"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of steps spent waiting in nap/doze mode.</dd></dl>
+<dl><dt><b><i>iac1</i></b></dt><a name="label9774"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Address Compare 1</dd></dl>
+<dl><dt><b><i>iac2</i></b></dt><a name="label9775"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Address Compare 2</dd></dl>
+<dl><dt><b><i>iac3</i></b></dt><a name="label9776"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Address Compare 3</dd></dl>
+<dl><dt><b><i>iac4</i></b></dt><a name="label9777"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Address Compare 4</dd></dl>
+<dl><dt><b><i>icache</i></b></dt><a name="label9778"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Cache object affected by instruction cache control instructions.</dd></dl>
+<dl><dt><b><i>icdbdr</i></b></dt><a name="label9779"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Cache Debug Data reg</dd></dl>
+<dl><dt><b><i>icdbtrh</i></b></dt><a name="label9780"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Cache Debug Tag Register High</dd></dl>
+<dl><dt><b><i>icdbtrl</i></b></dt><a name="label9781"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction Cache Debug Tag Register Low</dd></dl>
+<dl><dt><b><i>in_sleep_state</i></b></dt><a name="label9782"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Non-zero if CPU is in nap/doze mode.</dd></dl>
+<dl><dt><b><i>instruction_fetch_line_size</i></b></dt><a name="label9783"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction fetch line size for this processor.</dd></dl>
+<dl><dt><b><i>instruction_fetch_mode</i></b></dt><a name="label9784"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Instruction fetch mode</dd></dl>
+<dl><dt><b><i>inv0</i></b></dt><a name="label9785"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache normal victim 0</dd></dl>
+<dl><dt><b><i>inv1</i></b></dt><a name="label9786"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache normal victim 1</dd></dl>
+<dl><dt><b><i>inv2</i></b></dt><a name="label9787"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache normal victim 2</dd></dl>
+<dl><dt><b><i>inv3</i></b></dt><a name="label9788"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache normal victim 3</dd></dl>
+<dl><dt><b><i>is_stalling</i></b></dt><a name="label9789"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+TRUE if the processor is currently stalling by request of a timing-model.</dd></dl>
+<dl><dt><b><i>itv0</i></b></dt><a name="label9790"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache transient victim 0</dd></dl>
+<dl><dt><b><i>itv1</i></b></dt><a name="label9791"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache transient victim 1</dd></dl>
+<dl><dt><b><i>itv2</i></b></dt><a name="label9792"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache transient victim 2</dd></dl>
+<dl><dt><b><i>itv3</i></b></dt><a name="label9793"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache transient victim 3</dd></dl>
+<dl><dt><b><i>ivlim</i></b></dt><a name="label9794"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction cache victim limit</dd></dl>
+<dl><dt><b><i>ivor0</i></b></dt><a name="label9795"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 0</dd></dl>
+<dl><dt><b><i>ivor1</i></b></dt><a name="label9796"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 1</dd></dl>
+<dl><dt><b><i>ivor10</i></b></dt><a name="label9797"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 10</dd></dl>
+<dl><dt><b><i>ivor11</i></b></dt><a name="label9798"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 11</dd></dl>
+<dl><dt><b><i>ivor12</i></b></dt><a name="label9799"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 12</dd></dl>
+<dl><dt><b><i>ivor13</i></b></dt><a name="label9800"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 13</dd></dl>
+<dl><dt><b><i>ivor14</i></b></dt><a name="label9801"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 14</dd></dl>
+<dl><dt><b><i>ivor15</i></b></dt><a name="label9802"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 15</dd></dl>
+<dl><dt><b><i>ivor2</i></b></dt><a name="label9803"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 2</dd></dl>
+<dl><dt><b><i>ivor3</i></b></dt><a name="label9804"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 3</dd></dl>
+<dl><dt><b><i>ivor4</i></b></dt><a name="label9805"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 4</dd></dl>
+<dl><dt><b><i>ivor5</i></b></dt><a name="label9806"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 5</dd></dl>
+<dl><dt><b><i>ivor6</i></b></dt><a name="label9807"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 6</dd></dl>
+<dl><dt><b><i>ivor7</i></b></dt><a name="label9808"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 7</dd></dl>
+<dl><dt><b><i>ivor8</i></b></dt><a name="label9809"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 8</dd></dl>
+<dl><dt><b><i>ivor9</i></b></dt><a name="label9810"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Interrupt vector offset reg 9</dd></dl>
+<dl><dt><b><i>ivpr</i></b></dt><a name="label9811"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction vector prefix register</dd></dl>
+<dl><dt><b><i>lock_granularity</i></b></dt><a name="label9812"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Lock granularity of atomic instructions</dd></dl>
+<dl><dt><b><i>lr</i></b></dt><a name="label9813"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Link register</dd></dl>
+<dl><dt><b><i>lsq_enabled</i></b></dt><a name="label9814"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+When non-zero, the internal load/store queue is enabled. Only applicable if ooo-mode is "micro-architecture"</dd></dl>
+<dl><dt><b><i>mai_debug</i></b></dt><a name="label9815"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+(internal) Set debug file for MAI</dd></dl>
+<dl><dt><b><i>memory_profiling_granularity_log2</i></b></dt><a name="label9816"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Base 2 logarithm of memory profiling granularity.</dd></dl>
+<dl><dt><b><i>min_cacheline_size</i></b></dt><a name="label9817"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The minimum size (in bytes) of a cache line that can be represented by Simics (when connecting a cache memhier).</dd></dl>
+<dl><dt><b><i>mmucr</i></b></dt><a name="label9818"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Management Unit Control Register</dd></dl>
+<dl><dt><b><i>mode_counters</i></b></dt><a name="label9819"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[sii]*]</b>.
+<p>
+((<i>name</i>, <i>user-value</i>, <i>supervisor-value</i>), ...) List of per-mode counters.</dd></dl>
+<dl><dt><b><i>msr</i></b></dt><a name="label9820"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Machine state register</dd></dl>
+<dl><dt><b><i>msr_bit_names</i></b></dt><a name="label9821"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>.
+<p>
+(bit0name, bit1name... bit32/64name) of the names for each MSR bit defined on this PowerPC processor. Bits not defined are names with an empty string</dd></dl>
+<dl><dt><b><i>ooo_mode</i></b></dt><a name="label9822"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+"in-order" or "micro-architecture".</dd></dl>
+<dl><dt><b><i>pc</i></b></dt><a name="label9823"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Program counter</dd></dl>
+<dl><dt><b><i>pending_exceptions</i></b></dt><a name="label9824"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[s*]</b>.
+<p>
+List of pending exceptions</dd></dl>
+<dl><dt><b><i>pending_irq_name</i></b></dt><a name="label9825"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>String</b>.
+<p>
+Name of an interrupt just about to be taken handled</dd></dl>
+<dl><dt><b><i>physical_memory</i></b></dt><a name="label9826"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Physical memory space. Must implement both the memory-space and the breakpoint interface.</dd></dl>
+<dl><dt><b><i>pid</i></b></dt><a name="label9827"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Process ID</dd></dl>
+<dl><dt><b><i>pir</i></b></dt><a name="label9828"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor ID</dd></dl>
+<dl><dt><b><i>processor_number</i></b></dt><a name="label9829"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Simics internal processor number for this CPU. Each processor must have a unique processor number. This attribute can only be set as part of an initial configuration.</dd></dl>
+<dl><dt><b><i>pvr</i></b></dt><a name="label9830"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Processor version </dd></dl>
+<dl><dt><b><i>reservation_address</i></b></dt><a name="label9831"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Atomic reservation address</dd></dl>
+<dl><dt><b><i>reservation_size</i></b></dt><a name="label9832"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Atomic reservation block size</dd></dl>
+<dl><dt><b><i>reserve</i></b></dt><a name="label9833"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Atomic reservation</dd></dl>
+<dl><dt><b><i>rstcfg</i></b></dt><a name="label9834"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Reset configuration</dd></dl>
+<dl><dt><b><i>sdtlb</i></b></dt><a name="label9835"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i,i,i]*]</b>.
+<p>
+(((w0,w1,w2)).....) Shadow Data TLB</dd></dl>
+<dl><dt><b><i>sitlb</i></b></dt><a name="label9836"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i,i,i]*]</b>.
+<p>
+(((w0,w1,w2)).....) Shadow Instruction TLB</dd></dl>
+<dl><dt><b><i>spr_list</i></b></dt><a name="label9837"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[issiiiiiiiiii]*]</b>.
+<p>
+List of defined SPRs.</dd></dl>
+<dl><dt><b><i>sprg0</i></b></dt><a name="label9838"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg1</i></b></dt><a name="label9839"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg2</i></b></dt><a name="label9840"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg3</i></b></dt><a name="label9841"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg4</i></b></dt><a name="label9842"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg5</i></b></dt><a name="label9843"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg6</i></b></dt><a name="label9844"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>sprg7</i></b></dt><a name="label9845"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Provided for OS use</dd></dl>
+<dl><dt><b><i>srr0</i></b></dt><a name="label9846"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Machine save/restore register 0</dd></dl>
+<dl><dt><b><i>srr1</i></b></dt><a name="label9847"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Machine save/restore register 1</dd></dl>
+<dl><dt><b><i>stall_time</i></b></dt><a name="label9848"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The number of cycles the processor will stall</dd></dl>
+<dl><dt><b><i>stalling_info</i></b></dt><a name="label9849"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]</b>.
+<p>
+If is_stalling is set, this contains information about the current memory operation.</dd></dl>
+<dl><dt><b><i>stc_cache_w</i></b></dt><a name="label9850"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+If set, memory mapped with W=1 will be cached in the STC, making access faster but slowing access for instructions which would trap when W=1. This is for improving simulator performance and should have no other effect.</dd></dl>
+<dl><dt><b><i>step_per_cycle_mode</i></b></dt><a name="label9851"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+"constant" indicates a constant finite step/cycle factor; "infinite" means that steps are run without advancing time.</dd></dl>
+<dl><dt><b><i>step_queue</i></b></dt><a name="label9852"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[o|n,a,s,i]*]</b>.
+<p>
+((<i>object</i>, <i>value</i>, <i>slot</i>, <i>step</i>)*). Pending step queue events. <i>object</i> must implement the event_poster interface.</dd></dl>
+<dl><dt><b><i>step_rate</i></b></dt><a name="label9853"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]</b>.
+<p>
+(<i>q</i>, <i>p</i>, <i>r</i>) where <i>q</i>/<i>p</i> is the step per cycle rate, <i>p</i> is a power of 2 and <i>r</i> indicates how much of a cycle that the current step has  consumed.</dd></dl>
+<dl><dt><b><i>steps</i></b></dt><a name="label9854"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number steps executed since machine start.</dd></dl>
+<dl><dt><b><i>svr</i></b></dt><a name="label9855"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+System version register</dd></dl>
+<dl><dt><b><i>system_reset_target</i></b></dt><a name="label9856"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|o|[os]</b>.
+<p>
+Object listening to the system reset signal. The object should implement the signal interface.</dd></dl>
+<dl><dt><b><i>tbl</i></b></dt><a name="label9857"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Timebase lower register</dd></dl>
+<dl><dt><b><i>tbu</i></b></dt><a name="label9858"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Timebase upper register</dd></dl>
+<dl><dt><b><i>tcr</i></b></dt><a name="label9859"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Timer Control register</dd></dl>
+<dl><dt><b><i>temperature</i></b></dt><a name="label9860"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Temperature of the processor (C)</dd></dl>
+<dl><dt><b><i>time_queue</i></b></dt><a name="label9861"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[o|n,a,s,i]*]</b>.
+<p>
+((<i>object</i>, <i>value</i>, <i>slot</i>, <i>cycle</i>)*). Pending time queue events. <i>object</i> must implement the event_poster interface.</dd></dl>
+<dl><dt><b><i>timebase_freq_mhz</i></b></dt><a name="label9862"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>i|f</b>.
+<p>
+Frequency (in MHz) for time base update</dd></dl>
+<dl><dt><b><i>timebase_mode</i></b></dt><a name="label9863"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|n</b>.
+<p>
+By default, the timebase is connected to the simulated cycles of a processor. Since Simics schedules processors (including hardware threads) in a round-robin fashion, where each processor gets to execute a large amount of instructions, this can cause problems. One example would be when one processor writes the value of timebase to memory at the end of it's quantum, and another processors compares this to the timebase at the beginning of the quantum; time will appear to have moved backwards. Therefore, there are additional timebase modes available that tries to work around these problems. Note that these modes may cause timing irregularies, depending on what software is running on the simulated machine.
+<p>
+The available modes are:
+<p>
+<i>stall</i> - a processor will be stalled til the end of it's quantum whenever it reads the timebase.
+<p>
+<i>quantum-locked</i> - timebase will only change on quantum boundaries.
+<p>
+<i>fast-forward</i> - timebase is fast forwarded when needed and then stopped until time (simulated cycles) has caught up with it.
+<p>
+Unless you know what you are doing, make sure the timebase mode on all processors (of the same class) are the same.</dd></dl>
+<dl><dt><b><i>timebase_remainder</i></b></dt><a name="label9864"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Timebase remainder</dd></dl>
+<dl><dt><b><i>timers_at_quantum_start</i></b></dt><a name="label9865"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[si]*]</b>.
+<p>
+Values of timer registers at quantum start. Used by quantum-locked timebase mode.</dd></dl>
+<dl><dt><b><i>timers_enabled</i></b></dt><a name="label9866"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If 0, time base/decrementer stand still (internal use only)</dd></dl>
+<dl><dt><b><i>tsr</i></b></dt><a name="label9867"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Timer Status register</dd></dl>
+<dl><dt><b><i>turbo_alloc_memory</i></b></dt><a name="label9868"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Force allocation of memory.</dd></dl>
+<dl><dt><b><i>turbo_block_info</i></b></dt><a name="label9869"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Block stats.</dd></dl>
+<dl><dt><b><i>turbo_blocks</i></b></dt><a name="label9870"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>[[iiiii]*]</b>.
+<p>
+Compiled blocks.</dd></dl>
+<dl><dt><b><i>turbo_code_area</i></b></dt><a name="label9871"></a><dd><b>Session</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Code areas.</dd></dl>
+<dl><dt><b><i>turbo_debug_level</i></b></dt><a name="label9872"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Turbo engine debug level.</dd></dl>
+<dl><dt><b><i>turbo_execution_mode</i></b></dt><a name="label9873"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Turbo enable.</dd></dl>
+<dl><dt><b><i>turbo_exhaust_current_block</i></b></dt><a name="label9874"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+Allocate all code space in the current block.</dd></dl>
+<dl><dt><b><i>turbo_global_vars</i></b></dt><a name="label9875"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Global symbols.</dd></dl>
+<dl><dt><b><i>turbo_heap_start</i></b></dt><a name="label9876"></a><dd><b>Session</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Start of heap.</dd></dl>
+<dl><dt><b><i>turbo_link_targets</i></b></dt><a name="label9877"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Link targets.</dd></dl>
+<dl><dt><b><i>turbo_max_compiled_blocks</i></b></dt><a name="label9878"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Max number of blocks.</dd></dl>
+<dl><dt><b><i>turbo_max_trace_size</i></b></dt><a name="label9879"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Max translation unit size.</dd></dl>
+<dl><dt><b><i>turbo_processor_offsets</i></b></dt><a name="label9880"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Processor offsets.</dd></dl>
+<dl><dt><b><i>turbo_register_offsets</i></b></dt><a name="label9881"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Register offsets.</dd></dl>
+<dl><dt><b><i>turbo_stat</i></b></dt><a name="label9882"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>; <b>string</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Stats.</dd></dl>
+<dl><dt><b><i>turbo_stats</i></b></dt><a name="label9883"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+When set to one, print stats.</dd></dl>
+<dl><dt><b><i>turbo_threshold</i></b></dt><a name="label9884"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Translation threshold.</dd></dl>
+<dl><dt><b><i>turbo_use_direct_sp</i></b></dt><a name="label9885"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Direct stack pointer enable.</dd></dl>
+<dl><dt><b><i>turbo_use_dstc_direct_lookup</i></b></dt><a name="label9886"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Direct DSTC lookup enable.</dd></dl>
+<dl><dt><b><i>turbo_use_off_page_chaining</i></b></dt><a name="label9887"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Off page chaining enable.</dd></dl>
+<dl><dt><b><i>usprg0</i></b></dt><a name="label9888"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+User general register 0</dd></dl>
+<dl><dt><b><i>utlb</i></b></dt><a name="label9889"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i,i,i]*]</b>.
+<p>
+(((w0,w1,w2)).....) Unified TLB</dd></dl>
+<dl><dt><b><i>watchdog_target</i></b></dt><a name="label9890"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>n|o|[os]</b>.
+<p>
+Object listening to the watchdog signal. The object should implement the signal interface.</dd></dl>
+<dl><dt><b><i>xer</i></b></dt><a name="label9891"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Fixed-point exception register</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label9892"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic523.html#label17819">processor</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic523.html#label17828">add-memory-profiler</a>, <a class="jdocu" href="topic523.html#label17830">aprof-views</a>, <a class="jdocu" href="topic523.html#label17832">attach-branch-recorder</a>, <a class="jdocu" href="topic523.html#label17834">break-cr</a>, <a class="jdocu" href="topic523.html#label17836">cycle-break</a>, <a class="jdocu" href="topic523.html#label17839">cycle-break-absolute</a>, <a class="jdocu" href="topic523.html#label17842">detach-branch-recorder</a>, <a class="jdocu" href="topic523.html#label17844">disable</a>, <a class="jdocu" href="topic523.html#label17846">disassemble</a>, <a class="jdocu" href="topic523.html#label17849">down</a>, <a class="jdocu" href="topic523.html#label17851">enable</a>, <a class="jdocu" href="topic523.html#label17853">frame</a>, <a class="jdocu" href="topic523.html#label17856">info</a>, <a class="jdocu" href="topic523.html#label17858">instruction-fetch-mode</a>, <a class="jdocu" href="topic523.html#label17861">io-read</a>, <a class="jdocu" href="topic523.html#label17863">io-write</a>, <a class="jdocu" href="topic523.html#label17865">list</a>, <a class="jdocu" href="topic523.html#label17867">list-memory-profilers</a>, <a class="jdocu" href="topic523.html#label17869">load-binary</a>, <a class="jdocu" href="topic523.html#label17871">logical-to-physical</a>, <a class="jdocu" href="topic523.html#label17874">pos</a>, <a class="jdocu" href="topic523.html#label17876">pregs</a>, <a class="jdocu" href="topic523.html#label17878">pregs-hyper</a>, <a class="jdocu" href="topic523.html#label17880">print-statistics</a>, <a class="jdocu" href="topic523.html#label17882">print-time</a>, <a class="jdocu" href="topic523.html#label17885">psym</a>, <a class="jdocu" href="topic523.html#label17887">read</a>, <a class="jdocu" href="topic523.html#label17889">read-reg</a>, <a class="jdocu" href="topic523.html#label17891">register-number</a>, <a class="jdocu" href="topic523.html#label17893">remove-memory-profiler</a>, <a class="jdocu" href="topic523.html#label17895">set-context</a>, <a class="jdocu" href="topic523.html#label17897">set-pc</a>, <a class="jdocu" href="topic523.html#label17899">stack-trace</a>, <a class="jdocu" href="topic523.html#label17903">start-instruction-profiling</a>, <a class="jdocu" href="topic523.html#label17905">step-break</a>, <a class="jdocu" href="topic523.html#label17909">step-break-absolute</a>, <a class="jdocu" href="topic523.html#label17913">sum</a>, <a class="jdocu" href="topic523.html#label17915">symval</a>, <a class="jdocu" href="topic523.html#label17918">trace-cr</a>, <a class="jdocu" href="topic523.html#label17920">unbreak-cr</a>, <a class="jdocu" href="topic523.html#label17922">untrace-cr</a>, <a class="jdocu" href="topic523.html#label17924">up</a>, <a class="jdocu" href="topic523.html#label17926">wait-for-cycle</a>, <a class="jdocu" href="topic523.html#label17928">wait-for-step</a>, <a class="jdocu" href="topic523.html#label17930">write</a>, <a class="jdocu" href="topic523.html#label17932">write-reg</a>, <a class="jdocu" href="topic523.html#label17934">x</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label9894">bootstrap-tlb-entry</a></b></td><td class="jdocu_noborder">print or change the default bootstrap mapping</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label9896">print-shadow-tlb</a></b></td><td class="jdocu_noborder">print shadow tlb contents</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label9898">print-utlb</a></b></td><td class="jdocu_noborder">print unified tlb contents</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label9900">temperature</a></b></td><td class="jdocu_noborder">set or query the temperature of the processor</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label9893"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label9894"></a><a name="label9895"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp&gt;.bootstrap-tlb-entry</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp&gt;.bootstrap-tlb-entry</b> [-update] [<i>EPN</i>] [<i>TS</i>] [<i>TID</i>] [<i>ERPN</i>] [<i>RPN</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Modify or print current default mapping which is copied to shadow
+                TLB entry zero when processor is reset. The -update causes
+                the shadow tlb entry to be updated directly. Several fields, but not all,
+                can be modified by specifying the field name and its value.</dd>
+
+</dl>
+
+
+
+<a name="label9896"></a><a name="label9897"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp&gt;.print-shadow-tlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp&gt;.print-shadow-tlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the contents of the shadown I and D  TLB of the processor
+                <i>cpu_name</i>. If no CPU is specified, the current CPU will be
+                selected. Simics caches instruction and data information
+                internally, therfore the content of the shadow entries does not
+                necessarely match cached entries on the hardware. Support for
+                shadow TLBs are mainly maintained by Simics to support the bootstrap.</dd>
+
+</dl>
+
+
+
+<a name="label9898"></a><a name="label9899"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp&gt;.print-utlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp&gt;.print-utlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the contents of the unified TLB of the processor.</dd>
+
+</dl>
+
+
+
+<a name="label9900"></a><a name="label9901"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;ppc440gp&gt;.temperature</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;ppc440gp&gt;.temperature</b> [<i>degrees-celsius</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+If the simulated PowerPC processor is equipped with a TAU (Thermal Assist Unit),
+                this command allows TAU related features to be tested.
+                Without any arguments, the command prints the current set temperature.
+                The temperature can be changed by specifying the wanted temperature.
+                This command accesses the <tt>temperature</tt> attribute on the processor.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic263.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic265.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Implementing an Interface</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic13.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+<h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Implementing an Interface</h3 class="jdocu">
+
+
+<p>
+The following is a naive implementation of the <tt>io_memory</tt>
+interface, designed to be used with the example device in Section <a class="jdocu" href="topic6.html#label10">2.1</a> (note the references to <tt>$b</tt> in the
+code). To try it, simply remove the line "<tt>import
+"io-memory.dml";</tt>" from the original program, and instead add the
+below code (before or after the <tt>bank b {...}</tt> section).
+<pre class="jdocu_small" style="color: black">
+    implement io_memory {
+        method map(addr_space_t mem, map_info_t info)
+               -&gt; (int status)
+        {
+            log "info": "Mapped function %d at %#x",
+                        info.function, info.base;
+            status = 0;
+        }
+        method operation(generic_transaction_t *memop,
+                         map_info_t info)
+                     -&gt; (exception_type_t ex)
+        {
+            if (info.function == $b.function) {
+                local uint32 offset;
+                offset = (memop-&gt;physical_address
+                          - info.base
+                          + info.start);
+                log "info": "Accessing internal address %d",
+                            offset;
+                call $b.access(memop, offset, memop-&gt;size);
+                ex = Sim_PE_No_Exception;
+            } else {
+                ex = Sim_PE_IO_Not_Taken;
+            }
+        }
+    }
+</pre>
+(The <b><i>map</i></b> method does not have to do anything, but should return
+zero. The <b><i>operation</i></b> method should return an "exception code"
+which is <tt>Sim_PE_No_Exception</tt> if all went well.)
+<p>
+The method declarations within an <tt>implement</tt> section are
+translated directly into C functions as expected by the Simics API; a
+pointer to the device object itself is automatically added as the first
+argument to each function. The methods can only have one or zero output
+parameters, which correspond directly to return values in C. In this
+example, the C function signatures for <b><i>map</i></b> and
+<b><i>operation</i></b> are:
+<pre class="jdocu_small" style="color: black">
+                     int map(conf_object_t *obj,
+                             addr_space_t mem,
+                             map_info_t info);
+
+  exception_type_t operation(conf_object_t *obj,
+                             generic_transaction_t *memop,
+                             map_info_t info)
+</pre>
+<p>
+Try recompiling and testing the device with this implementation of
+<tt>io_memory</tt>. For further details about the <tt>io_memory</tt>
+interface, and other Simics interfaces and datatypes, see the
+<em>Simics Programming Guide</em> and the <em>Simics Reference
+Manual</em>. (In general, the DML built-in constructs and standard
+ libraries try to hide as much as possible about the details of the
+Simics API from the user.)
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic13.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+</body>
+</html>

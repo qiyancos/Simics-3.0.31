@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction to Cache Simulation with Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(219, true);
+</script>
+<a name="label521"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic86.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic88.html">Next</a></span></p>
+<h4 class="jdocu">18.1&nbsp;&nbsp;&nbsp;Introduction to Cache Simulation with Simics</h4 class="jdocu">
+
+
+<p>
+By default, Simics does not model any cache system. It uses its own memory
+system to obtain high speed simulation, and modeling a hardware cache model
+would only slow it down.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Although it is often said that Simics models a processor, such
+as an UltraSPARC III or an x86 P4,
+remember that Simics is an <em>instruction-set</em> simulator, not a
+processor simulator. Transactions coming out of a real x86 P4 processor have
+already gone through the L1 and L2 caches, so they consist mainly of cache
+misses to be fetched from memory. In Simics, all transactions performed by the
+processor execution core are made visible.<hr class="jdocu_note">
+<p>
+For simplicity and performance, Simics does not model incoherence. In Simics,
+the memory is <em>always</em> up to date with the latest CPU and device
+transactions. Memory accesses take no time to execute and are always atomic.
+<p>
+The possibility to observe and alter memory transactions (both in timing and in
+execution) makes Simics very suitable for cache simulation:
+<p>
+<dl><dt><b>Cache Profiling</b></dt><dd>The goal is to gather information about the cache
+behavior of a system or an application. Unless the application runs on
+multi-processors, takes a lot of interrupts or runs a lot of system-level code,
+the timing of the memory operations is often irrelevant, thus no stalling is
+necessary. The <tt>timing-model</tt> interface is a good place to be
+informed of all transactions sent by the processor.
+<p>
+Note that this type of simulation <em>does not modify</em> the execution of the
+target program. It could be done by using Simics as a simple memory transaction
+trace generator, and then computing the cache state evolution
+afterward. However, doing the cache simulation at the same time as the
+execution enables a number of optimizations that Simics models make good use
+of.</dd><dt><b>Cache Timing</b></dt><dd>The goal is to study the timing behavior of the
+transactions, in which case a transaction to memory should take much more time
+than, for example, a transaction to an L1 cache. This is useful when studying
+interactions between several CPUs, or to grossly estimate the CPI of an
+application. To be able to stall the processor, a cache timing model should be
+connected to the <tt>timing-model</tt> interface. Simics models can be
+used for such a simulation.
+<p>
+This type of simulation <em>modifies</em> the execution, since interrupts and
+multi-processor interaction will be influenced by the timing provided by the
+cache model. However, unless the target program is not written properly, the
+execution will always be correct, although different from the execution
+obtained without any cache model.</dd><dt><b>Cache Content Simulation</b></dt><dd>It is possible to change Simics coherency
+model by allowing a cache model to contain data that is different from the
+contents of the memory. Such a model needs to use both the
+<tt>timing-model</tt> and the <tt>snoop-memory</tt> interfaces to
+properly handle the memory transactions (it must be able to change the values
+of loads and stores or to prevent their execution to main memory).
+<p>
+Note that this kind of simulation is difficult to do and requires a
+well-written, bug-free cache model, since it can prevent the target program
+from executing properly.</dd></dl>
+<p>
+Simics comes with cache models that allow for the two first types of
+cache simulation: 
+<p>
+<ul>
+<p>
+<li><b>g-cache</b> is the standard cache model. It handles one
+transaction at a time in a flat way: all needed operations (copy-back, fetch,
+etc.) are performed in order and at once. The cache returns the sum of the
+stall times reported for each operation.</li>
+<p>
+<li><b>g-cache-ooo</b> is a more complex model adapted to Simics
+MAI. It handles multiple outstanding transactions and keeps track of their
+current status (copy-back or fetch ongoing). <b>g-cache-ooo</b> is the
+standard cache model for Simics out-of-order; it is described in detail in
+<em>Simics Micro-Architectural Interface</em>.</li>
+<p>
+</ul>
+<p>
+The source code of these caches is available in
+<tt>[simics]/src/extensions/</tt>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic86.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic88.html">Next</a></span></p>
+</body>
+</html>

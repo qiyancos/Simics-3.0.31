@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Working with Images</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(72, true);
+</script>
+<a name="label153"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+<h4 class="jdocu">7.1&nbsp;&nbsp;&nbsp;Working with Images</h4 class="jdocu">
+
+
+<p>
+<a name="label154"></a><h5 class="jdocu">7.1.1&nbsp;&nbsp;&nbsp;Saving Changes to an Image</h5 class="jdocu">
+
+
+<p>
+If you modify or create new files on a storage device within Simics, you should
+remember that by default images are <em>read-only</em>. This means that the
+alterations made when running Simics are <em>not</em> written to the image, and
+will last only for the current Simics session. As described in the <a class="jdocu" href="topic26.html#label126">6.2.2</a> section, this behavior has many advantages. You may however
+want to save your changes to the image to re-use them in future simulations.
+<p>
+The first thing you should do is to make sure that all the changes are actually
+written to the media you are using. In many cases, the simulated operating
+system caches operations to disks or floppies. A safe way to ensure that all
+changes are written back is to shutdown the simulated machine.
+<p>
+When all changes have been written to the media <em>in</em> the simulation, you
+can save the new contents of the image in different ways:
+<p>
+<ul>
+<p>
+<li>Using the <b>save-persistent-state</b> command, all image changes for
+persistent storage media are saved to disk as a persistent state. <b>This is
+the recommended way of saving your image changes</b>.</li>
+<p>
+<li>Using the <b>&lt;image&gt;.save-diff-file</b> command, you can manually
+save a diff file for the images you are interested in.</li>
+<p>
+<li>Using the <b>&lt;image&gt;.save</b> command, you can create a raw
+binary dump of the image that is completely independent of all previous images
+and diff files. Note that this is <b>not</b> the best way to get a new and
+shiny image, since the image is saved uncompressed, which can take a lot of
+time and disk space.
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <b>&lt;image&gt;.save</b> actually allows you to save a
+<em>partial</em> dump of an image, which may be useful to dump a specific part
+of a disk or a floppy.<hr class="jdocu_note">
+</li>
+<p>
+</ul>
+<p>
+Once you have saved the images, you can do the following:
+<p>
+<ul>
+<p>
+<li>If you used <b>save-persistent-state</b>, you can issue the
+<b>load-persistent-state</b> command just after starting the original
+configuration. This will add the new changes to the persistent storage media
+images and the machine will boot with the changes included. <b>This is the
+recommended way of using a saved persistent state</b>.
+<p>
+For example, let us suppose that you saved some new files on the disk of the
+<i>enterprise</i> machine (started with the
+<tt>enterprise-common.simics</tt> script). You saved the persistent state
+of the machine after stopping it to the persistent state file
+<tt>new-files-added</tt>. You can easily create a small script to start
+<i>enterprise</i> with the new files:
+<p>
+<pre class="jdocu_small" style="color: black">
+# enterprise-new-files.simics
+run-command-file enterprise-common.simics
+load-persistent-state new-files-added
+</pre>
+</li>
+<p>
+<li>You can also load the original configuration and add the diff files
+manually to the images, using the <b>&lt;image&gt;.add-diff-file</b>
+command.</li>
+<p>
+<li>If you are building your own configurations (either as scripts or as
+checkpoints), you can add the diff files to the <i>files</i> attribute of
+the corresponding <b>image</b> object. This corresponds to what the
+<b>&lt;image&gt;.add-diff-file</b> command does.</li>
+<p>
+</ul>
+<p>
+If you save several persistent states or image diff files that are dependent on
+each other, it may become cumbersome to take care of all these dependencies and
+to remember which files are important or not. You can <em>merge</em> the states
+or image diff files to create a new independent state:
+<p>
+<ul>
+<p>
+<li>If you are working with persistent states, you can use the
+<tt>checkpoint-merge</tt> utility to create a persistent state that is
+independent of all previous files, including the original images provided by
+Virtutech. <b>This is the recommended way of creating a new independent
+image</b>. You can load it as usual with the <b>load-persistent-state</b>
+command.</li>
+<p>
+<li>If you saved some image diff files manually, you can use the
+<tt>craff</tt> utility described below to merge the diff files
+yourself.</li>
+<p>
+</ul>
+<p>
+
+<a name="label155"></a><h5 class="jdocu">7.1.2&nbsp;&nbsp;&nbsp;Reducing Memory Usage Due to Images</h5 class="jdocu">
+
+
+<p>
+Although images are divided into pages that are only loaded on request, Simics
+can run out of host memory if very big images are used, or if the footprint of
+the software running on the simulated system is bigger than the host memory. To
+prevent these kind of problems, Simics implements a global image memory
+limitation controlled by the <b>set-memory-limit</b> command.
+<p>
+When the memory limit is reached, Simics will start swapping out pages to disk
+very much like an operating system would do. The <b>set-memory-limit</b>
+command let you specify the maximum amount of memory that can be used, and
+where swapping should occur.
+<p>
+<hr class="jdocu_note"><b>Note:</b> This memory limitation only applies to <em>images</em>. Although this is
+unlikely, Simics can run out of memory due to other data structures becoming
+too large (for example memory profiling information) even though a memory limit
+has been set.<hr class="jdocu_note">
+<p>
+
+<a name="label156"></a><h5 class="jdocu">7.1.3&nbsp;&nbsp;&nbsp;Using Read/Write Images</h5 class="jdocu">
+
+
+<p>
+As mentioned in section <a class="jdocu" href="topic26.html#label126">6.2.2</a>, images can also work as
+read-write media, although this is <b>not</b> recommended. It can be useful
+sometimes when planning to make large changes to an image (like installing an
+operating system on a disk).
+<p>
+To make an image read-write in your own configurations, simply set the second
+parameter (the "read-only" flag) of the <i>files</i> attribute in the
+image object to <tt>"rw"</tt>.
+<p>
+In a ready-to-run example like <i>enterprise</i>, you can change
+this attribute after the configuration is completed:
+<p>
+<pre class="jdocu_small" style="color: black">
+# read the 'files' attribute
+simics&gt; <b>@files = conf.disk0_image.files</b>
+simics&gt; <b>@files</b>
+[['enterprise3-rh73.craff', 'ro', 0, 20496236544L, 0]]
+# provide the complete path to the file
+simics&gt; <b>@files[-1][0] = "[workspace]/targets/enterprise/images/<img src="nextline.png">
+enterprise3-rh73.craff"</b>
+# change the second element to make the file read-write
+simics&gt; <b>@files[-1][1] = "rw"</b>
+simics&gt; <b>@files</b>
+[['[workspace]/targets/enterprise/images/enterprise3-rh73.craff',<img src="nextline.png">
+ 'rw', 0, 20496236544L, 0]]
+# set the 'files' attribute to its new value
+simics&gt; <b>@conf.disk0_image.files = files</b>
+</pre>
+<p>
+Note that by indexing <tt>files</tt> with the index <tt>-1</tt>, the last
+element of the array is accessed, which is always the one that should be set
+read-write, in case <tt>files</tt> is a list of several files.
+<p>
+As you can see in the example above, Simics by default does not look for files
+in the Simics search path when the files are used in read-write mode. If you do
+not provide a complete path to a read-write file, a new file will be created in
+the current directory.
+<p>
+<b>Use this feature with caution</b>. Make sure to take a copy of the original
+image before running Simics with the image in read-write mode. Remember to
+synchronize the storage device within the target OS before exiting Simics, for
+example by shutting down the simulated machine.
+<p>
+<hr class="jdocu_note"><b>Note:</b> You can not access directly the files attributes by doing
+<pre class="jdocu_small" style="color: black">@conf.disk0_image.files[-1][0] = "rw"</pre>
+because the <i>files</i> attribute is not an indexed attribute. In this
+case, Python will read the <i>files</i> attribute and change the element
+<tt>[-1][0]</tt> in the resulting list, but this list is then discarded and the
+change produces no effect. The <em>Simics Programming Guide</em> contains a
+longer discussion explaining the ambiguities introduced by indexed attributes
+and the <tt>[]</tt> location.<hr class="jdocu_note">
+<p>
+
+<a name="label157"></a><h5 class="jdocu">7.1.4&nbsp;&nbsp;&nbsp;Editing Images Using Mtools</h5 class="jdocu">
+
+
+<p>
+If you have an image that contains a FAT filesystem, you can use Mtools
+(<a class="jdocu" href="http://mtools.linux.lu" target="_top">http://mtools.linux.lu</a>) to get read-write access to the image. You
+must have a raw binary dump of the image for Mtools to work. This can be
+obtained using the <tt>craff</tt> utility (see section <a class="jdocu" href="#label164">7.1.7</a>).
+<p>
+If your image is partitioned (a complete disk for example), you may need to
+give Mtools special parameters like an <i>offset</i> or a
+<i>partition</i>. Refer to the Mtools documentation for more information.
+<p>
+
+<a name="label158"></a><h5 class="jdocu">7.1.5&nbsp;&nbsp;&nbsp;Editing Images Using Loopback Mounting</h5 class="jdocu">
+
+
+<a name="label159"></a><a name="label160"></a>
+<p>
+If the host OS supports loopback devices, like, e.g., Linux and Solaris, you
+can mount an image on your host machine and get direct read/write access to the
+files within the image. If you have root permissions this allows you to easily
+and quickly copy files.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Remember that the image must be a raw binary dump. Disk dumps supplied by
+Virtutech are normally in <tt>craff</tt> format but you can use the
+<tt>craff</tt> utility to unpack the disk image to a raw image.  The
+resulting images have the same size as the simulated disk, so you need to have
+sufficient free space on your host disk to contain the entire simulated disk
+image.<hr class="jdocu_note">
+<p>
+<hr class="jdocu_note"><b>Note:</b> Do not try to loopback mount an image over NFS. This does not work
+reliably on all operating systems (Linux, for example). Instead, move the image
+to a local disk and mount it from there.<hr class="jdocu_note">
+<p>
+<b>On Solaris 8 or later:</b>
+<p>
+<pre class="jdocu_small" style="color: black">
+lofiadm -a <i>disk_dump</i> /dev/lofi/1
+mount /dev/lofi/1 <i>mnt-point</i>
+...
+umount <i>mnt-point</i>
+lofiadm -d /dev/lofi/1
+</pre>
+<p>
+<b>On Linux:</b>
+<p>
+<pre class="jdocu_small" style="color: black">
+mount &lt;disk_dump&gt; <i>mnt_pnt</i> -o loop=/dev/loop<i>n</i>,offset=<i>m</i>
+</pre>
+<p>
+Example:
+<p>
+<pre class="jdocu_small" style="color: black">
+# <b>mount /disk1/rh6.2-kde-ws /mnt/loop -o loop=/dev/loop0,offset=17063424</b>
+# <b>cd /mnt/loop</b>
+# <b>ls</b>
+bin   dev  home  lost+found  opt   root  tmp  var
+boot  etc  lib   mnt         proc  sbin  usr
+#
+</pre>
+<p>
+As shown in the example, the disk dump containing a Red Hat 6.2 KDE WS is
+mounted on the <tt>/mnt/loop</tt> directory. The file system mounted on
+<tt>/</tt> starts on the offset 17063424 on the disk. Linux autodetects the
+file system type when mounting (ext2 in this example). If you want to access
+another kind of file system, use the <i>-t <em>fs</em></i> option to the
+mount command. Once the file system is mounted, you can copy files in and out
+of the disk image.
+<p>
+The <tt>offset</tt> can be calculated by examining the partition table with
+<tt>fdisk</tt> (from within Simics). Use <tt>mount</tt> to find the
+partition you want to edit or examine (e.g., <tt>/dev/hda2</tt> is mounted
+on <tt>/usr</tt> which you want to modify). Next, run <tt>fdisk</tt> on
+the device handling this partition (such as <tt>fdisk /dev/hda</tt>). From
+within <tt>fdisk</tt>, change the display unit to sectors instead of
+cylinders with the <b>u</b> command and print the partition table with
+<b>p</b>. You will now see the start and end sectors of the partitions; you
+can get the offset by taking the start sector multiplied with the sector size
+(512).
+<p>
+When you have finished examining or modifying the disk, unmount it and touch
+the disk image. For example:
+<p>
+<pre class="jdocu_small" style="color: black">
+cd
+umount /mnt/loop
+touch /disk1/rh6.2-kde-ws
+</pre>
+<p>
+The modification date of the disk image does not change when if you modify the
+disk via the loopback device. Thus, if you have run Simics on the disk image
+earlier, the OS might have cached disk pages from the now modified disk image
+in RAM.  This would cause a new Simics session to still use the old disk pages
+instead of the newly modified pages. Touching the image file should ensure that
+the OS rereads each page.
+<p>
+
+<a name="label161"></a><h5 class="jdocu">7.1.6&nbsp;&nbsp;&nbsp;Constructing a Disk from Multiple Files</h5 class="jdocu">
+
+
+<a name="label162"></a>
+<a name="label163"></a>
+<p>
+In some cases, you may want to populate a simulated disk from multiple files
+covering different parts of the disk. For example, the partition table and boot
+sectors could be stored in a different disk image file than the main contents
+of the disk.  If that is the case, you cannot use the <b>&lt;image&gt;.add-diff-file</b> command: you must set manually the disk image
+<i>files</i> attribute to put each image file at its appropriate
+location.
+<p>
+Assume you are simulating a PC and want to build a disk from a main file called
+<tt>hda1_partition.img</tt> and a master boot record image file called
+<tt>MBR.img</tt>. The main partition will start at offset 32256 of the
+disk, and the MBR (Master Boot Record) covers the first 512 bytes of the disk
+(typically, you would get the contents of these image files from the real disk
+as detailed in section <a class="jdocu" href="topic34.html#label185">7.4</a>).  The following
+command in Simics's start-up script will build the disk from these two files.
+<p>
+<pre class="jdocu_small" style="color: black">
+create-std-ide-disk disk2 size = 2559836160
+@image = get_component_object(conf.disk2, 'hd_image')
+@image.files = [["hda1_partition.img", "ro", 32256, 1032151040, 0],
+                ["MBR.img",            "ro",     0,        512, 0]]
+</pre>
+<p>
+Note that the two image files cover non-overlapping sections of the disk.
+<p>
+
+<a name="label164"></a><h5 class="jdocu">7.1.7&nbsp;&nbsp;&nbsp;The Craff Utility</h5 class="jdocu">
+
+
+<a name="label165"></a>
+<a name="label166"></a>
+<p>
+The images distributed by Virtutech, and in general most of the images created
+by Simics are in the <tt>craff</tt> file format. The <tt>craff</tt>
+utility can convert files to and from the <tt>craff</tt> format, and also
+merge several <tt>craff</tt> files into a single file.
+<p>
+In your Simics distribution you will find <tt>craff</tt> in
+<tt>[simics]/bin</tt>.
+The examples below assume that <tt>craff</tt> is present in your shell path.
+<p>
+<dl><dt><b>Convert a raw dump to <tt>craff</tt> format</b></dt><dd>
+<pre class="jdocu_small" style="color: black">shell$ craff -o mydisk.craff mydisk.img</pre>
+</dd><dt><b>Convert a single <tt>craff</tt> file to a raw file</b></dt><dd>
+<pre class="jdocu_small" style="color: black">shell$ craff --decompress -o mydisk.img mydisk.craff</pre>
+</dd><dt><b>Merge multiple craff files into a single <tt>craff</tt> file</b></dt><dd>
+If more than one input file is specified, they will be merged so that later
+files override earlier files on the command line.
+The input craff files in this example come from several checkpoints.
+<p>
+<pre class="jdocu_small" style="color: black">shell$ craff -o merged.craff chkpt1.craff chkpt2.craff chkpt3.craff</pre>
+</dd><dt><b>Add a <tt>craff</tt> file to a raw dump, producing a new dump</b></dt><dd>
+<pre class="jdocu_small" style="color: black">shell$ craff --decompress -o new.img mydisk.img diff.craff</pre>
+<p>
+The input files can be any combination of raw and <tt>craff</tt> files.
+</dd><dt><b>Make a file of the differences of two dumps</b></dt><dd>
+<pre class="jdocu_small" style="color: black">shell$ craff --diff -o diff.craff dump1.img dump2.img</pre>
+<p>
+The resulting file, <tt>diff.craff</tt>, will contain only what is needed
+to add to <tt>dump1.img</tt> in order to get <tt>dump2.img</tt>.
+This is useful to save space if little has been changed.
+</dd></dl>
+<p>
+See also the <em>Simics Reference Manual</em> for a full description of the
+<tt>craff</tt> utility and its parameters.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic30.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+</body>
+</html>

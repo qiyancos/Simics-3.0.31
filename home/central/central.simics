@@ -1,0 +1,7 @@
+@standalone = 1
+@central_queue = "clock"
+@central_setup = "exported"
+
+run-command-file central-common.simics
+
+@finish_configuration()

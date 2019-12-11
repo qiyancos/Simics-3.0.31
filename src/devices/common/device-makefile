@@ -1,0 +1,367 @@
+#                                                              -*- makefile -*-
+# Copyright (c) 1998 - 2000 Virtutech AB, All Rights Reserved
+#
+#
+# Common makefile for devices (and extensions), should be
+# included after setting a few variables:
+#
+# SRC_FILES
+# DDL_FILES		(optional)
+# DML_FILES		(optional)
+# MODULE_CLASSES        (optional)
+#
+# COMMAND_DIR           (optional)
+# MODULE_DIR            (optional)
+# MODULE_CFLAGS         (optional)
+# MODULE_LDFLAGS        (optional)
+# MODULE_EXPORT_SYMS    (optional)
+# EXTRA_VPATH           (optional)
+# EXTRA_OBJ_FILES       (optional)
+#
+
+##########
+
+ifeq (,$(MODULE_DIR))
+MODULE_DIR=$(MAKEFILE_DIR)
+else
+ifneq ($(MODULE_DIR),$(firstword $(MODULE_DIR)))
+ERROR+=" MODULE_DIR contains more than one word"
+endif
+endif
+
+DDL_FILES:=$(strip $(DDL_FILES))
+DML_FILES:=$(strip $(DML_FILES))
+
+EXTRA_VPATH:=$(strip $(EXTRA_VPATH))
+ifneq (,$(EXTRA_VPATH))
+ifneq ($(EXTRA_VPATH),$(firstword $(EXTRA_VPATH)))
+ERROR+=" EXTRA_VPATH contains whitespaces (use : to separate multiple directories)"
+endif
+endif
+
+ifeq (,$(MODULE_VARIANT))
+MOD_MAKEFILE = $(SRC_BASE)/$(MAKEFILE_DIR)/Makefile
+else
+MOD_MAKEFILE = $(SRC_BASE)/$(MAKEFILE_DIR)/Makefile-$(MODULE_VARIANT)
+endif
+
+ifneq ($(ERROR),)
+all:
+	@echo "Bad `pwd`/Makefile:$(shell echo $(ERROR) | sed 's/  /, /g')"
+	@false	
+endif
+
+# Include configuration information
+include $(HOST_DIR)/config/host-config
+
+# Handle obsolete API versions
+
+ifdef SIMICS_API
+API_STR+=$(shell echo \"-DSIMICS_$(SIMICS_API)_API\" | sed "s/\./_/g")
+ifeq (SIMICS_1,$(findstring SIMICS_1,$(API_STR)))
+CFLAGS_COMMON += -I$(SIMICS_BASE)/src -I$(SIMICS_BASE)/src/include/obsolete -DADD_ARCH_TO_API
+endif
+ifeq (SIMICS_2,$(findstring SIMICS_2,$(API_STR)))
+CFLAGS_COMMON += -I$(SIMICS_BASE)/src/include/obsolete/simics -DADD_ARCH_TO_API
+endif
+CFLAGS_COMMON += $(API_STR)
+API_WARN:=api_warning
+endif
+
+VPATH:=$(VPATH):$(SRC_BASE)/$(MODULE_DIR)/
+
+ifneq (,$(EXTRA_VPATH))
+VPATH:=$(VPATH):$(EXTRA_VPATH)
+# if this is a user-install, also look in the master directory for files
+ifneq ($(wildcard $(SIMICS_BASE)/master-install),)
+VPATH:=$(VPATH):$(subst $(SIMICS_BASE),$(SIMICS_BASE)/master-install,$(EXTRA_VPATH))
+endif
+endif
+
+# use VPATH as include path
+CFLAGS_COMMON += -I$(SIMICS_BASE)/src/include $(patsubst %, -I%,$(subst :, ,$(VPATH))) $(MOD_CFLAGS) $(MODULE_CFLAGS)
+
+# modify -I to reference the master install also
+ifneq ($(wildcard $(SIMICS_BASE)/master-install),)
+CFLAGS_COMMON += $(subst $(SIMICS_BASE),$(SIMICS_BASE)/master-install,$(filter -I%,$(MODULE_CFLAGS)))
+endif
+
+# create list of .c and .s files -> .$(OBJEXT) files
+OBS := $(patsubst %.S,%.$(OBJEXT),$(SRC_FILES))
+OBS := $(patsubst %.s,%.$(OBJEXT),$(OBS))
+OBS := $(patsubst %.c,%.$(OBJEXT),$(OBS))
+OBS := $(patsubst %.cc,%.$(OBJEXT),$(OBS))
+OBS := $(patsubst %.cpp,%.$(OBJEXT),$(OBS))
+OBS := $(OBS) $(patsubst %.ddl,%-ddl.$(OBJEXT),$(DDL_FILES))
+OBS := $(OBS) $(patsubst %.dml,%-dml.$(OBJEXT),$(DML_FILES))
+OBS := $(OBS) $(EXTRA_OBJ_FILES)
+
+MODULE_ID_O:= module_id.$(OBJEXT)
+LIBFILE = $(TARGET_DIR)/$(FILE_NAME).$(SO_SFX)
+
+CFLAGS_COMMON += $(SIM_DEFS)
+
+ifeq ($(SYSTEMC),yes)
+# must use immediate assignment here, to avoid potential circular reference
+CC:=$(SC_CC)
+CXX:=$(SC_CXX)
+CFLAGS:=$(SC_CFLAGS)
+endif
+
+
+##########
+
+SCRIPT_NAME:=$(subst +,__,$(subst -,_,$(TARGET)))
+
+CMD_SRC1:=$(wildcard $(SRC_BASE)/$(COMMAND_DIR)/commands.py)
+CMD_SRC2:=$(wildcard $(SRC_BASE)/$(MAKEFILE_DIR)/commands.py)
+CMD_SRC3:=$(wildcard $(SRC_BASE)/$(MODULE_DIR)/commands.py)
+
+GCMD_SRC1:=$(wildcard $(SRC_BASE)/$(COMMAND_DIR)/gcommands.py)
+GCMD_SRC2:=$(wildcard $(SRC_BASE)/$(MAKEFILE_DIR)/gcommands.py)
+GCMD_SRC3:=$(wildcard $(SRC_BASE)/$(MODULE_DIR)/gcommands.py)
+
+ifneq ($(CMD_SRC1)$(CMD_SRC2)$(CMD_SRC3),)
+CMD_TGT:=$(TARGET_DIR)/python/mod_$(SCRIPT_NAME)_commands.py
+endif
+ifneq ($(GCMD_SRC1)$(GCMD_SRC2)$(GCMD_SRC3),)
+GCMD_TGT:=$(TARGET_DIR)/python/mod_$(SCRIPT_NAME)_gcommands.py
+endif
+
+.PHONY: build-device
+ifeq ($(findstring .py,$(SRC_FILES)),.py)
+
+ifeq ($(PYTHON_PKG),)
+# Standard Python module
+build-device: $(addprefix $(TARGET_DIR)/,$(notdir $(SRC_FILES))) $(CMD_TGT) $(GCMD_TGT)
+
+$(TARGET_DIR)/%.py: $(SRC_BASE)/$(TARGET)/%.py $(MOD_MAKEFILE)
+	@echo Updating $(@F)
+	@cp $< $@
+else
+# Python module as python package
+build-device: $(addprefix $(TARGET_DIR)/$(TARGET)/,$(notdir $(SRC_FILES))) $(CMD_TGT) $(GCMD_TGT)
+
+$(TARGET_DIR)/$(TARGET)/.buildflag:
+	-mkdir $(TARGET_DIR)/$(TARGET)
+	touch $@
+
+$(TARGET_DIR)/$(TARGET)/%.py: $(SRC_BASE)/$(TARGET)/%.py $(TARGET_DIR)/$(TARGET)/.buildflag $(MOD_MAKEFILE)
+	@echo Updating $(@F)
+	@cp $< $@
+endif
+
+else
+build-device: $(API_WARN) $(LIBFILE) $(CMD_TGT) $(GCMD_TGT)
+
+api_warning:
+	@printf "$(WARN_COLOR)Using the Simics $(SIMICS_API) API "
+	@printf "for $(TARGET) module$(NO_COLOR)\n"
+
+# include all dependency files
+-include $(OBS:.$(OBJEXT)=.d)
+ifneq (,$(DDL_FILES))
+-include $(DDL_FILES:.ddl=.ddldep)
+endif
+ifneq (,$(DML_FILES))
+-include $(DML_FILES:.dml=.dmldep)
+endif
+
+endif
+
+# Add a -L for each element in $LIBPATH, to make sure we find all libraries.
+CCLDFLAGS_DYN+= $(patsubst %, -L%, $(subst :, ,$(LIBPATH)))
+
+$(LIBFILE): $(OBS) $(MODULE_ID_O)
+
+# Exported symbols (ELF version)
+exportmap.elf: $(MODULE_EXPORT_SYMS)
+	@echo "Creating $(FILE_COLOR)$@$(NO_COLOR)"
+	echo "{ global: init_local;  _module_capabilities_; " > $@
+	cat /dev/null $(MODULE_EXPORT_SYMS) | sed 's/$$/;/' >> $@
+	echo "local: *; };" >> $@
+
+# Exported symbols (Windows version)
+exportmap.def:
+	@echo "Creating $(FILE_COLOR)$@$(NO_COLOR)"
+	echo "EXPORTS" > $@
+	echo "	init_local" >> $@
+	echo "	_module_capabilities_" >> $@
+
+# Don't keep around stuff that wouldn't link
+.DELETE_ON_ERROR: $(LIBFILE)
+
+ifeq ($(HOST_TYPE),x86-win32x)
+SIMICS_START_SCRIPT:= :
+else
+ifeq ($(findstring win32,$(HOST_TYPE)),win32)
+SIMICS_START_SCRIPT:=$(SIMICS_BASE)/bin/simics.bat
+else
+SIMICS_START_SCRIPT:=$(SIMICS_BASE)/bin/simics
+endif
+endif
+
+# When signing/checking the module, we explicitly set SIMICS_HOST (see rule
+# below). This is necessary to allow for use to use build-dirs which are
+# different from the "standard" build-dir (i.e. "my-x86-linux-dir").
+
+$(LIBFILE): $(EXPORTMAP) $(GCMD_TGT)
+	@echo "Linking $(FILE_COLOR)$(notdir $@)$(NO_COLOR)"
+	$(CCLD) $(CCLDFLAGS_DYN) $(filter %.$(OBJEXT), $^) $(MODULE_LDFLAGS) \
+		-o $@ $(LIBS) $(MODULE_LD_LAST) $(LDFLAGS_LOCAL_FIRST)	\
+		-L$(HOST_DIR)/bin -lsimics-common 			\
+		$(MODULE_IMPLIB_FLG) $(CCLDFLAGS_DYN_LAST)
+ifeq ($(PROFILE_COLLECT),yes)
+ifeq ($(TARGET_PROFILE),yes)
+	rm -f *.$(OBJEXT)
+endif
+else
+	export SIMICS_HOST=$(shell basename $(shell cd $(BUILD_DIR); pwd)) ; \
+	if [ -f $(SIMICS_BASE)/Version ] ; then				     \
+		$(SIMICS_START_SCRIPT) -P modelbuilder                       \
+			-quiet -no-copyright -no-module-cache		     \
+			-batch-mode -sign-module $@ ;                        \
+	else								     \
+		$(SIMICS_START_SCRIPT) -quiet -no-copyright -try-module $@ ; \
+	fi
+  ifeq ($(DO_SYMBACKUP),yes)
+	echo "Stripping module: $(FILE_COLOR)$(@F)$(NO_COLOR)"
+	cp $@ $@.symbols
+	$(STRIP) $@
+  endif
+endif
+ifeq ($(OUTPUT_TIMESTAMP),yes)
+	$(PERL) -le 'print "link:$(@F) ", time'
+endif
+
+cls1=$(strip $(addsuffix ";",$(addprefix CLS:,$(MODULE_CLASSES))))
+cls=$(shell echo $(cls1) | sed "s/ //g")
+mod=$(strip $(addprefix MOD:,$(TARGET)))
+
+module_id.$(OBJEXT): module_id.c $(MOD_MAKEFILE)
+	@$(ECHO) "Compiling $(FILE_COLOR)$(<F)$(NO_COLOR) "
+	$(CC) $(CNOXXFLAGS) $(CFLAGS) $(CFLAGS_LOCAL) -DMODNAME=\"$(mod)\" -DCPUMOD=\"$(CPU_MODULE_CAP)\" -c $<
+
+module_id.c: $(SIMICS_BASE)/src/include/module-id.template $(MOD_MAKEFILE)
+	if [ -f $(SIMICS_BASE)/Version ] ; then			\
+		ver=`cat $(SIMICS_BASE)/Version` ;		\
+	else							\
+		ver=`date` ;					\
+	fi ;							\
+	cat $(SIMICS_BASE)/src/include/module-id.template	\
+		| sed "s|__MODULE_DATE__|$$ver|" > module-id.tmp
+	# separate shell invocation to avoid long line
+	cat module-id.tmp | sed "s|CLASSES|\"$(cls)\"|" > $@
+
+ifneq ($(findstring .py,$(SRC_FILES)),.py)
+-include module_id.d
+endif
+
+##########
+
+%.$(OBJEXT): %.c $(MOD_MAKEFILE)
+	@$(ECHO) "Compiling $(FILE_COLOR)$(<F)$(NO_COLOR)"
+	$(COLORIZE) $(CC) $(CNOXXFLAGS) $(CFLAGS) $(CFLAGS_LOCAL) -c $<
+
+%.$(OBJEXT): %.cc $(MOD_MAKEFILE)
+	@$(ECHO) "Compiling $(FILE_COLOR)$(<F)$(NO_COLOR) "
+	$(COLORIZE) $(CXX) $(CXXFLAGS) $(CFLAGS_LOCAL) -o $@ -c $<
+
+%.$(OBJEXT): %.cpp $(MOD_MAKEFILE)
+	@$(ECHO) "Compiling $(FILE_COLOR)$(<F)$(NO_COLOR) "
+	$(COLORIZE) $(CXX) $(CXXFLAGS) $(CFLAGS_LOCAL) -o $@ -c $<
+
+%.$(OBJEXT): %.s $(MOD_MAKEFILE)
+	@$(ECHO) "Assembling $(FILE_COLOR)$(<F)$(NO_COLOR) "
+	$(AS) $(ASFLAGS) -o $@ $<
+
+#########
+
+ifeq ($(USE_DEPENDENCIES),yes)
+%.d: %.c
+	@echo Creating dependencies: "$(FILE_COLOR)$(<F)$(NO_COLOR)"
+	$(DEP_CC) $< $(DEP_CFLAGS) $(CFLAGS_COMMON) $(CFLAGS_LOCAL) -DGENERATING_DEPENDENCIES \
+		$(DEP_PP_FILTER) > $@
+
+%.d: %.cc
+	@echo Creating dependencies: "$(FILE_COLOR)$(<F)$(NO_COLOR)"
+	$(DEP_CXX) $< $(DEP_CXXFLAGS) $(CFLAGS_COMMON) $(CFLAGS_LOCAL) -DGENERATING_DEPENDENCIES \
+		$(DEP_PP_FILTER) > $@
+
+%.d: %.cpp
+	@echo Creating dependencies: "$(FILE_COLOR)$(<F)$(NO_COLOR)"
+	$(DEP_CXX) $< $(DEP_CXXFLAGS) $(CFLAGS_COMMON) $(CFLAGS_LOCAL) -DGENERATING_DEPENDENCIES \
+		$(DEP_PP_FILTER) > $@
+
+%.d: %.S
+	@echo Skipping dependencies: "$(FILE_COLOR)$(<F)$(NO_COLOR)"
+	@touch $@
+
+%.ddldep : %.ddl
+	@echo Creating dependencies: "$(FILE_COLOR)$(<F)$(NO_COLOR)"
+	$(DMLC) $(DMLC_FLAGS) -M $< $*-ddl > $@
+
+%.dmldep : %.dml
+	@echo Creating dependencies: "$(FILE_COLOR)$(<F)$(NO_COLOR)"
+	$(DMLC) $(DMLC_FLAGS) -M $< $*-dml > $@
+else
+%.d: %.c
+	@touch $@
+%.d: %.cc
+	@touch $@
+%.d: %.cpp
+	@touch $@
+%.d: %.S
+	@touch $@
+%.ddldep : %.ddl
+	@touch $@
+%.dmldep : %.dml
+	@touch $@
+endif
+
+
+#########
+
+$(TARGET_DIR)/python/mod%_commands.py: $(CMD_SRC1) $(CMD_SRC2) $(CMD_SRC3) $(MOD_MAKEFILE)
+	@echo "Creating module commands for $(SCRIPT_NAME)";		\
+	mkdir $(TARGET_DIR)/python 2>/dev/null;				\
+	if [ -f $(SIMICS_BASE)/scripts/addargs.perl ]; then		\
+		$(PERL) $(SIMICS_BASE)/scripts/addargs.perl $< > $@ ;	\
+	else								\
+		cp -f $< $@ ;						\
+	fi
+
+$(TARGET_DIR)/python/mod%_gcommands.py: $(GCMD_SRC1) $(GCMD_SRC2) $(GCMD_SRC3) $(MOD_MAKEFILE)
+	@echo "Creating global module commands for $(SCRIPT_NAME)" ;	\
+	mkdir $(TARGET_DIR)/python 2>/dev/null;				\
+	if [ -f $(SIMICS_BASE)/scripts/addargs.perl ]; then		\
+		$(PERL) $(SIMICS_BASE)/scripts/addargs.perl $< > $@ ;	\
+	else								\
+		cp -f $< $@ ;						\
+	fi
+
+######## Devgen
+
+DMLC = $(BUILD_DIR)/bin/$(DMLC_PREFIX)dmlc
+DMLC_FLAGS += -I$(BUILD_DIR)/lib/$(DMLC_PREFIX)dml -I. -I$(SIMICS_BASE)/src/devices/common $(DEVGEN_FLAGS) $(DMLC_FLAGS_USER)
+
+ifneq ($(wildcard $(SIMICS_BASE)/master-install),)
+DMLC_FLAGS+=-I$(SIMICS_BASE)/master-install/$(subst $(SIMICS_BASE),,$(HOST_DIR))/lib/$(DMLC_PREFIX)dml
+endif
+
+# Use devgen to generate C code 
+.PRECIOUS: %-ddl.c %-ddl.h %-ddl-struct.h %-ddl-protos.c
+.PRECIOUS: %-dml.c %-dml.h %-dml-struct.h %-dml-protos.c
+
+%-ddl.c: %.ddl $(DMLC)
+	@$(ECHO) "DMLC: $(FILE_COLOR)$(<F)$(NO_COLOR) "
+	$(COLORIZE) $(DMLC) $(DMLC_FLAGS) $< $*-ddl
+
+%-dml.c: %.dml $(DMLC)
+	@$(ECHO) "DMLC: $(FILE_COLOR)$(<F)$(NO_COLOR) "
+	$(COLORIZE) $(DMLC) $(DMLC_FLAGS) $< $*-dml
+
+# Build dmlc if it's not there yet
+$(DMLC):
+	echo "Building dmlc"
+	$(MAKE) -C $(BUILD_DIR)/bin dmlc

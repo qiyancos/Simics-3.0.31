@@ -1,0 +1,11 @@
+import-timing-components
+
+script-branch {
+    wait-for-variable machine_defined
+    local $id = 0
+    while $id < $num_cpus {
+        local $cache = (create-sample-x86-ma-model)
+        $cpu[$id].connect $cache
+        $id += 1
+    }
+}

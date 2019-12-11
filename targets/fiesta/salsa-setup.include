@@ -1,0 +1,58 @@
+if not defined os           {$os = "solaris9"}
+if not defined do_boot      {$do_boot = "yes"}
+if not defined do_login     {$do_login = "yes"}
+if not defined ip_address   {$ip_address   = "10.10.0.18"}
+if not defined host_name    {$host_name    = "salsa"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+@image = sim.objects[simenv.ide_disk].object_list['hd_image']
+
+@if simenv.os == 'solaris10':
+    if not 'solaris10_diffs' in dir():
+        solaris10_diffs = []
+    image.files = [["salsa3-solaris10.craff", "ro", 0, simenv.disk_size]]
+    image.files += solaris10_diffs
+elif simenv.os == 'solaris9':
+    if not 'solaris9_diffs' in dir():
+        solaris9_diffs = []
+    image.files = [["salsa2-solaris9.craff", "ro", 0, simenv.disk_size]]
+    image.files += solaris9_diffs
+elif simenv.os == 'solaris8':
+    if not 'solaris8_diffs' in dir():
+        solaris8_diffs = []
+    image.files = [["salsa1-solaris8.craff", "ro", 0, simenv.disk_size]]
+    image.files += solaris8_diffs
+elif simenv.os == 'none':
+    pass
+else:
+    print 'Unsupported OS disk dump requested: %s' % os
+
+$system.set-prom-defaults
+$system.set-prom-env nvramrc  "devalias disk1 /pci@1e,600000/ide@d/disk@0,0"
+$system.set-prom-env diag-switch? true
+$system.set-prom-env use-nvramrc? true
+$system.set-prom-env diag-device  disk1
+$system.set-prom-env boot-command "boot -v"
+
+if $do_boot == "no" {
+    $system.set-prom-env auto-boot? false
+}
+
+if $do_login == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+        $con.wait-for-string "ogin: "
+        $con.input "root\n"
+    }
+}

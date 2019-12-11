@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>breakpoint</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2228, true);
+</script>
+<a name="label17703"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic490.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic492.html">Next</a></span></p>
+<h3 class="jdocu">breakpoint</h3 class="jdocu">
+
+
+<a name="label17704"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic50.html#label4610">context</a>, <a class="jdocu" href="topic164.html#label7795">memory-space</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   <a name="label17705"></a>
+   <a name="label17706"></a>
+   <a name="label17707"></a>
+   <a name="label17708"></a>
+   <a name="label17709"></a>
+<p>
+   The breakpoint interface are implemented by any object who supports
+   breaking on an address range.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef void (*insert_bp_func_t)
+        (conf_object_t *object, breakpoint_t *bp, 
+         generic_address_t start, generic_address_t end);
+typedef void (*remove_bp_func_t)
+        (conf_object_t *object, breakpoint_t *bp);
+typedef void (*remove_bp_range_func_t)
+        (conf_object_t *object, breakpoint_id_t bp_id,
+         access_t access, 
+         generic_address_t start, generic_address_t end);
+typedef breakpoint_range_t *(*get_bp_ranges_func_t)
+        (conf_object_t *object, 
+         breakpoint_t *bp);
+typedef breakpoint_vector_t (*get_bp_func_t)
+        (conf_object_t *object, 
+         access_t access, 
+         breakpoint_kind_t type, 
+         generic_address_t start, 
+         generic_address_t end);
+
+struct breakpoint_interface {
+        insert_bp_func_t       insert_breakpoint;
+        remove_bp_func_t       remove_breakpoint;
+        remove_bp_range_func_t remove_breakpoint_range;
+        get_bp_ranges_func_t   get_breakpoint_ranges;
+        get_bp_func_t          get_breakpoints;
+};
+
+#define BREAKPOINT_INTERFACE "breakpoint"
+</pre>
+<p>
+
+   Most functions in the interface get the <i>object</i> and the
+   <i>bp</i> arguments as in-parameters. Object is the object
+   implementing this interface and bp is a structure that is used to
+   identify the breakpoint. bp is of type <b>breakpoint_t</b> and is
+   declared like this:
+<p>
+   
+   <span class="jdocu_smaller">
+   <a name="label17710"></a>
+<pre class="jdocu_small" style="color: black">typedef struct breakpoint breakpoint_t;</pre>
+
+   
+   </span>
+<p>
+   <b>insert_breakpoint</b> are called when a breakpoint is added on
+   the object. This can be done with the break command or with
+   the SIM_breakpoint API function.
+   <p>
+   <b>remove_breakpoint</b> should remove the breakpoint and further
+   accesses to the address range should not stop the simulation.
+<p>
+   <b>remove_breakpoint_range</b> is called when a range should be
+   removed from a breakpoint. It is thus possible to create holes in
+   the range. See SIM_breakpoint_remove. <i>access</i> is what kind of
+   accesses should be removed. See SIM_breakpoint for a description of
+   the access parameter.
+<p>
+   <b>get_breakpoint_ranges</b> should return a list of ranges
+   currently set.  <tt><a name="label17711">breakpoint_range_t</a></tt> is
+   declared like this:
+   <p>
+   <a name="label17712"></a>
+<pre class="jdocu_small" style="color: black">typedef struct breakpoint_range breakpoint_range_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">struct breakpoint_range {
+        generic_address_t          lower;
+        generic_address_t          upper;
+        struct breakpoint_range   *next;
+};</pre>
+
+<p>
+   <b>get_breakpoints</b> should return a vector of breakpoints set on
+   the object matching <i>access</i> and <i>type</i>. See
+   SIM_breakpoint for a description of access and type.
+   <b>breakpoint_vector_t</b> is declared like this:
+<p>
+   <a name="label17713"></a>
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        int             size;
+        breakpoint_t  **vector;
+} breakpoint_vector_t;</pre>
+
+<p>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17715">break</a></td><td class="jdocu_noborder">set breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17717">tbreak</a></td><td class="jdocu_noborder">set temporary breakpoint on current processor</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17714"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17715"></a><a name="label17716"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;breakpoint&gt;.break</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;breakpoint&gt;.break</b> <i>address</i> [<i>length</i>] [-r] [-w] [-x] <br><b>&lt;breakpoint&gt;.tbreak</b> <i>address</i> [<i>length</i>] [-r] [-w] [-x] <br><b>break</b> <i>address</i> [<i>length</i>] [-r] [-w] [-x] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Add breakpoint (read, write, or execute) on an object implementing the
+breakpoint interface. This is typically a memory space object such as
+physical memory; e.g., <b>phys_mem0.break 0xff3800</b>. Accesses
+intersecting the given range will trigger the breakpoint. By default
+the breakpoint will only trigger for instruction execution, but any
+subset of read, write, and execute accesses can be set to trigger
+using combinations of <i>-r</i>, <i>-w</i>, and <i>-x</i>.
+<p>
+<i>length</i> is the interval length in bytes (default is 1).
+<p>
+Breakpoints inserted with the <b>tbreak</b> command are
+automatically disabled when they have triggered.
+<p>
+The default action at a triggered breakpoint is to return to the
+frontend. This can be changed by using haps. When an execution
+breakpoint is triggered, Simics will return to the command prompt
+before the instructions is executed, while instructions triggering
+read or write breakpoints will complete before control is returned to
+the command prompt.
+<p>
+To break on a virtual address, use a context object:
+<p>
+<b>primary_context.break 0x1ff00</b>
+<p>
+Several breakpoints can be set on the same address and Simics will
+break on them in turn. If hap handlers (callback functions) are
+connected to the breakpoints they will also be executed in turn. Hap
+handlers are called before the access is performed, allowing the user
+to read a memory value that may be overwritten by the access. See the
+Simics Reference Manual for a description of hap handlers.
+<p>
+Each breakpoint is associated with an id (printed when the breakpoint
+is set or by the <b>list-breakpoints</b> command) which is used
+for further references to the breakpoint.
+<p>
+For convenience there are also a <b>break</b> command which sets a
+breakpoint on memory connected to the current frontend CPU (see
+<b>pselect</b>). Default is to break on virtual address accesses
+(in the current context). By prefixing the address with <i>p:</i>
+it is possible to break on physical accesses as well (cf.
+<b>phys_mem0.break</b>); e.g., <b>break p:0xffc0</b>.
+<p>
+Several attributes can be set for a breakpoint for breaking only when
+some conditions are true. See the <b>disable</b>,
+<b>enable</b>, <b>ignore</b>, <b>set-prefix</b>,
+<b>set-substr</b> and <b>set-pattern</b> commands for more
+details.
+<p>
+Breakpoints can be removed using <b>delete</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2436">unbreak</a>, <a class="jdocu" href="topic13.html#label1835">delete</a>, <a class="jdocu" href="topic13.html#label1873">enable</a>, <a class="jdocu" href="topic13.html#label1906">ignore</a>, <a class="jdocu" href="topic13.html#label2350">set-prefix</a>, <a class="jdocu" href="topic13.html#label2354">set-substr</a>, <a class="jdocu" href="topic13.html#label2346">set-pattern</a>, <a class="jdocu" href="topic13.html#label1979">list-breakpoints</a></dd>
+
+</dl>
+
+
+
+<a name="label17717"></a><a name="label17718"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;breakpoint&gt;.tbreak</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;breakpoint&gt;.tbreak</b> <i>address</i> [<i>length</i>] [-r] [-w] [-x] <br><b>&lt;breakpoint&gt;.break</b> <i>address</i> [<i>length</i>] [-r] [-w] [-x] <br><b>break</b> <i>address</i> [<i>length</i>] [-r] [-w] [-x] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Add breakpoint (read, write, or execute) on an object implementing the
+breakpoint interface. This is typically a memory space object such as
+physical memory; e.g., <b>phys_mem0.break 0xff3800</b>. Accesses
+intersecting the given range will trigger the breakpoint. By default
+the breakpoint will only trigger for instruction execution, but any
+subset of read, write, and execute accesses can be set to trigger
+using combinations of <i>-r</i>, <i>-w</i>, and <i>-x</i>.
+<p>
+<i>length</i> is the interval length in bytes (default is 1).
+<p>
+Breakpoints inserted with the <b>tbreak</b> command are
+automatically disabled when they have triggered.
+<p>
+The default action at a triggered breakpoint is to return to the
+frontend. This can be changed by using haps. When an execution
+breakpoint is triggered, Simics will return to the command prompt
+before the instructions is executed, while instructions triggering
+read or write breakpoints will complete before control is returned to
+the command prompt.
+<p>
+To break on a virtual address, use a context object:
+<p>
+<b>primary_context.break 0x1ff00</b>
+<p>
+Several breakpoints can be set on the same address and Simics will
+break on them in turn. If hap handlers (callback functions) are
+connected to the breakpoints they will also be executed in turn. Hap
+handlers are called before the access is performed, allowing the user
+to read a memory value that may be overwritten by the access. See the
+Simics Reference Manual for a description of hap handlers.
+<p>
+Each breakpoint is associated with an id (printed when the breakpoint
+is set or by the <b>list-breakpoints</b> command) which is used
+for further references to the breakpoint.
+<p>
+For convenience there are also a <b>break</b> command which sets a
+breakpoint on memory connected to the current frontend CPU (see
+<b>pselect</b>). Default is to break on virtual address accesses
+(in the current context). By prefixing the address with <i>p:</i>
+it is possible to break on physical accesses as well (cf.
+<b>phys_mem0.break</b>); e.g., <b>break p:0xffc0</b>.
+<p>
+Several attributes can be set for a breakpoint for breaking only when
+some conditions are true. See the <b>disable</b>,
+<b>enable</b>, <b>ignore</b>, <b>set-prefix</b>,
+<b>set-substr</b> and <b>set-pattern</b> commands for more
+details.
+<p>
+Breakpoints can be removed using <b>delete</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2436">unbreak</a>, <a class="jdocu" href="topic13.html#label1835">delete</a>, <a class="jdocu" href="topic13.html#label1873">enable</a>, <a class="jdocu" href="topic13.html#label1906">ignore</a>, <a class="jdocu" href="topic13.html#label2350">set-prefix</a>, <a class="jdocu" href="topic13.html#label2354">set-substr</a>, <a class="jdocu" href="topic13.html#label2346">set-pattern</a>, <a class="jdocu" href="topic13.html#label1979">list-breakpoints</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic490.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic492.html">Next</a></span></p>
+</body>
+</html>

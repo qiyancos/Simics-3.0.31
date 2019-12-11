@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Configuration Attributes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(11, true);
+</script>
+<a name="label14"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+<h3 class="jdocu">2.5&nbsp;&nbsp;&nbsp;Configuration Attributes</h3 class="jdocu">
+
+
+<p>
+A Simics configuration consists of a machine description and a few
+other parts, and it is divided into a number of <em>configuration
+objects</em>.  Each device instance in the configuration is represented
+by such an object. Any Simics configuration object has a number of
+<em>attributes</em>. An attribute is a named property that can be read
+or written using the Simics API.  The value of an attribute can be an
+integer, a floating-point number, a string, an object reference, a
+boolean value, a list of values, or a mapping from values to other
+values.
+<p>
+Attributes are used for several related purposes, but the most
+important uses are for <em>configuration</em> and
+<em>checkpointing</em>.  All the internal state of a device object
+must be available through the attributes, so that a checkpoint of the
+current state can be saved by reading all the attributes and storing
+the values to disk.  By reloading a configuration and setting all
+attributes from the previously saved checkpoint, the states of all
+devices can be restored to the checkpointed state and simulation can
+continue as if it had never been interrupted.  When creating a new
+configuration, some of the state must be given an explicit initial
+assignment, which makes those attributes also part of the
+configuration.  There may also be attributes that are not part of the
+state, in the sense that they don't change during simulation. Instead,
+they control the behavior of the model, such as buffer sizes, timing
+parameters etc.  Those configuration attributes can generally not be
+modified once the object has been created.
+<p>
+Attributes can also be used as a simple interface to an object, e.g.,
+for inspecting or manipulating the state for debugging purposes.
+<p>
+A DML device model usually defines a number of attributes. By default,
+each <tt>register</tt> defines a corresponding attribute that can be
+used to get or set the register value, but more attributes can be
+defined by explicitly declaring them in the DML source. In our example
+above, for the register <tt>r0</tt> of bank <tt>b</tt> there will be a
+device attribute named <i>b_r0</i> (note the underscore).
+<p>
+<a name="label15"></a><h4 class="jdocu">2.5.1&nbsp;&nbsp;&nbsp;Using Register Attributes</h4 class="jdocu">
+
+
+<p>
+The <b><i>get</i></b> and <b><i>set</i></b> methods of a register are different
+from its <b><i>read</i></b> and <b><i>write</i></b> methods in that they do not
+simulate a hardware access (which often triggers side-effects in
+devices). Instead, they offer a direct way of reading or modifying the
+value of the register.
+<p>
+We can access the attribute from the Simics command line.
+Continuing our example from the previous sections, enter:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>dev1-&gt;b_r0 = 17</b>
+</pre>
+and then enter
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>dev1-&gt;b_r0</b>
+</pre>
+which should print the value 17.
+<p>
+However, if we make a new memory access, as before:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.get 0x1000</b>
+</pre>
+we still get the message "Hello, bus!" and the value 42. But entering
+<b>dev1-&gt;b_r0</b> once again still returns 17. What is going on?
+<p>
+The answer is of course that we had hard-coded the <b><i>read</i></b> method
+to always return 42, no matter what. But this does not affect the
+behavior of <b><i>get</i></b> and <b><i>set</i></b>, or the <b><i>write</i></b>
+method. Let's try to make a write access:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.set 0x1000 0xff</b>
+</pre>
+Entering <b>conf-&gt;dev1.b_r0</b> now prints the value 255 as expected.
+You can change the line
+<pre class="jdocu_small" style="color: black">
+    result = 42;
+</pre>
+in the program to:
+<pre class="jdocu_small" style="color: black">
+    result = $this;
+</pre>
+(note the <tt>$</tt> character), recompile, and try the same accesses
+again to check how a normal register would behave. Then change the code
+back to return 42 for the rest of this section.
+<p>
+It is in fact often useful to create registers which either return a
+constant (usually zero), or return a value that is computed on the fly.
+For such registers, it is unnecessary to allocate memory for storing the
+value inbetween calls. The allocation can be turned off by adding the
+following line to the body of the register:
+<pre class="jdocu_small" style="color: black">
+    parameter allocate = false;
+</pre>
+note, however, that doing so makes it necessary to implement your own
+versions of the <b><i>get</i></b>, <b><i>set</i></b>, <b><i>read</i></b> and
+<b><i>write</i></b> methods. (Try adding the above line to your code,
+recompile, and run the example again. Note the messages you get when you
+try to access the register in the various ways we have shown.)
+<p>
+A full implementation of such a "synthetic" constant register could
+contain method definitions like the following:
+<pre class="jdocu_small" style="color: black">
+    method write(value) {
+        /* do nothing */
+    }
+    method get -&gt; (value) {
+        value = 42;
+    }
+    method set(value) {
+        if (value != 42)
+            throw;
+    }
+</pre>
+Try adding them (to the body of the register), recompile, and run the
+example again.
+<p>
+The standard library file <tt>utility.dml</tt> contains several
+pre-defined templates for common implementations such as this. To use
+it, add the declaration "<tt>import "utility.dml";</tt>" to your source
+file. The constant register can now simply be implemented as follows:
+<pre class="jdocu_small" style="color: black">
+      register r0 size 4 @0x0000 is (constant) {
+          parameter value = 42;
+      }
+</pre>
+or, if you still want to get a log message for each read access:
+<pre class="jdocu_small" style="color: black">
+      register r0 size 4 @0x0000 is (constant) {
+          parameter value = 42;
+          method read() -&gt; (result) {
+              log "info", 1, 0: "Hello, bus!";
+              result = $value;
+          }
+      }
+</pre>
+<p>
+
+<a name="label16"></a><h4 class="jdocu">2.5.2&nbsp;&nbsp;&nbsp;User-defined Attributes</h4 class="jdocu">
+
+
+<p>
+It is sometimes useful to have device attributes that are not associated
+with any register. If we just want the attribute to behave as a data
+field, which stores a value of a simple data type such as <tt>int32</tt>
+or <tt>bool</tt>, we only have to specify the parameter
+<tt>allocate_type</tt>, as follows:
+<pre class="jdocu_small" style="color: black">
+    attribute foo "an integer attribute" {
+        parameter allocate_type = "int32";
+    }
+</pre>
+(note that the data type must be specified as a string). Try adding this
+code to your device (either before or after the <tt>bank</tt>),
+recompile and rerun the example. Enter the following command:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>help attribute:dev1.foo</b>
+</pre>
+This prints some information about the attribute. Note that the
+descriptive string you specified in the program is included in the
+online documentation.
+<p>
+You can now experiment with setting and getting the value of the
+attribute; e.g., entering
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>dev1-&gt;foo = 4711</b>
+  simics&gt; <b>dev1-&gt;foo</b>
+</pre>
+should print 4711.
+<p>
+If it is important that other parts of the device are updated whenever
+the value of the attribute is modified, the method <b><i>after_set</i></b>
+can be overridden to perform such updates. (By default, it does
+nothing.) For example:
+<pre class="jdocu_small" style="color: black">
+    method after_set {
+        log "info": "Someone updated the attribute!";
+    }
+</pre>
+Add this method to the body of the attribute, recompile and restart
+Simics, then try setting and getting the value of the attribute.
+<p>
+If you want the attribute to do things differently, such as not store
+the value between calls, or use a more complex data type, you need to do
+more work on your own, instead of using the <tt>allocate_type</tt>
+parameter; see the <em>DML Reference Manual</em> for details.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+</body>
+</html>

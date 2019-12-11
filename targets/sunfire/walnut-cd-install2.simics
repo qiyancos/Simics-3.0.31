@@ -1,0 +1,24 @@
+if not `SIM_lookup_file("walnut-install.disk")` {
+    echo "The file 'walnut-install.disk' does not exists."
+    echo "Make sure to run the first install script properly."
+    echo ""
+    quit 1
+}
+
+$do_login = "no"
+
+run-command-file "%script%/walnut-common.simics"
+
+echo ""
+echo "################### OS installation phase 2"
+echo ""
+echo "Do not forget to:"
+echo ""
+echo "* Insert the next OS installation CD."
+echo ""
+echo "* Load the persistent state from the previous install phase. E.g."
+echo ""
+echo "  simics> load-persistent-state install-phase1.state"
+echo ""
+echo "###################"
+echo ""

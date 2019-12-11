@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Using g-cache with Several Processors</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(228, true);
+</script>
+<a name="label533"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic95.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic97.html">Next</a></span></p>
+<h4 class="jdocu">18.10&nbsp;&nbsp;&nbsp;Using g-cache with Several Processors</h4 class="jdocu">
+
+
+<p>
+Support for several processors talking to one cache is integrated in
+<b>g-cache</b>. You just need to specify the list of CPUs connected to
+the cache in the <i>cpus</i> attribute. Note that it is possible for the
+cache to use the STCs as described above even with several processors.
+<p>
+You can use the sample MESI protocol to connect several caches in a
+multiprocessor system. You need to provide the cache with a list of the other
+caches snooping on the bus using the <i>snoopers</i> attribute. If you
+have higher-level caches that are not snooping on the bus, you need to set the
+<i>higher_level_caches</i> attribute so that invalidation is done
+properly. Note that the sample MESI protocol was written to handle simple cases
+such as several L1 write-through caches with L2 caches synchronizing via
+MESI. To model more complex protocol, you will need to modify
+<b>g-cache</b>.
+<p>
+If you use LRU replacement with several processors, you may have problems with
+the way Simics schedules processor execution (read the chapter <a class="jdocu" href="topic82.html#label484">17</a> for more information). You may want to lower the CPU
+switch time from its default value to prevent accesses "in the future" from
+changing the way LRU replacement is behaving.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic95.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic97.html">Next</a></span></p>
+</body>
+</html>

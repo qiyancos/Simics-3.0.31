@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Starting Simics</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(52, true);
+</script>
+<a name="label276"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic22.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic24.html">Next</a></span></p>
+<h3 class="jdocu">8.1&nbsp;&nbsp;&nbsp;Starting Simics</h3 class="jdocu">
+
+
+<p>
+When using MAI Simics must be started with the <em>-ma</em> flag, otherwise the
+standard in-order version will be used. Make sure you start Simics with a start
+script that is intended for MAI. All such scripts provided by Virtutech
+contains <tt>-ma-</tt> or <tt>-ooo-</tt>. For example,type:
+<p>
+<pre class="jdocu_small" style="color: black">
+# ./simics -ma targets/serengeti/sarek-ma-common.simics
+</pre>
+<p>
+This will start Simics in MAI mode. The script will add a cache hierarchy with
+one <b><a name="label277">g-cache-ooo</a></b>. A
+<b><a name="label278">sample-micro-arch</a></b> object will also be added that
+performs the micro-architectural simulation. Its <a name="label279">cycle handler</a> will
+be posted on cpu0.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic22.html">Previous</a> - <a class="jdocu" href="topic22.html">Up</a> - <a class="jdocu" href="topic24.html">Next</a></span></p>
+</body>
+</html>

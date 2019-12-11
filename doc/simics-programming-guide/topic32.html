@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Haps</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(78, true);
+</script>
+<a name="label171"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+<h3 class="jdocu">6.8&nbsp;&nbsp;&nbsp;Haps</h3 class="jdocu">
+
+
+<p>
+<a name="label172"></a><h4 class="jdocu">6.8.1&nbsp;&nbsp;&nbsp;Reacting to Haps</h4 class="jdocu">
+
+
+<p>
+When you want your module to record or react to a hap, you can register a
+callback function with the specific hap. The signature for the callback
+function differs between the different haps.
+<p>
+Registering a callback is made with any of the functions
+<b><i><a name="label173">SIM_hap_add_callback</a>()</i></b>,
+<b><i>SIM_hap_add_callback_index()</i></b>,
+<b><i>SIM_hap_add_callback_range()</i></b>, <b><i>SIM_hap_add_callback_obj()</i></b>,
+<b><i>SIM_hap_add_callback_obj_index()</i></b> or
+<b><i>SIM_hap_add_callback_obj_range()</i></b>. See the <em>Reference
+Manual</em> for information about the differences.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_hap_add_callback(hap, func, user_data)
+
+<b>// In C</b>
+hap_handle_t
+SIM_hap_add_callback_obj(const char *hap,
+                         obj_hap_func_t func,
+                         typed_lang_void *user_data);
+
+</pre>
+<p>
+The parameters of <b><i>SIM_hap_add_callback_obj()</i></b> are:
+<p>
+<dl><dt><b><i>hap</i></b></dt><dd>The name of the hap (string);</dd><dt><b><i>func</i></b></dt><dd>The callback function;</dd><dt><b><i>user_data</i></b></dt><dd>Any user data you require for your
+callback function. The value is passed as-is by simics.</dd></dl>
+<p>
+The function returns a handle which can be used to manipulate the hap callback
+later on.
+<p>
+A list of all haps can be found in the <em>Simics Reference Manual</em>,
+including the signatures for the callback functions.
+<p>
+A small example:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+def stopped(user_data, obj, exception, errstr):
+    print "Stopped"
+
+
+def started(user_data, obj):
+    print "Started"
+
+
+handle1 = SIM_hap_add_callback("Core_Continuation",
+                               started,
+                               None);
+
+handle2 = SIM_hap_add_callback("Core_Simulation_Stopped",
+                               stopped,
+                               (2, "str"))
+...
+
+
+<b>// In C</b>
+static void
+stopped(void *user_data, conf_object_t *obj,
+        integer_t exception, char *errstr)
+{
+        // do something        
+}
+
+
+static void
+started(void *user_data, conf_object_t *obj)
+{
+        // do something
+}
+
+static hap_handle_t h1, h2;
+
+void init_local()
+{
+        ...
+        h1 = SIM_hap_add_callback("Core_Continuation",
+                                  started,
+                                  NULL);
+
+        h2 = SIM_hap_add_callback("Core_Simulation_Stopped",
+                                  stopped,
+                                  NULL);
+        ...
+}
+</pre>
+<p>
+Should you no longer want to subscribe to a hap, the notification callbacks
+can be canceled using one of the functions
+<b><i><a name="label174">SIM_hap_delete_callback</a>()</i></b>,
+<b><i>SIM_hap_delete_callback_obj()</i></b>,
+<b><i>SIM_hap_delete_callback_id()</i></b> and
+<b><i>SIM_hap_delete_callback_obj_id()</i></b>. See the <em>Reference
+Manual</em> for the differences. The signature for
+<b><i>SIM_hap_delete_callback()</i></b> is:
+<p>
+<pre class="jdocu_small" style="color: black">
+SIM_hap_delete_callback(hap, func, user_data)
+</pre>
+The parameters are:
+<dl><dt><b><i>hap</i></b></dt><dd>The name of the hap</dd><dt><b><i>func</i></b></dt><dd>The callback function registered</dd><dt><b><i>user_data</i></b></dt><dd>User provided data</dd></dl>
+<p>
+A callback must have been registered with the exact same parameter values.
+To continue the above example:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+def at_end():
+    # using the callback parameters
+    SIM_hap_delete_callback("Core_Simulation_Stopped", stopped, NULL);
+    # using the hap handle
+    SIM_hap_delete_callback_id(handle2)
+
+<b>// In C</b>
+fini_local()
+{
+        // Using the callback parameters
+        SIM_hap_delete_callback("Core_Simulation_Stopped", stopped, NULL);
+        // Using the hap handle
+        SIM_hap_delete_callback_id(h2);
+}
+
+</pre>
+<p>
+
+<a name="label175"></a><h4 class="jdocu">6.8.2&nbsp;&nbsp;&nbsp;Providing Haps</h4 class="jdocu">
+
+
+<p>
+It might be that some things happening in your module are worth notifying
+others of, for example for automation with scripts. To do this, you can provide
+your own haps to which interested parties can subscribe.
+<p>
+<a name="label176"></a><h5 class="jdocu">Adding a new type</h5 class="jdocu">
+
+
+<p>
+Before subscribers can be notified of a new hap, the hap must be known.  A new
+hap type is made known through registration. Registering a new hap type is done
+with the function <b><i><a name="label177">SIM_hap_add_type</a>()</i></b>. The signature is:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_hap_add_type(hap, params, param_desc, index, desc, old_hap_obj)
+
+<b>// In C</b>
+hap_type_t
+SIM_hap_add_type(const char *hap,
+                 const char *params,
+                 const char *param_desc,
+                 const char *index,
+                 const char *desc,
+                 int old_hap_obj);
+</pre>
+<p>
+where the parameters are:
+<p>
+<dl><dt><b><i>hap</i></b></dt><dd>The name of the hap, which must be unique</dd><dt><b><i>params</i></b></dt><dd>A string specifying the number of parameters
+of the hap and their types.  The return value and the first two parameters of
+the callback function are always the same and are not included in the list. A
+valid parameter description string contains only the following type description
+characters:
+<p>
+    <ul>
+    <li><tt>i</tt> &#8211; int</li>
+    <li><tt>I</tt> &#8211; integer_t (64 bit integer)</li>
+    <li><tt>e</tt> &#8211; exception_type_t</li>
+    <li><tt>o</tt> &#8211; configuration object (i.e. void* in C and Python
+                           object in Python)</li>
+    <li><tt>s</tt> &#8211; string</li>
+    <li><tt>m</tt> &#8211; memory transaction
+                           (<tt>generic_transaction_t *</tt> in C)</li>
+    <li><tt>c</tt> &#8211; configuration object
+                           (<tt>conf_object_t *</tt> in C)</li>
+    <li><tt>v</tt> &#8211; <tt>void *</tt></li>
+    </ul>
+<p>
+</dd><dt><b><i>param_dessc</i></b></dt><dd>space separated list of descriptive
+parameter names (in the same order as <i>params</i>, so that the first
+word is the name of the first parameter. If <i>param</i> is the empty
+string, <i>param_desc</i> may be None.</dd><dt><b><i>index</i></b></dt><dd>A string describing the index value for the
+hap, or None if there is no index value. The meaning of indexes is up to you to
+define.</dd><dt><b><i>desc</i></b></dt><dd>A human readable description of the hap.</dd><dt><b><i>old_hap_obj</i></b></dt><dd>Always 0.</dd></dl>
+<p>
+The return value is a handle that must be saved for operations on the hap.
+<p>
+Example:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+hap_handle = SIM_hap_add_type("My_Special_Hap",
+                              "ii",
+                              "val1 val2",
+                              None,
+                              "Called when something special "
+                              " happens in my module.",
+                              0);
+if hap_handle &lt;= 0:
+    # error handling
+    ...
+
+static hap_type_t hap_handle;
+
+<b>// In C</b>
+void
+init_local()
+{
+        ...
+        hap_handle = SIM_hap_add_type("My_Special_Hap",
+                                      "ii",
+                                      "val1 val2",
+                                      NULL,
+                                      "Called when something special "
+                                      " happens in my module.",
+                                      0);
+        if (hap_handle &lt;= 0) {
+                /&times; error handling &times;/
+                ...
+        }
+}
+
+</pre>
+
+<a name="label178"></a><h5 class="jdocu">Notifying subscribers</h5 class="jdocu">
+
+
+<p>
+Whenever the special condition for the hap is met, the subscribers to the hap
+should be notified. Since the call itself incurs some overhead, it is good
+practice to use <b><i>SIM_hap_is_active()</i></b> to check if there are any
+subscribers before calling the notification function.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_hap_is_active(hap)
+
+<b>// In C</b>
+int
+SIM_hap_is_active(hap_type_t hap)
+</pre>
+<p>
+where the parameter <i>hap</i> is the value returned from
+<b><i>SIM_hap_add_type()</i></b>. <b><i><a name="label179">SIM_hap_is_active</a>()</i></b>
+returns 1 if there are callbacks registered for the hap type, and 0 otherwise.
+<p>
+The notification of subscribers is normally done with one of
+<b><i><a name="label180">SIM_hap_occurred</a>()</i></b>, <b><i>SIM_hap_occurred_vararg()</i></b>,
+<b><i>SIM_hap_occurred_always()</i></b>, and
+<b><i>SIM_hap_occurred_always_vararg()</i></b>. See the <em>Reference
+Manual</em> for information about the differences.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_hap_occurred(hap, obj, value, list)
+
+<b>// In C</b>
+int
+SIM_c_hap_occurred(hap_type_t     hap,
+                   conf_object_t *obj,
+                   integer_t      value,
+                   ...);
+</pre>
+<p>
+The parameters are:
+<p>
+<dl><dt><b><i>hap</i></b></dt><dd>The handle to the hap type, as returned from
+<b><i><a name="label181">SIM_hap_add_type</a>()</i></b>.</dd><dt><b><i>obj</i></b></dt><dd>The object for which the condition is met.</dd><dt><b><i>value</i></b></dt><dd>Only meaningful if the hap is indexed. The
+meaning is defined by you.</dd><dt><b><i>list</i></b></dt><dd>In Python, the parameters to the hap callback
+as a Python list.</dd></dl>
+<p>
+In C, hap parameters will be provided as additional parameters to the
+function. A short example:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+def some_func(obj, v1, v2):
+    if some_condition:
+        if SIM_hap_is_active(hap_handle):
+            SIM_hap_occurred(hap_handle, obj, 0, [v1, v2])
+
+<b>// In C</b>
+static void
+some_func(conf_object_t *obj, int v1, int v2)
+{
+        if (some_condition) {
+                if (SIM_hap_is_active(hap_handle))
+                        SIM_c_hap_occurred(hap_handle,
+                                           obj, 0,
+                                           v1, v2)
+        }
+}
+</pre>
+<p>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+</body>
+</html>

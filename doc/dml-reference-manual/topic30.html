@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Standard Parameters</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(80, true);
+</script>
+<a name="label248"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+<h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Standard Parameters</h3 class="jdocu">
+
+
+<a name="label249"></a>
+<a name="label250"></a>
+<p>
+This section describes the built-in parameters of the different object
+types, together with the expected data types of their values.
+<p>
+<a name="label251"></a><h4 class="jdocu">5.1.1&nbsp;&nbsp;&nbsp;Object Parameters</h4 class="jdocu">
+
+
+<a name="label252"></a>
+<p>
+The following are the standard parameters defined in all DML objects:
+<p>
+<dl><dt><b>this [reference]</b></dt><a name="label253"></a><a name="label254"></a><dd>Always refers to the current object, i.e., the nearest enclosing
+object definition.</dd><dt><b>parent [reference | undefined]</b></dt><a name="label255"></a><a name="label256"></a><dd>Always refers to the parent (containing) object. This has the value
+<tt>undefined</tt> for the <b>device</b> object.</dd><dt><b>desc [string | undefined]</b></dt><a name="label257"></a><a name="label258"></a><dd>A short summary of the object, for documentation and debugging
+purposes. This is <tt>undefined</tt> by default, and is expected to be
+supplied by the programmer. It should preferably be only a few words.
+(The short-hand syntax for <tt>desc</tt> is described in Section <a class="jdocu" href="topic24.html#label131">4.8</a>.) See also <tt>documentation</tt>.</dd><dt><b>documentation [string | undefined]</b></dt><a name="label259"></a><a name="label260"></a><dd>A longer documentation string describing the object. The default
+value is <tt>undefined</tt>. If defined, this is used in automatically
+generated documentation (mainly for the device and its attributes). If
+undefined, the <tt>desc</tt> parameter is used instead.</dd><dt><b>name [string | undefined]</b></dt><a name="label261"></a><a name="label262"></a><dd>The name of the object, without any qualifiers. This may be
+<tt>undefined</tt> in implicitly created objects. See also
+<tt>qname</tt>, below.</dd><dt><b>qname [string | undefined]</b></dt><a name="label263"></a><a name="label264"></a><dd>The fully-qualified name of the object, such as
+<tt>"my_device.bank1.r0"</tt>. This may be <tt>undefined</tt> in
+implicitly created objects.</dd><dt><b>objtype [string]</b></dt><a name="label265"></a><dd>The object type name.</dd><dt><b>dev [reference]</b></dt><a name="label266"></a><a name="label267"></a><dd>Normally refers to the device object, i.e., the top-level object
+definition (regardless of the name used for the device); inherited from
+parent object.</dd><dt><b>bank [reference | undefined]</b></dt><a name="label268"></a><a name="label269"></a><dd>Normally refers to the enclosing bank object; inherited from parent
+object. Has the value <tt>undefined</tt> for objects not within a
+bank.</dd><dt><b>index [integer | undefined]</b></dt><a name="label270"></a><a name="label271"></a><dd>For objects that are not array elements, this has the default value
+<tt>undefined</tt>. For further details, see Array Parameters,
+below.</dd><dt><b>indexvar [string | undefined]</b></dt><a name="label272"></a><a name="label273"></a><dd>For objects that are not array elements, this has the default value
+<tt>undefined</tt>. For further details, see Array Parameters,
+below.</dd></dl>
+<p>
+
+<a name="label274"></a><h4 class="jdocu">5.1.2&nbsp;&nbsp;&nbsp;Array Parameters</h4 class="jdocu">
+
+
+<a name="label275"></a>
+<p>
+<dl><dt><b>array [list of references]</b></dt><a name="label276"></a><a name="label277"></a><dd>A list of object references to each of the elements of the
+array.</dd><dt><b>arraysize [integer]</b></dt><a name="label278"></a><a name="label279"></a><dd>The number of elements in the array.</dd><dt><b>index [integer]</b></dt><a name="label280"></a><a name="label281"></a><dd>For every object that is an array element, this parameter specifies
+the index of the object in the containing array. The first element of an
+array always has index 0.</dd><dt><b><i>i</i> [integer]</b></dt><a name="label282"></a><a name="label283"></a><dd>Each array has an <em>individual index parameter</em>, to make it
+possible to refer to both inner and outer indexes when arrays are nested
+(cf. the <tt>index</tt> parameter, above). The parameter name can be
+specified in the array declaration, as in "<tt>register regs[j in 0..10]
+{...}</tt>". The default name is <tt>i</tt>, if the array is defined
+without an explicit index parameter, as in "<tt>register regs[10]
+{...}</tt>" (see also <tt>indexvar</tt>, below). </dd><dt><b>indexvar [string]</b></dt><a name="label284"></a><a name="label285"></a><dd>This parameter specifies the name of the individual index parameter
+of the containing array.</dd></dl>
+<p>
+
+<a name="label286"></a><h4 class="jdocu">5.1.3&nbsp;&nbsp;&nbsp;Device Parameters</h4 class="jdocu">
+
+
+<a name="label287"></a>
+<p>
+<dl><dt><b>classname [string]</b></dt><a name="label288"></a><a name="label289"></a><dd>The name of the Simics configuration object class defined by the
+device model. Defaults to the name of the device object.</dd><dt><b>banks [list of references]</b></dt><a name="label290"></a><dd>A list of references to all the <b>bank</b> objects of the
+device object.</dd><dt><b>register_size [integer | undefined]</b></dt><a name="label291"></a><a name="label292"></a><dd>The default size (width) in bytes used for <b>register</b>
+objects; inherited by <b>bank</b> objects. The default value is
+<tt>undefined</tt>.</dd><dt><b>byte_order [string]</b></dt><a name="label293"></a><a name="label294"></a><dd>The default byte order used when accessing registers wider than a
+single byte; inherited by <b>bank</b> objects. Allowed values
+are <tt>"little-endian"</tt>, <tt>"big-endian"</tt> and <tt>undefined</tt>. The default
+value is <tt>"little-endian"</tt>.</dd><dt><b>log_group [integer | undefined]</b></dt><a name="label295"></a><a name="label296"></a><dd>An additional log group used by registers when logging register
+accesses.  This may be overridded in each bank and each individual
+register or register group.</dd><dt><b>obj [reference]</b></dt><a name="label297"></a><a name="label298"></a><dd>A special built-in parameter that can be used to provide a Simics
+API <tt>conf_object_t*</tt> reference to the device object at the C
+level.</dd><dt><b>logobj [reference]</b></dt><a name="label299"></a><a name="label300"></a><a name="label301"></a><dd>A special built-in reference that can be used to provide a Simics
+API <tt>log_object_t*</tt> reference to the device object at the C
+level.</dd></dl>
+<p>
+
+<a name="label302"></a><h4 class="jdocu">5.1.4&nbsp;&nbsp;&nbsp;Attribute Parameters</h4 class="jdocu">
+
+
+<a name="label303"></a>
+<p>
+<dl><dt><b>allocate_type [string | undefined]</b></dt><a name="label304"></a><a name="label305"></a><dd>For attributes with simple types such as <tt>bool</tt>,
+<tt>int32</tt>, <tt>uint32</tt>, <tt>double</tt> and <tt>string</tt>,
+defining <tt>allocate_type</tt> to the desired type name as a string,
+e.g., <tt>"uint32"</tt>, will automatically cause storage to be created
+for the attribute value, and will generate the corresponding get/set
+methods for the attribute. The default value of this parameter is
+<tt>undefined</tt>.</dd><dt><b>type [string | undefined]</b></dt><a name="label306"></a><dd>A Simics configuration-object attribute type description string,
+such as <tt>"i"</tt> or <tt>"[s*]"</tt>, specifying the type of the
+attribute. (See the <em>Simics Programming Guide</em> for details.)
+This is calculated automatically from the <tt>allocate_type</tt>
+parameter, if that is not <tt>undefined</tt>.</dd><dt><b>configuration [<tt>"required"</tt> | <tt>"optional"</tt>
+| <tt>"pseudo"</tt> | <tt>"none"</tt>]</b></dt><a name="label307"></a><a name="label308"></a><dd>Specifies how Simics treats the attribute. The default value is
+<tt>"optional"</tt>. A <em>required</em> attribute must be initialized
+to a value when the object is created, while an <em>optional</em>
+attribute can be left undefined. In both cases, the value is saved when
+a <a name="label309">checkpoint</a> is created. For a <em>pseudo</em>-attribute, the
+value is <em>not</em> saved when a checkpoint is created (and it is not
+required to be initialized upon object creation). Setting the value to
+<tt>"none"</tt> suppresses creation of the attribute; this can sometimes
+be useful for implicit attributes that inherit the
+<tt>configuration</tt> parameter from their parent, as e.g., in
+<b>register</b> objects (cf. Section
+<a class="jdocu" href="topic11.html#label89">3.7.2</a>).</dd><dt><b>persistent [bool]</b></dt><a name="label310"></a><a name="label311"></a><dd>If this parameter is <tt>true</tt>, the attribute will be treated
+as <a name="label312">persistent</a>, which means that its value will be saved
+when using the <b>save-persistent-state</b> command.  The default
+value is <tt>false</tt>.</dd><dt><b>attr_type [string | undefined]</b></dt><a name="label313"></a><dd>Reserved for internal use. Always has the same value as the
+<tt>type</tt> parameter.</dd></dl>
+<p>
+
+<a name="label314"></a><h4 class="jdocu">5.1.5&nbsp;&nbsp;&nbsp;Bank Parameters</h4 class="jdocu">
+
+
+<a name="label315"></a>
+<p>
+<dl><dt><b>mapped_registers [list of references]</b></dt><a name="label316"></a><dd>A list of references to all register objects that are mapped into
+the address space of the bank, sorted by address.</dd><dt><b>unmapped_registers [list of references]</b></dt><a name="label317"></a><dd>A list of references to all register objects that are <em>not</em>
+mapped into the address space of the bank, sorted by address.</dd><dt><b>function [integer | undefined]</b></dt><a name="label318"></a><a name="label319"></a><dd>The function number of the bank, used for mapping the bank into a
+Simics memory space. Defaults to <tt>undefined</tt>.</dd><dt><b>overlapping [bool]</b></dt><a name="label320"></a><a name="label321"></a><dd>Specifies whether this bank allows accesses that cover more than one
+register. (This translates to one or more possibly partial accesses to
+adjacent registers.) Defaults to <tt>false</tt>.</dd><dt><b>partial [bool]</b></dt><a name="label322"></a><a name="label323"></a><dd>Specifies whether this bank allows accesses that cover only parts of
+a register. In a partial access, only the addressed fields of the
+register are read or written. If there are no explicit fields, the whole
+register is accessed. Defaults to <tt>false</tt>.</dd><dt><b>signed [bool]</b></dt><a name="label324"></a><a name="label325"></a><dd>The default for whether register contents should be treated as
+signed integers; inherited by <b>register</b> objects. The
+default value is <tt>false</tt>.</dd><dt><b>allocate [bool]</b></dt><a name="label326"></a><a name="label327"></a><dd>The default for whether storage for register contents should be
+allocated in the generated C code; inherited by <b>register</b>
+objects. The default value is <tt>true</tt>.</dd><dt><b>register_size [integer | undefined]</b></dt><a name="label328"></a><a name="label329"></a><dd>Inherited from the <b>device</b> object; provides the
+default value for the <tt>size</tt> parameter of <b>register</b>
+objects.</dd><dt><b>byte_order [string]</b></dt><a name="label330"></a><a name="label331"></a><dd>Specifies the byte order used when accessing registers wider than a
+single byte; inherited from <b>device</b> objects. Allowed values
+are <tt>"little-endian"</tt>, <tt>"big-endian"</tt> and <tt>undefined</tt>.</dd><dt><b>log_group [integer | undefined]</b></dt><a name="label332"></a><a name="label333"></a><dd>An additional log group used by registers when logging register
+accesses.  This may be overriddedn in each individual register or
+register group.  The default value is inherited from the
+<b>device</b> object.</dd><dt><b>miss_bank [reference | undefined]</b></dt><a name="label334"></a><a name="label335"></a><dd>Can be set to refer to another bank object, to which accesses are
+forwarded if they cannot be performed in the current bank. Defaults to
+<tt>undefined</tt>.</dd><dt><b>miss_bank_offset [integer]</b></dt><a name="label336"></a><dd>The offset to be added to the address when an access is forwarded
+through the <tt>miss_bank</tt> parameter. The default value is 0.</dd></dl>
+<p>
+
+<a name="label337"></a><h4 class="jdocu">5.1.6&nbsp;&nbsp;&nbsp;Register Parameters</h4 class="jdocu">
+
+
+<a name="label338"></a>
+<p>
+<dl><dt><b>size [integer | undefined]</b></dt><a name="label339"></a><a name="label340"></a><dd>The default size (width) of the register, in bytes. This parameter
+can also be specified using the "<tt>size </tt><i>n</i><tt></tt>" short-hand
+syntax for register objects. The default value is provided by the
+<tt>register_size</tt> parameter of the enclosing <b>bank</b>
+object.</dd><dt><b>bitsize [integer]</b></dt><a name="label341"></a><a name="label342"></a><dd>The size (width) of the register, in bits. This is equivalent to the
+value of the <tt>size</tt> parameter multiplied by 8, and cannot be
+overridden.</dd><dt><b>offset [integer | undefined]</b></dt><a name="label343"></a><a name="label344"></a><dd>The address offset of the register, in bytes relative to the start
+address of the bank that contains it. This parameter can also be
+specified using the "<tt>@ </tt><i>n</i><tt></tt>" short-hand syntax for register
+objects. The default value is <tt>undefined</tt>.</dd><dt><b>signed [bool]</b></dt><a name="label345"></a><a name="label346"></a><dd>Specifies whether the register contents should be treated as a
+signed integer; inherited from <b>bank</b> objects.</dd><dt><b>allocate [bool]</b></dt><a name="label347"></a><a name="label348"></a><dd>Specifies whether storage for the register contents should be
+allocated in the generated C code; inherited from <b>bank</b>
+objects.</dd><dt><b>fields [list of references]</b></dt><a name="label349"></a><dd>A list of references to all the <tt>field</tt> objects of a register
+object. There is always at least one field per register.</dd><dt><b>hard_reset_value [integer]</b></dt><a name="label350"></a><a name="label351"></a><dd>The value used to initialize the internal state of a register upon
+hard reset. Defaults to 0.</dd><dt><b>soft_reset_value [integer]</b></dt><a name="label352"></a><a name="label353"></a><dd>The value used to initialize the internal state of a register upon
+soft reset. Defaults to the value of the <tt>hard_reset_value</tt>
+parameter.</dd><dt><b>logging [bool]</b></dt><a name="label354"></a><a name="label355"></a><a name="label356"></a><dd>Specifies whether accesses to the register should be logged. The
+default is <tt>true</tt>. See also <tt>read_logging</tt> and
+<tt>write_logging</tt>.</dd><dt><b>log_group [integer | undefined]</b></dt><a name="label357"></a><a name="label358"></a><dd>An additional log group used when logging register accesses.  The
+default value is inherited from the <b>device</b> object.</dd><dt><b>read_logging [bool]</b></dt><a name="label359"></a><dd>Specifies whether read accesses to the register should be logged.
+Defaults to the value of the <tt>logging</tt> parameter.</dd><dt><b>write_logging [bool]</b></dt><a name="label360"></a><dd>Specifies whether write accesses to the register should be logged.
+Defaults to the value of the <tt>logging</tt> parameter.</dd><dt><b>configuration [<tt>"required"</tt> | <tt>"optional"</tt>
+| <tt>"pseudo"</tt>]</b></dt><a name="label361"></a><a name="label362"></a><dd>Specifies how Simics treats the automatically created attribute
+corresponding to the register. See Section <a class="jdocu" href="#label302">5.1.4</a>
+for details.</dd><dt><b>persistent [bool]</b></dt><a name="label363"></a><a name="label364"></a><dd>Specifies whether the register attribute should be persistent. See
+Section <a class="jdocu" href="#label302">5.1.4</a> for details.</dd><dt><b>attr_type [string | undefined]</b></dt><a name="label365"></a><dd>Reserved for internal use. Always has the value <tt>"i"</tt>.</dd></dl>
+<p>
+
+<a name="label366"></a><h4 class="jdocu">5.1.7&nbsp;&nbsp;&nbsp;Field Parameters</h4 class="jdocu">
+
+
+<a name="label367"></a>
+<p>
+<dl><dt><b>reg [reference]</b></dt><a name="label368"></a><a name="label369"></a><dd>Always refers to the containing register object.</dd><dt><b>explicit [bool]</b></dt><a name="label370"></a><dd>The value of this parameter is <tt>true</tt> for fields explicitly
+declared in the DML source code, and is <tt>false</tt> for implicitly
+created fields.</dd><dt><b>lsb [integer]</b></dt><a name="label371"></a><dd>The bit number (<em>in little-endian bit order</em>) of the least
+significant bit of the field, in the containing register; a required
+parameter. <em>This is not affected by any <tt>bitorder</tt>
+declaration.</em> The preferred way of defining this parameter is to use
+the "<tt>[</tt><i>highbit</i><tt>:</tt><i>lowbit</i><tt>]</tt>" short-hand syntax for
+field ranges, whose interpretation <em>is</em> dependent on the
+<tt>bitorder</tt> declaration of the file. Care must be taken when
+referring to this parameter in a big-endian bit numbering system - if
+possible, put such code in a separate file that uses little-endian bit
+order interpretation.</dd><dt><b>msb [integer]</b></dt><a name="label372"></a><dd>The bit number (<em>in little-endian bit order</em>) of the most
+significant bit of the field, in the containing register; a required
+parameter. See <tt>lsb</tt> for details.</dd><dt><b>bitsize [integer]</b></dt><a name="label373"></a><a name="label374"></a><dd>The size (width) of the field, in bits. This is automatically set
+from the <tt>lsb</tt> and <tt>msb</tt> parameters and cannot be
+overridden.</dd><dt><b>signed [bool]</b></dt><a name="label375"></a><a name="label376"></a><dd>Specifies whether the field contents should be treated as a signed
+integer; inherited from the <b>register</b> object.</dd><dt><b>allocate [bool]</b></dt><a name="label377"></a><a name="label378"></a><dd>Specifies whether storage for the field contents should be allocated
+in the generated C code; inherited from the <b>register</b>
+object.</dd><dt><b>hard_reset_value [integer]</b></dt><a name="label379"></a><a name="label380"></a><dd>The value used to initialize the internal state of the field upon
+hard reset. Defaults to <tt>undefined</tt>. If the value is
+<tt>undefined</tt>, the corresponding bits of the value of the
+<tt>hard_reset_value</tt> parameter of the containing register are used
+instead.</dd><dt><b>soft_reset_value [integer]</b></dt><a name="label381"></a><a name="label382"></a><dd>The value used to initialize the internal state of the field upon
+soft reset. Defaults to the value of the <tt>hard_reset_value</tt>
+parameter. If the value is <tt>undefined</tt>, the corresponding bits of
+the value of the <tt>soft_reset_value</tt> parameter of the containing
+register are used instead.</dd></dl>
+<p>
+
+<a name="label383"></a><h4 class="jdocu">5.1.8&nbsp;&nbsp;&nbsp;Connect Parameters</h4 class="jdocu">
+
+
+<a name="label384"></a>
+<p>
+<dl><dt><b>interfaces [list of references]</b></dt><a name="label385"></a><dd>A list of references to all the <tt>interface</tt> objects of a
+connect object.</dd><dt><b>configuration [<tt>"required"</tt> | <tt>"optional"</tt>
+| <tt>"pseudo"</tt>]</b></dt><a name="label386"></a><a name="label387"></a><dd>Specifies how Simics treats the automatically created attribute
+corresponding to the connect object. See Section <a class="jdocu" href="#label302">5.1.4</a> for details.</dd><dt><b>persistent [bool]</b></dt><a name="label388"></a><a name="label389"></a><dd>Specifies whether the attribute should be persistent. See
+Section <a class="jdocu" href="#label302">5.1.4</a> for details.</dd><dt><b>attr_type [string | undefined]</b></dt><a name="label390"></a><dd>Reserved for internal use.</dd></dl>
+<p>
+
+<a name="label391"></a><h4 class="jdocu">5.1.9&nbsp;&nbsp;&nbsp;Interface Parameters</h4 class="jdocu">
+
+
+<a name="label392"></a>
+<p>
+<dl><dt><b>required [bool]</b></dt><a name="label393"></a><a name="label394"></a><dd>Specifies whether a connected object must implement the interface.
+If the value is <tt>true</tt> and the object does not implement the
+interface, a runtime error is generated. The default value is
+<tt>true</tt>.</dd><dt><b>c_type [string]</b></dt><a name="label395"></a><dd>Specifies the C type of the interface (typically a
+<tt>typedef</tt>:ed name for a struct containing function pointers).
+Defaults to the name of the interface object with the string
+<tt>"_interface_t"</tt> appended.</dd></dl>
+<p>
+
+<a name="label396"></a><h4 class="jdocu">5.1.10&nbsp;&nbsp;&nbsp;Event Parameters</h4 class="jdocu">
+
+
+<a name="label397"></a>
+<p>
+<dl><dt><b>timebase [<tt>"steps"</tt> | <tt>"cycles"</tt> | <tt>"seconds"</tt>
+| <tt>"stacked"</tt>]</b></dt><a name="label398"></a><a name="label399"></a><dd>Specifies the unit for the time value passed to the <tt>post</tt>
+method. The special unit <tt>"stacked"</tt> means that the value is
+ignored and the event is posted on the top of the queue. Defaults to
+<tt>"seconds"</tt>.</dd></dl>
+<p>
+
+<a name="label400"></a><h4 class="jdocu">5.1.11&nbsp;&nbsp;&nbsp;Implement Parameters</h4 class="jdocu">
+
+
+<a name="label401"></a>
+<p>
+<dl><dt><b>c_type [string]</b></dt><a name="label402"></a><dd>Specifies the C type of the implemented interface (typically a
+<tt>typedef</tt>:ed name for a struct containing function pointers).
+Defaults to the name of the implement object with the string
+<tt>"_interface_t"</tt> appended.</dd></dl>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+</body>
+</html>

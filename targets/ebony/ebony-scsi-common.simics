@@ -1,0 +1,29 @@
+# Ebony machine booting from scsi based disk
+
+if not defined initrd_image {$initrd_image = ""}
+if not defined boot_command {$boot_command = "setenv bootargs root=/dev/sda1; bootm ffc00000"}
+
+if (not defined scsi_disk_image) or (not defined scsi_disk_size) {
+	echo "This script requires that the image and size of a"
+	echo "bootable scsi disk has been specified."
+	quit
+}
+
+script-branch {
+
+    wait-for-variable machine_defined
+	
+    $sym = (create-pci-sym53c810)
+    $scsi_bus = (create-std-scsi-bus)
+    $scsi_disk = (create-std-scsi-disk scsi_id = 0
+                                       size = $scsi_disk_size
+                                       file = $scsi_disk_image)
+
+    $system.connect pci-slot2 $sym
+    $scsi_bus.connect $sym
+    $scsi_bus.connect $scsi_disk
+}
+
+run-command-file "%script%/ebony-uboot-common.simics"
+
+

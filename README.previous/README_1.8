@@ -1,0 +1,476 @@
+NOTES ON 1.8
+============
+
+General:
+--------
+
+This is Simics 1.8. It only supports the UltraSPARC target. The first version
+1.8.0 corresponds to Simics 1.6.5 in feature/bug-fix terms.
+
+
+Changes between 1.8.8 and 1.8.9
+-------------------------------
+
+ * Memory leak fixes in the trace module.
+
+ * rdpr/wrpr with reserved bits generate Privileged_Opcode.
+
+ * UltraSPARC targets only: Sources to the 'sparc-irq-bus' included.
+
+ * UltraSPARC targets only: Correct ASI check for atomic instructions.
+
+ * UltraSPARC targets only: Correct CWP saturation in illegal window setup.
+
+
+Changes between 1.8.7 and 1.8.8
+-------------------------------
+
+ * Bugfix for setting reissue = 0 when stalling a multi-pro target.
+
+ * Bugfix in 'fc-disk' module.
+
+
+Changes between 1.8.6 and 1.8.7
+-------------------------------
+
+ * Symtable fixes: Do not complain about stab type 0xd8; recognise more Sun
+   compiler version strings; enum type bugfix
+
+ * UltraSPARC targets only: Reserved bits checked in 'fcmp' instructions.
+
+ * UltraSPARC targets only: Allow configurations to override %ver properly.
+
+ * UltraSPARC targets only: Bug fix: No flush to zero in 'fcmp' for denorms in
+   non-standard mode.
+
+ * UltraSPARC targets only: MAI and parameterized mode bugfix (bug introduced
+   in 1.8.6), caused Solaris to panic.
+
+ * UltraSPARC targets only: Fixed case where reset with cwp != 0 could clobber
+   the global registers.
+
+ * UltraSPARC targets only: Set D-SFSR/SFAR on Mem_Address_Not_Aligned traps
+   caused by instruction fetches.
+
+ * UltraSPARC targets only: New attribute 'rstv-address' in the cpu class.
+
+
+Changes between 1.8.5 and 1.8.6
+-------------------------------
+
+ * UltraSPARC targets: Bug fix for assertion error in fast version of Simics.
+   (line 1206 of file v9_service_routines_1.c)
+
+ * UltraSPARC MAI: processor scheduling has been fixed so that each
+   processor runs one cycle at a time in a round-robin fashion.
+
+ * UltraSPARC VIS: Bugfix of the EDGE instruction's CC setting.
+
+ * UltraSPARC targets: Correct trap when illegal bits set in saved/restored.
+
+ * UltraSPARC targets: New disassembly for 'partial store' instruction.
+
+ * SunFire target only: Access to undefined registers in the Psycho device now
+   only trigger a warning and not an error.
+
+ * Greatly improved performance when running Simics and Simics Central on
+   different hosts.
+
+ * Bug fix: Execution breakpoints in non-primary memory-spaces.
+
+ * UltraSPARC target only: Bug fix for execution breakpoints in the IO space.
+
+ * UltraSPARC parameterized mode entering red state bugfix.
+
+ * UltraSPARC target only: New function in the "sparc-v9" interface that can
+   be used to access non-memory ASIs.
+
+ * UltraSPARC target only: Events posted from some hap callbacks could corrupt
+   the event timing.
+
+ * Improved error handling for events posted on an illegal step/cycle. This
+   used to trigger an assertion in one of the service_routine.c files.
+
+
+Changes between 1.8.4 and 1.8.5
+-------------------------------
+
+ * UltraSPARC MAI: store_buffer (consistency controller) bugfix. The store
+   buffer could incorrectly pass on device accesses out of order. The accesses
+   are now serialized.
+ 
+ * UltraSPARC MAI: SIM_instruction_id_from_mem_op_id did not work for the
+   second memop in atomic instructions. This is now fixed. 
+
+ * UltraSPARC MAI: The sample_micro_arch module now supports multipro. It has a
+   new attribute called cpu that should be set to the corresponding cpu that
+   the sample_micro_arch object models the time for.
+
+ * UltraSPARC targets: Bug fix for assertion error in fast version of Simics.
+   (line 1839 of file cpu-memory.c)
+
+ * UltraSPARC targets: Correct trap when illegal bits set in done/retry.
+
+ * UltraSPARC targets: Prefetcha with invalid ASI treated as 'nop'.
+
+ * UltraSPARC targets: When flushing some internal state using the
+   VT_remove_all_icode() function the %pc could be corrupt. Cases when this bug
+   was triggered include installing breakpoints, installing user decoders and
+   sending resets to a processor. The bug only occurred if a processor was in
+   the middle of an interpreted instruction.
+
+ * UltraSPARC targets: Bug fixes in the 'fmul8sux16' instruction (only in
+   Simics 1.8.4), 'fpmerge', and 'pdist'.
+
+ * Support for large files in the file-cdrom and host-cdrom modules.
+
+ * New attribute 'tx_bandwidth' in the 'BCM5703C/BCM5704C' network devices,
+   that determines the maximum transmit bandwidth used. Default is 1Gb/s.
+
+ * TCP/UDP checksum calculation added in BCM5703C/BCM5704C network devices.
+
+ * Serengeti target only: Minor bug fix in memory setup for multi-node systems.
+
+ * UltraSPARC targets: Fix bug where accesses through ASI_AS_IF_USER_PRIMARY
+   were sometimes counted as user accesses even in supervisor mode (for
+   statistics purposes), depending on whether the STC was used or not.
+
+Changes between 1.8.3 and 1.8.4
+-------------------------------
+
+ * UltraSPARC, VIS 2 targets only: Reserved bits checked in 'siam' instruction.
+
+ * Fixed assertion error in 'fc-disk' when saving checkpoints (only in 1.8.3).
+
+ * Bug fix: Simics 1.8.3 sometimes crashed when starting an old checkpoint that
+   contained Fibre Channel disks.
+
+ * Bug fix: Memory leak fixed when calling certain Python-wrapped functions.
+
+ * UltraSPARC targets: Corrected %pstate.cle and %pstate.tle handling during
+   reset.
+
+ * UltraSPARC targets: Power_On_Reset always taken with TL = MAXTL.
+
+ * Bugs fixed in the fast versions of Simics.
+
+ * UltraSPARC II target: Correct sign-extension for the %tba register, also the
+   upper bits are ignored for writes to this register and %tpc, %tnpc.
+
+ * New attribute 'tx_bandwidth' in the 'hme' network devices, that determines
+   the maximum transmit bandwidth used. Default is 100Mb/s.
+
+ * UltraSPARC targets: Bug fix in 'fmul8ulx16' instruction.
+
+ * UltraSPARC targets: Fix in 'array' instructions for illegal input values.
+
+ * UltraSPARC targets: Softint can be triggered in all trap-levels.
+
+ * A couple of bugfixes in MAI.
+
+
+Changes between 1.8.2 and 1.8.3
+-------------------------------
+
+ * SunFire and Serengeti targets only: Solaris 9 installation scripts updated
+   for Solaris 9 4/03.
+
+ * Support for multiple ongoing transactions in the ISP2200 FC controller. The
+   fc-disk was also updated to have a queue for incoming requests, to avoid
+   the case where disks are blocking each other in the controller.
+
+ * UltraSPARC targets only: The write_fp_register_x() now modifies the register
+   of the specified processor, and not the current one.
+
+ * UltraSPARC targets only: Access to %stick register in user mode when
+   stick.npt = 0 causes a privileged_action trap instead of privileged_opcode.
+
+ * Serengeti target only: Missing file 'sol9-run.simics' added.
+
+ * The read_from_memory/write_to_memory functions in the generic pci-device now
+   returns 'exception_type_t' allowing devices to check the result from a DMA
+   operation.
+
+ * UltraSPARC targets only: The time to the match between %[s]tick and
+   %[s]tick_cmpr is correctly updated when %[s]tick is modified.
+
+ * UltraSPARC targets only: Block load/store instructions generate
+   Illegal_Instruction instead of FP_Disabled when an illegal register is
+   specified and floating point is disabled.
+
+ * UltraSPARC targets only: Reserved fields checked in Tcc instructions.
+
+ * Serengeti target only: Inquiry reads supported in schizo device.
+
+ * The start script was fixed to allow starting Simics on Solaris 10.
+
+ * The output of the 'x' command was fixed to improve readability when
+   examining devices that do not support inquiry.
+
+ * A few MAI bugfixes.
+
+ * UltraSPARCII target now supports the -fast execution mode.
+
+ * The 'break-exception' command correctly identifies exception names.
+
+ * Correct loading of old checkpoints with ISP1040 and ISP2200 devices. This
+   bug only exists in 1.8.2.
+
+ * Bug fix for flushing large pages from the D-STC (introduced in 1.8.1).
+
+ * Multiword DMA implemented in the ide-disk class. The ide-disk now reports
+   multiword DMA modes 0, 1, and 2 supported. This may change operating system
+   behavior.
+
+ * Python allocators have been added for more structures and interfaces.
+
+
+Changes between 1.8.1 and 1.8.2
+-------------------------------
+
+ * UltraSPARC targets only: Reserved fields checked in fsrc1, fsrc1s, fsrc2,
+   fsrc2s, fnot1, fnot1s, fnot2, fnot2s and cas[x]a instructions.
+
+ * UltraSPARC targets only: Documentation of the 'sparc-v9' and 'sparc-irq-bus'
+   interfaces added to the reference manuals.
+
+ * Fast version of the sparc-u3 target added.
+
+ * The MMU is not compiled into the Simics binary for sparc-u3+ target anymore.
+
+ * 64-bit support added in the generic pci-device.
+
+ * Bug causing the error message "Unknown return from st_lookup_approx() = 3"
+   was fixed.
+
+ * New serengeti-schizo commands: pci-a-iommu-translate, pci-b-iommu-translate.
+
+ * Simics Central now verifies that the 'min-latency' of a connected device is
+   larger than the global minimum latency.
+
+ * The following instructions, with reserved bits set, only generate the trap
+   'Illegal_Instruction': fzero, fzeros, fone, fones.
+
+ * SunFire target only: The donut machine now supports use_fb for graphical
+   consoles for machines with more than 2 CPUs.
+
+ * SunFire target only: Updated the 'frolic' example machine.
+
+ * The command-line option -core was added, to allow simics to dump core when
+   receiving fatal signals.
+
+ * Bug fixes in fast version of sparc-u3+.
+
+
+Changes between 1.8.0 and 1.8.1
+-------------------------------
+                             
+ * Bug fix: MAI API function SIM_instruction_read_input_reg always returned the
+   PC. This is now fixed.
+
+ * Added single page HTML documentation for User Guide and Reference Manuals.
+
+ * UltraSPARC targets only: Fixed alignment check for user implemented ASIs.
+
+
+Simics 1.8.0
+============
+
+Major Changes:
+--------------
+
+ * New fast version of the UltraSPARC III+ Simics target included. This binary
+   is over 5 times faster than Simics 1.2.12 (measured running SPECint). More
+   information on the fast version is available in chapter 6 of the Simics User
+   Guide. Example usage:
+
+   ./simics -fast sarek-1p.simics
+
+ * Some more changes were introduced in the API for the upcoming 2.0 release.
+   Modules written for 1.4 and 1.6 should compile in 1.8 unless they use the
+   (since Simics 1.2) deprecated fields in the memory_transaction_t.
+
+
+Minor Changes:
+--------------
+
+ * The memory_transaction_t is no long available.  Use
+   v9_memory_transaction_t, ppc_memory_transaction_t, etc. instead.
+
+ * New field 'allocation_size' in generic_transaction_t. If this field is 
+   non-zero and does not match sizeof(generic_transaction_t) this means that
+   the generic transaction is actually an <arch>_memory_transaction_t
+   as above. This is useful information if the transaction should be copied. 
+   This is only supported for the Sparc target in 1.8.0.
+
+ * New field 'reissue' in the memory_transaction_t structure. This field can be
+   set to 0 by a timing-model to avoid the reissue of a memory-transaction when
+   the stall time is over. (Not yet supported in OOO and MAI).
+
+ * The endian specification 'Sim_Endian_Host', used in the access_simple()
+   function in the memory-space interface is now obsolete (but will continue to
+   work). Two new ones were introduced instead: 'Sim_Endian_Host_From_LE' and
+   'Sim_Endian_Host_From_BE'.
+
+ * Processor objects have a new attributes 'big-endian' that indicates whether
+   they use big-endian or little-endian byte order.
+
+ * The 'set' and 'get' commands can use different byte orders.
+
+ * The fast version of Simics does not support profiling modes, and memory-
+   hierarchies. See the Faster Simulation with -fast chapter in the Simics User
+   Guide for a longer explanation.
+
+ * The SIM_time_clean() takes a new second argument of type 'sync_t' that
+   should be the same as the event was posted with. The old definition of this
+   function is available when compiling modules for the 1.4 or 1.6 API.
+
+ * All API functions that used the processor_t type in a paramater or as a
+   return type has been updated to use the conf_object_t instead.
+
+ * The following API functions are now removed.
+
+        SIM_conf_object_to_processor    - not needed
+        SIM_processor_to_conf_object    - not needed
+        SIM_clear_atomic_reservation_bit - moved to ppc interface
+        SIM_get_stack_pointer           - use SIM_read_register
+        SIM_get_base_pointer            - use SIM_read_register
+        SIM_read_fp_register            - moved to ia64 interface
+        SIM_write_fp_register           - moved to ia64 interface
+        SIM_add_completion              - only used internally
+        SIM_filename_completion         - only used internally
+        SIM_longest_completion          - only used internally
+        SIM_get_history_match           - only used internally
+
+ * The following API functions were previously only available for some targets,
+   but are now consistently available.
+
+        SIM_reset_processor
+
+ * The execute_transaction_t struct used by the execute_instruction_interface
+   has changed, and does no longer contain an entire memory transaction.
+
+ * Solaris host only: Sun ONE Studio 8 C/C++ compiler supported in the build
+   scripts.
+
+ * The min_cacheline_size attribute on the "sim" object has been replaced by a
+   separate min_cacheline_size attribute on each processor.
+
+ * The timing_model_cache_operations attribute on the "sim" object that
+   previously was only available in Simics/PowerPC is now always available, but
+   only used by PowerPC processor models.
+
+ * Pseudo-exception names now have the prefix Sim_PE_ (eg, Sim_PE_IO_Break).
+   The old names are kept for backwards compatibility when using the 1.4 or
+   1.6 APIs.
+
+ * The page_cross field in the memory_transaction_t structure, available in the
+   PowerPC, x86 and x86-64 targets has moved into the generic_transaction_t
+   structure, which makes it available in all targets.  It will still only be
+   set by the previously mentioned targets.
+
+ * The out of order simulation mode (Parameterized Mode) has some minor changes:
+
+   - the number of instructions that can be executed in one clock cycle can now 
+     be set by setting the attribute 'execute_per_cycle' in the processor object.
+     Previously only one instruction could be executed per cycle.
+
+   - bugfix: setting the attributes 'fetches_per_cycle' and 'commits_per_cycle' now
+     actually means this. 
+
+   - bugfix: PC and nPC now corresponds to the latest committed instruction. 
+
+   - The step-instruction (si) command is not supported. Use step-cycle (sc).
+
+   - Instruction breakpoints stop the simulation before the
+     instruction is committed and not when it is fetched as before.
+
+
+UltraSPARC targets only:
+
+ * UltraSPARC III Cu (III+) is now the default processor for Serengeti systems.
+
+ * Improved Solaris 8 and Solaris 9 installation scripts for the donut
+   and sarek simulated machines. 
+
+ * User ASI handlers should return 'Sim_PE_Default_Semantics' instead of
+   'Continue' if the default handler should be run. ('Continue' will still be
+   available when compiling 1.4/1.6 modules).
+
+ * ASI handlers can return 'Sim_PE_Ignore_Semantics' to avoid the register
+   update on loads.
+
+
+Known Problems & Limitations:
+-----------------------------
+
+All targets:
+
+ * Red Hat 9 hosts: The Python interpreter in Simics does not work well with
+   the new threading library (NPTL). As a work-around, set the LD_ASSUME_KERNEL
+   environment variable before starting Simics. E.g.
+
+   $ LD_ASSUME_KERNEL=2.4.1 ./simics
+
+ * Simics-central communication does not work when central and Simics are
+   running on hosts with different endianness.
+
+ * Simics doesn't honor Ctrl-C when running with all processors disabled.
+
+ * Craff sometimes produces corrupt output files on Linux over NFS. We have
+   found problems running craff on Red Hat 6.2 when the output file is mounted
+   over NFS. This is a problem with Linux and might have been solved in newer
+   distributions (kernels). Note that craff is used when a checkpoint is
+   saved.
+
+ * Some operating systems don't work. Not all devices in Simics implement all
+   possible features exactly like actual hardware. If an operating system you
+   are interested in does not run on Simics, please let us know.
+
+ * Weird output in the console window when running Simics on a remote desktop
+   (WindowsXP). This problem can be worked around by adding the line
+
+      set SDL_VIDEODRIVER=windib
+
+   to the script that starts Simics (typically home/x86-test-machine/simics.bat
+   or x86-win32-gcc/bin/simics-x86-hammer.bat).
+
+
+UltraSPARC targets only:
+
+ * Refer to the Simics/Sunfire and Simics/Serengeti Target Guides.
+
+
+Alpha target only:
+
+ * Only limited support for VAX floating-point instructions.
+
+
+X86 and X86-64 targets only:
+
+ * Refer to the Simics/x86 Target Guide.
+
+
+IA64 target only:
+
+ * The IA32 mode is not implemented.
+
+ * Some floating-point exceptions are unimplemented.
+
+ * The only supported OS is Linux.
+
+ * The ALAT is not implemented, which means that data speculation always fails.
+
+ * Parts of the instruction set are still missing.
+
+ * As the "fr" attribute has been modified, loading old configurations (from
+   previous versions of Simics) may fail if the rotation base (cr.rrb.fr) is
+   not is equal to zero.
+
+
+Simics Central (Ethernet Central):
+
+ * IP broadcasting is not supported - neither limited broadcasts
+   (i.e. 255.255.255.255), nor directed (net/subnet) broadcasts.
+
+ * IP multicasting is not supported.

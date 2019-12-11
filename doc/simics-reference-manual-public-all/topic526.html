@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>rs232_device</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2267, true);
+</script>
+<a name="label17940"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic525.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic527.html">Next</a></span></p>
+<h3 class="jdocu">rs232_device</h3 class="jdocu">
+
+
+<a name="label17941"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic183.html#label8304">NS16450</a>, <a class="jdocu" href="topic184.html#label8340">NS16550</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Currently Simics internal.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        /* Flow control lines */
+        void (*cts)(conf_object_t *obj, int status);
+        void (*dsr)(conf_object_t *obj, int status);
+
+        /* Ring indicator */
+        void (*ring)(conf_object_t *obj, int status);
+
+        /* Carrier detect */
+        void (*carrier)(conf_object_t *obj, int status);
+
+        /* Break */
+        void (*got_break)(conf_object_t *obj);
+
+        /* Frame error */
+        void (*got_frame_error)(conf_object_t *obj);
+} rs232_device_interface_t;
+
+#define RS232_DEVICE_INTERFACE "rs232-device"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic525.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic527.html">Next</a></span></p>
+</body>
+</html>

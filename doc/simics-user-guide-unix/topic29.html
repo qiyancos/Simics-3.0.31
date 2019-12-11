@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Ready-to-run Configurations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(68, true);
+</script>
+<a name="label148"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic28.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic30.html">Next</a></span></p>
+<h4 class="jdocu">6.5&nbsp;&nbsp;&nbsp;Ready-to-run Configurations</h4 class="jdocu">
+
+
+<p>
+Simics includes many customizable ready-to-run configurations. Because
+checkpoint files are by definition very static, these example configurations
+are not checkpoint-based, but rather build on <em>components</em> and
+<em>scripts</em> to generate a working simulated machine.
+<p>
+The example configurations are located in separate directories for each system
+<em>architecture</em>:
+<tt>[simics]/targets/</tt><em>architecture</em><tt></tt>. Each of
+these directories contains a number of Simics scripts (i.e., files containing
+Simics commands):
+<p>
+<dl><dt><b><tt>&lt;machine&gt;-common.simics</tt></b></dt><dd>Script that defines a complete simulated machine, i.e., both hardware and
+software, that can be run by Simics directly.  The <tt>common</tt> script
+use the <tt>-system.include</tt> script to define the hardware, and the
+<tt>-setup.include</tt> script for software configuration. The
+<tt>-common.simics</tt> scripts may add additional hardware in some cases.
+<p>
+<em>These are the files you want to use to start the standard example machines
+in this directory.</em>
+<p>
+&lt;machine&gt; in the script name is either a Unix machine name, or a some
+other name that defines the hardware/software combination.
+</dd><dt><b><tt>&lt;machine&gt;-&lt;feature&gt;-common.simics</tt></b></dt><dd>A script that extends the <tt>-common.simics</tt> script with a new
+feature. Many minor features, such as the processor frequency, can be
+controlled using parameters to the <tt>common</tt> script, but features
+that are mutually exclusive are added as separate scripts. Typical examples
+are scripts that add different diff-files to the same disk image in the system
+setup.</dd><dt><b>&lt;architecture-variant&gt;-system.include</b></dt><dd>Script that defines the hardware of a machine.  This script can be shared
+by several simulated machines that are based on the same hardware. The hardware
+setup is typically configurable using some standard parameters.
+</dd><dt><b>&lt;machine&gt;-setup.include</b></dt><dd>Script that defines the software and possibly configures the machine to
+run the selected software, for example setting boot path, and scripting
+automatic login.
+</dd></dl>
+<p>
+The example configurations are designed to work with the disk images
+distributed by Virtutech. The machines are described in the <em>Target
+Guides</em> corresponding to each architecture.
+<p>
+Several machines may be defined for a given architecture, and thus the
+corresponding architecture directory will contain several
+<tt></tt><i>machine</i><tt>-common.simics</tt> scripts.
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <tt>[simics]/home/</tt><i>machine</i><tt></tt>
+directory contains deprecated example machines provided for backward
+compatibility reasons. These machine configurations are based on a
+combination of Simics and Python scripts. It is highly recommended to
+use the component-based scripts defined in
+<tt>[simics]/targets/</tt><i>architecture</i><tt></tt>
+rather than the scripts in 
+<tt>[simics]/home/</tt><i>machine</i><tt></tt>.<hr class="jdocu_note">
+<p>
+<a name="label149"></a><h5 class="jdocu">6.5.1&nbsp;&nbsp;&nbsp;Customizing the Configurations</h5 class="jdocu">
+
+
+<p>
+There are several ways to customize the examples provided with Simics. The
+table below shows them sorted by how simple they are to use.
+<p>
+<dl><dt><b>Parameters</b></dt><dd>The machine scripts distributed with Simics can be
+modified by setting parameters (CLI variables) before the script is actually
+run. This is the easiest way to change the default configuration. Parameters
+can typically be used to change properties such as the amount of memory, the
+number of processors and the primary MAC address. The available parameters are
+listed in each <em>Target Guide</em>.  </dd><dt><b>Scripts</b></dt><dd>A simulated machine is defined by several scripts, as
+described above. By replacing the <tt>-common.simics</tt> file with a user
+defined one, the system can be configured in more details while keeping the
+machine definition provided by the <tt>-system.include</tt> file. Similarly
+the <tt>-setup.include</tt> can be replaced to configure different software
+on the same machine.</dd><dt><b>Components</b></dt><dd>Components represents real hardware items such as PCI
+cards, motherboards, and disks. Using components to configure a machine
+provides freedom to set up the simulated machine in any way that is supported
+by the architecture. The <tt>-system.include</tt> files use components to
+create their machine definitions. A complete description of components is
+provided earlier in this chapter.</dd><dt><b>Objects and Attributes</b></dt><dd>A component is implemented by one or more
+configuration objects in Simics, and each object has several attributes
+describing it. Configuring machines on the object and attribute level is
+<em>not</em> supported in Simics, and such configurations may not work in
+future versions.  </dd></dl>
+<p>
+Below is an example of a simple configuration based on
+<i>ebony</i>, that uses parameters to configure two machines
+slightly differently that both run in the same Simics session.
+<p>
+<pre class="jdocu_small" style="color: black">
+$freq_mhz = 100
+$memory_megs = 128
+$host_name = "ebony0"
+set-component-prefix "ebony0_"
+run-command-file "ebony-linux-common.simics"
+
+$freq_mhz = 200
+$memory_megs = 256
+$host_name = "ebony1"
+set-component-prefix "ebony1_"
+run-command-file "ebony-linux-common.simics"
+</pre>
+<p>
+
+<a name="label150"></a><h5 class="jdocu">6.5.2&nbsp;&nbsp;&nbsp;Adding Devices to Existing Configurations</h5 class="jdocu">
+
+
+<p>
+The parameters available for each predefined machine allows the user to do
+minor modifications. It is also possible to extend the ready-to-run
+configurations with additional components without creating new machine setups
+from scratch. This is done by adding components and connecting them to the
+machine before the <b>instantiate-components</b> command is run.
+<p>
+Since the machine setup scripts are located in the read-only master
+installation of Simics, they should not be modified. User files that add
+new components should instead be placed in the corresponding
+<tt>[workspace]/targets/</tt><em>architecture</em><tt></tt> directory.
+<p>
+The following commands adds a SCSI controller, and one SCSI disk, to one of the
+PCI slots in the predefined <tt>ebony-linux-common.simics</tt> file. The
+commands should be placed in a file in the target directory for
+<i>ebony</i> in the workspace, for example in
+<tt>[workspace]/targets/ebony/ebony-linux-scsi.simics</tt>
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    wait-for-variable machine_defined
+    $sym = (create-pci-sym53c810)
+    $scsi_bus = (create-std-scsi-bus)
+    $system.connect pci-slot2 $sym
+    $scsi_bus.connect $sym
+    $scsi_bus.connect (create-std-scsi-disk scsi_id = 0 size = 3221225472)
+}
+
+run-command-file "%script%/ebony-linux-common.simics"
+</pre>
+The script works by starting a <em>script branch</em> that waits for the CLI
+variable <tt>$machine_defined</tt> to be written. All machine defining scripts
+distributed with Simics sets this variable, by convention, when the complete
+machine has been created but before the components are instantiated. Since
+many script branches can wait for the same variable, it is possible to extend
+the same configuration from different scripts in this way.
+<p>
+When the machine has been created, and <tt>machine_defined</tt> variable is
+written, the script branch continues to execute. It creates a SCSI controller,
+a SCSI bus and a 3GB disk, and then connects them. The <tt>$system</tt>
+variable is defined in the <tt>ebony-system.include</tt> where the machine
+is created. When the script branch has finished executing, the main script will
+continue and run <tt>instantiate-components</tt>.
+<p>
+The example above extends the <tt>ebony-linux-common.simics</tt> file in
+the workspace target directory. To access files in the target directory of the
+main Simics installation, the <tt>%simics%</tt> path shortcut can be used:
+<p>
+<pre class="jdocu_small" style="color: black">
+run-command-file "%simics%/targets/ebony/ebony-system.include"
+</pre>
+<p>
+Here's another example that adds a network card in PCI slot 3 and connects it
+to the same network as the primary ethernet cards:
+<p>
+<pre class="jdocu_small" style="color: black">
+$create_network = yes
+
+script-branch {
+   # wait for machine to be setup and connect the new eth before instantiation
+    wait-for-variable machine_defined
+    $add_eth = (create-pci-dec21143 mac_address = "10:10:10:10:10:28")
+    $system.connect pci-slot3 $add_eth
+}
+                                                     
+run-command-file "%script%/ebony-linux-common.simics"                          
+ethernet_link_cmp0.connect $add_eth
+</pre>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic28.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic30.html">Next</a></span></p>
+</body>
+</html>

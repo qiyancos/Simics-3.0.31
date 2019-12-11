@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>etg</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(727, true);
+</script>
+<a name="label5405"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic80.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic82.html">Next</a></span></p>
+<h3 class="jdocu">etg</h3 class="jdocu">
+
+
+<a name="label5406"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2604">etg</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>etg</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic495.html#label17725">ethernet_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The ethernet-traffic-generator (etg) device emulates a network adapter and generates traffic ... todo
+
+</dd>
+
+</dl>
+<a name="label5407"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>add_crc_on_inject</i></b></dt><a name="label5408"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Frames injected using the 'inject_packet' will get a correctly calculated CRC added at the end when this attribute is set to 1 (default). When set to 0, the user has to supply a CRC field with the injected frame. Note that you must always provide room for the CRC field, even when this attribute is set to 1.</dd></dl>
+<dl><dt><b><i>arp_table</i></b></dt><a name="label5409"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ss]*]</b>.
+<p>
+Internal state.</dd></dl>
+<dl><dt><b><i>count</i></b></dt><a name="label5410"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>i|n</b>.
+<p>
+The number of packets left to send until traffic generation stops. A nil value means an unlimited number of packets.</dd></dl>
+<dl><dt><b><i>current_packet</i></b></dt><a name="label5411"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+(Obsolete - see the "last-frame" attribute instead). The packet that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>dst_ip</i></b></dt><a name="label5412"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+IP address to send packets to.</dd></dl>
+<dl><dt><b><i>enabled</i></b></dt><a name="label5413"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 1 to enable traffic generation.</dd></dl>
+<dl><dt><b><i>gateway</i></b></dt><a name="label5414"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+IP address of gateway.</dd></dl>
+<dl><dt><b><i>inject_packet</i></b></dt><a name="label5415"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>Data</b>.
+<p>
+Attribute used to send a packet to the network device. Writing this attribute at any time injects a new packet into the device (without involving the network simulation). Injecting a packet copies the packet data, allowing the caller to reuse or dispose of the buffer used for creating the packet, after the attribute is written.</dd></dl>
+<dl><dt><b><i>ip</i></b></dt><a name="label5416"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+IP address assigned to the device.</dd></dl>
+<dl><dt><b><i>ip_id</i></b></dt><a name="label5417"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal state.</dd></dl>
+<dl><dt><b><i>last_frame</i></b></dt><a name="label5418"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>d|n</b>.
+<p>
+The frame that is currently about to be sent or received. The format is a raw Ethernet frame. This attribute is only valid in <tt>Ethernet_Transmit</tt> and <tt>Ethernet_Receive</tt> hap callbacks. It is possible to override the packet by assigning this attribute. The device will drop the current packet if the attribute is set to Nil, or with data of zero length.</dd></dl>
+<dl><dt><b><i>link</i></b></dt><a name="label5419"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The Ethernet link that the network device is connected to.</dd></dl>
+<dl><dt><b><i>mac_address</i></b></dt><a name="label5420"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>s|[i{6}]|n</b>.
+<p>
+Ethernet (MAC) address of the network interface.</dd></dl>
+<dl><dt><b><i>model_crc</i></b></dt><a name="label5421"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+If set to 1, the device will calculate and include an Ethernet CRC on all transmitted frames, and check the CRC on received frames.</dd></dl>
+<dl><dt><b><i>netmask</i></b></dt><a name="label5422"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Netmask defining the subnet for the device.</dd></dl>
+<dl><dt><b><i>network</i></b></dt><a name="label5423"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Obsolete attribute. Use link instead.</dd></dl>
+<dl><dt><b><i>packet_size</i></b></dt><a name="label5424"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of data packets to send.</dd></dl>
+<dl><dt><b><i>pps</i></b></dt><a name="label5425"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of packets per second to send.</dd></dl>
+<dl><dt><b><i>receive_stats</i></b></dt><a name="label5426"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal state.</dd></dl>
+<dl><dt><b><i>recorder</i></b></dt><a name="label5427"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Recorder object that allows recording and later playback of network traffic to the interface.</dd></dl>
+<dl><dt><b><i>reliability</i></b></dt><a name="label5428"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+This value determined how reliable an established connection is. If set to N it means that with a probability of 1 out of N a package will be lost (not sent to the receiver). The default value is 0 which means that no packages will be lost.</dd></dl>
+<dl><dt><b><i>reliability_seed</i></b></dt><a name="label5429"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The seed value for the randomization of packet loss. See the reliability attribute</dd></dl>
+<dl><dt><b><i>rx_bytes</i></b></dt><a name="label5430"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal state.</dd></dl>
+<dl><dt><b><i>rx_packets</i></b></dt><a name="label5431"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal state.</dd></dl>
+<dl><dt><b><i>started</i></b></dt><a name="label5432"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal state.</dd></dl>
+<dl><dt><b><i>state</i></b></dt><a name="label5433"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Current state of traffic generator.</dd></dl>
+<dl><dt><b><i>total_rx_packets</i></b></dt><a name="label5434"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Total number of UDP packets received on the test port.</dd></dl>
+<dl><dt><b><i>total_tx_packets</i></b></dt><a name="label5435"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Total number of UDP packets transmitted on the test port.</dd></dl>
+<dl><dt><b><i>use_gateway</i></b></dt><a name="label5436"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal state.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5437"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5439">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5441">packet-rate</a></b></td><td class="jdocu_noborder">Set or display the packets per second rate</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5443">packet-size</a></b></td><td class="jdocu_noborder">Set or display the packet size</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5445">start</a></b></td><td class="jdocu_noborder">Start generating traffic</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5447">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5449">stop</a></b></td><td class="jdocu_noborder">Stop generating traffic</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5438"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5439"></a><a name="label5440"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;etg&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;etg&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label5441"></a><a name="label5442"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;etg&gt;.packet-rate</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;etg&gt;.packet-rate</b> [<i>rate</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the rate, in packets per second, at which packets are sent by the traffic generator.
+<p>
+If no rate is given, the current rate is displayed.</dd>
+
+</dl>
+
+
+
+<a name="label5443"></a><a name="label5444"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;etg&gt;.packet-size</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;etg&gt;.packet-size</b> [<i>size</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the size of the packets that are sent by the traffic generator.
+<p>
+If no size is given, the current size is displayed.</dd>
+
+</dl>
+
+
+
+<a name="label5445"></a><a name="label5446"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;etg&gt;.start</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;etg&gt;.start</b> [<i>count</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Start the traffic generator.</dd>
+
+</dl>
+
+
+
+<a name="label5447"></a><a name="label5448"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;etg&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;etg&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+
+<a name="label5449"></a><a name="label5450"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;etg&gt;.stop</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;etg&gt;.stop</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Stop the traffic generator.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic80.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic82.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Device Modeling Guidelines" topic="html/index.html">
+ <topic label="1 About Simics Documentation" href="html/topic0.html">
+  <topic label="1.1 Conventions" href="html/topic1.html">
+  </topic>
+  <topic label="1.2 Simics Guides and Manuals" href="html/topic2.html">
+   <topic label="Simics Installation Guide for Unix and for Windows" href="html/topic3.html">
+   </topic>
+   <topic label="Simics User Guide for Unix and for Windows" href="html/topic4.html">
+   </topic>
+   <topic label="Simics Eclipse User Guide" href="html/topic5.html">
+   </topic>
+   <topic label="Simics Target Guides" href="html/topic6.html">
+   </topic>
+   <topic label="Simics Programming Guide" href="html/topic7.html">
+   </topic>
+   <topic label="DML Tutorial" href="html/topic8.html">
+   </topic>
+   <topic label="DML Reference Manual" href="html/topic9.html">
+   </topic>
+   <topic label="Simics Reference Manual" href="html/topic10.html">
+   </topic>
+   <topic label="Simics Micro-Architectural Interface" href="html/topic11.html">
+   </topic>
+   <topic label="RELEASENOTES and LIMITATIONS files" href="html/topic12.html">
+   </topic>
+   <topic label="Simics Technical FAQ" href="html/topic13.html">
+   </topic>
+   <topic label="Simics Support Forum" href="html/topic14.html">
+   </topic>
+   <topic label="Other Interesting Documents" href="html/topic15.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="2 Introduction" href="html/topic16.html">
+  <topic label="2.1 Prerequisites" href="html/topic17.html">
+  </topic>
+  <topic label="2.2 Simics Basics" href="html/topic18.html">
+  </topic>
+  <topic label="2.3 Transaction-Oriented vs. Bit-Level Device Models" href="html/topic19.html">
+  </topic>
+ </topic>
+ <topic label="3 General Concepts" href="html/topic20.html">
+  <topic label="3.1 Optimization" href="html/topic21.html">
+  </topic>
+ </topic>
+ <topic label="4 Methodology" href="html/topic22.html">
+ </topic>
+ <topic label="5 Abstraction of Hardware" href="html/topic23.html">
+ </topic>
+ <topic label="6 Abstraction of Hardware-Software Interfaces" href="html/topic24.html">
+  <topic label="6.1 Fewer States" href="html/topic25.html">
+  </topic>
+  <topic label="6.2 Avoid Modeling Error States" href="html/topic26.html">
+  </topic>
+  <topic label="6.3 Approximate Performance Counters and Hardwire Diagnostics" href="html/topic27.html">
+  </topic>
+ </topic>
+ <topic label="7 Abstraction of Time" href="html/topic28.html">
+  <topic label="7.1 Provide Reaction Immediately" href="html/topic29.html">
+  </topic>
+  <topic label="7.2 Cluster Events" href="html/topic30.html">
+  </topic>
+  <topic label="7.3 Transform Events into Functions of Time" href="html/topic31.html">
+  </topic>
+ </topic>
+ <topic label="8 Testing Device Models" href="html/topic32.html">
+ </topic>
+ <topic label="9 General Usability" href="html/topic33.html">
+  <topic label="9.1 Device Model Style" href="html/topic34.html">
+  </topic>
+  <topic label="9.2 Checkpointing" href="html/topic35.html">
+  </topic>
+  <topic label="9.3 Error Reporting" href="html/topic36.html">
+  </topic>
+ </topic>
+</toc>

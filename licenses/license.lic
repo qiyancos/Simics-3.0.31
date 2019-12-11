@@ -1,0 +1,32 @@
+FEATURE eclipse vtech 3.0 permanent uncounted 10115420F8B8 \
+	 HOSTID=ANY SIGN=245B6D0450AE
+FEATURE p_developer vtech 3.0 permanent uncounted 4BD3955F8D84 \
+	 VENDOR_STRING="Tc;Am;Lc;Ulishuoke" HOSTID=ANY SIGN=3361DA7818CC
+FEATURE devel_host_rh6-x86-64 vtech 3.0 permanent uncounted 25ECB3F38038 \
+	 HOSTID=ANY SIGN=99DC24B0FDC4
+FEATURE devel_host_win32-x86 vtech 3.0 permanent uncounted D4FF5BFE5E39 \
+	 HOSTID=ANY SIGN=4A6474D065E4
+FEATURE devel_host_rh6-x86 vtech 3.0 permanent uncounted 26BB797D92D0 \
+	 HOSTID=ANY SIGN=6EE89178CDB8
+FEATURE devel_host_sol7-v9 vtech 3.0 permanent uncounted 3E2971D8F5C5 \
+	 HOSTID=ANY SIGN=E230536ECEEC
+FEATURE devel_distribution vtech 3.0 permanent uncounted A5085802888A \
+	 HOSTID=ANY SIGN=21ECC8080168
+FEATURE devel_large_system vtech 3.0 permanent uncounted 74A93D727A8C \
+	 HOSTID=ANY SIGN=C2A8E714DEB4
+FEATURE devel_real_network vtech 3.0 permanent uncounted 6F7A3FBD910C \
+	 HOSTID=ANY SIGN=C70A58BA8F9A
+FEATURE devel_hindsight vtech 3.0 permanent uncounted 3F6E7DC0B7C3 \
+	 HOSTID=ANY SIGN=AA3AC494463A
+FEATURE p_modelbuilder vtech 3.0 permanent uncounted CC7507E53253 \
+	 VENDOR_STRING="Tc;Gc;Ulishuoke" HOSTID=ANY SIGN=5A6780C63190
+FEATURE host_rh6-x86-64 vtech 3.0 permanent uncounted DC1A9C7DAC9C \
+	 VENDOR_STRING=model HOSTID=ANY SIGN=2FE8D2083D84
+FEATURE host_win32-x86 vtech 3.0 permanent uncounted 5C4A52A06F9D \
+	 VENDOR_STRING=model HOSTID=ANY SIGN=13F6ED742462
+FEATURE host_rh6-x86 vtech 3.0 permanent uncounted 9CF9DE97C8BC \
+	 VENDOR_STRING=model HOSTID=ANY SIGN=696B729871E2
+FEATURE host_sol7-v9 vtech 3.0 permanent uncounted BFF237F03748 \
+	 VENDOR_STRING=model HOSTID=ANY SIGN=6883BDFA579C
+FEATURE builder vtech 3.0 permanent uncounted 9273B6A8282A \
+	 VENDOR_STRING=model HOSTID=ANY SIGN=3EA4541465EC

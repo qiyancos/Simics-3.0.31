@@ -1,0 +1,606 @@
+
+NOTES ON 2.0
+============
+
+General:
+--------
+
+This is Simics 2.0. It contains eight target architectures: Alpha, AMD x86-64,
+ARM, IA64, MIPS, PowerPC, UltraSPARC, and x86. Some new features in 2.0 were
+also available in the non-public 1.8 release. These items are marked as [1.8]
+in the list below.
+
+
+Simics 2.0
+==========
+
+Major Changes:
+--------------
+
+ * All processors, and Simics Central, are implemented as loadable modules.
+   Processors of different architectures can be mixed in the same Simics
+   session, with the exception of x86 targets.
+
+ * Fast version of Simics available for most UltraSPARC, MIPS and PPC targets,
+   on all supported hosts. The fast version of Simics does not support
+   profiling modes or memory-hierarchies.
+
+ * Improved Micro Architecture Interface (MAI) for UltraSPARC target.
+
+ * New Micro Architecture Interface (MAI) for x86 and AMD64 targets.
+
+ * First version of a Simics GUI on Linux and Solaris available. To use the
+   GUI, GNOME2 must be installed on the host.
+
+ * New processor independent Simics 2.0 API. The old APIs for 1.4/1.6 and 1.8
+   are still supported.
+
+ * The generic-cache module has been replaced by g-cache and g-cache-ooo. The
+   cache chapter in Simics User Guide describes the new caches in details.
+
+ * Improved instruction profiling capabilities for MIPS and UltraSPARC targets.
+
+
+Minor Changes
+-------------
+
+ * New document 'Simics Installation Guide'.
+
+ * When connecting to a real network, Simics no longer needs super-user
+   privileges under Unix if a helper program (openif) is installed so that
+   it is run as root. The source code to openif is available in case the
+   user wants to audit or modify it.
+
+ * Simplified Simics Central setup in most machine configurations.
+
+ * New commands 'save-persistent-state' and 'load-persistent-state' that can be
+   used to save and later restore all state that is retained between reboots
+   in a machine. This means that the .simics scripts doesn't have to be updated
+   with disk-diffs when restarting. Devices currently supporting persistent
+   data include IDE disk, SCSI disk, flash memory, all RTC/NVRAM devices. State
+   that is not yet persistent is the insertion state of CD-ROMs and floppies
+   (although the data on floppy disks is persistent).
+
+ * Improved image handling: Simics now copes with disk space shortage without
+   losing simulator state, and is no longer a module but part of the Simics
+   core. The memory limit is now a single global setting used by all image
+   objects rather than a per-image limit. The command set-memory-limit was
+   added for this purpose. Swap files are transparent to the user and no longer
+   visible in the list of files. Empty (all-zero) pages are no longer saved in
+   many cases, leading to smaller checkpoints. Some obsolete attributes were
+   removed and the <image>.set command was added.
+
+ * New User Guide section describing memory-spaces and mappings.
+
+ * New User Guide section describing PCI in Simics.
+
+ * Default input grabbing combination in the graphics console changed to
+   shift-right-click.
+
+ * Network devices automatically connect to a network in Simics Central, unless
+   the 'auto-connect' attribute is set to 0 in the configuration.
+
+ * It is now possible to connect to the simulation from the host Simics Central
+   is running on (using connect-real-network). This is on Linux hosts only.
+
+ * Updated log message handling. Messages can now be identifed by log type and
+   group, and only messages of the specified type(s) or group(s) are logged.
+   The default log level was raised to 1 (used to be 0), and setting it to 0
+   inhibits the output of all messages. The log levels allowed are 1 - 4. There
+   are several new commands:
+      log, log-size, log-type
+      <object>.log, <object>.log-size, <object>.log-type, <object>.log-group
+
+   The following commands are deprecated, but still supported:
+      io, io-buffer
+
+ * New command 'log-setup', that can be used to specify a file for all log
+   output and also for enabling a time-stamp on each line of the log output.
+
+ * Linux and Solaris host: New experimental script 'home/netutils.py' that
+   defines commands for connecting ethereal and tcpdump to the simulated
+   network.
+
+ * New "bridge mapping", similar to the "translator mapping" used to catch
+   accesses to unmapped areas in a memory-space. Bridge mappings are used to
+   implement master abort in PCI for example.
+
+ * Support for overlapping memory mappings with different priorities.
+
+ * The CPU type can not be selected from the command line anymore, instead it
+   should be set in the configuration.
+
+ * To start the MAI version of Simics, use the -ma command line argument.
+
+ * When checkpoints are saved or loaded, the current working directory is
+   temporarily changed to the checkpoint directory. This way, file names
+   in saved configurations are unqualified. This implies:
+
+    I.   It is easier to move checkpoints, and to save/load checkpoints in
+         different directories.
+    II.  Directories may need to be added to the Simics search path
+         in order to load checkpoints that depends on files from several
+         directories.
+    III. In a single session, it is not possible to save different checkpoints
+         under the same file name but in different directories.
+    IV.  Old checkpoints will continue to work in most cases, but sometimes
+         some hand-editing is needed. In particular, relative directory names
+         in the simics-path attribute of the sim object should be made
+         absolute.
+
+ * The command 'output-radix' was extended and a digit-grouping command was
+   added to improve configurability of Simics number output format.
+
+ * Script branch functions can now be called with an argument. The second
+   parameter to 'start_branch()' is passed to the branch function.
+
+ * Support for changing processor frequency in run-time (experimental).
+
+ * Most objects/devices now have <obj>.info and <obj>.status commands.
+
+ * New command 'cpu-switch-time'.
+
+ * New command '<obj>.pci-header' for all PCI devices.
+
+ * New command line option: '-log-file <file>'
+
+ * New command: <MK48T08>.set-time-current.
+
+ * New commands, useful for scripting in (simulated) graphical environments.
+   <sun-keyboard>.key-up
+   <sun-keyboard>.key-down
+   <sun-mouse>.left-button
+   <sun-mouse>.middle-button
+   <sun-mouse>.right-button
+   <sun-mouse>.mouse-up
+   <sun-mouse>.mouse-down
+   <sun-mouse>.mouse-left
+   <sun-mouse>.mouse-right
+   <i8042>.middle-button
+
+ * PCI devices have a new attribute 'external-rom' that can be set to a ROM
+   object (with an image where the actual ROM data should be mapped).
+
+ * The geometry argument to 'add_scsi_disk()' was replaced by a size argument
+   specifying the total disk size in bytes. Specifying a geometry is still
+   allowed for backward compatibility.
+
+ * The IDE geometry argument to 'add_isa_ide_disk()' is now optional. The
+   function will try to calculate valid BIOS and IDE geometries itself.
+
+ * Directories added to the Simics search path are converted to absolute
+   path names if relative.
+
+ * The hostfs module now allows any host directory to be mounted, not just the
+   root directory. This is useful for restricting the access of the simulated
+   machine, and for accessing host volumes other than C: on Windows hosts.
+
+ * New flag -r for the stepi command to print register changes.
+
+ * The Simics API functions wrapped in Python can now be called with Python
+   keyword arguments:
+
+     simics> @SIM_continue(steps = 4711)
+
+ * The SIM_load_binary() function can now also load to a virtual address space.
+   The load-binary command has an added flag to handle this.
+
+ * New module 'local-space-mapper', simplifying mapping of CPU local memory.
+
+ * The obsolete module 'space-mapper' was removed since a memory space can be
+   mapped directly in another space.
+
+ * The python configuration files in simics/home/scripts/ have been renamed
+   from <arch>-conf.py to <arch>_conf.py. The old files are still supported,
+   but will print a warning when used.
+
+ * The new attribute sim.history-lines controls how many lines of command-line
+   input is saved in the command history file.
+
+ * The 'flash-memory' object should have the attribute 'storage-ram' set to
+   the 'ram' object holding data, instead of the 'storage-space' attribute.
+   Configurations using 'flash-memory' has to be updated, but checkpoints
+   will be converted automatically when loaded.
+
+ * [1.8] The command-line option -core was added, to allow simics to dump
+   core when receiving fatal signals.
+
+ * [1.8] Processor objects have a new attributes 'big-endian' that indicates
+   whether they use big-endian or little-endian byte order.
+
+ * [1.8] The 'set' and 'get' commands can use different byte orders.
+
+ * [1.8] Support for multiple ongoing transactions in the ISP2200 FC
+   controller. The fc-disk was also updated to have a queue for incoming
+   requests, to avoid the case where disks are blocking each other in the
+   controller.
+
+ * [1.8] The min_cacheline_size attribute on the "sim" object has been
+   replaced by a separate min_cacheline_size attribute on each processor.
+
+ * The processor attribute statistics_vectors was removed. It had been
+   deprecated since Simics 1.6.
+
+ * The command 'read-configuration' and the API function SIM_set_configuration
+   can be issued multiple times in a session to add additional objects to a
+   configuration.
+
+ * g-cache can be used more effectively with the STCs. This can improve cache
+   simulation time on Simics in-order by 200% while still reporting correct
+   statistics.
+
+ * Several bug fixes for all target architectures.
+
+ * It is no longer possible to abbreviate a CLI command by typing an 
+   unambiguous prefix; the whole command name must be present.
+
+
+Minor Changes - Programming
+---------------------------
+
+ * New document 'Simics Programming Guide'.
+
+ * The Programming Guide was updated with a section on how to migrate modules
+   from previous Simics versions.
+
+ * New Programming Guide section describing how to write PCI devices.
+
+ * The user decoder functionality is available for all targets.
+
+ * Modules don't have to be listed in the config/modules.list file anymore.
+
+ * New 'finalize_instance' callback, similar to 'new_instance' but called when
+   all attributes are set in an object. This function can replace most uses
+   of the "Core_Initial_Configuration" hap.
+
+ * Attributes can be typed using a simple type system. Type checking in
+   attributes' set functions can thus be skipped. A complete description is
+   available in the User Guide.
+
+ * New "PCI Device API" that is documented in the Reference Manual. (The old
+   pci-device API is still supported).
+
+ * Incompatibility: PCI devices based on C++ should use the file
+   pci-device-cc.cc (instead of pci-device.cc) and define PCI_DEVICE_IN_CC
+   before including pci-device.h.
+
+ * New interface SERIAL_DEVICE_INTERFACE that replaces the TTY_DEVICE_INTERFACE
+   and TTY_CONSOLE_INTERFACE. With the new interface, that is symmetric, serial
+   devices can be connected to each other and not only to text-consoles. The
+   new interface is documented in the Reference Manual.
+
+ * New API functions:
+     SIM_write_byte()
+     SIM_<arch>_mem_trans_from_generic()
+   Where <arch> is one of: alpha, arm, ia64, mips, ppc, v9 and x86.
+
+ * SIM_[read|write]_phys_memory() performs the access as if it was a processor.
+
+ * The makefile variable MODULE_NAME is not used anymore. Also the MODULE_DIR
+   variable is now optional.
+
+ * The old pseudo-exception names were removed. To get the old names back, add
+   #define SIM_BC_OLD_PSEUDO_EX before #include <simics_api.h>.
+
+ * The SIM_register_decoder and SIM_unregister_decoder API functions have been
+   deprecated.  The new functions SIM_register_arch_decoder and
+   SIM_unregister_arch_decoder are able to handle multiple CPU architectures,
+   and should be used instead. 
+
+ * The SIM_get_mem_op_value() and SIM_set_mem_op_value() functions were removed
+   from the API and replaced with the following functions:
+
+     SIM_get_mem_op_value_le()
+     SIM_get_mem_op_value_be()
+     SIM_get_mem_op_value_cpu()
+
+   (There are also corresponding 'set' functions). Devices using the obsoleted
+   functions can simply set one of the following pre-processor defines in the
+   makefile: DEVICE_IS_BIG_ENDIAN, DEVICE_IS_LITTLE_ENDIAN. No other change is
+   needed. (Devices that have both big- and little-endian mappings may need
+   more changes).
+
+   Some machine configurations set the 'reverse-endian' flags in PCI mappings
+   to workaround the previous endian problem in Simics. This flags should now
+   be set to 0 for correct behavior. For checkpoints this will be done
+   automatically, but configurations may have to be updated.
+
+ * The Simics include files were moved to a separate 'simics' directory and
+   renamed. To include the standard Simics headers use:
+
+     #include <simics/api.h>
+     #include <simics/alloc.h>
+     #include <simics/utils.h>
+
+   The old header files are still available when compiling modules for the
+   1.4/1.6 and 1.8 APIs.
+
+ * New API functions supporting the update log message handling:
+      SIM_log_register_groups()
+      SIM_log_message()
+      SIM_log_info(), SIM_log_error(), SIM_log_undefined(),
+      SIM_log_spec_violation(), SIM_log_target_error(), SIM_log_unimplemented()
+
+   The following log functions are deprecated, but still supported:
+      debug_log(), debug_err(), SIM_device_log()
+
+ * All haps occurrences in Simics are now associated with a 'conf_object_t *'
+   (some with NULL). As a result, the following functions are obsolete but
+   still supported:
+      SIM_hap_new_type()
+      SIM_hap_install_callback()
+      SIM_hap_install_callback_idx()
+      SIM_hap_install_callback_range()
+      SIM_hap_register_callback()
+      SIM_hap_register_callback_idx()
+      SIM_hap_register_callback_range()
+      SIM_hap_remove_callback()
+      SIM_hap_unregister_callback()
+
+   A callback installed with any of the old API functions will be called with
+   the same arguments as before. If a callback instead is added with a new API
+   function, it will receive an extra (second) argument that is an object
+   pointer. Callbacks can also be installed on a specified object only. New
+   functions:
+      SIM_hap_add_type()
+      SIM_hap_add_callback()
+      SIM_hap_add_callback_index()
+      SIM_hap_add_callback_range()
+      SIM_hap_add_callback_obj()
+      SIM_hap_add_callback_obj_index()
+      SIM_hap_add_callback_obj_range()
+      SIM_hap_delete_callback()
+      SIM_hap_delete_callback_obj()
+      SIM_hap_delete_callback_id()
+      SIM_hap_delete_callback_obj_id()
+      SIM_hap_callback_exists()
+
+   The SIM_hap_occurred() family of functions all have a new argument.
+
+ * The I2C interface (src/devices/common/i2c.h) has been slightly modified to
+   allow the implementation of i2c-MUXes and generic i2c-to-i2c
+   bridges (many-to-many):
+
+   A new flag has been added to the register_device() function, which allows
+   multiple devices to share a common address or address range. Current device
+   models can easily be updated by just passing "I2C_flag_exclusive" for this
+   argument.
+
+   The register_device() and start() functions within the i2c_bus_interface_t,
+   as well as the set_state() function within the i2c_device_interface_t, all
+   now have a return value that indicates whether the operation succeeded or
+   not (0 or -1). Current devices can easily be updated by just passing 0 as
+   the return value.
+
+   When compiling i2c device models, the compiler will return errors/warnings,
+   for device models that haven't been updated to the new interface.
+
+ * The SIM_create_object() function was added, to simplify creating single
+   objects. It is now recommended over SIM_new_object(), which does not
+   properly finalise new objects.
+
+ * The SIM_break_simulation function has been improved to work more reliably.
+   Previously, it could lose messages or enter multiple break events in the
+   event queue.  Also, the SIM_break_message function has been added.
+
+ * The 'src/devices/common/debug.h' file is not needed anymore.
+
+ * The following profiling and statistics commands were removed:
+
+     list-profilers, memory-profile, print-profile, prof-page-details,
+     prof-page-map, prof-weight, set-prof-weight
+
+     SIM_add_to_profile_services, SIM_get_phys_profile_value,
+     SIM_get_profile_description, SIM_get_profile_granularity_ln2,
+     SIM_get_profile_status, SIM_get_profile_title,
+     SIM_get_profile_value, SIM_get_profile_weight,
+     SIM_number_of_profilers, SIM_prof_stat_get_count,
+     SIM_prof_stat_inc_count, SIM_prof_stat_set_count,
+     SIM_prof_stat_total_count, SIM_profile_weight,
+     SIM_profiler_disable, SIM_profiler_enable, SIM_profiling_info,
+     SIM_set_profile_weight
+
+   The largely rewritten profiling system can be accessed via a new (still
+   experimental) user interface, as detailed in the Reference Manual and the
+   User Guide.
+
+ * [1.8] The memory_transaction_t is no long available.  Use
+   v9_memory_transaction_t, ppc_memory_transaction_t, etc. instead.
+
+ * [1.8] New field 'reissue' in the memory_transaction_t structure. This field
+   can be set to 0 by a timing-model to avoid the reissue of a
+   memory-transaction when the stall time is over.
+
+ * [1.8] The endian specification 'Sim_Endian_Host', used in the
+   access_simple() function in the memory-space interface is now obsolete
+   (but is still supported). Two new ones were introduced instead:
+   'Sim_Endian_Host_From_LE' and 'Sim_Endian_Host_From_BE'.
+
+ * [1.8] All API functions that used the processor_t type in a paramater or
+   as a return type has been updated to use the conf_object_t instead.
+
+ * [1.8] The following API functions are now removed.
+
+        SIM_conf_object_to_processor    - not needed
+        SIM_processor_to_conf_object    - not needed
+        SIM_clear_atomic_reservation_bit - moved to ppc interface
+        SIM_get_stack_pointer           - use SIM_read_register
+        SIM_get_base_pointer            - use SIM_read_register
+        SIM_read_fp_register            - moved to ia64 interface
+        SIM_write_fp_register           - moved to ia64 interface
+        SIM_add_completion              - only used internally
+        SIM_filename_completion         - only used internally
+        SIM_longest_completion          - only used internally
+        SIM_get_history_match           - only used internally
+
+ * [1.8] The execute_transaction_t struct used by the
+   execute_instruction_interface has changed, and does no longer contain
+   an entire memory transaction.
+
+ * [1.8] Pseudo-exception names now have the prefix Sim_PE_
+   (eg, Sim_PE_IO_Break). The old names are kept for backwards compatibility
+   when using the 1.4 or 1.6 APIs.
+
+ * The deprecated enum value Sim_Set_Error_Str was removed.
+
+ * The following functions were removed from the API:
+
+       SIM_release_console
+       SIM_request_console
+       SIM_is_console_owner
+       SIM_post_command_as_console_owner
+
+   This is a cosmetic change; they were internal interfaces,
+   never intended to be called by the user.
+
+
+PowerPC target only:
+--------------------
+
+ * Improved disassembly with readable mnemonics for several instructions,
+   including move to/from SPR, conditional branches, comparisons, and
+   some cases of rotate instructions.
+   Branch hints (+/-) are shown for conditional branches.
+
+ * All registers (except 128 bit wide vector registers) are now accessible
+   from the command line and the register interface.
+
+ * Possible to trace or break on control registers, MSR, SRs and SPRs.
+   (Control_Register_Read/Write_Hap) Previously only SPRs was supported.
+
+ * OS code that use mtspr/mfspr a lot will be slightly faster on Simics.
+
+ * Single-step debug exceptions now work on ppc7xx and book E targets.
+   This means that gdb now can run on the target machine.
+
+
+UltraSPARC targets only:
+------------------------
+
+ * The ASI name is printed in the disassembly for instructions that use an
+   explicit ASI. Also new command added: 'list-asis'.
+
+ * The cheetah and spitfire mmu commands '<mmu>.i-probe' and '<mmu>.d-probe'
+   print the TLB entry containing the translation.
+
+ * New command in the UltraSPARC MMUs '<mmu>.reverse-lookup' that prints all
+   TLB entries that match a specified physical address.
+
+ * Serengeti and SunFire machines have a new module that handles Simics
+   specifics for each architecture. Commands for OBP variables was moved to
+   this module.
+   Deprecated commands (still supported):
+      set-prom-env          (SunFire)
+      get-prom-env          (SunFire)
+      <nvci>.get-variable   (Serengeti)
+      <nvci>.set-variable   (Serengeti)
+      <nvci>.list-variables (Serengeti)
+   New commands:
+      system.set-prom-env
+      system.get-prom-env
+   The rationale for this change was to: (a) avoid collision of global commands
+   when mixing architectures in one Simics session, (b) have the same command
+   names for all SPARC targets, (c) have the commands created automatically
+   when a configuration is loaded.
+
+ * The 'd_translation' and 'i_translation' attributes of the MMU modules now
+   return a list of two integers where the first is the physical address.
+
+ * The 'pregs -all' command prints all bits of the %pstate register.
+
+ * The ISP1040_SUN, ISP2200_SUN, cheerio-hme-io3 and pgx64 modules are
+   obsolete. (Use ISP1040, ISP2200, cheerio-hme and ragexl instead).
+
+ * SunFire target only: The configuration script has support for adding a
+   text-console on the second serial-port. More info in the Target Guide.
+
+ * [1.8] New serengeti-schizo commands: pci-a-iommu-translate,
+   pci-b-iommu-translate.
+
+
+X86 and X86-64 targets only:
+----------------------------
+
+ * To start the stall version of Simics, use the -stall command line argument.
+
+ * The 'atomic' bit in generic_transaction_t is set by the processor.
+
+
+Known Problems & Limitations:
+-----------------------------
+
+All targets:
+
+ * Red Hat 9 hosts: The Python interpreter in Simics does not work well with
+   the new threading library (NPTL). As a work-around, set the LD_ASSUME_KERNEL
+   environment variable before starting Simics. E.g.
+
+   $ LD_ASSUME_KERNEL=2.4.1 ./simics
+
+ * Simics doesn't honor Ctrl-C when running with all processors disabled.
+
+ * Craff sometimes produces corrupt output files on Linux over NFS. We have
+   found problems running craff on Red Hat 6.2 when the output file is mounted
+   over NFS. This is a problem with Linux and might have been solved in newer
+   distributions (kernels). Note that craff is used when a checkpoint is
+   saved.
+
+ * Some operating systems don't work. Not all devices in Simics implement all
+   possible features exactly like actual hardware. If an operating system you
+   are interested in does not run on Simics, please let us know.
+
+ * Weird output in the console window when running Simics on a remote desktop
+   (WindowsXP). This problem can be worked around by adding the line
+
+      set SDL_VIDEODRIVER=windib
+
+   to the script that starts Simics (typically home/x86-test-machine/simics.bat
+   or x86-win32-gcc/bin/simics-x86-hammer.bat).
+
+ * Virtual-address execution breakpoints may not work reliably if instructions
+   on the same physical addresses are executed but with a different virtual
+   address, before code is executed on the virtual address the breakpoint is
+   set on.
+   In other words: If an execution breakpoint is set on virtual address X,
+   and then an instruction on virtual address Y is executed, before the same
+   physical instruction is executed on X for the first time, then the
+   breakpoint may not be triggered.
+
+ * Virtual-address instruction profiling gives incorrect numbers when
+   profiling execution in memory that is mapped into the virtual
+   address space in two or more locations, such as a shared library
+   that is mapped to different addresses in different processes.
+   Physical-address instruction profiling is not affected.
+
+ * #1470 There is no way to disconnect from the real network once the
+   <ethernet-central>.connect-real-network command has been run.
+
+Alpha target only:
+
+ * Only limited support for VAX floating-point instructions.
+
+IA64 target only:
+
+ * The IA32 mode is not implemented.
+
+ * Stalling data and instruction accesses from a timing model is not supported.
+
+ * Some floating-point exceptions are unimplemented.
+
+ * The only supported OS is Linux.
+
+ * The ALAT is not implemented, which means that data speculation always fails.
+
+ * Parts of the instruction set are still missing.
+
+ * As the "fr" attribute has been modified, loading old configurations (from
+   previous versions of Simics) may fail if the rotation base (cr.rrb.fr) is
+   not is equal to zero.
+
+UltraSPARC targets only:
+
+ * Refer to the Simics/Sunfire and Simics/Serengeti Target Guides.
+
+X86 and X86-64 targets only:
+
+ * Refer to the Simics/x86 Target Guide.

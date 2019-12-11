@@ -1,0 +1,60 @@
+dml 1.0;
+
+/*
+ * simics-device.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ */
+
+typedef int (*interrupt_ack_fn_t)(conf_object_t *obj);
+
+typedef struct {
+    void (*raise_interrupt)(conf_object_t *obj, interrupt_ack_fn_t f,
+                            conf_object_t *o2);
+    void (*lower_interrupt)(conf_object_t *obj, interrupt_ack_fn_t f);
+} interrupt_ack_interface_t;
+
+constant INTERRUPT_ACK_INTERFACE = "interrupt_ack";
+
+typedef struct {
+    interrupt_ack_fn_t ack;
+} interrupt_cpu_interface_t;
+
+constant INTERRUPT_CPU_INTERFACE = "interrupt_cpu";
+
+typedef struct {
+    exception_type_t (*port_operation)(conf_object_t *port_space_obj,
+                                       generic_transaction_t *mem_op,
+                                       map_info_t map_info);
+} port_space_interface_t;
+
+constant PORT_SPACE_INTERFACE = "port_space";
+
+// struct apic_cpu_interface {
+//         uint64 (*tpr_r)(conf_object_t *obj);
+//         void (*tpr_w)(conf_object_t *obj, uint64 tpr);
+//         void (*init)(conf_object_t *obj);
+// };
+
+typedef struct {
+    void (*set)(conf_object_t *obj);
+    void (*clear)(conf_object_t *obj);
+} pin_interface_t;
+
+constant PIN_INTERFACE = "pin";
+
+typedef struct {
+    void (*signal_raise)(conf_object_t *obj);
+    void (*signal_lower)(conf_object_t *obj);
+} signal_interface_t;
+
+constant SIGNAL_INTERFACE = "signal";

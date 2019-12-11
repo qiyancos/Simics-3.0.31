@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Launch Simulation</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(38, true);
+</script>
+<a name="label72"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+<h4 class="jdocu">4.1&nbsp;&nbsp;&nbsp;Launch Simulation</h4 class="jdocu">
+
+
+<p>
+The installation of Simics is made to be shared among several users, and
+therefore you first need to create your own <i>workspace</i>.
+A workspace is a place where you have write permission and can save
+your own Simics files.
+<p>
+Type the following commands in a terminal, to
+create a workspace called <tt>simics-workspace</tt> in your home
+directory. Replace
+<tt>[simics]</tt> with your Simics installation directory.
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer: ~$ <b>[simics]/bin/workspace-setup ~/simics-workspace</b>
+Setting up Simics workspace directory: /home/joe/simics-workspace
+[..]
+joe@computer: ~$ <b>cd simics-workspace</b>
+joe@computer: simics-workspace$
+</pre>
+<p>
+The preconfigured <i>Ebony</i> machines reside under
+the directory
+<tt>targets/ebony/</tt>. Launch
+the <tt>firststeps</tt> configuration in the command-line environment
+of Simics.
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer: simics-workspace$ <b>./simics targets/ebony/ebony-linux-firststeps.simics</b>
+</pre>
+<p>
+
+Simulation starts in suspended mode, and the Simics prompt will appear,
+waiting for you to give further commands.
+<p>
+In this guide, interaction with the Simics console will be
+presented in <tt>monospace</tt> font. User input will be presented in
+<tt><b>bold font</b></tt>.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>this is something that you should type</b>
+This is output from Simics
+</pre>
+<p>
+<i>Ebony</i>'s screen will be shown in an additional
+window. It is initially empty before the machine is started.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+</body>
+</html>

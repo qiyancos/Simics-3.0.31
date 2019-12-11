@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Cache Miss Profiling</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(227, true);
+</script>
+<a name="label532"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic94.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic96.html">Next</a></span></p>
+<h4 class="jdocu">18.9&nbsp;&nbsp;&nbsp;Cache Miss Profiling</h4 class="jdocu">
+
+
+<p>
+<b>g-cache</b> can use Simics's data profiling support to profile cache
+misses. You can use the <b>add-profiler</b> and <b>remove-profiler</b>
+commands to add and remove profiler to the cache for a specific type of events.
+<p>
+<b>g-cache</b> can profile the following type of events:
+<p>
+<ul>
+<p>
+<li>number of data read misses per virtual address, physical address,
+or instruction</li>
+<p>
+<li>number of data write misses per virtual address, physical address,
+or instruction</li>
+<p>
+<li>number of instruction fetch misses per virtual or physical
+address</li>
+<p>
+</ul>
+<p>
+For example, if you would like to see which parts of the code are
+responsible for read and write misses, you could create profilers that
+count read and write misses per instruction. (This example assumes
+that your cache is called <b>dc</b>.)
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>dc.add-profiler type = data-read-miss-per-instruction</b>
+[dc] New profiler added for data-read-miss-per-instruction: <img src="nextline.png">
+dc_prof_data-read-miss-per-instruction
+simics&gt; <b>dc.add-profiler type = data-write-miss-per-instruction</b>
+[dc] New profiler added for data-write-miss-per-instruction: <img src="nextline.png">
+dc_prof_data-write-miss-per-instruction
+</pre>
+<p>
+This creates two profiler objects and attaches them to the proper
+slots in the cache object. The profilers are initially empty, so we
+have to run for a while to give them time to collect some interesting
+data:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>c 10_000_000</b>
+[cpu0] v:0x0000000000002590 p:0x0000000003c7e590  sll %i0, 1, %o1
+</pre>
+<p>
+Now, we can ask either profiler what data it has gathered:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>dc_prof_data_read_miss_per_instruction.address-profile-data</b>
+View 0 of dc_prof_data_read_miss_per_instruction: dc prof: data-read-miss-per-instruction
+64-bit virtual addresses, profiler granularity 4 bytes
+Each cell covers 2 address bits (4 bytes).
+
+column offsets:
+               0x1*   0x00   0x04   0x08   0x0c   0x10   0x14   0x18   0x1c
+---------------------------------------------------------------------------
+0x0000000000002480:      .      .      .  23331      .      .      .      .
+0x00000000000024a0:      .      .  15492    545      .      .     90      .
+0x00000000000024c0:      .      .      .    112      .      .      .      .
+0x00000000000024e0:      .      .      .      .      .      .      .      .
+0x0000000000002500:      .      .      .      .      .      .      .      .
+0x0000000000002520:      .      .      .      .      .      .      .      .
+0x0000000000002540:      .      .      .      .      .      .      .      .
+0x0000000000002560:      .      .      .      .      .      .      .      .
+0x0000000000002580:      .      .      .      .      .      .      .      .
+0x00000000000025a0:      .      .      .      .      .      .      .      .
+0x00000000000025c0:      .      .      .      .      .      .      .      .
+0x00000000000025e0:      .      .      .      .      .      .    136      .
+
+39706 counts shown. 0 not shown.
+</pre>
+<p>
+Since these two profilers are instruction indexed, it also makes sense
+to display their counts in a disassembly listing:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>cpu0.aprof-views add = dc_prof_data_read_miss_per_instruction</b>
+simics&gt; <b>cpu0.aprof-views add = dc_prof_data_write_miss_per_instruction</b>
+simics&gt; <b>cpu0.disassemble %pc 32</b>
+v:0x0000000000002590 p:0x0000000003c7e590    0 0  sll %i0, 1, %o1
+v:0x0000000000002594 p:0x0000000003c7e594    0 0  lduh [%o1 + %o2], %o1
+v:0x0000000000002598 p:0x0000000003c7e598    0 0  and %l0, %o1, %o1
+v:0x000000000000259c p:0x0000000003c7e59c    0 0  sll %o1, 16, %i0
+v:0x00000000000025a0 p:0x0000000003c7e5a0    0 0  sra %i0, 16, %i0
+v:0x00000000000025a4 p:0x0000000003c7e5a4    0 0  jmpl [%i7 + 8], %g0
+v:0x00000000000025a8 p:0x0000000003c7e5a8    0 0  restore %g0, %g0, %g0
+v:0x00000000000025ac p:0x0000000003c7e5ac    0 0  jmpl [%i7 + 8], %g0
+v:0x00000000000025b0 p:0x0000000003c7e5b0    0 0  restore %g0, -1, %o0
+v:0x00000000000025b4 p:0x0000000003c7e5b4    0 0  illtrap 0
+v:0x00000000000025b8 p:0x0000000003c7e5b8    0 0  illtrap 0
+v:0x00000000000025bc p:0x0000000003c7e5bc    0 0  illtrap 0
+v:0x00000000000025c0 p:0x0000000003c7e5c0    0 0  illtrap 0
+v:0x00000000000025c4 p:0x0000000003c7e5c4    0 0  illtrap 0
+v:0x00000000000025c8 p:0x0000000003c7e5c8    0 0  save %sp, -96, %sp
+v:0x00000000000025cc p:0x0000000003c7e5cc    0 0  sethi %hi(0x41c00), %o0
+v:0x00000000000025d0 p:0x0000000003c7e5d0    0 0  add %o0, 840, %o1
+v:0x00000000000025d4 p:0x0000000003c7e5d4    0 0  lduw [%o1 + 0], %o0
+v:0x00000000000025d8 p:0x0000000003c7e5d8    0 0  subcc %o0, 1, %o0
+v:0x00000000000025dc p:0x0000000003c7e5dc    0 0  stw %o0, [%o1 + 0]
+v:0x00000000000025e0 p:0x0000000003c7e5e0    0 0  bpos 0x25f0
+v:0x00000000000025e4 p:0x0000000003c7e5e4    0 0  mov -1, %i0
+v:0x00000000000025e8 p:0x0000000003c7e5e8    0 0  jmpl [%i7 + 8], %g0
+v:0x00000000000025ec p:0x0000000003c7e5ec    0 0  restore %g0, %g0, %g0
+v:0x00000000000025f0 p:0x0000000003c7e5f0    0 0  sethi %hi(0x4f000), %o0
+v:0x00000000000025f4 p:0x0000000003c7e5f4    0 0  add %o0, 616, %o0
+v:0x00000000000025f8 p:0x0000000003c7e5f8  136 0  lduw [%o0 + 0], %o2
+v:0x00000000000025fc p:0x0000000003c7e5fc    0 0  add %o2, 1, %o1
+v:0x0000000000002600 p:0x0000000003c7e600    0 0  stw %o1, [%o0 + 0]
+v:0x0000000000002604 p:0x0000000003c7e604    0 0  ldub [%o2 + 0], %o2
+v:0x0000000000002608 p:0x0000000003c7e608    0 0  and %o2, 255, %i0
+v:0x000000000000260c p:0x0000000003c7e60c    0 0  jmpl [%i7 + 8], %g0
+</pre>
+<p>
+In the listing above, we see that in the 32 instructions following the
+current program counter, one load instruction is responsible for 136
+read misses, and no instructions have caused any write misses.
+<p>
+For more on getting information out of profilers, see section <a class="jdocu" href="topic65.html#label438">13.3</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic94.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic96.html">Next</a></span></p>
+</body>
+</html>

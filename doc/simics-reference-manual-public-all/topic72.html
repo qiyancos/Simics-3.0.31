@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>DS12887-dml</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(693, true);
+</script>
+<a name="label5217"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic71.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic73.html">Next</a></span></p>
+<h3 class="jdocu">DS12887-dml</h3 class="jdocu">
+
+
+<a name="label5218"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2592">DS12887-dml</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>DS12887-dml</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+DS12887 real-time clock.
+
+</dd>
+
+</dl>
+<a name="label5219"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>base_rtc_time</i></b></dt><a name="label5220"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The real-time clock time when the oscillator was enabled, in seconds since 1970-01-01 00:00:00.</dd></dl>
+<dl><dt><b><i>base_time</i></b></dt><a name="label5221"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+The simulated time when the oscillator was enabled, in seconds since the start of the simulation.</dd></dl>
+<dl><dt><b><i>irq_dev</i></b></dt><a name="label5222"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The device that interrupts are sent to.</dd></dl>
+<dl><dt><b><i>irq_level</i></b></dt><a name="label5223"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The level at which interrupts are sent.</dd></dl>
+<dl><dt><b><i>port_registers_address</i></b></dt><a name="label5224"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Port space address register. Specifies the DS12887 register that reads and writes to the port space data register are forwarded to.</dd></dl>
+<dl><dt><b><i>registers_a</i></b></dt><a name="label5225"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Register A.</dd></dl>
+<dl><dt><b><i>registers_b</i></b></dt><a name="label5226"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Register B.</dd></dl>
+<dl><dt><b><i>registers_c</i></b></dt><a name="label5227"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Register C.</dd></dl>
+<dl><dt><b><i>registers_d</i></b></dt><a name="label5228"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Register D.</dd></dl>
+<dl><dt><b><i>registers_date_of_the_month</i></b></dt><a name="label5229"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Day of the month register. In binary format in the range 1-31, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_day_of_the_week</i></b></dt><a name="label5230"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Day of the week register. In binary format in the range 1-7, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_hours</i></b></dt><a name="label5231"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Hours register. In binary format in the range 0-23, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_hours_alarm</i></b></dt><a name="label5232"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Hours alarm register. In binary format in the range 0-23, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_minutes</i></b></dt><a name="label5233"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Minutes register. In binary format in the range 0-59, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_minutes_alarm</i></b></dt><a name="label5234"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Minutes alarm register. In binary format in therange 0-59, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_month</i></b></dt><a name="label5235"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Month register. In binary format in the range 1-12, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_nvram</i></b></dt><a name="label5236"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{114}]</b>.
+<p>
+NVRAM registers, corresponding to the offsets 14 to 127.</dd></dl>
+<dl><dt><b><i>registers_seconds</i></b></dt><a name="label5237"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Seconds register. In binary format in the range 0-59, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_seconds_alarm</i></b></dt><a name="label5238"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Seconds alarm register. In binary format in the range 0-59, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>registers_year</i></b></dt><a name="label5239"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Year register. In binary format in the range 0-99, regardless of the current register mode.</dd></dl>
+<dl><dt><b><i>time</i></b></dt><a name="label5240"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+The internal time of the real-time clock on the format "YY-MM-DD hh:mm:ss".</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label5241"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5243">cmos-base-mem</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; set base memory size</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5245">cmos-boot-dev</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; set boot drive</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5247">cmos-century</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; set date century</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5249">cmos-extended-mem</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; set extended memory size</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5251">cmos-floppy</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; set floppy parameters</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5253">cmos-hd</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; set fixed disk paramters</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5255">cmos-info</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; print information about the CMOS area</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5257">cmos-init</a></b></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; initialize some CMOS values</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5259">get-date-time</a></b></td><td class="jdocu_noborder">get date and time</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5261">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5263">set-date-time</a></b></td><td class="jdocu_noborder">set date and time</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label5265">status</a></b></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label5242"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label5243"></a><a name="label5244"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-base-mem &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-base-mem</b> <i>kilobytes</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-base-mem or &lt;x86-apic-system&gt;.cmos-base-mem</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5245"></a><a name="label5246"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-boot-dev &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-boot-dev</b> <i>"drive"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-boot-dev or &lt;x86-apic-system&gt;.cmos-boot-dev</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5247"></a><a name="label5248"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-century &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-century</b> <i>century</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#label5263">&lt;DS12887-dml&gt;.set-date-time</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5249"></a><a name="label5250"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-extended-mem &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-extended-mem</b> <i>megabytes</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-extended-mem or &lt;x86-apic-system&gt;.cmos-extended-mem</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5251"></a><a name="label5252"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-floppy &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-floppy</b> <i>"drive"</i> <i>"type"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-floppy or &lt;x86-apic-system&gt;.cmos-floppy</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5253"></a><a name="label5254"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-hd &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-hd</b> <i>"drive"</i> <i>cylinders</i> <i>heads</i> <i>sectors_per_track</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-hd or &lt;x86-apic-system&gt;.cmos-hd</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5255"></a><a name="label5256"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-info &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-info or &lt;x86-apic-system&gt;.cmos-info</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5257"></a><a name="label5258"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.cmos-init &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.cmos-init</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="#">&lt;x86-system&gt;.cmos-init or &lt;x86-apic-system&gt;.cmos-init</a> instead.
+<p>
+</dd>
+
+</dl>
+
+
+
+<a name="label5259"></a><a name="label5260"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.get-date-time</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.get-date-time</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Return the date and time of the realtime clock.<br></dd>
+
+</dl>
+
+
+
+<a name="label5261"></a><a name="label5262"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label5263"></a><a name="label5264"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.set-date-time</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.set-date-time</b> <i>year</i> <i>month</i> <i>mday</i> <i>hour</i> <i>minute</i> <i>second</i> [-binary] [-bcd] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the date and time of the realtime clock. Both month and mday
+start counting at one, the other at zero. Year should be in the full
+four-digit format. The <b>cmos-init</b> command must be issued
+before this command, unless the simulation was started from a checkpoint.
+The <i>-binary</i> and <i>-bcd</i> flags can be used to
+specify the format of the register values. Default is to use BCD, but
+some systems use a binary format without checking the binary/BCD status
+bit in register B.</dd>
+
+</dl>
+
+
+
+<a name="label5265"></a><a name="label5266"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;DS12887-dml&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;DS12887-dml&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic71.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic73.html">Next</a></span></p>
+</body>
+</html>

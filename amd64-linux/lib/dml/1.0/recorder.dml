@@ -1,0 +1,20 @@
+// recorder.dml
+//
+// This module contains types needed when using or implementing recorder interfaces
+
+dml 1.0;
+
+header %{
+#include <simics/devs/recorder.h>
+%}
+
+typedef struct {} recorder_t;
+typedef void (*recorder_input_handler_t)(conf_object_t *obj, dbuffer_t *data,
+                                         uint32 uint_data);
+
+typedef struct {
+    recorder_t *(*attach)(conf_object_t *rec, conf_object_t *obj,
+                          recorder_input_handler_t input_from_recorder);
+    void (*detach)(recorder_t *r);
+    void (*input)(recorder_t *r, dbuffer_t *data, uint32 uint_data);
+} recorder_interface_t;

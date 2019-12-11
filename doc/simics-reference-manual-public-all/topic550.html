@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Core_Breakpoint</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2294, true);
+</script>
+<a name="label18026"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic549.html">Previous</a> - <a class="jdocu" href="topic544.html">Up</a> - <a class="jdocu" href="topic551.html">Next</a></span></p>
+<h3 class="jdocu">Core_Breakpoint</h3 class="jdocu">
+
+
+<a name="label18027"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2886">Simics Core</a></dd>
+
+
+<dt class="jdocu_di"><b>Callback Type</b></dt><dd class="jdocu_di">
+    <tt>void (*)(lang_void *callback_data, <br>         conf_object_t *trigger_obj, integer_t access_type, <br>         integer_t breakpoint_number, void *reg_ptr, <br>         integer_t size);</tt></dd>
+
+
+<dt class="jdocu_di"><b>Index</b></dt><dd class="jdocu_di">
+breakpoint_number</dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+  Called when a breakpoint is triggered. If there are multiple breakpoints on an instruction then all installed haps will be run before control is transferred to the frontend (when applicable). The <i>reg_ptr</i> and <i>size</i> parameters are only passed on write watchpoints, in which case they point to the data being stored and indicate its size. This hap is only present for compatibility reasons. Use Core_Breakpoint_Memop in new code.</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic549.html">Previous</a> - <a class="jdocu" href="topic544.html">Up</a> - <a class="jdocu" href="topic551.html">Next</a></span></p>
+</body>
+</html>

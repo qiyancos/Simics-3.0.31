@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>g-cache Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(229, true);
+</script>
+<a name="label534"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic96.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic98.html">Next</a></span></p>
+<h4 class="jdocu">18.11&nbsp;&nbsp;&nbsp;g-cache Limitations</h4 class="jdocu">
+
+
+<p>
+Virtually tagged caches are usually informed of the state of the MMU in order
+to immediately invalidate lines whose virtual-to-physical mapping
+changes. <b>g-cache</b> is not MMU-aware, so when looking for a hit
+with virtual tags, it tries to match both the virtual tag and the physical tag.
+This approach prevents cache accesses from triggering a hit on lines with
+invalid translations, but it makes it possible for some invalid mappings to be
+present in the cache (and shown by the <b>status</b> command for example).
+<p>
+Some special instructions (atomic instructions in particular) can cause the STC
+counters to be off by about one memory access per million, which
+influences the total number of transactions reported by the cache.
+The UltraSPARC architecture should be free of this bug, while others may
+still trigger it in some circumstances. The workaround is to avoid using
+the STC if a very precise total transaction count is needed.
+<p>
+<b>g-cache</b> doesn't understand control transactions like cache
+flushes and cache line locking.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic96.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic98.html">Next</a></span></p>
+</body>
+</html>

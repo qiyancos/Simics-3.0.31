@@ -1,0 +1,111 @@
+#
+# You may have to modify the path to the CD-ROM image. The script below
+# assumes the name sol-8-hw4-sparc-v[1|2].iso for the images.
+# To use a different name, modify the script or use the cdrom-path
+# parameter in the GUI New Session dialog. 
+#
+# This installation may take a few hours.
+#
+# Use the chili-common.simics script to run with the new Solaris 8
+# installation.  
+#
+
+# Check for existing install disk file
+if `SIM_lookup_file("chili-sol8-install.disk")` {
+    echo "The file 'chili-sol8-install.disk' already exists."
+    echo "Move or delete this file before continuing."
+    echo ""
+    quit 1
+}
+
+# we don't want automatic login
+$do_login = "no"
+
+# path to CD-ROM, use default if none given by user setup variables.
+if not defined cdrom_path {
+    $cdrom_path = "sol-8-hw4-sparc-v1.iso"
+}
+if not defined cdrom2_path {
+    $cdrom2_path = `simenv.cdrom_path.replace('v1', 'v2')`
+}
+
+if not `SIM_lookup_file(simenv.cdrom_path)` {
+    echo "Cannot find the CD-ROM specified as : "  + $cdrom_path
+    echo "Please add this file, or edit the path in this script."
+    echo ""
+    quit 1
+}
+
+if not `SIM_lookup_file(simenv.cdrom2_path)` {
+    echo "Cannot find the CD-ROM specified as : "  + $cdrom_path
+    echo "Please add this file, or edit the path in this script."
+    echo ""
+    quit 1
+}
+
+echo "Using CD-ROM image file: " + $cdrom_path
+echo "                    and: " + $cdrom2_path
+
+$create_network = "yes"
+$disk_size = 9115287552
+$os = "none"
+
+run-command-file "%script%/chili-common.simics"
+
+@image = sim.objects[simenv.ide_disk].object_list['hd_image']
+@image.files = [["chili-sol8-install.disk", "rw", 0, simenv.disk_size]]
+
+# create a new vtoc on the disk, needed by Solaris
+($ide_disk.get-component-object hd).create-sun-vtoc-header -quiet 17662 16 63
+
+# create and insert CD media
+$cd = ($ide_cdrom.get-component-object cd)
+$cd.insert (new-file-cdrom $cdrom_path)
+
+$system.set-prom-defaults
+$system.set-prom-env nvramrc "devalias disk1 /pci@1e,600000/ide@d/disk@0,0"
+$system.set-prom-env diag-switch? true
+$system.set-prom-env use-nvramrc? true
+$system.set-prom-env diag-device  disk1
+$system.set-prom-env boot-command "boot -v"
+$system.set-prom-env auto-boot? false
+
+# remove previous log, if any
+@try:
+    os.unlink("chili-install-log.txt")
+except:
+    pass
+
+echo "Capturing output to 'chili-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "chili-install-log.txt"
+
+######################################
+
+run-command-file "%script%/../common/solaris8-install.include"
+
+script-branch {
+    $solaris8_phase1 = 1 # trigger script
+    $con.wait-for-string "rebooting..."
+    $cd.eject
+    $cd.insert (new-file-cdrom $cdrom2_path)
+    $solaris8_phase2 = 1 # trigger script
+    # rebooting after second phase
+    $con.wait-for-string "rebooting..."
+    $solaris8_phase3 = 1 # trigger script
+    $con.wait-for-string "ok "
+    stop "Installation complete"
+    $system.set-prom-env auto-boot? true
+    save-persistent-state chili-sol8.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Installation finished!"
+echo ""
+echo "Now exit Simics and use the chili-common.simics script to start the "
+echo "machine. Make sure that the $os variable is set to solaris8."
+echo ""

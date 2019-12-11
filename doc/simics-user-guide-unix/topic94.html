@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Speeding up g-cache simulation</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(226, true);
+</script>
+<a name="label531"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic93.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic95.html">Next</a></span></p>
+<h4 class="jdocu">18.8&nbsp;&nbsp;&nbsp;Speeding up g-cache simulation</h4 class="jdocu">
+
+
+<p>
+By default, <b>g-cache</b> will try to use the STCs to minimize the
+number of transactions that it has to handle while still providing correct
+statistics and behavior.
+<p>
+<dl><dt><b>Simulating a data cache</b></dt><dd>If you are only interested in data
+accesses, <b>g-cache</b> can use the Data STC and still provide correct
+statistics. To allow <b>g-cache</b> to use the Data STC, you should set
+the <i>penalty_read</i> and <i>penalty_write</i> to 0 (so that
+cache hits do not take any penalty). <b>g-cache</b> will then allow cache
+hit transactions to be saved in the Data STC and use its internal counters to
+report a correct number of total transactions, and thus correct ratios.
+<p>
+Note that when using the Data STC counters, <b>g-cache</b> can not
+determine to which memory space the accesses reported by the DSTC belong to, so
+you need to connect <b>g-cache</b> to all the memory spaces to which
+the processor is talking. In practice, the processor often talks to one main
+memory space and nothing special needs to be done. Sun's UltraSPARC machines,
+however, have separate physical memory and physical I/O spaces. The cache
+should then be connected to both of them.  Another way of solving this problem
+is to connect a small module that will prevent accesses to other memory spaces
+from being cached in the Data STC.</dd><dt><b>Simulating an instruction cache</b></dt><dd>When simulating an instruction
+cache, <b>g-cache</b> is able to use the Instruction STC to speed
+up the simulation and report the number of instruction misses, but it won't
+report the correct number of total transactions. If you wish to have a correct
+total amount of instruction fetches, you need to disable ISTC usage at the
+command-line with the <b>istc-disable</b> command.</dd></dl>
+<p>
+You can always prevent <b>g-cache</b> from using the STCs if you
+encounter one of the limitations mentioned later in this chapter, by setting
+the <i>config_block_STC</i> attribute of the cache to 1.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic93.html">Previous</a> - <a class="jdocu" href="topic86.html">Up</a> - <a class="jdocu" href="topic95.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Enterprise
+@sys.path += [SIM_native_path(conf.sim.simics_base + '/home/scripts')]
+@import x86_conf
+
+default-port-forward-target 10.10.0.15
+
+run-python-file enterprise-common.py
+
+#################
+
+@if "lance0" in dir(conf):
+    eval_cli_line("lance0.connect -auto net0")
+
+@def do_boot():
+    wait_for_hap_idx("Core_Step_Count", 100000000)
+    print "Pressing return"
+    if num_processors > 1 or threads_per_cpu > 1:
+        conf.kbd0.key_event[86] = 0        # arrow up, key 86, down
+        conf.kbd0.key_event[86] = 1        # arrow up, key 86, up
+        eval_cli_line("con0.input \"\n\"") # return
+    else:
+        eval_cli_line("con0.input \"\n\"") # return
+
+@if enter_in_boot_menu:
+        start_branch(do_boot)

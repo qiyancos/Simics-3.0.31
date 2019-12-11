@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>panther-mmu</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(1119, true);
+</script>
+<a name="label8487"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic189.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic191.html">Next</a></span></p>
+<h3 class="jdocu">panther-mmu</h3 class="jdocu">
+
+
+<a name="label8488"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2734">panther-mmu</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>panther-mmu</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic513.html#label17798">mmu</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The panther-mmu models the MMU in UltraSPARC-IV+ (Panther) processors.
+
+</dd>
+
+</dl>
+<a name="label8489"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>cpu</i></b></dt><a name="label8490"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Object</b>.
+<p>
+Processor that the MMU is connected to.</dd></dl>
+<dl><dt><b><i>ctxt_nucleus</i></b></dt><a name="label8491"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Nucleus context register (hardwired to zero).</dd></dl>
+<dl><dt><b><i>ctxt_primary</i></b></dt><a name="label8492"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Context identifier for the primary address space.</dd></dl>
+<dl><dt><b><i>ctxt_secondary</i></b></dt><a name="label8493"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Context identifier for the secondary address space.</dd></dl>
+<dl><dt><b><i>d_translation</i></b></dt><a name="label8494"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ii]</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Returns the D-TLB translation of a given address (read-only pseudo attribute).</dd></dl>
+<dl><dt><b><i>dcu_ctrl</i></b></dt><a name="label8495"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Load/Store Unit (DCU) control register.</dd></dl>
+<dl><dt><b><i>dsfar</i></b></dt><a name="label8496"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-MMU synchronous fault address register (SFAR).</dd></dl>
+<dl><dt><b><i>dsfsr</i></b></dt><a name="label8497"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-MMU synchronous fault status register (SFSR).</dd></dl>
+<dl><dt><b><i>dtag_access</i></b></dt><a name="label8498"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TLB tag access register.</dd></dl>
+<dl><dt><b><i>dtag_access_ex</i></b></dt><a name="label8499"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+D-TLB Tag Access Extension Register.</dd></dl>
+<dl><dt><b><i>dtag_target</i></b></dt><a name="label8500"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB tag target register.</dd></dl>
+<dl><dt><b><i>dtlb_2w_daccess</i></b></dt><a name="label8501"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{1024}]</b>.
+<p>
+DTLB Data Access Register (2-way set-associative TLB)</dd></dl>
+<dl><dt><b><i>dtlb_2w_tagread</i></b></dt><a name="label8502"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{1024}]</b>.
+<p>
+DTLB Tag Read Register (2-way set-associative TLB)</dd></dl>
+<dl><dt><b><i>dtlb_fa_daccess</i></b></dt><a name="label8503"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{16}]</b>.
+<p>
+DTLB Data Access Register (fully associative TLB)</dd></dl>
+<dl><dt><b><i>dtlb_fa_tagread</i></b></dt><a name="label8504"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{16}]</b>.
+<p>
+DTLB Tag Read Register (fully associative TLB)</dd></dl>
+<dl><dt><b><i>dtsb</i></b></dt><a name="label8505"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-translation storage buffer (TSB) register.</dd></dl>
+<dl><dt><b><i>dtsb_nx</i></b></dt><a name="label8506"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+DTSB Nucleus Extension Register</dd></dl>
+<dl><dt><b><i>dtsb_px</i></b></dt><a name="label8507"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+DTSB Primary Extension Register</dd></dl>
+<dl><dt><b><i>dtsb_sx</i></b></dt><a name="label8508"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+DTSB Secondary Extension Register</dd></dl>
+<dl><dt><b><i>dtsbp64k</i></b></dt><a name="label8509"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB 64Kb pointer register.</dd></dl>
+<dl><dt><b><i>dtsbp8k</i></b></dt><a name="label8510"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB 8Kb pointer register.</dd></dl>
+<dl><dt><b><i>dtsbpd</i></b></dt><a name="label8511"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+D-TSB direct pointer register.</dd></dl>
+<dl><dt><b><i>ec_control</i></b></dt><a name="label8512"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+E Cache Control Register</dd></dl>
+<dl><dt><b><i>ec_control_timing</i></b></dt><a name="label8513"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+ECache Control and Timing Register</dd></dl>
+<dl><dt><b><i>emu_act_status</i></b></dt><a name="label8514"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+EMU Activity Status Register</dd></dl>
+<dl><dt><b><i>i_translation</i></b></dt><a name="label8515"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ii]</b>; <b>integer</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Returns the D-TLB translation of a given address (read-only pseudo attribute).</dd></dl>
+<dl><dt><b><i>isfsr</i></b></dt><a name="label8516"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-MMU synchronous fault status register (SFSR).</dd></dl>
+<dl><dt><b><i>itag_access</i></b></dt><a name="label8517"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TLB tag access register.</dd></dl>
+<dl><dt><b><i>itag_target</i></b></dt><a name="label8518"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TSB tag target register.</dd></dl>
+<dl><dt><b><i>itlb_2w_daccess</i></b></dt><a name="label8519"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{512}]</b>.
+<p>
+ITLB Data Access Register (2-way set-associative TLB)</dd></dl>
+<dl><dt><b><i>itlb_2w_tagread</i></b></dt><a name="label8520"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{512}]</b>.
+<p>
+ITLB Tag Read Register (2-way set-associative TLB)</dd></dl>
+<dl><dt><b><i>itlb_fa_daccess</i></b></dt><a name="label8521"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{16}]</b>.
+<p>
+ITLB Data Access Register (fully associative TLB)</dd></dl>
+<dl><dt><b><i>itlb_fa_tagread</i></b></dt><a name="label8522"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{16}]</b>.
+<p>
+ITLB Tag Read Register (fully associative TLB)</dd></dl>
+<dl><dt><b><i>itsb</i></b></dt><a name="label8523"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-translation storage buffer (TSB) register.</dd></dl>
+<dl><dt><b><i>itsb_nx</i></b></dt><a name="label8524"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+ITSB Nucleus Extension Register</dd></dl>
+<dl><dt><b><i>itsb_px</i></b></dt><a name="label8525"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+ITSB Primary Extension Register</dd></dl>
+<dl><dt><b><i>itsbp64k</i></b></dt><a name="label8526"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TSB 64Kb pointer register.</dd></dl>
+<dl><dt><b><i>itsbp8k</i></b></dt><a name="label8527"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+I-TSB 8Kb pointer register.</dd></dl>
+<dl><dt><b><i>last_etag_write</i></b></dt><a name="label8528"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Internal: Last etag value written</dd></dl>
+<dl><dt><b><i>lfsr</i></b></dt><a name="label8529"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+LFSR register used to select replacement entry in set</dd></dl>
+<dl><dt><b><i>lsu_ctrl</i></b></dt><a name="label8530"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Alias for the DCU register (backward compatibility attribute).</dd></dl>
+<dl><dt><b><i>madr_1</i></b></dt><a name="label8531"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Address Decoder Register 1</dd></dl>
+<dl><dt><b><i>madr_2</i></b></dt><a name="label8532"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Address Decoder Register 2</dd></dl>
+<dl><dt><b><i>madr_3</i></b></dt><a name="label8533"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Address Decoder Register 3</dd></dl>
+<dl><dt><b><i>madr_4</i></b></dt><a name="label8534"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Address Decoder Register 4</dd></dl>
+<dl><dt><b><i>mem_address_control</i></b></dt><a name="label8535"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Address Control Register</dd></dl>
+<dl><dt><b><i>mem_tmg_1</i></b></dt><a name="label8536"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Timing Register 1</dd></dl>
+<dl><dt><b><i>mem_tmg_2</i></b></dt><a name="label8537"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Timing Register 2</dd></dl>
+<dl><dt><b><i>mem_tmg_3</i></b></dt><a name="label8538"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Timing Register 3</dd></dl>
+<dl><dt><b><i>mem_tmg_4</i></b></dt><a name="label8539"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Timing Register 4</dd></dl>
+<dl><dt><b><i>mem_tmg_5</i></b></dt><a name="label8540"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Memory Timing Register 5</dd></dl>
+<dl><dt><b><i>pa_watchpoint</i></b></dt><a name="label8541"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+PA Watchpoint Address</dd></dl>
+<dl><dt><b><i>registers</i></b></dt><a name="label8542"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>; <b>integer</b> or <b>string</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Used to translate between register index and register name for all MMU registers that can generate haps when written. When indexed with an integer, the name is returned, and vice versa. When not indexed, an array with all names is returned in (register index) order.</dd></dl>
+<dl><dt><b><i>trace</i></b></dt><a name="label8543"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+No documentation available.</dd></dl>
+<dl><dt><b><i>va_watchpoint</i></b></dt><a name="label8544"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+VA Watchpoint Address</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label8545"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8547">d-probe</a></b></td><td class="jdocu_noborder">check data TLB for translation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8549">d-tlb</a></b></td><td class="jdocu_noborder">print data TLB contents</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8551">i-probe</a></b></td><td class="jdocu_noborder">check instruction TLB for translation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8553">i-tlb</a></b></td><td class="jdocu_noborder">print instruction TLB contents</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8555">info</a></b></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8557">regs</a></b></td><td class="jdocu_noborder">print mmu registers</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8559">reverse-lookup</a></b></td><td class="jdocu_noborder">check TLBs for reverse translation</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label8561">trace</a></b></td><td class="jdocu_noborder">toggle trace functionality</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label8546"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label8547"></a><a name="label8548"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.d-probe</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.d-probe</b> <i>address</i> <br><b>&lt;panther-mmu&gt;.i-probe</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Translate a virtual address to physical<br>
+The translation is based on the mappings in the
+instruction or data TLB.<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label8549">&lt;panther-mmu&gt;.d-tlb</a></dd>
+
+</dl>
+
+
+
+<a name="label8549"></a><a name="label8550"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.d-tlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.d-tlb</b><br><b>&lt;panther-mmu&gt;.i-tlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+print the content of the data TLB<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label8547">&lt;panther-mmu&gt;.d-probe</a></dd>
+
+</dl>
+
+
+
+<a name="label8551"></a><a name="label8552"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.i-probe</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.i-probe</b> <i>address</i> <br><b>&lt;panther-mmu&gt;.d-probe</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Translate a virtual address to physical<br>
+The translation is based on the mappings in the
+instruction or data TLB.<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label8549">&lt;panther-mmu&gt;.d-tlb</a></dd>
+
+</dl>
+
+
+
+<a name="label8553"></a><a name="label8554"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.i-tlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.i-tlb</b><br><b>&lt;panther-mmu&gt;.d-tlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+print the content of the data TLB<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label8547">&lt;panther-mmu&gt;.d-probe</a></dd>
+
+</dl>
+
+
+
+<a name="label8555"></a><a name="label8556"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label8557"></a><a name="label8558"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.regs</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.regs</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the content of the panther-mmu MMU registers<br></dd>
+
+</dl>
+
+
+
+<a name="label8559"></a><a name="label8560"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.reverse-lookup</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.reverse-lookup</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+List mappings in all TLBs that matches the specified physical address<br></dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label8547">&lt;panther-mmu&gt;.d-probe</a></dd>
+
+</dl>
+
+
+
+<a name="label8561"></a><a name="label8562"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;panther-mmu&gt;.trace</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;panther-mmu&gt;.trace</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Toggles trace mode<br>
+When active, lists all changes to TLB entries and to MMU registers.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic189.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic191.html">Next</a></span></p>
+</body>
+</html>

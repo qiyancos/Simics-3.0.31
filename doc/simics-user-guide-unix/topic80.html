@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulator Translation Cache (STC)</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(206, true);
+</script>
+<a name="label481"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic79.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic81.html">Next</a></span></p>
+<h4 class="jdocu">16.4&nbsp;&nbsp;&nbsp;Simulator Translation Cache (STC)</h4 class="jdocu">
+
+
+<p>
+In order to improve the speed of the simulation, Simics does not perform all
+accesses through the memory spaces. The Simulator Translation Caches (STCs) try
+to serve most memory operations directly by caching relevant information. In
+particular, an STC is intended to contain the following:
+<p>
+<ul>
+<li>The current logical-to-physical translation for the address;</li>
+<li>A count of number of accesses to the address.</li>
+</ul>
+<p>
+The general idea is that the STC will contain information about "harmless"
+memory addresses, i.e., addresses where an access would not cause any device
+state change or side-effect. A particular memory address is mapped by the STC
+only if:
+<p>
+<ul>
+<li>The given logical-to-physical mapping is valid.</li>
+<li>An access would not affect the MMU (TLB) state.</li>
+<li>There are no breakpoints, callbacks, etc associated with the address.</li>
+</ul>
+<p>
+The contents of the STCs can be flushed at any time, so models using them to
+improve speed can not rely on a specific address being cached. They can
+however let the STCs cache addresses when further accesses to these addresses
+do not change the state of the model (this is used by cache simulation with
+<b>g-cache</b>; see chapter <a class="jdocu" href="topic86.html#label517">18</a>).
+<p>
+The STCs are activated by default. They can be turned on or off at the command
+prompt, using the <b>stc-enable/disable</b> functions. An object connected
+to the <tt>timing model</tt> interface can also mark a memory transaction
+so that it won't be cached by the STCs. For example, the <b>trace</b> module uses
+that method to ensure that no memory transaction will be cached, so that the
+trace will be complete. 
+<p>
+Note that since transactions are inserted into the STCs when they are executed,
+only objects connected to the <i>timing model</i> interface can influence
+the STCs' behavior. The <em>Simics Programming Guide</em> provides a complete
+description of the changes authorized on a memory transaction when using the
+memory hierarchy interface.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic79.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic81.html">Next</a></span></p>
+</body>
+</html>

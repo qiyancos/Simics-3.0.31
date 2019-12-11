@@ -1,0 +1,692 @@
+/* config/simics/host-config.h.in.  Generated from configure.in by autoheader.  */
+
+
+#ifndef _HOST_CONFIG_H_
+#define _HOST_CONFIG_H_ 1
+
+
+/* Define if -lbz2 uses BZ2_ as symbol-prefix */
+#undef BZLIB_HAS_BZ2_PREFIX
+
+/* Compiler version for CC */
+#undef COMPILER_VERSION_CC
+
+/* Compiler version for CXX */
+#undef COMPILER_VERSION_CXX
+
+/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
+   systems. This function is required for `alloca.c' support on those systems.
+   */
+#undef CRAY_STACKSEG_END
+
+/* Define to 1 if using `alloca.c'. */
+#undef C_ALLOCA
+
+/* Define to string containing directory separator character. */
+#undef DIR_SEP
+
+/* Define to directory separator character. */
+#undef DIR_SEP_CHAR
+
+/* Define to disable XFree86 DGA extensions. */
+#undef DISABLE_XDGA
+
+/* Define to disable X11 shared memory extensions. */
+#undef DISABLE_XPM
+
+/* Define to disable X11 shared memory extensions. */
+#undef DISABLE_XSHM
+
+/* Define to disable XFree86 video mode extensions. */
+#undef DISABLE_XVM
+
+/* Define if ether_aton() is declared */
+#undef ETHER_ATON_DECLARED
+
+/* Define if ether_ntoa() is declared */
+#undef ETHER_NTOA_DECLARED
+
+/* Define if host supports AF_UNIX type sockets */
+#undef HAVE_AF_UNIX
+
+/* Define to 1 if you have `alloca', as a function or macro. */
+#undef HAVE_ALLOCA
+
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
+#undef HAVE_ALLOCA_H
+
+/* Define to 1 if you have the <arpa/inet.h> header file. */
+#undef HAVE_ARPA_INET_H
+
+/* Define to 1 if you have the <bzlib.h> header file. */
+#undef HAVE_BZLIB_H
+
+/* Define to 1 if you have the <direct.h> header file. */
+#undef HAVE_DIRECT_H
+
+/* Define to 1 if you have the <dirent.h> header file. */
+#undef HAVE_DIRENT_H
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#undef HAVE_DLFCN_H
+
+/* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
+#undef HAVE_DOPRNT
+
+/* Define if libelf exists and is 64-bit */
+#undef HAVE_ELF64
+
+/* Define to 1 if you have the <elf.h> header file. */
+#undef HAVE_ELF_H
+
+/* Define to 1 if you have the `fcntl' function. */
+#undef HAVE_FCNTL
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#undef HAVE_FCNTL_H
+
+/* Define to 1 if you have the `ffs' function. */
+#undef HAVE_FFS
+
+/* Define to 1 if you have the `flock' function. */
+#undef HAVE_FLOCK
+
+/* Define to 1 if you have the `fpclass' function. */
+#undef HAVE_FPCLASS
+
+/* Define to 1 if you have the `fp_class' function. */
+#undef HAVE_FP_CLASS
+
+/* Define to 1 if you have the <fp_class.h> header file. */
+#undef HAVE_FP_CLASS_H
+
+/* Define to 1 if you have the `getloadavg' function. */
+#undef HAVE_GETLOADAVG
+
+/* Define to 1 if you have the `getpagesize' function. */
+#undef HAVE_GETPAGESIZE
+
+/* Define to 1 if you have the `getrusage' function. */
+#undef HAVE_GETRUSAGE
+
+/* Define to 1 if you have the `gettimeofday' function. */
+#undef HAVE_GETTIMEOFDAY
+
+/* Define to 1 if you have the <ieeefp.h> header file. */
+#undef HAVE_IEEEFP_H
+
+/* Define if inet_addr is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_INET_ADDR
+
+/* Define if inet_aton is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_INET_ATON
+
+/* Define if inet_network is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_INET_NETWORK
+
+/* Define if inet_ntoa is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_INET_NTOA
+
+/* Define if inet_ntop is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_INET_NTOP
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines int16 */
+#undef HAVE_INT16
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines int32 */
+#undef HAVE_INT32
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines int64 */
+#undef HAVE_INT64
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines int8 */
+#undef HAVE_INT8
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines intptr_t */
+#undef HAVE_INTPTR_T
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <io.h> header file. */
+#undef HAVE_IO_H
+
+/* Define to 1 if you have the `isinf' function. */
+#undef HAVE_ISINF
+
+/* Define if LIBBZ2 is available. */
+#undef HAVE_LIBBZ2
+
+/* Define if LIBDL is available. */
+#undef HAVE_LIBDL
+
+/* Define if LIBEFENCE is available. */
+#undef HAVE_LIBEFENCE
+
+/* Define if LIBELF is available. */
+#undef HAVE_LIBELF
+
+/* Define to 1 if you have the <libelf.h> header file. */
+#undef HAVE_LIBELF_H
+
+/* Define to 1 if you have the <libelf/libelf.h> header file. */
+#undef HAVE_LIBELF_LIBELF_H
+
+/* Define if LIBGCC is available. */
+#undef HAVE_LIBGCC
+
+/* Define if LIBIPHLPAPI is available. */
+#undef HAVE_LIBIPHLPAPI
+
+/* Define if LIBMLD is available. */
+#undef HAVE_LIBMLD
+
+/* Define if LIBNSL is available. */
+#undef HAVE_LIBNSL
+
+/* Define if LIBPCAP is available. */
+#undef HAVE_LIBPCAP
+
+/* Define if LIBPCL is available. */
+#undef HAVE_LIBPCL
+
+/* Define if LIBPTHREAD is available. */
+#undef HAVE_LIBPTHREAD
+
+/* Define if LIBREADLINE is available. */
+#undef HAVE_LIBREADLINE
+
+/* Define if LIBRT is available. */
+#undef HAVE_LIBRT
+
+/* Define if LIBSDL is available. */
+#undef HAVE_LIBSDL
+
+/* Define if LIBSOCKET is available. */
+#undef HAVE_LIBSOCKET
+
+/* Define if LIBST is available. */
+#undef HAVE_LIBST
+
+/* Define if LIBSTDCPP is available. */
+#undef HAVE_LIBSTDCPP
+
+/* Define if LIBUTIL is available. */
+#undef HAVE_LIBUTIL
+
+/* Define if LIBWIN32 is available. */
+#undef HAVE_LIBWIN32
+
+/* Define if LIBZ is available. */
+#undef HAVE_LIBZ
+
+/* Define to 1 if you have the <lmcons.h> header file. */
+#undef HAVE_LMCONS_H
+
+/* Define to 1 if long double works and has more range or precision than
+   double. */
+#undef HAVE_LONG_DOUBLE
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have a working `mmap' system call. */
+#undef HAVE_MMAP
+
+/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
+#undef HAVE_NDIR_H
+
+/* Define to 1 if you have the <netdb.h> header file. */
+#undef HAVE_NETDB_H
+
+/* Define to 1 if you have the <netinet/ether.h> header file. */
+#undef HAVE_NETINET_ETHER_H
+
+/* Define to 1 if you have the <netinet/if_ether.h> header file. */
+#undef HAVE_NETINET_IF_ETHER_H
+
+/* Define to 1 if you have the <netinet/in.h> header file. */
+#undef HAVE_NETINET_IN_H
+
+/* Define to 1 if you have the <netinet/in_systm.h> header file. */
+#undef HAVE_NETINET_IN_SYSTM_H
+
+/* Define to 1 if you have the <netinet/ip.h> header file. */
+#undef HAVE_NETINET_IP_H
+
+/* Define to 1 if you have the <netinet/ip_icmp.h> header file. */
+#undef HAVE_NETINET_IP_ICMP_H
+
+/* Define to 1 if you have the <netinet/net.h> header file. */
+#undef HAVE_NETINET_NET_H
+
+/* Define to 1 if you have the <netinet/tcp.h> header file. */
+#undef HAVE_NETINET_TCP_H
+
+/* Define to 1 if you have the <netinet/udp.h> header file. */
+#undef HAVE_NETINET_UDP_H
+
+/* Define to 1 if you have the <net/ethernet.h> header file. */
+#undef HAVE_NET_ETHERNET_H
+
+/* Define to 1 if you have the <net/if.h> header file. */
+#undef HAVE_NET_IF_H
+
+/* Define to 1 if you have the <objbase.h> header file. */
+#undef HAVE_OBJBASE_H
+
+/* Define to 1 if you have the <pcap.h> header file. */
+#undef HAVE_PCAP_H
+
+/* Define if poll is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_POLL
+
+/* Define to 1 if you have the <process.h> header file. */
+#undef HAVE_PROCESS_H
+
+/* Define to 1 if you have the <pthread.h> header file. */
+#undef HAVE_PTHREAD_H
+
+/* Define to 1 if you have the <pwd.h> header file. */
+#undef HAVE_PWD_H
+
+/* Define to 1 if you have the `readlink' function. */
+#undef HAVE_READLINK
+
+/* Define if select is available (SIM_CHECK_SOCKET_FUNC()) */
+#undef HAVE_SELECT
+
+/* Define to 1 if you have the <semaphore.h> header file. */
+#undef HAVE_SEMAPHORE_H
+
+/* Define to 1 if you have the <shlobj.h> header file. */
+#undef HAVE_SHLOBJ_H
+
+/* Define to 1 if you have the `sigaction' function. */
+#undef HAVE_SIGACTION
+
+/* Define to 1 if you have the <stat.h> header file. */
+#undef HAVE_STAT_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if cpp supports the ANSI # stringizing operator. */
+#undef HAVE_STRINGIZE
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strlcpy' function. */
+#undef HAVE_STRLCPY
+
+/* Define to 1 if you have the <stropts.h> header file. */
+#undef HAVE_STROPTS_H
+
+/* Define to 1 if you have the `strtok_r' function. */
+#undef HAVE_STRTOK_R
+
+/* Defined if struct ether_arp is declared. */
+#undef HAVE_STRUCT_ETHER_ARP
+
+/* Defined if struct ether_header is declared. */
+#undef HAVE_STRUCT_ETHER_HEADER
+
+/* Defined if struct icmp is declared. */
+#undef HAVE_STRUCT_ICMP
+
+/* Defined if struct ip is declared. */
+#undef HAVE_STRUCT_IP
+
+/* Define to 1 if `st_blocks' is member of `struct stat'. */
+#undef HAVE_STRUCT_STAT_ST_BLOCKS
+
+/* Define if struct timespec is defined */
+#undef HAVE_STRUCT_TIMESPEC
+
+/* Defined if struct udphdr is declared. */
+#undef HAVE_STRUCT_UDPHDR
+
+/* Define to 1 if your `struct stat' has `st_blocks'. Deprecated, use
+   `HAVE_STRUCT_STAT_ST_BLOCKS' instead. */
+#undef HAVE_ST_BLOCKS
+
+/* Define to 1 if you have the <syslog.h> header file. */
+#undef HAVE_SYSLOG_H
+
+/* Defined if system supports SYS/V style IPC */
+#undef HAVE_SYSV_IPC_SUPPORT
+
+/* Define to 1 if you have the <sys/cygwin.h> header file. */
+#undef HAVE_SYS_CYGWIN_H
+
+/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_DIR_H
+
+/* Define to 1 if you have the <sys/ethernet.h> header file. */
+#undef HAVE_SYS_ETHERNET_H
+
+/* Define to 1 if you have the <sys/fcntl.h> header file. */
+#undef HAVE_SYS_FCNTL_H
+
+/* Define to 1 if you have the <sys/file.h> header file. */
+#undef HAVE_SYS_FILE_H
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/ipc.h> header file. */
+#undef HAVE_SYS_IPC_H
+
+/* Define to 1 if you have the <sys/loadavg.h> header file. */
+#undef HAVE_SYS_LOADAVG_H
+
+/* Define to 1 if you have the <sys/mman.h> header file. */
+#undef HAVE_SYS_MMAN_H
+
+/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <sys/poll.h> header file. */
+#undef HAVE_SYS_POLL_H
+
+/* Define to 1 if you have the <sys/resource.h> header file. */
+#undef HAVE_SYS_RESOURCE_H
+
+/* Define to 1 if you have the <sys/sem.h> header file. */
+#undef HAVE_SYS_SEM_H
+
+/* Define to 1 if you have the <sys/shm.h> header file. */
+#undef HAVE_SYS_SHM_H
+
+/* Define to 1 if you have the <sys/socket.h> header file. */
+#undef HAVE_SYS_SOCKET_H
+
+/* Define to 1 if you have the <sys/sockio.h> header file. */
+#undef HAVE_SYS_SOCKIO_H
+
+/* Define to 1 if you have the <sys/statvfs.h> header file. */
+#undef HAVE_SYS_STATVFS_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/times.h> header file. */
+#undef HAVE_SYS_TIMES_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#undef HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <sys/uio.h> header file. */
+#undef HAVE_SYS_UIO_H
+
+/* Define to 1 if you have the <sys/un.h> header file. */
+#undef HAVE_SYS_UN_H
+
+/* Define to 1 if you have the <sys/utsname.h> header file. */
+#undef HAVE_SYS_UTSNAME_H
+
+/* Define to 1 if you have the <sys/vfs.h> header file. */
+#undef HAVE_SYS_VFS_H
+
+/* Define to 1 if you have the <sys/wait.h> header file. */
+#undef HAVE_SYS_WAIT_H
+
+/* Define to 1 if you have the <termios.h> header file. */
+#undef HAVE_TERMIOS_H
+
+/* Define to 1 if you have the <termio.h> header file. */
+#undef HAVE_TERMIO_H
+
+/* Define to 1 if you have the <ucontext.h> header file. */
+#undef HAVE_UCONTEXT_H
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines uint16 */
+#undef HAVE_UINT16
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines uint32 */
+#undef HAVE_UINT32
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines uint64 */
+#undef HAVE_UINT64
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines uint8 */
+#undef HAVE_UINT8
+
+/* Defined if sys/types.h, stdint.h or inttypes.h defines uintptr_t */
+#undef HAVE_UINTPTR_T
+
+/* Define to 1 if you have the `uname' function. */
+#undef HAVE_UNAME
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `usleep' function. */
+#undef HAVE_USLEEP
+
+/* Define to 1 if you have the <utime.h> header file. */
+#undef HAVE_UTIME_H
+
+/* Define to 1 if `utime(file, NULL)' sets file's timestamp to the present. */
+#undef HAVE_UTIME_NULL
+
+/* Define if your C compiler has C99 vararg macro support. */
+#ifndef __cplusplus
+#undef HAVE_VARARG_MACROS
+#endif
+
+
+/* Define if stdarg.h defines va_copy */
+#undef HAVE_VA_COPY
+
+#ifndef HAVE_VA_COPY
+#define va_copy(dest, src) do { (dest) = (src); } while (0)
+#endif
+
+
+/* Define to 1 if you have the `vprintf' function. */
+#undef HAVE_VPRINTF
+
+/* Define to 1 if you have the <w32api.h> header file. */
+#undef HAVE_W32API_H
+
+/* Define to 1 if you have the <windows.h> header file. */
+#undef HAVE_WINDOWS_H
+
+/* Define to 1 if you have the <winsock2.h> header file. */
+#undef HAVE_WINSOCK2_H
+
+/* Define to 1 if you have the <winsock.h> header file. */
+#undef HAVE_WINSOCK_H
+
+/* Define to 1 if you have the <zlib.h> header file. */
+#undef HAVE_ZLIB_H
+
+/* Define to 1 if you have the `_fpclass' function. */
+#undef HAVE__FPCLASS
+
+/* Include-file for LIBBZ2 */
+#undef LIBBZ2_INCLUDE
+
+/* Include-file for LIBDL */
+#undef LIBDL_INCLUDE
+
+/* Include-file for LIBEFENCE */
+#undef LIBEFENCE_INCLUDE
+
+/* Include-file for LIBELF */
+#undef LIBELF_INCLUDE
+
+/* Include-file for LIBGCC */
+#undef LIBGCC_INCLUDE
+
+/* Include-file for LIBIPHLPAPI */
+#undef LIBIPHLPAPI_INCLUDE
+
+/* Include-file for LIBMLD */
+#undef LIBMLD_INCLUDE
+
+/* Include-file for LIBNSL */
+#undef LIBNSL_INCLUDE
+
+/* Include-file for LIBPCAP */
+#undef LIBPCAP_INCLUDE
+
+/* Include-file for LIBPCL */
+#undef LIBPCL_INCLUDE
+
+/* Include-file for LIBPTHREAD */
+#undef LIBPTHREAD_INCLUDE
+
+/* Include-file for LIBREADLINE */
+#undef LIBREADLINE_INCLUDE
+
+/* Include-file for LIBRT */
+#undef LIBRT_INCLUDE
+
+/* Include-file for LIBSDL */
+#undef LIBSDL_INCLUDE
+
+/* Include-file for LIBSOCKET */
+#undef LIBSOCKET_INCLUDE
+
+/* Include-file for LIBSTDCPP */
+#undef LIBSTDCPP_INCLUDE
+
+/* Include-file for LIBST */
+#undef LIBST_INCLUDE
+
+/* Include-file for LIBUTIL */
+#undef LIBUTIL_INCLUDE
+
+/* Include-file for LIBWIN32 */
+#undef LIBWIN32_INCLUDE
+
+/* Include-file for LIBZ */
+#undef LIBZ_INCLUDE
+
+/* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
+   */
+#undef MAJOR_IN_MKDEV
+
+/* Define to 1 if `major', `minor', and `makedev' are declared in
+   <sysmacros.h>. */
+#undef MAJOR_IN_SYSMACROS
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define to string containing path separator character. */
+#undef PATH_SEP
+
+/* Define to path separator character. */
+#undef PATH_SEP_CHAR
+
+/* Using feedback when compiling */
+#undef PROFILE_DRIVEN_CC
+
+/* Define to 1 if the C compiler supports function prototypes. */
+#undef PROTOTYPES
+
+/* Define as the return type of signal handlers (`int' or `void'). */
+#undef RETSIGTYPE
+
+/* Define to 1 if the `setvbuf' function takes the buffering type as its
+   second argument and the buffer pointer as the third, as on System V before
+   release 3. */
+#undef SETVBUF_REVERSED
+
+/* Define to the hosts shared object prefix */
+#undef SO_PREFIX
+
+/* Define to the hosts shared object suffix */
+#undef SO_SFX
+
+/* If using the C implementation of alloca, define if you know the
+   direction of stack growth for your system; otherwise it will be
+   automatically deduced at run-time.
+        STACK_DIRECTION > 0 => grows toward higher addresses
+        STACK_DIRECTION < 0 => grows toward lower addresses
+        STACK_DIRECTION = 0 => direction of growth unknown */
+#undef STACK_DIRECTION
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#undef TIME_WITH_SYS_TIME
+
+/* Define to 1 if your <sys/time.h> declares `struct tm'. */
+#undef TM_IN_SYS_TIME
+
+/* Define to enable support for the ElectricFence debugging tool */
+#undef USE_ELECTRIC_FENCE
+
+/* Define to enable format string warnings for vtprintf and co */
+#undef USE_VTPRINTF_FORMAT_WARNINGS
+
+/* Define to 1 if your processor stores words with the most significant byte
+   first (like Motorola and SPARC, unlike Intel and VAX). */
+#undef WORDS_BIGENDIAN
+
+/* Define to 1 if the X Window System is missing or not being used. */
+#undef X_DISPLAY_MISSING
+
+/* Define to 1 if type `char' is unsigned and you are not using gcc.  */
+#ifndef __CHAR_UNSIGNED__
+# undef __CHAR_UNSIGNED__
+#endif
+
+/* Define like PROTOTYPES; this can be used by system headers. */
+#undef __PROTOTYPES
+
+/* Define as the C compiler's restrict keyword, or nothing if not supported */
+#undef c_restrict
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#undef const
+
+/* Define as the C++ compiler's restrict keyword, or nothing if not supported
+   */
+#undef cplusplus_restrict
+
+/* Define as `__inline' if that's what the C compiler calls it, or to nothing
+   if it is not supported. */
+#ifndef __cplusplus
+#undef inline
+#endif
+
+
+#ifdef __cplusplus
+#  define RESTRICT cplusplus_restrict
+#else
+#  define RESTRICT c_restrict
+#endif
+
+#endif /* _HOST_CONFIG_H_ */
+

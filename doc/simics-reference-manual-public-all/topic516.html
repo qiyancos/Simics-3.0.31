@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>pci_bus</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2256, true);
+</script>
+<a name="label17804"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic515.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic517.html">Next</a></span></p>
+<h3 class="jdocu">pci_bus</h3 class="jdocu">
+
+
+<a name="label17805"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic204.html#label8688">pci-bus</a>, <a class="jdocu" href="topic226.html#label8913">pcie-switch</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   No documentation available!
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        exception_type_t (*memory_access)(conf_object_t *obj,
+                                          generic_transaction_t *mem_op);
+        void (*raise_interrupt)(conf_object_t *obj, conf_object_t *dev,
+                                int pin);
+        void (*lower_interrupt)(conf_object_t *obj, conf_object_t *dev,
+                                int pin);
+        int (*interrupt_acknowledge)(conf_object_t *obj);
+        int (*add_map)(conf_object_t *obj, conf_object_t *dev,
+                       addr_space_t space, conf_object_t *target,
+                       map_info_t info);
+        int (*remove_map)(conf_object_t *obj, conf_object_t *dev,
+                          addr_space_t space, int function);
+        void (*set_bus_number)(conf_object_t *obj, int bus_id);
+        void (*set_sub_bus_number)(conf_object_t *obj, int bus_id);
+        void (*add_default)(conf_object_t *obj, conf_object_t *dev,
+                            addr_space_t space, conf_object_t *target,
+                            map_info_t info);
+        void (*remove_default)(conf_object_t *obj, addr_space_t space);
+        void (*bus_reset)(conf_object_t *obj);
+        void (*special_cycle)(conf_object_t *obj, uint32 value);
+        void (*system_error)(conf_object_t *obj);
+
+        int (*get_bus_address)(conf_object_t *obj, conf_object_t *dev);
+
+        void (*set_device_timing_model)(conf_object_t *obj,
+                                        conf_object_t *dev,
+                                        conf_object_t *timing_model);
+        // Only available since build 1318
+        void (*set_device_status)(conf_object_t *obj, int device, int function,
+                                  int enabled);
+} pci_bus_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic515.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic517.html">Next</a></span></p>
+</body>
+</html>

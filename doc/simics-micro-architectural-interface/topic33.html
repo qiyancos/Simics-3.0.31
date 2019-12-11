@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_end()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(62, true);
+</script>
+<a name="label329"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic32.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic34.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_end()</h4 class="jdocu">
+
+<a name="label330"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label331"></a><b>SIM_instruction_end</b> &#8212; deallocate an instruction</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_end(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function deallocates the data structures previously allocated by
+   <b><i>SIM_instruction_begin</i></b>. The instruction can be ended if it is not
+   yet inserted in the instruction tree or if it is committed
+   (<b><i>SIM_instruction_proceed</i></b>, <b><i>SIM_instruction_commit</i></b>). To
+   remove an inserted instruction use <b><i>SIM_instruction_squash</i></b>.
+<p>
+   <i>ii</i> is the id of the instruction to deallocate.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is
+                         illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+<tt>Sim_IE_OK</tt> on success,<br>
+                           <tt>Sim_IE_Not_Committed</tt> if the
+                           instruction is not committed.</dd>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic30.html#label321">SIM_instruction_begin</a>, <a class="jdocu" href="topic47.html#label381"> SIM_instruction_proceed</a>, <a class="jdocu" href="topic53.html#label403">
+   SIM_instruction_squash</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic32.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic34.html">Next</a></span></p>
+</body>
+</html>

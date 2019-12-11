@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Logging</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(74, true);
+</script>
+<a name="label152"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+<h3 class="jdocu">6.6&nbsp;&nbsp;&nbsp;Logging</h3 class="jdocu">
+
+
+<a name="label153"></a>
+<p>
+Logging in C or Python is handled by the <b><i>SIM_log_register_group()</i></b>
+and <b><i>SIM_log_message()</i></b> functions.
+<p>
+<a name="label154"></a>A single call to
+<b><i><a name="label155">SIM_log_register_groups</a>()</i></b> registers all groups for the
+class. The function is used as:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_log_register_groups(class, gnames)
+
+<b>// In C</b>
+SIM_log_register_groups(conf_class_t *cls, const char **gnames)
+</pre>
+<p>
+where the parameters are:
+<p>
+<dl><dt><b><i>classname</i></b></dt><dd>The name of the Simics class in Python,
+and the class structure in C.</dd><dt><b><i>groupnames</i></b></dt><dd>A tuple of strings in Python, and a
+NULL-terminated array of strings in C.</dd></dl>
+<p>
+An example:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_log_register_groups("sample-device", ("config", "request", "response"))
+
+<b>// In C</b>
+static char *groupnames[] = { "config", "request", "response", NULL };
+SIM_log_register_groups(my_class, &amp;groupnames);
+</pre>
+<p>
+The log group values will be defined by the order of the strings in the tuple
+as a power of 2 series, so in the example above "config" corresponds to 1,
+"request" corresponds to 2 and "response" corresponds to 4.
+<p>
+Log outputs is handled with the <b><i><a name="label156">SIM_log_message</a>()</i></b>
+function. It takes the following parameters:
+<p>
+<pre class="jdocu_small" style="color: black">
+<b># In Python</b>
+SIM_log_message(obj, level, groups, type, msg)
+
+<b>// In C</b>
+void
+SIM_log_message(conf_object_t *obj,
+                int level,
+                int groups,
+                log_type_t type,
+                const char *msg);
+</pre>
+<p>
+with the parameters meaning:
+<p>
+<dl><dt><b><i>obj</i></b></dt><dd>The log object instance.</dd><dt><b><i>level</i></b></dt><dd>An integer from 1 through 4, determining the
+lowest verbosity level at which the message will be logged.</dd><a name="label157"></a><dt><b><i>groups</i></b></dt><dd>The bitwise or:ed values of one or several
+log-groups. If no log groups have been registered, 1 is a good value to
+use.</dd><dt><b><i>type</i></b></dt><dd>One of:
+    <ul>
+    <a name="label158"></a>
+    <li><tt>Sim_Log_Error</tt></li>
+    <li><tt>Sim_Log_Info</tt></li>
+    <li><tt>Sim_Log_Spec_Violation</tt></li>
+    <li><tt>Sim_Log_Target_Error</tt></li>
+    <li><tt>Sim_Log_Undefined</tt></li>
+    <li><tt>Sim_Log_Unimplemented</tt></li>
+    </ul>
+</dd><dt><b><i>msg</i></b></dt><dd>The string to log.</dd></dl>
+<p>
+<a name="label159"></a><h4 class="jdocu">Python</h4 class="jdocu">
+
+
+<p>
+A <b><i>SIM_log_message()</i></b> example:
+<p>
+<pre class="jdocu_small" style="color: black">
+def get_counter_array(arg, obj, idx):
+    SIM_log_message(obj, 4, 1, Sim_Log_Info, "get_counter_array")
+    if idx != None:
+        if isinstance(idx, (int, long)):
+            SIM_log_message(obj, 1, 1, Sim_Log_Error,
+                            "index must be integer")
+            return None
+        return obj.object_data.vcounter[idx]
+    else:
+        return obj.object_data.vcounter
+</pre>
+<p>
+<a name="label160"></a><h4 class="jdocu">C/C++</h4 class="jdocu">
+
+
+<p>
+Logging from a Simics module written in C/C++ is made easier and clearer by the
+macros <b><i>SIM_log_info()</i></b>, <b><i>SIM_log_error()</i></b>,
+<b><i>SIM_log_undefined()</i></b>, <b><i>SIM_log_spec_violation()</i></b>,
+<b><i>SIM_log_target_error()</i></b> and <b><i>SIM_log_unimplemented()</i></b>. These
+macros use internally the function <b><i>SIM_log_message()</i></b>, and should
+always be used instead.
+<p>
+The usage is identical for all, except that <b><i>SIM_log_error()</i></b> does not
+have a level parameter. The prototypes are:
+<p>
+<pre class="jdocu_small" style="color: black"> 
+static void SIM_log_info(int lvl, log_object_t *dev, int grp, 
+                         const char *str, ...);
+
+static void
+SIM_log_undefined(int lvl, log_object_t *dev, int grp,
+                  const char *str, ...);
+
+static void
+SIM_log_spec_violation(int lvl, log_object_t *dev, int grp,
+                       const char *str, ...);
+
+static void
+SIM_log_target_error(int lvl, log_object_t *dev, int grp,
+                     const char *str, ...);
+
+static void
+SIM_log_unimplemented(int lvl, log_object_t *dev, int grp,
+                      const char *str, ...);
+
+static void
+SIM_log_error(log_object_t *dev, int grp,
+              const char *str, ...);
+</pre>
+<p>
+The parameters are identical to the <b><i>SIM_log_message()</i></b> function
+described above. Note that the macros take a variable number of arguments to
+allow you to write <b><i>printf()</i></b>-like strings.
+<p>
+A small example:
+<p>
+<pre class="jdocu_small" style="color: black">
+static attr_value_t
+get_counter_array(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        my_object_t *mo = (my_object_t *)obj;
+
+        SIM_log_info(4, obj, 1, "get_counter_array");
+        if (idx-&gt;kind != Sim_Val_Nil) {
+                if (idx-&gt;kind != Sim_Val_Integer)
+                        SIM_log_error(obj, 1,
+                                      "Index must be integer");
+                        return SIM_make_attr_invalid();
+
+                return SIM_make_attr_integer(mo-&gt;foo[idx-&gt;u.integer]);
+        }
+        else {
+                attr_value_t ret = SIM_alloc_attr_list(10);
+                int i;
+                for (i = 0; i &lt; 10; i++) {
+                        ret.u.list.vector[i] =
+                                SIM_make_attr_integer(mo-&gt;foo[i]);
+                }
+                return ret;
+        }
+}
+</pre>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic29.html">Previous</a> - <a class="jdocu" href="topic24.html">Up</a> - <a class="jdocu" href="topic31.html">Next</a></span></p>
+</body>
+</html>

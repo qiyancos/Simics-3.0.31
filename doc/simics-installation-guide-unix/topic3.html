@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>User Workspace Setup</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(24, true);
+</script>
+<a name="label26"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+<h2 class="jdocu">4&nbsp;&nbsp;&nbsp;User Workspace Setup</h2 class="jdocu">
+
+
+<p>
+A Simics User Workspace is a directory containing Simics files such as user
+developed modules and customized setup scripts. The
+<tt>[simics]/bin/workspace-setup</tt> utility simplifies the management
+of workspaces, for example upgrading to a new Simics version.
+<p>
+<a name="label27"></a><h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;Creating a User Workspace</h3 class="jdocu">
+
+
+<p>
+To create a workspace, run the <tt>workspace-setup</tt> with the
+name of a workspace directory to create. It is also possible to run
+the script with no arguments from an empty directory.
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>[simics]/bin/workspace-setup workspace</b>
+</pre>
+This will create a workspace with the name <tt>workspace</tt>. The
+workspace will contain Simics start scripts, machine scripts and makefiles
+for building user-developed Simics modules.
+<p>
+To start Simics, without a machine configuration, run the <tt>simics</tt>
+script in the workspace directory:
+<pre class="jdocu_small" style="color: black">
+$ <b>cd workspace</b>
+$ <b>./simics</b>
+</pre>
+<p>
+
+<a name="label28"></a><h3 class="jdocu">4.2&nbsp;&nbsp;&nbsp;Upgrading to a New Version</h3 class="jdocu">
+
+
+To upgrade to a new Simics version, run the <tt>workspace-setup</tt> for
+the new version from an existing workspace directory. For example, if
+<tt>workspace</tt> was created for Simics 3.0.0, the following commands
+shows how it can be upgraded to Simics 3.0.1.
+<pre class="jdocu_small" style="color: black">
+$ <b>cd workspace</b>
+$ <b>/opt/virtutech/simics-3.0.1/bin/workspace-setup</b>
+</pre>
+The new version does not have to be a more recent one. It is possible to
+upgrade a workspace to an older version of Simics, if it also supports user
+workspaces.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic2.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic4.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,11 @@
+import-std-components
+$eth_link = (create-std-ethernet-link link)
+
+set-component-prefix e1_
+run-command-file "%script%/enterprise-dhcp-common.simics"
+
+$mac_address = "10:10:10:10:10:31"
+$ip_address   = "10.10.0.16"
+$host_name    = "enterprise2"
+set-component-prefix e2_
+run-command-file "%script%/enterprise-dhcp-common.simics"

@@ -1,0 +1,25 @@
+$ip_address = 10.10.0.50
+$mac_address  = "00:04:ac:00:50:00"
+$host_name = "ebony0"
+$create_network = "yes"
+set-component-prefix "ebony0_"
+run-command-file "%script%/ebony-linux-common.simics"
+$create_network = "no"
+
+$ip_address = 10.10.0.51
+$mac_address  = "00:04:ac:00:50:01"
+$host_name = "ebony1"
+set-component-prefix "ebony1_"
+run-command-file "%script%/ebony-linux-common.simics"
+
+$ip_address = 10.10.0.52
+$mac_address  = "00:04:ac:00:50:02"
+$host_name = "ebony2"
+set-component-prefix "ebony2_"
+run-command-file "%script%/ebony-vxworks-common.simics"
+
+$ip_address = 10.10.0.53
+$mac_address  = "00:04:ac:00:50:03"
+$host_name = "ebony3"
+set-component-prefix "ebony3_"
+run-command-file "%script%/ebony-vxworks-common.simics"

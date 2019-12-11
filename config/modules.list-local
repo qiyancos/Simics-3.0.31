@@ -1,0 +1,31 @@
+#
+# This file can be used to group several modules together with common
+# make target names. E.g. 'make mygroup' builds all user modules.
+#
+# Some notes on formatting:
+#  * The | character is treated as a space.
+#  * Group names may not start with - or +
+#
+#  * Groups:
+#    <name> <dependency group>*
+#
+#  * Modules:
+#    <name> <variants> <group>* [+<do-host-sub-str>*] [-<no-host-sub-str>*]
+#
+#    + <name> must be the same as the module directory
+#
+#    + <variants> obsolete, should be MODULE for now
+#
+#    + The <do-host-sub-str> and <no-host-sub-str> define substrings that will
+#      be matched with the name of the current build host type.
+#      If <do-...> matches, the module will only be compiled if the
+#      sub-string matches. <no-...> is the opposite.
+
+## groups:
+
+mygroup   |    |
+
+## modules: (example)
+
+sample-device             | MODULE | mygroup
+sample-device-python      | MODULE | mygroup

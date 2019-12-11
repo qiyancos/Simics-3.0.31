@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>map_demap</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2248, true);
+</script>
+<a name="label17780"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic508.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic510.html">Next</a></span></p>
+<h3 class="jdocu">map_demap</h3 class="jdocu">
+
+
+<a name="label17781"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic164.html#label7795">memory-space</a>, <a class="jdocu" href="topic249.html#label9265">port-space</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Interface used to dynamically add and remove mappings in a memory space.
+   The first argument to all functions, <i>space</i> is the memory
+   space to map an object in. The <i>dev</i> argument is the object to
+   map or unmap. This object must implement one of the following interfaces:
+   <tt>io_memory</tt>, <tt>_ram</tt>, <tt>_rom</tt>,
+   <tt>port_space</tt>, <tt>translate</tt>, <tt>bridge</tt>
+   and <tt>memory_space</tt>. If the object implements one of the last
+   two interfaces, the <i>target</i> argument must be supplied with an
+   object of the class that the translator/bridge maps to.
+   <p>
+   The <i>function</i> argument to <b><i>remove_map</i></b> is the
+   identification number of a specific mapping, specified in the
+   <i>map_info</i> structure when the mapping was created by
+   <b><i>add_map</i></b>.
+<p>
+   An object implementing the <tt>translate</tt> may have a target
+   object that implements one of <tt>memory_space</tt>,
+   <tt>_ram</tt> and <tt>_rom</tt>. This means that a translator
+   object can translate an address into a new memory space, or a RAM/ROM
+   object. The <i>target</i> argument may be set to NULL. Then the
+   target has to be provided by the translator on each access, and it is
+   assumed to be of the default memory space class.
+<p>
+   An object implementing the <tt>bridge</tt> must have a target object
+   that implements the <tt>memory_space</tt>.
+<p>
+   The <b><i>add_default</i></b> function adds a mapping that is used for accesses
+   to addresses without any other mapping. Default mappings can not map to
+   objects that implement the <tt>_ram</tt> or <tt>_rom</tt>.
+<p>
+   All functions in the <tt>map_demap</tt> return 1 on success and 0 on
+   failure.
+<p>
+   More information about the different kinds of memory space mappings is
+   available in the Simics User Guide.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        int (*add_map)(conf_object_t *NOTNULL space,
+                       conf_object_t *NOTNULL dev,
+                       conf_object_t *target,
+                       map_info_t map_info);
+        int (*remove_map)(conf_object_t *NOTNULL space,
+                          conf_object_t *NOTNULL dev,
+                          int function);
+        int (*add_default)(conf_object_t *NOTNULL space,
+                           conf_object_t *NOTNULL dev,
+                           conf_object_t *target,
+                           map_info_t map_info);
+        void (*remove_default)(conf_object_t *NOTNULL space);
+} map_demap_interface_t;
+
+#define MAP_DEMAP_INTERFACE "map_demap"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic508.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic510.html">Next</a></span></p>
+</body>
+</html>

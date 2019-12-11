@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Info And Status Commands</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(103, true);
+</script>
+<a name="label207"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic36.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic38.html">Next</a></span></p>
+<h3 class="jdocu">7.4&nbsp;&nbsp;&nbsp;Info And Status Commands</h3 class="jdocu">
+
+
+<p>
+To simplify the creation of <b>info</b> and <b>status</b>
+commands, there are a couple of helper functions that make it easy to
+add these commands and have the output formatted in a standard
+fashion.  Instead of calling <b><i><a name="label208">new_command</a></i></b>
+directly, you call <b><i><a name="label209">new_info_command</a></i></b> and
+<b><i><a name="label210">new_status_command</a></i></b>.  The functions you provide to
+these functions should not print anything directly, instead they should
+return the information to be printed.
+<p>
+<a name="label211"></a><h4 class="jdocu">7.4.1&nbsp;&nbsp;&nbsp;Example</h4 class="jdocu">
+
+
+<pre class="jdocu_small" style="color: black">
+import sim_commands
+
+def get_info(obj):
+    return [("Connections",
+             [("Up",   obj.up),
+              ("Down", obj.down)]),
+            ("Sizes",
+             [("Width",  obj.width),
+              ("Height", obj.height),
+              ("Area",   obj.width * obj.height)])]
+
+sim_commands.new_info_command('sample-device', get_info)
+
+def get_sample_status(obj):
+    return [(None,
+             [("Attribute 'value'", obj.value)])]
+
+sim_commands.new_status_command('sample-device', get_status)
+</pre>
+<a name="label212"></a><h4 class="jdocu">7.4.2&nbsp;&nbsp;&nbsp;Information Structure</h4 class="jdocu">
+
+
+<p>
+The data returned from the functions should be a list of
+<em>sections</em>, where each section is a tuple of a section
+title and a list of entries.  The section title should be a string or
+<tt>None</tt>.  An entry is a tuple of a name and a value.  The name
+is a string, and the value can be just about anything.
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic36.html">Previous</a> - <a class="jdocu" href="topic33.html">Up</a> - <a class="jdocu" href="topic38.html">Next</a></span></p>
+</body>
+</html>

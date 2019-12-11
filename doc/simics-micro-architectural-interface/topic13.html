@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations in the Simics MAI Implementation</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(41, true);
+</script>
+<a name="label196"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+<h3 class="jdocu">4.6&nbsp;&nbsp;&nbsp;Limitations in the Simics MAI Implementation</h3 class="jdocu">
+
+
+<p>
+<ul>
+<p>
+<li>Simics does not currently have an <a name="label197">address calculation phase</a>
+which means that the address for a store instruction is calculated when
+<em>all</em> input registers are known, not as soon as the registers used in
+the address calculation are known. This may cause a store to prevent other
+operations from running as soon as they could have, and thus limit the
+parallelism achievable by the model more than what is theoretically
+necessary.</li>
+<p>
+<li>(<i>SPARC only</i>): Block loads <a name="label198">block operation</a> and stores obey
+register dependences, but the hardware does not. As long as the running code is
+written so that it does not rely on pipeline effects, this limitation should
+not be a problem.</li>
+<p>
+<li>The instructions tree is not saved in a <a name="label199">checkpoint</a>. Only the
+committed <a name="label200">architectural state</a> and retired stores are saved.</li> 
+<p>
+<li>Some x86 transactions are non-stallable and will bypass the <a name="label201">LSQ</a>. This
+includes stack transactions performed when taking an interrupt or an exception,
+hardware tablewalks, saving the entire fp state or doing a 10-byte fp
+read/write.</li>
+<p>
+</ul>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+</body>
+</html>

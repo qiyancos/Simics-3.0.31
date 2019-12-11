@@ -1,0 +1,34 @@
+// ieee_802_3.dml
+//
+// This module contains types needed when using or implementing PHY interfaces
+
+dml 1.0;
+
+header %{
+#include <simics/devs/ieee_802_3.h>
+%}
+
+constant IEEE_link_unconnected = 0;
+constant IEEE_link_down = 1;
+constant IEEE_link_up = 2;
+
+typedef int ieee_802_3_link_status_t;
+
+typedef struct {    
+        int send_frame(conf_object_t *obj, dbuffer_t *buf, int replace_crc);
+        int check_tx_bandwidth(conf_object_t *obj);     
+} ieee_802_3_phy_interface_t;
+
+typedef struct {    
+        void add_mac(conf_object_t *obj, uint8 *mac);
+        void del_mac(conf_object_t *obj, uint8 *mac);
+        void set_promiscous_mode(conf_object_t *obj, int enable);
+} ieee_802_3_extra_phy_interface_t;
+
+typedef struct {
+        int receive_frame(conf_object_t *obj, int phy,
+                          dbuffer_t *buf, int crc_ok);
+        void tx_bandwidth_available(conf_object_t *obj, int phy);
+        void link_status_changed(conf_object_t *obj, int phy,
+                                 ieee_802_3_link_status_t status);
+} ieee_802_3_mac_interface_t;

@@ -1,0 +1,9 @@
+/*
+ * DML import file:  declaration of simple_interface_t
+ * Copyright 2005-2007 Virtutech AB
+ */
+dml 1.0;
+
+struct simple_interface_t {
+    void (*simple_function)(conf_object_t *obj);
+}

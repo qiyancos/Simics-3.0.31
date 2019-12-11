@@ -1,0 +1,17 @@
+#
+# telos-mote-setup.include
+#  
+# Simics script run after the hardware of a mote has been setup, 
+# to load the software onto it. 
+#
+if not defined mote_binary 	    {$mote_binary = "images/Blink/main.bin"}
+if not defined start_address  	{$start_address = 0x4000}
+
+#
+# Load a program binary and reset CPU so that it starts 
+# at the right place.
+#
+$memspace = ($system.get-component-object phys_mem)
+$memspace.load-file $mote_binary $start_address
+$cpu = ($system.get-component-object cpu)
+$cpu.reset

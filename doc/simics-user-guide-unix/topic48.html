@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Preparing for the Examples</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(131, true);
+</script>
+<a name="label305"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic47.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic49.html">Next</a></span></p>
+<h4 class="jdocu">10.3&nbsp;&nbsp;&nbsp;Preparing for the Examples</h4 class="jdocu">
+
+
+<p>
+The examples in section <a class="jdocu" href="topic49.html#label306">10.4</a> use the
+simulated machine <em>enterprise</em>. It is a simulated x86 machine (PC) with
+a Red Hat Linux 7.3 installation. Unfortunately enterprise does not have any
+services running that can be used to test access from the real network to the
+simulated machine by default. To get around this we can turn on the
+<em>echo</em> service on TCP port 7.
+<p>
+To be able to try more than one example without repeating the configuration
+steps, you can prepare a checkpoint that you can then start from when trying
+the examples. Simply follow these steps:
+<p>
+<ol>
+<p>
+    <li>Start Simics with <tt>enterprise-common.simics</tt> script in
+    <tt>[simics]/targets/x86-440bx</tt> directory.</li>
+<p>
+    <li>The simulation of the enterprise machine can be very fast, so you may
+    want to run the <b>enable-real-time-mode</b> command at the Simics
+    prompt. This will limit the simulation speed to real-time speed, so that
+    the screen saver will not kick in annoyingly fast.</li>
+<p>
+    <li>Start the simulation and let the enterprise machine boot. Log in as
+    <tt>root</tt> when you get to the login prompt. No password is
+    required.</li>
+<p>
+    <li>Start <tt>pico</tt>, a simple text editor, to edit the file
+    <tt>/etc/xinetd.d/echo</tt>:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>pico /etc/xinetd.d/echo</b>
+</pre>
+<p>
+    If you prefer <em>Emacs</em> or <em>vi</em>, those editors are also
+    available.</li>
+<p>
+    <li>Change the line that reads
+<p>
+<pre class="jdocu_small" style="color: black">
+        disable         = yes
+</pre>
+<p>
+to
+<p>
+<pre class="jdocu_small" style="color: black">
+        disable         = no
+</pre>
+<p>
+    You can use the arrow keys to navigate in the file.</li>
+<p>
+    <li>Press <tt>Ctrl</tt> and <tt>o</tt> to save the file. Press return when
+    asked for the file name.</li>
+<p>
+    <li>Press <tt>Ctrl</tt> and <tt>x</tt> to exit <tt>pico</tt>.</li>
+<p>
+    <li>Restart the server handling the echo port:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>/etc/init.d/xinetd restart</b>
+</pre>
+<p>
+    You should see a couple of messages about the <tt>xinetd</tt> service
+    stopping and starting again.</li>
+<p>
+    <li>To verify that the echo service started successfully, telnet to the
+    echo port.
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>telnet localhost 7</b>
+</pre>
+<p>
+    Type a line of text and press enter, and it should be echoed on the
+    simulated console.
+<p>
+    To quit the telnet session, first press <tt>Ctrl</tt> and <tt>5</tt>, and
+    then type <tt>q</tt> and press enter at the <tt>telnet&gt;</tt> prompt that
+    appears.</li>
+<p>
+
+    <li>Save a checkpoint using the <b>write-configuration</b> command now
+    that the simulated machine has been configured. You can then restart from
+    this point if you want to try several of the examples, or if you run into
+    problems.</li>
+<p>
+
+
+</ol>
+<p>
+In the examples, the simulated machine sometimes needs to be
+reconfigured. Since it is running Linux, the Linux configuration commands are
+used. If you are using a simulated machine with a different operating system
+you should configure the simulated machine similarly, but the commands may of
+course be different.
+<p>
+In the examples, the simulation host has the IP address 10.0.0.129 and the real
+host that communicates with the simulated network has the IP address
+10.0.0.240. You should generally replace these addresses with the address of
+your simulation host and another host on the your real network.
+<p>
+The enterprise machine uses its default IP address 10.10.0.15.
+<p>
+
+The examples assume that you have a host on the real network that you can
+telnet to. You should check that you can telnet from the simulation host to the
+other real host. Just run <tt>telnet &lt;ip&gt;</tt> in a terminal window,
+where <i>&lt;ip&gt;</i> is the IP address of the other real host. If that does
+not work, you should not expect to be able to telnet from the simulated machine
+either.
+<p>
+
+If you do not have any hosts that accept telnet connections on your network,
+you can test the connection by entering <tt>GET / HTTP/1.0</tt> and a blank
+line to port 80 of a web server on your network instead. This should return the
+HTML content of the start page of the server. Here 64.233.161.104
+(www.google.com) is used, replace it with the IP address of your web server:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>telnet 64.233.161.104 80</b>
+Trying 64.233.161.104...
+Connected to 64.233.161.104.
+Escape character is '^]'.
+<b>GET / HTTP/1.0</b>
+
+HTTP/1.0 302 Found
+Location: http://www.google.se/cxfer?c=PREF%3D:TM%3D1118841789:S%3DumC<img src="nextline.png">
+Vbug84n5uBWAo&amp;prev=/
+Set-Cookie: PREF=ID=a5e237e2402bdcac:CR=1:TM=1118841789:LM=1118841789:<img src="nextline.png">
+S=HQ3jOc8_1peVGj98; expires=Sun, 17-Jan-2038 19:14:07 GMT; path=/; <img src="nextline.png">
+domain=.google.com
+Content-Type: text/html
+Server: GWS/2.1
+Content-Length: 214
+Date: Wed, 15 Jun 2005 13:23:09 GMT
+Connection: Keep-Alive
+
+&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;302 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;302 Moved&lt;/H1&gt;
+The document has moved
+&lt;A HREF="http://www.google.se/cxfer?c=PREF%3D:TM%3D1118841789:S%3DumC<img src="nextline.png">
+Vbug84n5uBWAo&amp;amp;prev=/"&gt;here&lt;/A&gt;.
+&lt;/BODY&gt;&lt;/HTML&gt;
+Connection closed by foreign host.
+[root@enterprise root]#
+</pre>
+<p>
+Make sure that the telnet or web server you use is on the same IP subnet as the
+simulation host, since you may not be able to access other subnets, depending
+on what connection type you are using.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic47.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic49.html">Next</a></span></p>
+</body>
+</html>

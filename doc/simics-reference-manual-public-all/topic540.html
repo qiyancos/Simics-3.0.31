@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>tracker_unix</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2283, true);
+</script>
+<a name="label17992"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic539.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic541.html">Next</a></span></p>
+<h3 class="jdocu">tracker_unix</h3 class="jdocu">
+
+
+<a name="label17993"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic148.html#label7590">linux-process-tracker</a>, <a class="jdocu" href="topic253.html#label9319">ppc32-linux-process-tracker</a>, <a class="jdocu" href="topic298.html#label11244">ppc64-linux-process-tracker</a>, <a class="jdocu" href="topic474.html#label16866">x86-linux-process-tracker</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   <hr class="jdocu_note"><b>Note:</b> This interface is not supported, and may change in the future.<hr class="jdocu_note">
+<p>
+   Interface for trackers. This is an interface implemented by process trackers
+   for UNIX-like operating systems. Such trackers should also implement the
+   basic tracker interface.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        trackee_unix_type_t (*trackee_type)(conf_object_t *NOTNULL tracker,
+                                            integer_t tid);
+        integer_t (*tid_to_pid)(conf_object_t *NOTNULL tracker, integer_t tid);
+        integer_t (*pid_to_tid)(conf_object_t *NOTNULL tracker, integer_t pid);
+} tracker_unix_interface_t;
+#define TRACKER_UNIX_INTERFACE "tracker_unix"
+</pre>
+<p>
+
+   <b><i>trackee_type</i></b> returns the type of the trackee that has the given
+   tid. The types are defined by the following <tt>enum</tt>:
+<p>
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Trackee_Invalid = 0,
+        Sim_Trackee_Kernel,
+        Sim_Trackee_Process
+} trackee_unix_type_t;</pre>
+
+<p>
+   <b><i>tid_to_pid</i></b> and <b><i>pid_to_tid</i></b> map tids to pids and pids to
+   tids.
+<p>
+   In addition to these interface functions, the tracker should trigger the
+   <b><i>Core_Trackee_Exec</i></b> hap when a process calls the <tt>exec</tt>
+   syscall.
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic539.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic541.html">Next</a></span></p>
+</body>
+</html>

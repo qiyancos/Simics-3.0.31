@@ -1,0 +1,54 @@
+if not defined hostid        {$hostid        = 0x80804a6c}
+if not defined freq_mhz      {$freq_mhz      = 96}
+if not defined mac_address   {$mac_address   = "10:10:10:10:10:36"}
+if not defined disk_size     {$disk_size     = 9115287552}
+if not defined rtc_time      {$rtc_time      = "2004-03-22 14:00:00 UTC"}
+if not defined memory_megs   {$memory_megs   = 512}
+
+###
+
+add-directory "%simics%/targets/fiesta/images"
+
+import-memory-components
+import-pci-components
+import-std-components
+import-sun-components
+import-fiesta-components
+
+$system = (create-taco-system cpu_frequency = $freq_mhz
+                              hostid = $hostid
+                              mac_address = $mac_address
+                              rtc_time = $rtc_time)
+
+$sb = (create-south-bridge-sun-md1535d)
+$eth = (create-pci-bcm5703c mac_address = $mac_address)
+$ide_disk = (create-std-ide-disk size = $disk_size)
+$ide_cdrom = (create-std-ide-cdrom)
+$console = (create-std-text-console)
+
+$system.connect pci-slot-pm  $sb pci-bus-pm
+$system.connect pci-slot-isa $sb pci-bus-isa
+$system.connect pci-slot-ide $sb pci-bus-ide
+$system.connect i2c $sb
+$system.connect pci-slot4 $eth
+
+$sb.connect com1 $console
+$sb.connect ide0-master $ide_disk
+$sb.connect ide1-master $ide_cdrom
+
+if ($memory_megs < 1024) {
+    $dimms = 2 ; $ranks = 1
+} else {
+    $dimms = 4 ; $ranks = 2
+}
+$div = $dimms * $ranks
+$id = 0
+while $id < $dimms {
+    $dimm = (create-ddr-memory-module rank_density = ($memory_megs / $div)
+                                      module_data_width = 72 ecc_width = 8
+                                      ranks = $ranks)
+    $system.connect ("ddr-slot" + $id) $dimm
+    $id += 1
+}
+
+$machine_defined = 1

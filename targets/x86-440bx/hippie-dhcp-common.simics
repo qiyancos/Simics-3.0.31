@@ -1,0 +1,5 @@
+$create_network = "yes"
+
+@linux_diffs = [["hippie3.1-dhcp.craff", "ro", 0, 1056964608, 0]]
+
+run-command-file "%script%/hippie-common.simics"

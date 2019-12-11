@@ -1,0 +1,13 @@
+Simics expects big files that are downloaded separatly to be placed in the
+corresponding architecture directory here.
+
+Example:
+
+simics/import/sunfire/  - Sun SunFire architecture (Sun Enterprise 3x00 - 6x00)
+simics/import/x86/      - PC/x86
+simics/import/alpha/    - Compaq Alpha
+
+A list of Virtutech supported disk dumps can be found on the following
+web-page:
+
+https://www.simics.net/mwf/vh?34

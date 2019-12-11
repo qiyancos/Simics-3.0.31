@@ -1,0 +1,3054 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics API Data Types</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(59, true);
+</script>
+<a name="label62"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Simics API Data Types</h3 class="jdocu">
+
+
+<p>
+    
+    <a name="label63"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;Generic Data Types</h4 class="jdocu">
+<a name="label64"></a><h5 class="jdocu">addr_prof_iter_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label65"></a>addr_prof_iter_t</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   An address profile iterator will iterate over a specified portion of the
+   address space in some unspecified order, and return every nonzero counter
+   value exactly once. When done, it will return 0.
+<p>
+   </dd>
+
+   </dl>
+   <a name="label66"></a><h5 class="jdocu">attr_value_t, attr_kind_t, attr_list_t, attr_data_t</h5 class="jdocu">
+
+   
+   <a name="label67"></a><a name="label68"></a>
+   <a name="label69"></a><a name="label70"></a>
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label71"></a>
+   attr_value_t, attr_kind_t, attr_list_t, attr_data_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+   
+<pre class="jdocu_small" style="color: black">struct attr_value {
+        attr_kind_t          kind;
+        union {
+                const char    *string;   /* Sim_Val_String   */
+                integer_t      integer;  /* Sim_Val_Integer  */
+                integer_t      boolean;  /* Sim_Val_Boolean  */
+                double         floating; /* Sim_Val_Floating */
+                attr_list_t    list;     /* Sim_Val_List     */
+                attr_dict_t    dict;     /* Sim_Val_Dict     */
+                attr_data_t    data;     /* Sim_Val_Data     */
+                conf_object_t *object;   /* Sim_Val_Object   */
+        } u;
+};</pre>
+
+<pre class="jdocu_small" style="color: black">typedef struct attr_value attr_value_t;</pre>
+
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Val_Invalid  = 0,
+        Sim_Val_String   = 1,
+        Sim_Val_Integer  = 2,
+        Sim_Val_Floating = 3,
+        Sim_Val_List     = 4,
+        Sim_Val_Data     = 5,
+        Sim_Val_Nil      = 6,
+        Sim_Val_Object   = 7,
+        Sim_Val_Dict     = 8,
+        Sim_Val_Boolean  = 9
+} attr_kind_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct attr_list attr_list_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">struct attr_list {
+        integer_t            size;
+        struct attr_value   *vector; /* [size] */
+};</pre>
+
+   
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        integer_t              size;
+        struct attr_dict_pair *vector; /* [size] */
+} attr_dict_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct attr_dict_pair attr_dict_pair_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">struct attr_dict_pair {
+        struct attr_value   key;
+        struct attr_value   value;
+};</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct attr_data attr_data_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">struct attr_data {
+        integer_t            size;
+        uint8               *data; /* [size] */
+};</pre>
+
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <i>attr_value_t</i> is the type used for all values in the
+   configuration system. All but the <i>Sim_Val_Data</i> kind are stored
+   as text when taking checkpoints.
+<p>
+   The following table shows how the different types of values are to
+   be interpreted in C and Python, respectively:
+<p>
+   <center>
+   <table>
+<tr><td class="jdocu_border"><b>Kind</b></td><td class="jdocu_border"><b>C</b></td><td class="jdocu_border"><b>Python</b></td></tr>
+<tr><td class="jdocu_border">Sim_Val_Invalid</td><td class="jdocu_border">n/a</td><td class="jdocu_border">raises exception</td></tr>
+<tr><td class="jdocu_border">Sim_Val_String</td><td class="jdocu_border">const char *</td><td class="jdocu_border">String</td></tr>
+<tr><td class="jdocu_border">Sim_Val_Integer</td><td class="jdocu_border">integer_t</td><td class="jdocu_border">Integer</td></tr>
+<tr><td class="jdocu_border">Sim_Val_Boolean</td><td class="jdocu_border">integer_t</td><td class="jdocu_border">Bool</td></tr>
+<tr><td class="jdocu_border">Sim_Val_Floating</td><td class="jdocu_border">double</td><td class="jdocu_border">Float</td></tr>
+<tr><td class="jdocu_border">Sim_Val_List</td><td class="jdocu_border">attr_list_t</td><td class="jdocu_border">List</td></tr>
+<tr><td class="jdocu_border">Sim_Val_Dict</td><td class="jdocu_border">attr_dict_t</td><td class="jdocu_border">Dictionary</td></tr>
+<tr><td class="jdocu_border">Sim_Val_Data</td><td class="jdocu_border">attr_data_t</td><td class="jdocu_border">Tuple</td></tr>
+<tr><td class="jdocu_border">Sim_Val_Nil</td><td class="jdocu_border">n/a</td><td class="jdocu_border">None</td></tr>
+</table>
+   </center>
+<p>
+   Use the <b><i>SIM_make_attr_<i>XXX</i></i></b> functions to create
+   these data types.
+   </dd>
+
+<p>
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label305">SIM_make_attr_integer</a>, <a class="jdocu" href="topic8.html#label296"> SIM_make_attr_boolean</a>, <a class="jdocu" href="topic8.html#label321">
+   SIM_make_attr_string</a>, <a class="jdocu" href="topic8.html#label302"> SIM_make_attr_floating</a>, <a class="jdocu" href="topic8.html#label318"> SIM_make_attr_object</a>, <a class="jdocu" href="topic8.html#label308">
+   SIM_make_attr_invalid</a>, <a class="jdocu" href="topic8.html#label315"> SIM_make_attr_nil</a>, <a class="jdocu" href="topic8.html#label312"> SIM_make_attr_list</a>, <a class="jdocu" href="topic8.html#label290">
+   SIM_alloc_attr_list</a>, <a class="jdocu" href="topic8.html#label287"> SIM_alloc_attr_dict</a>
+   </dl>
+   <a name="label72"></a><h5 class="jdocu">class_data_t, class_kind_t</h5 class="jdocu">
+
+   
+   <a name="label73"></a><a name="label74"></a>
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label75"></a>class_data_t, class_kind_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Class_Kind_Vanilla, /* object is saved at checkpoints */
+        Sim_Class_Kind_Session, /* object is saved as part of a
+                                 * session only */
+        Sim_Class_Kind_Pseudo   /* object is never saved */
+} class_kind_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct class_data {
+        conf_object_t *(*new_instance)(parse_object_t *parse_obj);
+        int (*delete_instance)(conf_object_t *obj);
+        void (*finalize_instance)(conf_object_t *obj);
+        attr_value_t (*default_get_attr)(const char *name,
+                                         conf_object_t *obj,
+                                         attr_value_t *idx);
+        set_error_t (*default_set_attr)(const char *name,
+                                        conf_object_t *obj,
+                                        attr_value_t *val,
+                                        attr_value_t *idx);
+        conf_class_t         *parent;
+        const char           *description;
+        class_kind_t          kind;
+} class_data_t;</pre>
+
+   </span></dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>class_data_t</tt> type is used when a new class is
+   registered. The only mandatory field is <i>new_instance</i>.
+   Make sure that uninitialized fields are set to zero before the
+   structure is passed to <b><i>SIM_register_class()</i></b>. The optional
+   <b><i>finalize_instance</i></b> function is called when all attributes
+   have been initialized in an object, and in all other objects
+   that are created at the same time.
+   </dd>
+
+   </dl>
+   <a name="label76"></a><h5 class="jdocu">conf_object_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label77"></a>conf_object_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+<pre class="jdocu_small" style="color: black">struct conf_object {
+        conf_class_t *class_data;  /* class data */
+        const char *name;          /* instance name */
+        struct conf_object *queue; /* queue */
+        lang_void *object_data;    /* internal to class implementation */
+        int object_id;             /* deprecated, do not use */
+        int configured;            /* set when configuration ready */
+};</pre>
+
+<pre class="jdocu_small" style="color: black">typedef struct conf_object conf_object_t;</pre>
+
+   </span></dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   All classes must inherit the <tt>conf_object_t</tt> type by
+   including it first in the subclass structure. Always initialize the
+   <tt>conf_object_t</tt> part of an object structure using the
+   <b><i>SIM_object_constructor()</i></b> function.
+   </dd>
+
+   </dl>
+   <a name="label78"></a><h5 class="jdocu">data_or_instr_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label79"></a>data_or_instr_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_DI_Instruction      = 0,
+        Sim_DI_Data             = 1
+} data_or_instr_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This type is used in several API functions and structures to indicate if data or instructions is used.
+   </dd>
+
+   </dl>
+   <a name="label80"></a><h5 class="jdocu">dbuffer_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label81"></a>dbuffer_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef struct dbuffer dbuffer_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This type is used to store blocks of binary data.  It is optimized
+   for fast adding and removing of data, and does fast copying between
+   buffers using copy-on-write semantics.
+   </dd>
+
+   </dl>
+   <a name="label82"></a><h5 class="jdocu">endianness_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label83"></a>endianness_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Endian_Target,
+        Sim_Endian_Host_From_BE,
+        Sim_Endian_Host_From_LE,
+        Sim_Endian_Host          /* Obsolete. Do not use */
+} endianness_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Specifies the endianness to use for certain memory operations. When
+   <tt>Sim_Endian_Target</tt> is used, the data from memory is
+   copied without any endian conversion. 
+   <tt>Sim_Endian_Host_From_BE</tt> and
+   <tt>Sim_Endian_Host_From_LE</tt> copies data between a
+   big-endian, or little-endian, memory and a host
+   buffer. <tt>Sim_Endian_Host</tt> is obsolete and should not
+   be used.
+   </dd>
+
+   </dl>
+   <a name="label84"></a><h5 class="jdocu">event_handler_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label85"></a>event_handler_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <pre class="jdocu_small" style="color: black">typedef void (*event_handler_t)(conf_object_t *obj,
+                                lang_void *parameter);
+typedef event_handler_t event_function_t;</pre>
+<p>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>event_handler_t</tt> data type is used for event
+   handler functions. <tt><a name="label86">event_function_t</a></tt> is a
+   deprecated data type used for the same purpose.
+   </dd>
+
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label851">
+   SIM_step_clean</a>, <a class="jdocu" href="topic8.html#label860"> SIM_step_post</a>, <a class="jdocu" href="topic8.html#label865"> SIM_time_clean</a>, <a class="jdocu" href="topic8.html#label865"> SIM_time_clean
+   </a>
+   </dl><a name="label87"></a><h5 class="jdocu">exception_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label88"></a>exception_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef int exception_type_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Accommodate all kinds of exceptions and pseudo-exceptions in a single
+   type.
+   </dd>
+
+   </dl>
+   <a name="label89"></a><h5 class="jdocu">firewire_async_transfer_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label90"></a>firewire_async_transfer_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+   
+   <pre class="jdocu_small" style="color: black">typedef uint16 firewire_id_t;
+typedef uint64 firewire_address_t;
+</pre>
+<p>
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Firewire_Async_Write_Quadlet = 0x0,
+        Firewire_Async_Write_Block   = 0x1,
+        Firewire_Async_Read_Quadlet  = 0x4,
+        Firewire_Async_Read_Block    = 0x5,
+        Firewire_Async_Lock          = 0x9,
+        Firewire_Iso_Streaming       = 0xa
+} firewire_transaction_type_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Firewire_Lock_Maskswap    = 1,
+        Firewire_Lock_Compareswap = 2,
+        Firewire_Lock_Fetchadd    = 3,
+        Firewire_Lock_Littleadd   = 4,
+        Firewire_Lock_Boundedadd  = 5,
+        Firewire_Lock_Wrapadd     = 6,
+        Firewire_Lock_Vendor      = 7
+} firewire_async_lock_type_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        firewire_id_t destination_id;
+        firewire_id_t source_id;
+        firewire_address_t destination_offset;
+        firewire_transaction_type_t transaction_type;
+        firewire_async_lock_type_t lock_type;
+
+        union {
+                uint32 *quadlet;
+                dbuffer_t *buf;
+                struct {
+                        uint64 argument;
+                        uint64 data;
+                        uint64 *old_value;
+                } lock;
+        } data;
+} firewire_async_transfer_t;</pre>
+
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   
+<p>
+   <tt>firewire_async_transfer_t</tt> is the basic means of communication
+   between firewire devices. A device that whishes to communicate with another
+   device prepares the request by filling in the necessary data and then sends
+   it to the firewire bus which then routes it to the destination. The
+   destination device fills in any return data (e.g. return value for read
+   requests) and returns a response code.
+<p>
+   <i>destination_id</i> is the 16-bit ID of the destination device;
+   it is made up of a 10-bit bus number and a 6-bit node ID (i.e. top 10 bits
+   represent the bus number and the low 6 bits represent the node ID).
+<p>
+   <i>source_id</i> is the ID of the device starting the transfer.
+<p>
+   <i>destination_offset</i> is the register address to access within
+   the destination node.
+<p>
+   The <i>transaction_type</i> parameter specifies the type of request.
+   The validity of the remaining elements of the
+   <tt>firewire_async_transfer_t</tt> struct depends on what it is set to.
+<p>
+   If <i>transaction_type</i> is set to
+   <tt>Firewire_Async_Read_Quadlet</tt> or
+   <tt>Firewire_Async_Write_Quadlet</tt>, then the
+   <i>data.quadlet</i> must be a valid pointer.
+<p>
+   If, on the other hand, <i>transaction_type</i> is set to
+   <tt>Firewire_Async_Read_Block</tt> or
+   <tt>Firewire_Async_Write_Block</tt>, then <i>data.buf</i>
+   must be set instead.
+<p>
+   Finally, if <i>transaction_type</i> is set to
+   <tt>Firewire_Async_Lock</tt>, then both <i>lock_type</i> and the
+   <i>data.lock</i> structure must be filled in.
+   <i>data.lock.argument</i> contains the second argument for two
+   argument lock functions. <i>data.lock.data</i> contains the first
+   argument (and the only one, in case of single argument lock functions).
+   Lastly, <i>data.lock.old_value</i> is set by the destination device,
+   and will contain the old register value before updated by the lock function.
+<p>
+   Note: <tt>Firewire_Iso_Streaming</tt> is an invalid value for
+   <i>transaction_type</i> in an asynchronous transfer.
+<p>
+   
+   </dd>
+
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic9.html#label1186">
+   </a>
+   </dl>
+   <a name="label91"></a><h5 class="jdocu">firewire_iso_transfer_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label92"></a>firewire_iso_transfer_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Firewire_Async_Write_Quadlet = 0x0,
+        Firewire_Async_Write_Block   = 0x1,
+        Firewire_Async_Read_Quadlet  = 0x4,
+        Firewire_Async_Read_Block    = 0x5,
+        Firewire_Async_Lock          = 0x9,
+        Firewire_Iso_Streaming       = 0xa
+} firewire_transaction_type_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Firewire_Tag_Unformatted = 0
+        /* All others currently reserved */
+} firewire_iso_tag_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        firewire_transaction_type_t transaction_type;
+        firewire_iso_tag_t tag;
+        uint32 channel;
+        uint32 sync_code;
+        dbuffer_t *buf;
+} firewire_iso_transfer_t;</pre>
+
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   
+<p>
+   The <tt>firewire_iso_transfer_t</tt> transfer type is used for
+   isochronous transfers. They are simpler than asynchronous transfers and only
+   work in one direction; they do not return anything at all.
+<p>
+   <i>transaction_type</i> must be set to
+   <tt>Firewire_Iso_Streaming</tt>.
+<p>
+   <i>tag</i> should be set to <tt>Firewire_Tag_Unformatted</tt>
+   as there are currently no other tags available.
+<p>
+   <i>channel</i> should be set to the channel number this transfer is
+   targetting. All devices listening to that channel number will receive this
+   transfer. Allocation of channel number should be done as specified in the
+   firewire specification.
+<p>
+   <i>sync_code</i> is an application specific field.
+<p>
+   <i>buf</i> must be set to a buffer containg the data to transfer.
+<p>
+   
+   </dd>
+
+   </dl>
+   <a name="label93"></a><h5 class="jdocu">generic_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label94"></a>generic_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">struct generic_transaction {
+        logical_address_t   logical_address;
+        physical_address_t  physical_address;
+        unsigned int        size;             /* size in bytes */
+        mem_op_type_t       type;             /* opaque */
+        unsigned int        atomic:1;         /* trans is part of an atomic
+                                                 sequence of mem ops */
+
+        unsigned int        inquiry:1;        /* set to 1 to indicate inquiry
+                                                 access */
+        unsigned int        speculative:1;    /* access is speculative,
+                                                 may not be committed */
+
+        unsigned int        ignore:1;         /* set to 1 to signal no-op
+                                                 (don't do access) */
+        unsigned int        may_stall:1;      /* when set to 0, any stall time
+                                                 returned is ignored */
+        unsigned int        ma_no_reissue:1;  /* if the transaction's
+                                                 instruction is rolled back
+                                                 during a stall the memory
+                                                 hierarchy should not be called
+                                                 again */
+        unsigned int        reissue:1;        /* If this is 1, the transaction
+                                                 will be reissued if a stall
+                                                 greater than 0 is returned */
+        unsigned int        block_STC:1;      /* set to 1 iff anybody (MMU,
+                                                 memory hierarchy, etc) wants
+                                                 to see future accesses of this
+                                                 type */
+        unsigned int        use_page_cache:1; /* internal - do not change */
+
+        unsigned int        inverse_endian:1; /* data transfer is
+                                                 byte-reversed */
+
+        unsigned int        page_cross:2;     /* page crossing
+                                                 0 - no crossing
+                                                 1 - first access
+                                                 2 - second access */
+
+        unsigned int        use_iostc:1;      /* may be added to iostc */
+        unsigned int        iostc_blocked:1;  /* was blocked from iostc */
+
+        ini_type_t          ini_type;         /* cpu, device, or other */
+        conf_object_t      *ini_ptr;
+
+        int                 id;               /* will be different for
+                                                 simultaneously outstanding
+                                                 transactions */
+        exception_type_t    exception;        /* set if memhier throws
+                                                 exception, otherwise
+                                                 Sim_PE_No_Exception */
+        void               *user_ptr;         /* user pointer that Simics never
+                                                 touches */
+
+        char               *real_address;     /* data pointer for the
+                                                 initiator */
+
+        int                space_count;       /* internal, # of memory space
+                                                 transitions */
+
+        page_t *page;           /* internal: page if RAM access */
+        page_t *tag_page;       /* internal: tag page if any */
+        unsigned tag_page_ofs;  /* internal: start of page in tag page */
+
+        physical_address_t  source_physical_address; /* if arc_type
+                                                        == Arc_Taken_Branch */
+        arc_type_t          arc_type;         /* filled for fetches from
+                                                 branch targets */
+        int                 allocation_size;  /* The size of the transaction 
+                                                 (including local part) only
+                                                 valid if &gt; 0 */
+
+        stall_id_t          stall_id;
+};</pre>
+
+<pre class="jdocu_small" style="color: black">typedef struct generic_transaction generic_transaction_t;</pre>
+
+<p>
+   <a name="label95"></a>
+<pre class="jdocu_small" style="color: black">typedef enum {
+        /* Arc caused by a regular branch instruction. */
+        Arc_None,
+        Arc_Taken_Branch,
+        Arc_Init,
+        Arc_Cache_Line_Start,
+        Arc_User,
+        Arc_Compensate,
+        Arc_Interrupt,
+        Arc_Page_Start,
+        /* Arm */
+        /* Arc caused by a software interrupt instruction. */
+        Arc_Exception_Counted,
+        /* Arc caused by some other exception than software interrupt. This
+           kind of branch arc is special in that it is not subtracted from the
+           number of times the instruction has been executed. */
+        Arc_Exception_Not_Counted,
+        /* Arc caused by an ALU instruction with pc as rd and the s bit set,
+           i.e, probably a return from an exception. */
+        Arc_Return_From_Exception,
+        /* Arc caused by the execution entering or leaving the interpreter. */
+        Arc_To_From_Interpreter,
+        /* Arc caused by a fall through from one storage page to the next. */
+        Arc_End_Of_Page,
+
+        /* Just to avoid comma problems with the ifdefs... */
+        Arc_Dummy
+} arc_type_t;</pre>
+
+<p>
+   <a name="label96"></a>
+<pre class="jdocu_small" style="color: black">typedef struct page page_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Used to communicate information about memory operations. Not all info is
+   complete/correct in all uses. For an example of how a memory hierarchy
+   can use a memory transaction, see example memory hierarchy.
+<p>
+   The transaction parameters are divided into a generic part shown
+   below and an architecture specific part. The generic struct is
+   included as the first component of the memory_transaction_t struct,
+   where the architecture-specific parameters are declared.
+<p>
+   Normally the logical address and most control flags are set before
+   the mmu is called. The host_address is a host pointer to the start
+   of the simulated memory the transaction loads from or stores to.
+<p>
+   <i>real_address</i> points to the destination for a load or source of a
+   store operation.
+<p>
+   The <i>ini_ptr</i> points to the object initiating the operation, this is
+   either a processor or a device depending on the <i>ini_type</i> field.
+   <a name="label97"></a>
+   <span class="jdocu_smaller">
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Initiator_Illegal         = 0x0,    /* catch uninitialized */
+        Sim_Initiator_CPU             = 0x1000,
+        Sim_Initiator_CPU_V9          = 0x1100,
+        Sim_Initiator_CPU_UII         = 0x1101,
+        Sim_Initiator_CPU_UIII        = 0x1102,
+        Sim_Initiator_CPU_UIV         = 0x1103,
+        Sim_Initiator_CPU_UT1         = 0x1104, /* 1105, 1106 internal */
+        Sim_Initiator_CPU_X86         = 0x1200,
+        Sim_Initiator_CPU_PPC         = 0x1300,
+        Sim_Initiator_CPU_Alpha       = 0x1400,
+        Sim_Initiator_CPU_IA64        = 0x1500,
+        Sim_Initiator_CPU_MIPS        = 0x1600,
+        Sim_Initiator_CPU_MIPS_RM7000 = 0x1601,
+        Sim_Initiator_CPU_MIPS_E9000  = 0x1602,
+        Sim_Initiator_CPU_ARM         = 0x1700,
+        Sim_Initiator_Device          = 0x2000,
+        Sim_Initiator_PCI_Device      = 0x2010,
+        Sim_Initiator_Cache           = 0x3000, /* The transaction is a cache
+                                                   transaction as defined by
+                                                   g-cache */
+        Sim_Initiator_Other           = 0x4000  /* initiator == NULL */
+} ini_type_t;</pre>
+</span>
+<p>
+   The mmu sets the <i>physical_address</i> and possibly set some more control
+   flags. The memory hierarchy only reads the memory transaction to
+   decide what stall time to return.
+<p>
+   The <i>block_STC</i> bit functions as a "veto" flag for various
+   modules. Any code can set this to 1, but it should not be set to
+   zero. When set to one, the next access to the same STC line will be
+   passed to the memory hierarchy.
+<p>
+   The <i>may_stall</i> bit is set to zero for a few types of references where
+   the simulator kernel cannot deal with stalling. A memory hierarchy must
+   return stall time zero when the flag is clear. A memory hierarchy
+   that wants to stall anyway should accumulate stall time, and
+   trigger the total stall time when a stall-capable access comes
+   along (which is not guaranteed to happen but most probably
+   will). For atomic read/write
+   instructions (swap) any access may stall. If an instruction is stalled
+   the entire instruction will be executed after the stalltime is up.
+   The may_stall bit may be cleared by the mmu.
+<p>
+   The <i>ignore</i> flag can be set to 1 by the MMU. When set no memory
+   operation will be performed. This is useful for instructions coded
+   as a memory operation but which really only modify mmu internal
+   state.
+<p>
+   The <i>inverse_endian</i> flag may be changed by the MMU. If set, the
+   data involved in the access will be transferred in the opposite order.
+   If not set, the bytes will be transferred in the same order they occur in
+   the memory space.
+   A memory object should not set this bit to a hard value, only toggle it.
+   It may have been set by Simics for implementation reasons.
+<p>
+   The <i>page_cross</i> field is used to indicate when Simics has
+   split a memory transaction in two.  It is normally 0, but when a
+   transaction crosses an MMU page boundary, it will be converted into
+   two separate transactions, one for each accessed page.  The
+   addresses and sizes are adjusted to confine them to their
+   respective pages.  The first of these transaction will have
+   <i>page_cross</i> set to 1, and the second will have it set to 2.
+<p>
+   The <i>atomic</i> is read only. It may be read by any module.
+   The atomic flag is set for any data memory transaction caused 
+   by an atomic instruction; i.e., an instruction whose memory references
+   must be performed without any intervening memory references
+   (from other processors). The atomic sequence is a read followed
+   by a write.
+<p>
+   The <i>use_page_cache</i> is used internally. Do not change its
+   value.
+<p>
+   The <i>user_ptr</i> may be used to pass information between user defined
+   modules that use memory transactions. Simics does not use this field.
+<p>
+   The <i>type</i> field should not be used directly; use the
+   <b><i>SIM_mem_op_is_<em>xxx</em>()</i></b>
+   predicate functions, where <tt></tt><em>xxx</em><tt></tt> can be
+   <tt>instruction</tt>, <tt>data</tt>, <tt>read</tt>, or
+   <tt>write</tt>. <b><i>SIM_set_mem_op_type()</i></b> function is used to set
+   the type of a memory operation (see the <tt>mem_op_type_t</tt> enum
+   definition), and <b><i>SIM_get_mem_op_type()</i></b> is used to read it.
+<p>
+   <i>id</i> is a unique number for all currently outstanding memory
+   transactions. In an in-order version of Simics, this field is zero.
+   See the <b><i>SIM_get_unique_memory_transaction_id()</i></b> function.
+<p>
+   When activated, instruction fetches set <i>arc_type</i>
+   to indicate if the fetch is the result of sequential 
+   execution or a branch. In case of a branch,
+   the <i>source_physical_address</i>
+   is set to the address where the branch was made from.
+<p>
+   </dd>
+
+<p>
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="#label145">mem_op_type_t</a>
+<p>
+   </dl>
+<p>
+   <a name="label98"></a><h5 class="jdocu">hap_flags_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label99"></a>hap_flags_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Hap_Simulation  = 1,
+        Sim_Hap_Old_Format  = 2,  /* internal use */
+        Sim_Hap_Added       = 4,  /* internal use */
+        Sim_Hap_Deleted     = 8,  /* internal use */
+        Sim_Hap_Attr        = 16  /* internal use */
+} hap_flags_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>hap_flags_t</tt> is used to specify additional
+   information about a hap. <tt>Sim_Hap_Simulation</tt> signals that
+   the hap is used to model simulated behavior. All other values
+   are currently for Simics internal use only.
+   </dd>
+
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label500">SIM_hap_add_callback</a>
+   </dl><a name="label100"></a><h5 class="jdocu">hap_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label101"></a>hap_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef int hap_type_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This data type is used to represent hap (occurrence) types. This is
+   a runtime number that may change between different Simics
+   invocations. Haps are normally identified by strings, but by
+   calling <b><i>SIM_hap_get_number()</i></b>, a lookup from such a name
+   to a <tt>hap_type_t</tt> can be made.
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label519">SIM_hap_get_number</a>, <a class="jdocu" href="topic8.html#label504"> SIM_hap_add_type</a>, <a class="jdocu" href="topic9.html#label1238">
+   SIM_for_all_hap_types</a>
+   </dd>
+
+   </dl><a name="label102"></a><h5 class="jdocu">instr_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label103"></a>instr_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef uint64 instr_type_t;</pre>
+
+   <pre class="jdocu_small" style="color: black">#define It_Other                   UINT64_C(0x1)
+#define It_Alu                     UINT64_C(0x2)
+#define It_Relbranch               UINT64_C(0x4)
+#define It_Load                    UINT64_C(0x8)
+#define It_Store                   UINT64_C(0x10)
+#define It_Sethi                   UINT64_C(0x20)
+#define It_Popc                    UINT64_C(0x40)
+#define It_Fp_Triop                UINT64_C(0x80)
+#define It_Fp_Diop                 UINT64_C(0x100)
+#define It_Fp_Unop                 UINT64_C(0x200)
+#define It_Fp_Cmp                  UINT64_C(0x400)
+#define It_Swap                    UINT64_C(0x800)
+#define It_Vis                     UINT64_C(0x1000)
+#define It_Flush                   UINT64_C(0x2000)
+#define It_Call                    UINT64_C(0x4000)
+#define It_Return                  UINT64_C(0x8000)
+#define It_Trap                    UINT64_C(0x10000)
+#define It_Trap_Ret                UINT64_C(0x20000)
+#define It_Idle                    UINT64_C(0x40000)
+#define It_User_Decoder_Defined    UINT64_C(0x80000)
+#define It_Varbranch               UINT64_C(0x100000) /* Branchtarget is dynamic */
+#define It_Absbranch               UINT64_C(0x200000) /* branch to an immidiate absolute target */
+#define It_Fstsw                   UINT64_C(0x400000) /* fstsw */
+#define It_Fp                      UINT64_C(0x800000) /* floating point instruction */
+#define It_Membar                  UINT64_C(0x1000000)
+#define It_Prefetch                UINT64_C(0x2000000)
+#define It_Convert                 UINT64_C(0x4000000)
+#define It_Cmov                    UINT64_C(0x8000000)
+#define It_String                  UINT64_C(0x10000000)
+#define It_Mov                     UINT64_C(0x20000000)
+#define It_SSE                     UINT64_C(0x40000000)
+#define It_MMX                     UINT64_C(0x80000000)
+#define It_Cond                    UINT64_C(0x100000000) /* Conditional, i.e it may continue to 
+                                                            the sequentially next instruction */
+</pre>
+<p>
+   
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This encodes the type of an instruction, which is composed of ORing
+   together the <tt>It_</tt> constants.
+   </dd>
+
+   </dl>
+   <a name="label104"></a><h5 class="jdocu">instruction_error_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label105"></a>instruction_error_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum instruction_error {
+        Sim_IE_OK = 0,
+        Sim_IE_Unresolved_Dependencies,
+        Sim_IE_Speculative,
+        Sim_IE_Stalling,
+        Sim_IE_Not_Inserted,      /* trying to execute or squash an 
+                                     instruction that is inserted. */ 
+        Sim_IE_Exception,         /* (SPARC-V9 only) */
+        Sim_IE_Fault = Sim_IE_Exception, 
+        Sim_IE_Trap,              /* (X86 only) Returned if a trap is 
+                                     encountered */
+        Sim_IE_Interrupt,         /* (X86 only) Returned if an interrupt is 
+                                     waiting and interrupts are enabled */
+
+        Sim_IE_Sync_Instruction,  /* Returned if sync instruction is 
+                                     not allowd to execute */
+        Sim_IE_No_Exception,      /* Returned by SIM_instruction_
+                                     handle_exception */
+        Sim_IE_Illegal_Interrupt_Point,
+        Sim_IE_Illegal_Exception_Point,
+        Sim_IE_Illegal_Address,
+        Sim_IE_Illegal_Phase,
+        Sim_IE_Interrupts_Disabled,
+        Sim_IE_Illegal_Id,
+        Sim_IE_Instruction_Tree_Full,
+        Sim_IE_Null_Pointer,
+        Sim_IE_Illegal_Reg,
+        Sim_IE_Invalid,
+        Sim_IE_Out_of_Order_Commit, 
+        Sim_IE_Retired_Instruction, /* try to squash a retiring instruction */
+        Sim_IE_Not_Committed,       /* Returned by SIM_instruction_end */
+        Sim_IE_Code_Breakpoint,
+        Sim_IE_Mem_Breakpoint,
+        Sim_IE_Step_Breakpoint,
+        Sim_IE_Hap_Breakpoint
+} instruction_error_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This type is used by the Micro Architecture Interface and documented in the
+   Simics Out Of Order Guide.
+   </dd>
+
+   </dl>
+   <a name="label106"></a><h5 class="jdocu">instruction_phase_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label107"></a>instruction_phase_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum instruction_phase {
+        Sim_Phase_Initiated,
+        Sim_Phase_Fetched,
+        Sim_Phase_Decoded,
+        Sim_Phase_Executed,
+        Sim_Phase_Retired,
+        Sim_Phase_Committed,
+        Sim_Phases
+} instruction_phase_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This type is used by the Micro Architecture Interface and documented in the
+   Simics Out Of Order Guide.
+   </dd>
+
+   </dl>
+   <a name="label108"></a><h5 class="jdocu">instruction_status_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label109"></a>instruction_status_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum { 
+        Sim_IS_Waiting  = 0x1,           /* Not all inputs are ready */
+        Sim_IS_Ready    = 0x2,           /* All inputs are ready */
+        Sim_IS_Stalling = 0x4,           /* Waiting for memory to 
+                                            finish the operation */
+        Sim_IS_Executed = 0x8,           /* Done */
+        Sim_IS_Faulting = 0x10,          /* Has raised an exception - 
+                                            a fault in x86 case */
+        Sim_IS_Branch_Taken = 0x20,      /* The branch is taken for 
+                                            branch instructions */
+        Sim_IS_Trap     = 0x40,          /* (x86) this instruction
+                                            generated a trap */
+        Sim_IS_Interrupt = 0x80,         /* (x86) this instruction can not
+                                            be executed because the interrupt
+                                            must be taken first */
+        Sim_IS_Retired = 0x100           /* All stores are retired */
+} instruction_status_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This type is used by the Micro Architecture Interface and documented in the
+   Simics Out Of Order Guide.
+   </dd>
+
+   </dl>
+   <a name="label110"></a><h5 class="jdocu">int8, int16, int32, int64, uint8, uint16, uint32, uint64,
+   intptr_t, uintptr_t, integer_t, uinteger_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label111"></a>
+   <a name="label112">int8</a>, <a name="label113">int16</a>, <a name="label114">int32</a>,
+   <a name="label115">int64</a>, <a name="label116">uint8</a>, <a name="label117">uint16</a>,
+   <a name="label118">uint32</a>, <a name="label119">uint64</a>, <a name="label120">intptr_t</a>,
+   <a name="label121">uintptr_t</a>, <a name="label122">integer_t</a>,
+   <a name="label123">uinteger_t</a></dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   These data types have host-dependent definitions. Use the
+   <b>api-help</b> Simics command line command to get their
+   exact definition.
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   These are basic integer data types defined by the Simics headers
+   (unless defined by system header files).
+<p>
+   The <tt>int</tt><em>n</em><tt></tt> types are defined to be signed
+   integers of exactly <tt></tt><em>n</em><tt></tt> bits. The
+   <tt>uint</tt><em>n</em><tt></tt> types are their unsigned counterparts.
+<p>
+   <tt>intptr_t</tt> and <tt>uintptr_t</tt> are signed and
+   unsigned integer types of a size that lets any pointer to
+   <tt>void</tt> be cast to it and then cast back to a pointer to
+   <tt>void</tt>, and the result will compare equal to the
+   original pointer. This typically means that the two types are 32
+   bits wide on 32-bit machines and 64 bits on 64-bit machines.
+<p>
+   <tt>integer_t</tt> and <tt>uinteger_t</tt> are the largest
+   integers (signed and unsigned, respectively) used by the Simics
+   API. They are currently defined to be 64 bits.
+   </dd>
+
+   </dl>
+   <a name="label124"></a><h5 class="jdocu">lang_void</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label125"></a>lang_void</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+<pre class="jdocu_small" style="color: black">typedef void lang_void;</pre>
+
+   <a name="label126"></a>
+<pre class="jdocu_small" style="color: black">typedef void typed_lang_void;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   In some places in the Simics API, arguments of type 
+   <tt><nobr>lang_void *</nobr></tt> are used. This data type is used to
+   allow transparent passing of any data type in the current programming
+   language as argument. In C, this works exactly like a 
+   <tt><nobr>void *</nobr></tt> and in Python, it is any Python
+   object. The type <tt>typed_lang_void</tt> is equivalent to <tt>lang_void</tt>
+   in the Simics API.
+<p>
+   Typically, this is used by iterator functions in the API which take callback
+   functions as arguments. The callback function is later called with the
+   <tt>lang_void</tt> data and the object being iterated over.
+   </dd>
+
+<p>
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic9.html#label1247">SIM_for_all_processors</a>, <a class="jdocu" href="topic8.html#label438"> SIM_register_typed_attribute</a>, <a class="jdocu" href="topic8.html#label500">
+   SIM_hap_add_callback</a>
+   </dl><a name="label127"></a><h5 class="jdocu">log_object_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label128"></a>log_object_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+<pre class="jdocu_small" style="color: black">struct log_object {
+        conf_object_t   obj;
+
+        uint32          access_cnt;    /* number of IO transactions
+                                        * performed  */
+        int             access_active; /* set while an access is in
+                                        * progress  */
+
+        io_trace_log_t *active_trace;  /* temporary log list during
+                                        * the access  */
+
+        io_trace_t     *trace_buffer;
+        int             trace_next;
+        int             trace_wrap;
+        int             trace_size;
+
+        int             log_level;
+        int             group_mask;
+        int             type_mask;
+};</pre>
+
+<pre class="jdocu_small" style="color: black">typedef struct log_object log_object_t;</pre>
+
+   </span></dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>log_object_t</tt> structure directly inherits
+   <tt>conf_object_t</tt>, and it extends that class with logging
+   functionality. Use <b><i>SIM_log_constructor()</i></b> to initialize
+   new instances. The constructor automatically adds attributes to
+   save and restore the members in the <tt>log_object_t</tt>
+   structure.
+<p>
+   Since the internal representation of this structure may change
+   between releases, classes using the structure should not inspect
+   the members directly (except for obj), but rather use the attributes.
+   New entries should be added with the <b><i>SIM_log_message()</i></b> function.
+   From C/C++ the <b><i>SIM_log_...</i></b> helper functions are recommended.
+   </dd>
+
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label539">SIM_log_constructor</a>, <a class="jdocu" href="topic8.html#label550"> SIM_log_message</a>
+   </dl>
+   <a name="label129"></a><h5 class="jdocu">log_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label130"></a>log_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Log_Info,           // Normal informational message
+        Sim_Log_Error,          // Simics error
+        Sim_Log_Undefined,      // use of undefined target behavior
+        Sim_Log_Spec_Violation, // target program violates the specification
+        Sim_Log_Target_Error,   // error state in target (not in Simics)
+        Sim_Log_Unimplemented,  // not implemented in Simics
+        Sim_Log_Num_Types       // Do not use
+} log_type_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This type defines different log types that are used by the logging
+   facility to categorise messages.
+   </dd>
+
+   </dl>
+   <a name="label131"></a><h5 class="jdocu">logical_address_t, physical_address_t, generic_address_t,
+   linear_address_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label132"></a>
+   <a name="label133">logical_address_t</a>, <a name="label134">physical_address_t</a>,
+   <a name="label135">generic_address_t</a>,
+   <a name="label136">linear_address_t</a>,
+   </dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   These data types are target architecture independent, and always
+   large enough to hold 64-bit addresses.
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   These are integer data types defined to reflect the nature of the
+   simulated architecture.
+<p>
+   <tt>logical_address_t</tt> is an unsigned integer sufficiently
+   large to contain logical (virtual) addresses on the target machine.
+   define.
+   <p>
+   <tt>physical_address_t</tt> is an unsigned integer sufficiently
+   large to contain physical addresses on the target machine.
+<p>
+   <tt>generic_address_t</tt> is defined to be the largest of the
+   <tt>logical_address_t</tt> and <tt>physical_address_t</tt>
+   types.
+<p>
+   <tt>linear_address_t</tt> is used for linear addresses used on
+   x86 machines after segmentation but before paging.
+   </dd>
+
+   </dl>
+   <a name="label137"></a><h5 class="jdocu">map_info_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label138"></a>map_info_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <a name="label139"></a>
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef struct map_info {
+        physical_address_t  base;
+        physical_address_t  start;
+        physical_address_t  length;
+        int                 function;
+        uint8               priority;
+        int                 align_size;
+        swap_mode_t         reverse_endian;
+} map_info_t;</pre>
+
+<pre class="jdocu_small" style="color: black">typedef enum swap_mode {
+        Sim_Swap_None       = 0,
+        Sim_Swap_Bus        = 1,
+        Sim_Swap_Bus_Trans  = 2,
+        Sim_Swap_Trans      = 3
+} swap_mode_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>map_info_t</tt> structure members have the following meaning:
+   <ul>
+   <li>
+   <tt>base</tt>: The base address of the device mapping in the memory space.
+   </li>
+   <li>
+   <tt>start</tt>: The address inside the device memory space where the mapping
+   starts.</li>
+   <li><tt>length</tt>: The length of the mapped memory, in bytes.</li>
+   <li><tt>function</tt>: Used to mapped the same object several times
+       with different functionality. Corresponds to the function argument used
+       when mapping devices into a memory space.</li>
+   <li>If the map target does not support large accesses, then
+       <tt>align-size</tt> can be set to the maximum allowed size.
+        Accesses spanning align boundaries will be split info several
+        smaller transactions. By default, the align size is set to 4
+        for port space devices, 8 for other devices and 8192 for memory.</li>
+   <li>Mappings with an align size of 2, 4 and 8 may set the
+       <tt>reverse_endian</tt> field to a non zero value. This can be used to
+       model bridges that perform byte swapping on a specific bus width.</li>
+   </ul>
+   </dd>
+
+   </dl>
+   <a name="label140"></a><h5 class="jdocu">map_list_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label141"></a>map_list_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <a name="label142"></a><a name="label143"></a>
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum { 
+        Sim_Map_Ram,
+        Sim_Map_Rom,
+        Sim_Map_IO,
+        Sim_Map_Port,
+        Sim_Map_Translate = 0x100, /* pseudo - do not use */
+        Sim_Map_Translate_To_Space,
+        Sim_Map_Translate_To_Ram,
+        Sim_Map_Translate_To_Rom
+} map_type_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">struct map_list {
+        map_type_t       map_type;
+        conf_object_t   *object;
+        void            *interface_ptr;
+        void            *target_interface;
+        void            *breakpoint_interface;
+        void            *bridge_interface;
+        conf_object_t   *target_object;
+        conf_object_t   *bridge;
+        map_info_t       map_info;
+
+        physical_address_t map_size; /* not constant, use with caution */
+
+        int              deleted;  /* internal flag - should always be 0 ! */
+};</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct map_list map_list_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This data structure is used to pass information about the set of
+   mappings a particular address in an address space contains.  
+   </dd>
+
+   </dl>
+   <a name="label144"></a><h5 class="jdocu">mem_op_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label145"></a>mem_op_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Trans_Load          = 0,
+        Sim_Trans_Store         = Sim_Trn_Write,
+        Sim_Trans_Instr_Fetch   = Sim_Trn_Instr,
+        Sim_Trans_Prefetch      = Sim_Trn_Prefetch | Sim_Trn_Control,
+        Sim_Trans_Cache         = Sim_Trn_Control
+} mem_op_type_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This enum is used to identify the type of a memory operation. The
+   function <b><i>SIM_get_mem_op_type()</i></b> returns the type of a 
+   <tt>generic_transaction_t</tt>, and <b><i>SIM_set_mem_op_type()</i></b>
+   is used to set it.
+   </dd>
+
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label614">SIM_get_mem_op_type</a>, <a class="jdocu" href="topic8.html#label649"> SIM_set_mem_op_type</a>, <a class="jdocu" href="#label94">
+   generic_transaction_t</a>, <a class="jdocu" href="topic8.html#label617"> SIM_get_mem_op_type_name</a>
+   </dl>
+   <a name="label146"></a><h5 class="jdocu">pci_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label147"></a>pci_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef struct pci_memory_transaction {
+        generic_transaction_t s;
+        /* The original_size field will probably be moved to the
+           generic_transaction_t structure in the future */
+        uint32 original_size;
+        int bus_address;
+} pci_memory_transaction_t;</pre>
+
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>pci_memory_transaction_t</tt> is used for memory
+   accesses initiated by PCI devices. It is based on a generic
+   memory transaction struct, followed by two PCI specific fields.
+   The first, <i>original_size</i>, should not be accessed if
+   possible since it may be changed in future Simics versions. It
+   specifies the size of the original memory access before possible
+   split up. The <i>bus_address</i> field is the address of the
+   initiating PCI device in a PCI Type 1 address format, i.e.
+   <tt>bus &lt;&lt; 16 | device &lt;&lt; 11 | function &lt;&lt; 8</tt>.
+   A <tt>generic_transaction_t</tt> can be converted to a
+   <tt>pci_memory_transaction_t</tt> if the <i>ini_type</i>
+   field has the value <tt>Sim_Initiator_PCI_Device</tt>.
+   </dd>
+
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="#label94">generic_transaction_t</a>, <a class="jdocu" href="topic8.html#label937">
+   PCI_data_from_memory</a>
+   </dl><a name="label148"></a><h5 class="jdocu">processor_mode_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label149"></a>processor_mode_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_CPU_Mode_User       = 0,
+        Sim_CPU_Mode_Supervisor = 1,
+        Sim_CPU_Mode_Hypervisor
+} processor_mode_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>processor_mode_t</tt> data type is used to specify if a
+   CPU is running in user mode or in a privileged mode (often called
+   supervisor mode). For processor architectures with several
+   privilege levels, the non-user levels are all identified as
+   <tt>Sim_CPU_Mode_Supervisor</tt>.
+   </dd>
+
+   </dl>
+   <a name="label150"></a><h5 class="jdocu">processor_t</h5 class="jdocu">
+ 
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label151"></a>processor_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef struct conf_object processor_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Equivalent to a <tt>conf_object_t</tt>, but usually used when the
+   expected object is a processor.
+   </dd>
+
+   </dl>
+   <a name="label152"></a><h5 class="jdocu">pseudo_exceptions_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label153"></a>pseudo_exceptions_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_PE_No_Exception = 1025,
+        Sim_PE_Code_Break,
+        Sim_PE_Silent_Break,
+        Sim_PE_Inquiry_Outside_Memory,
+        Sim_PE_Inquiry_Unhandled,
+        Sim_PE_IO_Not_Taken,
+        Sim_PE_IO_Error,
+        Sim_PE_Interrupt_Break,
+        Sim_PE_Interrupt_Break_Take_Now,
+        Sim_PE_Exception_Break,
+        Sim_PE_Hap_Exception_Break,
+        Sim_PE_Stall_Cpu,
+        Sim_PE_Locked_Memory,
+        Sim_PE_Return_Break,
+        Sim_PE_Instruction_Finished,
+        Sim_PE_Default_Semantics,
+        Sim_PE_Ignore_Semantics,
+        Sim_PE_Speculation_Failed,
+        Sim_PE_Invalid_Address,
+        Sim_PE_MAI_Return,
+        Sim_PE_Last
+} pseudo_exceptions_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Used to signal simulator exceptions for memory accesses. Memory
+   access functions in Simics use <tt>exception_type_t</tt> to return
+   errors. Errors usually corresponds to hardware exceptions, but in
+   some cases additional return values are needed, and then pseudo
+   exceptions are used. The most common is <tt>Sim_PE_No_Exception</tt>,
+   indicating that no error has occurred. Most pseudo exceptions are
+   Simics internals, but some are used by devices and memory spaces.
+   <dl><dt><b>Sim_PE_No_Exception</b></dt><dd>No exception.</dd><dt><b>Sim_PE_IO_Not_Taken</b></dt><dd>Access to unmapped memory. In the
+   PCI memory spaces interpreted as master abort.</dd><dt><b>Sim_PE_IO_Error</b></dt><dd>Accessed device returned error. In the
+   PCI memory spaces interpreted as target abort.</dd><dt><b>Sim_PE_Inquiry_Outside_Memory</b></dt><dd>Same as Sim_PE_IO_Not_Taken,
+   but for inquiry accesses.</dd><dt><b>Sim_PE_Inquiry_Unhandled</b></dt><dd>The accessed device does not
+   support inquiry operations.</dd><dt><b>Sim_PE_Stall_Cpu</b></dt><dd>Timing model requested stall</dd><dt><b>Sim_PE_Default_Semantics</b></dt><dd>Used by ASI handlers on SPARC,
+   and for user decoders to signal that the default semantics should
+   be run.</dd><dt><b>Sim_PE_Ignore_Semantics</b></dt><dd>Used by ASI handlers on SPARC
+   to signal no update of destination registers.</dd><dt><b>Internal:</b></dt><dd>Sim_PE_Silent_Break, Sim_PE_Return_Break,
+   Sim_PE_Interrupt_Break,
+   Sim_PE_Interrupt_Break_Take_Now, Sim_PE_Exception_Break,
+   Sim_PE_Hap_Exception_Break, Sim_PE_Instruction_Finished,
+   Sim_PE_Invalid_Address, Sim_PE_Speculation_Failed,
+   Sim_PE_MAI_Return, Sim_PE_Last.</dd></dl>
+   </dd>
+
+   </dl>
+   <a name="label154"></a><h5 class="jdocu">read_or_write_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label155"></a>read_or_write_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_RW_Read  = 0,
+        Sim_RW_Write = 1
+} read_or_write_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Whether a memory access is a <i>read</i> (from memory) or a <i>write</i>
+   (to memory).
+   </dd>
+
+   </dl>
+   <a name="label156"></a><h5 class="jdocu">register_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label157"></a>register_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Reg_Type_Invalid,
+        Sim_Reg_Type_Integer,
+        Sim_Reg_Type_Floating,
+        Sim_Reg_Type_Control
+} register_type_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Defines several type of register banks.
+   </dd>
+
+   </dl>
+   <a name="label158"></a><h5 class="jdocu">set_error_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label159"></a>set_error_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<span class="jdocu_smaller">
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Set_Ok,
+        Sim_Set_Need_Integer,
+        Sim_Set_Need_Floating,
+        Sim_Set_Need_String,
+        Sim_Set_Need_List,
+        Sim_Set_Need_Dict,
+        Sim_Set_Need_Boolean,
+        Sim_Set_Need_Data,
+        Sim_Set_Need_Object,
+        Sim_Set_Object_Not_Found,
+        Sim_Set_Interface_Not_Found,
+        Sim_Set_Illegal_Value,
+        Sim_Set_Illegal_Type,
+        Sim_Set_Illegal_Index,
+        Sim_Set_Attribute_Not_Found,
+        Sim_Set_Not_Writable,
+        Sim_Set_Ignored
+} set_error_t;</pre>
+
+   </span></dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <b><i>SIM_set_attribute()</i></b> family of functions and the set functions
+   registered with the <b><i>SIM_register_typed_attribute()</i></b> family of
+   functions return a <tt>set_error_t</tt> value to report success or
+   failure.
+<p>
+   <b>Sim_Set_Ok</b><br>
+   The attribute was successfully set.
+<p>
+   <b>Sim_Set_Need_Integer<br>
+      Sim_Set_Need_Floating<br>
+      Sim_Set_Need_String<br>
+      Sim_Set_Need_List<br>
+      Sim_Set_Need_Dict<br>
+      Sim_Set_Need_Boolean<br>
+      Sim_Set_Need_Data<br>
+      Sim_Set_Need_Object</b><br>
+   The value is of an illegal type for the attribute. Deprecated, use
+   <tt>Sim_Set_Illegal_Type</tt> instead.
+<p>
+   <b>Sim_Set_Object_Not_Found</b><br>
+   The string value does not match any object name.?Deprecated, use attributes
+   of object type instead of string attributes referring to object names.
+<p>
+   <b>Sim_Set_Interface_Not_Found</b><br>
+   The object value does not implement an interface required by the attribute.
+<p>
+   <b>Sim_Set_Illegal_Value</b><br>
+   The value is of a legal type for the attribute, but outside the legal range.
+<p>
+   <b>Sim_Set_Illegal_Type</b><br>
+   The value is of an illegal type for the attribute.
+<p>
+   <b>Sim_Set_Attribute_Not_Found</b><br>
+   The object has no attribute with the specified name. Should only be returned
+   by <b><i>SIM_set_attribute()</i></b> family of functions, not by attribute set
+   functions.
+<p>
+   <b>Sim_Set_Not_Writable</b><br>
+   The attribute is read-only.
+<p>
+   <b>Sim_Set_Ignored</b><br>
+   The value was accepted for backwards compatibility reasons, but was ignored.
+   Should only be returned by <b><i>set_event_info()</i></b> functions registered
+   with the <tt>event-poster</tt> interface.
+   </dd>
+
+   </dl>
+   <a name="label160"></a><h5 class="jdocu">simtime_t, cycles_t, pc_step_t, nano_secs_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label161"></a>
+   <a name="label162">simtime_t</a>, <a name="label163">cycles_t</a>, <a name="label164">pc_step_t</a>,
+   <a name="label165">nano_secs_t</a>
+   </dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+<pre class="jdocu_small" style="color: black">typedef integer_t simtime_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef simtime_t cycles_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef simtime_t pc_step_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef simtime_t nano_secs_t;</pre>
+
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   These are the types used for keeping track of time in Simics.
+<p>
+   <tt>cycles_t</tt> is used when the time is specified in cycles,
+   <tt>pc_step_t</tt> is used when the time is specified in steps,
+   and <tt>simtime_t</tt> is used in places where it is unknown
+   whether the time is in steps or cycles. See the chapter "The Simics
+   Simulator" in the <i>Simics User Guide</i> for a discussion about
+   the difference between steps and cycles.
+<p>
+   <tt>nano_secs_t</tt> is used to express a number of nanoseconds
+   (10<sup>&minus;9</sup> seconds).
+   </dd>
+
+   </dl><a name="label166"></a><h5 class="jdocu">socket_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label167"></a>socket_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <pre class="jdocu_small" style="color: black">#ifdef _WIN32
+typedef SOCKET socket_t;
+#else
+typedef int socket_t;
+#endif /* !_WIN32 */
+</pre>
+<p>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   This data type is used to identify a communication socket
+   (typically TCP/IP). It is defined to be an <tt>int</tt> on UNIX
+   systems and <tt>SOCKET</tt> under Windows.
+   </dd>
+
+   </dl>
+
+    
+    <a name="label168"></a><h4 class="jdocu">3.2.2&nbsp;&nbsp;&nbsp;Architecture Specific Data Types</h4 class="jdocu">
+<a name="label169"></a><h5 class="jdocu">alpha_cpu_mode_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label170"></a>alpha_cpu_mode_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Sim_Alpha_Mode_Kernel     = 0,
+        Sim_Alpha_Mode_Executive  = 1,
+        Sim_Alpha_Mode_Supervisor = 2,
+        Sim_Alpha_Mode_User       = 3
+} alpha_cpu_mode_t;</pre>
+
+   </span></dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>alpha_cpu_mode_t</tt> corresponds to the <i>current
+   mode (CM)</i> field of the processor status register.
+   </dd>
+
+   </dl>
+   <a name="label171"></a><h5 class="jdocu">alpha_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label172"></a>alpha_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef struct alpha_memory_transaction {
+
+        /* generic transaction */
+        generic_transaction_t s;
+
+        /* mode of the current alpha cpu */
+        int mode;
+
+        /* flags used by hw_ld / hw_st instructions */
+        palcode_memop_flags_t palcode_flags;
+
+        /* The pte is needed the Icache module, since it needs the ASM bit. */
+        uint64 pte;
+
+        /* if non-zero, the id needed to calculate the program counter */
+        intptr_t turbo_miss_id;
+} alpha_memory_transaction_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   The <i>s</i> field contains generic information about memory operations (see
+   <tt>generic_transaction_t</tt>).  The <i>mode</i> is the current mode of the
+   alpha cpu.  The values of <i>palcode_flags</i>, used by hw_ld and hw_st
+   instructions, see <tt>palcode_memop_flags_t</tt> datatype.
+<p>
+   </dd>
+
+   </dl>
+<p>
+   <a name="label173"></a><h5 class="jdocu">arm_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label174"></a>arm_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+<pre class="jdocu_small" style="color: black">typedef struct arm_memory_transaction {
+
+        /* generic transaction */
+        generic_transaction_t s;
+
+        /* processor mode */
+        processor_mode_t mode;
+
+        int rotate;
+
+        /* if non-zero, the id needed to calculate the program counter */
+        intptr_t turbo_miss_id;
+} arm_memory_transaction_t;</pre>
+
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   This is the ARM specific memory transaction data structure.
+   The generic data is stored in the <i>s</i> field.
+<p>
+   The <i>mode</i> field specifies the processor mode the MMU
+   should assume when processing the transaction. This is the same as
+   the current mode of the processor, except that it is always
+   <tt>Sim_CPU_Mode_User</tt> for ldrbt, ldrt, strbt and strt
+   instructions.
+<p>
+   </dd>
+
+   </dl>
+   <a name="label175"></a><h5 class="jdocu">ia64_fp_register_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label176"></a>ia64_fp_register_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+<pre class="jdocu_small" style="color: black">typedef struct ia64_fp_register {
+        uint64   significand;
+        uint32   exponent;
+        unsigned sign:1;
+        unsigned nat:1;
+} ia64_fp_register_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Representation of an IA64 floating-point register.
+   </dd>
+
+   </dl>
+   <a name="label177"></a><h5 class="jdocu">ia64_interruption_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label178"></a>ia64_interruption_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        IA64_Abort_RESET = 1,
+        IA64_Abort_MCA,
+        IA64_Int_INIT,
+        IA64_Int_PMI,
+        IA64_Int_INT,
+        IA64_Fault_IR_unimplmented_data_address,
+        IA64_Fault_IR_data_nested_tlb,
+        IA64_Fault_IR_alternate_data_tlb,
+        IA64_Fault_IR_vhpt_data,
+        IA64_Fault_IR_data_tlb,
+        IA64_Fault_IR_data_page_not_present,
+        IA64_Fault_IR_data_nat_page_consumption,
+        IA64_Fault_IR_data_key_miss,
+        IA64_Fault_IR_data_key_permission,
+        IA64_Fault_IR_data_access_rights,
+        IA64_Fault_IR_data_access_bit,
+        IA64_Fault_IR_data_debug,
+        IA64_Fault_IA32_instruction_breakpoint,
+        IA64_Fault_IA32_code_fetch,
+        IA64_Fault_alternate_instruction_tlb,
+        IA64_Fault_vhpt_instruction,
+        IA64_Fault_instruction_tlb,
+        IA64_Fault_instruction_page_not_present,
+        IA64_Fault_instruction_nat_page_consumption,
+        IA64_Fault_instruction_key_miss,
+        IA64_Fault_instruction_key_permission,
+        IA64_Fault_instruction_access_rights,
+        IA64_Fault_instruction_access_bit,
+        IA64_Fault_instruction_debug,
+        IA64_Fault_IA32_instruction_length,
+        IA64_Fault_IA32_invalid_opcode,
+        IA64_Fault_IA32_instruction_intercept,
+        IA64_Fault_illegal_operation,
+        IA64_Fault_illegal_dependency,
+        IA64_Fault_break_instruction,
+        IA64_Fault_privileged_operation,
+        IA64_Fault_disabled_floating_point_register,
+        IA64_Fault_diabled_instruction_set_transition,
+        IA64_Fault_IA32_device_not_available,
+        IA64_Fault_IA32_fp_error,
+        IA64_Fault_register_nat_consumption,
+        IA64_Fault_reserved_register_field,
+        IA64_Fault_unimplemented_data_address,
+        IA64_Fault_privileged_register,
+        IA64_Fault_speculative_operation,
+        IA64_Fault_IA32_stack_exception,
+        IA64_Fault_IA32_general_protection,
+        IA64_Fault_data_nested_tlb,
+        IA64_Fault_alternate_data_tlb,
+        IA64_Fault_vhpt_data,
+        IA64_Fault_data_tlb,
+        IA64_Fault_data_page_not_present,
+        IA64_Fault_data_nat_page_consumption,
+        IA64_Fault_data_key_miss,
+        IA64_Fault_data_key_permission,
+        IA64_Fault_data_access_rights,
+        IA64_Fault_data_dirty_bit,
+        IA64_Fault_data_access_bit,
+        IA64_Fault_data_debug,
+        IA64_Fault_unaligned_data_reference,
+        IA64_Fault_IA32_alignment_check,
+        IA64_Fault_IA32_locked_data_reference,
+        IA64_Fault_IA32_segment_not_present,
+        IA64_Fault_IA32_divide_by_zero,
+        IA64_Fault_IA32_bound,
+        IA64_Fault_IA32_sse_numeric_error,
+        IA64_Fault_unsupported_data_reference,
+        IA64_Fault_floating_point,
+        IA64_Trap_unimplemented_instruction_address,
+        IA64_Trap_floating_point,
+        IA64_Trap_lower_privilege_transfer,
+        IA64_Trap_taken_branch,
+        IA64_Trap_single_step,
+        IA64_Trap_IA32_system_flag_intercept,
+        IA64_Trap_IA32_gate_intercept,
+        IA64_Trap_IA32_into,
+        IA64_Trap_IA32_breakpoint,
+        IA64_Trap_IA32_software_interrupt,
+        IA64_Trap_IA32_data_breakpoint,
+        IA64_Trap_IA32_taken_branch,
+        IA64_Trap_IA32_single_step
+} ia64_interruption_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   These are the interruptions that can occur in an ia64 processor.
+   The numbers correspond to the numbers given by the Intel
+   architecture manuals.  They are, among other things, used by the
+   Core_Exception hap.
+   </dd>
+
+   </dl>
+   <a name="label179"></a><h5 class="jdocu">ia64_interruption_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label180"></a>ia64_interruption_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        IT_abort,
+        IT_interrupt,
+        IT_fault,
+        IT_trap
+} ia64_interruption_type_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Defines the different type of interruptions in the IA-64 architecture.
+   </dd>
+
+   </dl>
+   <a name="label181"></a><h5 class="jdocu">ia64_iva_offset_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label182"></a>ia64_iva_offset_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        IVA_vhpt_trans      = 0x0000,
+        IVA_instr_tlb       = 0x0400,
+        IVA_data_tlb        = 0x0800,
+        IVA_alt_instr_tlb   = 0x0c00,
+        IVA_alt_data_tlb    = 0x1000,
+        IVA_data_nested     = 0x1400,
+        IVA_instr_key_miss  = 0x1800,
+        IVA_data_key_miss   = 0x1c00,
+        IVA_dirty_bit       = 0x2000,
+        IVA_instr_acc_bit   = 0x2400,
+        IVA_data_acc_bit    = 0x2800,
+        IVA_break           = 0x2c00,
+        IVA_ext_int         = 0x3000,
+        IVA_page_not_pres   = 0x5000,
+        IVA_key_perm        = 0x5100,
+        IVA_instr_acc_right = 0x5200,
+        IVA_data_acc_right  = 0x5300,
+        IVA_gen_exc         = 0x5400,
+        IVA_dis_fp          = 0x5500,
+        IVA_nat_cons        = 0x5600,
+        IVA_spec            = 0x5700,
+        IVA_debug           = 0x5900,
+        IVA_unal_ref        = 0x5a00,
+        IVA_unsup_data_ref  = 0x5b00,
+        IVA_fp              = 0x5c00,
+        IVA_fp_trap         = 0x5d00,
+        IVA_lp_trans_trap   = 0x5e00,
+        IVA_tak_br_trap     = 0x5f00,
+        IVA_ss_trap         = 0x6000,
+        IVA_ia32_exc        = 0x6900,
+        IVA_ia32_intercept  = 0x6a00,
+        IVA_ia32_interrupt  = 0x9b00
+} ia64_iva_offset_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The location of the Interruption Vector Table (IVT) is stored in
+   the <tt>cr.iva</tt> control register.  These constants describe the offsets
+   of the different vectors in the table.
+   </dd>
+
+   </dl>
+   <a name="label183"></a><h5 class="jdocu">ia64_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label184"></a>ia64_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef struct ia64_memory_transaction {
+
+        /* generic transaction */
+        generic_transaction_t s;
+
+        int privilege_level;
+        int speculative;
+        int advanced;
+        int non_access;
+        uint16 isr_code;
+
+        int rse;
+        int rse_ir;
+
+        /* "Output" */
+        int deferred_fault;
+} ia64_memory_transaction_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <i>s</i> field contains generic information about memory
+   operations (see <tt>generic_transaction_t</tt>).
+   <p>
+   The <i>privilege_level</i> is the current privilege level (0-3) of the cpu.
+<p>
+   The <i>speculative</i> flag indicates that the memory operation is
+   caused by control speculation.
+<p>
+   The <i>advanced</i> flag indicates an advanced load, i.e. that the
+   memory operation is caused by data speculation.
+<p>
+   The <i>isr_code</i> is used to help the MMU fill in the correct
+   values in the cr.isr register on a fault.
+<p>
+   The <i>rse</i> flag indicates that the memory operation is caused
+   by a mandatory RSE operation, and the <i>rse_ir</i> whether the
+   current frame is incomplete.  This is used to raise the appropriate
+   faults on failure.
+<p>
+   The <i>deferred_fault</i> is set by the MMU when a speculative
+   memory operation fails.
+<p>
+   </dd>
+
+   </dl>
+   <a name="label185"></a><h5 class="jdocu">mips_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label186"></a>mips_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef struct mips_memory_transaction {
+
+        /* generic transaction */
+        generic_transaction_t s;
+
+        /* Cache coherency, values as the C field in EntryLo0 and EntryLo1. */
+        unsigned int cache_coherency:3;
+
+        /* if non-zero, the id needed to calculate the program counter */
+        intptr_t turbo_miss_id;
+} mips_memory_transaction_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   This is the MIPS specific memory transaction data structure.
+   The generic data is stored in the <i>s</i> field.
+<p>
+   The <i>cache_coherency</i> field specifies the cache coherency attribute
+   of the memory transaction, as defined by the C field of the EntryLo0 and
+   EntryLo1 coprocessor 0 registers.
+<p>
+   </dd>
+
+   </dl>
+<p>
+   <a name="label187"></a><h5 class="jdocu">palcode_memop_flags_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label188"></a>palcode_memop_flags_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum palcode_memop_flags {
+        
+        /* nothing special */
+        Pal_memop_normal   = 0x0000,
+
+        /* cleared: the effective address is virtual
+           set:     the effective address is physical */
+        Pal_memop_physical = 0x0001, 
+        
+        /* cleared: use current mode for access checks
+           set:     use alt mode for access checks */
+        Pal_memop_altmode  = 0x0002,    
+
+        /* cleared: check fault-on-read (FOR) and read access violations
+           set:     check FOR, fault-on-write and read/write violations */
+        Pal_memop_wrtck    = 0x0004,
+
+        /* cleared: length is longword
+           set:     length is quadword */
+        Pal_memop_quadword = 0x0008,
+
+        /* cleared: normal fetch
+           set:     flags a virtual pte fetch */
+        Pal_memop_vpte     = 0x0010,
+
+        /* cleared:  normal operation
+           set:      load-locked version of hw_ld */
+        Pal_memop_lock     = 0x0020,
+
+        /* cleared:  normal operation
+           set:      store-conditional version of hw_st */
+        Pal_memop_cond     = 0x0040
+
+} palcode_memop_flags_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   PALcode uses hw_ld and hw_st instructions to access memory outside
+   of the realm of normal Alpha memory management. These flags are
+   used in such operations. 
+   </dd>
+
+   </dl>
+   <a name="label189"></a><h5 class="jdocu">ppc_mem_instr_origin_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label190"></a>ppc_mem_instr_origin_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        /* Normal load or store instructions */
+        Normal_Load_Store = 0,
+
+        /* No data touched by the load/store will be placed in cache */
+        Caching_Inhibited,
+
+        Instr_Multiple,         /* load/store multiple */
+        Instr_String,           /* load/store string */
+
+        Instr_Altivec_Element,  /* Altivec load/store element */
+
+        /* Data cache manipulations */
+        Instr_dcbt,             /* data cache block touch */
+        Instr_dcbst,            /* data cache block store */
+        Instr_dcbtst,           /* data cache block touch for store */
+        Instr_dcbi,             /* data cache block invalidate */
+        Instr_dcbf,             /* data cache block flush */
+        Instr_dcbfl,            /* data cache block flush local */
+        Instr_dcba,             /* data cache block allocate */
+        Instr_dcbz,             /* data cache block to zero */
+        
+        /* Instruction cache manipulations */
+        Instr_icbi,             /* instruction cache block invalidate */
+        
+        /* Data stream (Altivec) manipulations */
+        Instr_dst,              /* data stream touch */
+        Instr_dstt,             /* data stream touch transient */
+        Instr_dstst,            /* data stream touch for store */
+        Instr_dststt,           /* data stream touch for store transient */
+
+        /* e500 cache lock apu instructions */
+        Instr_dcblc_l1,         /* data cache block lock clear (L1) */
+        Instr_dcblc_l2,         /* data cache block lock clear (L2) */
+        Instr_dcbtls_l1,        /* data cache block touch and lock set (L1)*/
+        Instr_dcbtls_l2,        /* data cache block touch and lock set (L1)*/
+        Instr_dcbtstls_l1,      /* data cache block touch for store and lock
+                                   set (L1)*/
+        Instr_dcbtstls_l2,      /* data cache block touch for store and lock
+                                   set (L1)*/
+        Instr_icblc_l1,         /* instruction cache block clear (L1) */
+        Instr_icblc_l2,         /* instruction cache block clear (L2) */
+        Instr_icbtls_l1,        /* instruction cache block touch and lock
+                                   set (L1) */
+        Instr_icbtls_l2,        /* instruction cache block touch and lock
+                                   set (L1) */
+
+        /* Other loads/stores or cache affecting instructions */
+        Instr_lwarx,
+        Instr_stwcx,
+        Instr_ldarx,
+        Instr_stdcx,
+        Instr_lq,
+        Instr_stq,
+
+        /* Other cache affecting instructions */
+        Instr_sync,
+        Instr_eieio,
+        Instr_ecowx,
+        Instr_eciwx,
+        Instr_tlbie,
+        Instr_tlbsync,
+        Instr_isync,
+
+        Instr_lfdp,             /* Load Floating point Double Pair */
+        Instr_stfdp             /* Store Floating point Double Pair */
+} ppc_mem_instr_origin_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   List of special memory operations that can be send by a PPC processor.
+   </dd>
+
+   </dl>
+   <a name="label191"></a><h5 class="jdocu">ppc_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label192"></a>ppc_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   
+<pre class="jdocu_small" style="color: black">typedef struct ppc_memory_transaction {
+
+        /* generic transaction */
+        generic_transaction_t s;
+
+        processor_mode_t mode;
+        ppc_mem_instr_origin_t instr_origin;
+        logical_address_t ea_origin;
+        uint8 wimg;
+        uint8 alignment;
+
+        /* cache operations may flag this to cause prefetches to be no-ops */
+        uint8 inhibit_exception;
+
+        intptr_t turbo_miss_id;
+} ppc_memory_transaction_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   This is the PPC specific memory transaction data structure.
+   The generic data is stored in the <i>s</i> field.
+<p>
+   The current processor mode when generating this transaction is stored in the
+   <i>mode</i> field.
+<p>
+   The type of instruction generating the memory transactions is provided by
+   the <i>instr_origin</i> field. Note that it is mainly provided for
+   special memory accesses like cache block operations..
+<p>
+   The <i>wimg</i> field is filled in by the MMU with the corresponding
+   WIMG bits during the translation.
+<p>
+   The <i>alignment</i> field contains the size on which the transaction is
+   required to be aligned.
+<p>
+   The <i>inhibit_exception</i> field is set for operations that should be
+   ignored if triggering an exception.
+<p>
+   </dd>
+
+   </dl>
+   <a name="label193"></a><h5 class="jdocu">register_id_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label194"></a>register_id_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef uint32 register_id_t;</pre>
+
+   
+   <a name="label195"></a>
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        V9_Reg_Id_R0   = 0,
+        /* R1 - R31 */
+        V9_Reg_Id_F0   = 32,
+        /* F1 - F63 */
+        V9_Reg_Id_FCC0 = 96,
+        V9_Reg_Id_FCC1 = 97,
+        V9_Reg_Id_FCC2 = 98,
+        V9_Reg_Id_FCC3 = 99,
+        V9_Reg_Id_CC   = 100,
+        V9_Reg_Id_PC   = 101,
+        V9_Reg_Id_NPC  = 102,
+        V9_Reg_Id_AEXC = 103, /* part of fsr */
+        V9_Reg_Id_CEXC = 104, /* part of fsr */
+        V9_Reg_Id_FTT  = 105, /* part of fsr */
+        V9_Reg_Id_DUDL = 106, /* part of fprs */
+        V9_Reg_Id_FEF  = 107, /* part of fprs */
+        V9_Reg_Id_Y    = 108,
+        V9_Reg_Id_GSR  = 109,
+        V9_Reg_Id_CANSAVE = 110,
+        V9_Reg_Id_CANRESTORE = 111,
+        V9_Reg_Id_OTHERWIN = 112,
+        V9_Reg_Id_CLEANWIN = 113,
+        V9_Reg_Id_CWP  = 114,
+        V9_Reg_Id_ASI  = 115,
+
+        V9_Reg_Id_Not_Used  = 124,
+        V9_Reg_Id_Sync = 125
+} v9_register_id_t;</pre>
+
+   
+   <a name="label196"></a>
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        X86_Reg_Id_Rax = 0,
+        X86_Reg_Id_Rcx = 1,
+        X86_Reg_Id_Rdx = 2,
+        X86_Reg_Id_Rbx = 3,
+        X86_Reg_Id_Rsp = 4,
+        X86_Reg_Id_Rbp = 5,
+        X86_Reg_Id_Rsi = 6,
+        X86_Reg_Id_Rdi = 7,
+
+        X86_Reg_Id_R8  = 8,
+        X86_Reg_Id_R9  = 9,
+        X86_Reg_Id_R10 = 10,
+        X86_Reg_Id_R11 = 11,
+        X86_Reg_Id_R12 = 12,
+        X86_Reg_Id_R13 = 13,
+        X86_Reg_Id_R14 = 14,
+        X86_Reg_Id_R15 = 15,
+
+        X86_Reg_Id_Xmm0  = 16,
+        X86_Reg_Id_Xmm1  = 17,
+        X86_Reg_Id_Xmm2  = 18,
+        X86_Reg_Id_Xmm3  = 19,
+        X86_Reg_Id_Xmm4  = 20,
+        X86_Reg_Id_Xmm5  = 21,
+        X86_Reg_Id_Xmm6  = 22,
+        X86_Reg_Id_Xmm7  = 23,
+
+        X86_Reg_Id_Xmm8  = 24,
+        X86_Reg_Id_Xmm9  = 25,
+        X86_Reg_Id_Xmm10 = 26,
+        X86_Reg_Id_Xmm11 = 27,
+        X86_Reg_Id_Xmm12 = 28,
+        X86_Reg_Id_Xmm13 = 29,
+        X86_Reg_Id_Xmm14 = 30,
+        X86_Reg_Id_Xmm15 = 31,
+
+        X86_Reg_Id_Mm0 = 32,
+        X86_Reg_Id_Mm1 = 33,
+        X86_Reg_Id_Mm2 = 34,
+        X86_Reg_Id_Mm3 = 35,
+        X86_Reg_Id_Mm4 = 36,
+        X86_Reg_Id_Mm5 = 37,
+        X86_Reg_Id_Mm6 = 38,
+        X86_Reg_Id_Mm7 = 39,
+
+        X86_Reg_Id_PC  = 40,    /* this is RIP */
+
+        X86_Reg_Id_CF  = 41,    /* integer condition code flags */
+        X86_Reg_Id_DST = 42,    /* DST field used to cache PF flag */
+        X86_Reg_Id_AF  = 43,
+        X86_Reg_Id_ZF  = 44,
+        X86_Reg_Id_SF  = 45,
+        X86_Reg_Id_OF  = 46,
+        X86_Reg_Id_DF  = 47,
+
+        X86_Reg_Id_EFLAGS = 48, /* the whole 32 bits eflags */
+
+        X86_Reg_Id_C0 = 49,     /* floating point cc flags */
+        X86_Reg_Id_C1 = 50,
+        X86_Reg_Id_C2 = 51,
+        X86_Reg_Id_C3 = 52,
+        X86_Reg_Id_Top = 53,    /* floating point stack top */
+        X86_Reg_Id_Not_Used,    /* dummy number that can be used */
+
+        X86_Reg_Id_Local_Max    /* keep this one last */
+} x86_register_id_t;</pre>
+
+   
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   
+   For SPARC the enum <tt>v9_register_id_t</tt> can be used to refer to
+   the different registers.
+   The following macros also exists to generate the register id for
+   integer and floating point registers:
+<p>
+   <span class="jdocu_smaller">
+   
+   <pre class="jdocu_small" style="color: black">#define V9_REG_ID_RN(n)   (V9_Reg_Id_R0+(n))
+#define V9_REG_ID_FN(n)   (V9_Reg_Id_F0+(n))
+#define V9_REG_ID_FCCN(n) (V9_Reg_Id_FCC0+(n))
+</pre>
+<p>
+   
+   </span>
+   
+   For x86 the <tt>x86_register_id_t</tt> can be used to refer to
+   the different registers.
+   
+   </dd>
+
+   </dl>
+   <a name="label197"></a><h5 class="jdocu">v9_exception_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label198"></a>v9_exception_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum v9_exception_type {
+        Power_On_Reset = 0x001,
+        Watchdog_Reset = 0x002,
+        Externally_Initiated_Reset = 0x003,
+        Software_Initiated_Reset = 0x004,
+        Red_State_Exception = 0x005,
+        Instruction_Access_Exception = 0x008,
+        Instruction_Access_MMU_Miss = 0x009,
+        Instruction_Access_Error = 0x00a,
+        Illegal_Instruction = 0x010,
+        Privileged_Opcode = 0x011,
+        Unimplemented_Ldd = 0x012,
+        Unimplemented_Std = 0x013,
+        Fp_Disabled = 0x020,
+        Fp_Exception_Ieee_754 = 0x021,
+        Fp_Exception_Other = 0x022,
+        Tag_Overflow = 0x023,
+        Clean_Window = 0x024,
+        Division_By_Zero = 0x028,
+        Internal_Processor_Error = 0x029,
+        Data_Access_Exception = 0x030,
+        Data_Access_MMU_Miss = 0x031,
+        Data_Access_Error = 0x032,
+        Data_Access_Protection = 0x033,
+        Mem_Address_Not_Aligned = 0x034,
+        Lddf_Mem_Address_Not_Aligned = 0x035,
+        Stdf_Mem_Address_Not_Aligned = 0x036,
+        Privileged_Action = 0x037,
+        Ldqf_Mem_Address_Not_Aligned = 0x038,
+        Stqf_Mem_Address_Not_Aligned = 0x039,
+
+
+        Async_Data_Error = 0x040,
+        Interrupt_Level_1 = 0x41,
+        Interrupt_Level_2 = 0x42,
+        Interrupt_Level_3 = 0x43,
+        Interrupt_Level_4 = 0x44,
+        Interrupt_Level_5 = 0x45,
+        Interrupt_Level_6 = 0x46,
+        Interrupt_Level_7 = 0x47,
+        Interrupt_Level_8 = 0x48,
+        Interrupt_Level_9 = 0x49,
+        Interrupt_Level_10 = 0x4a,
+        Interrupt_Level_11 = 0x4b,
+        Interrupt_Level_12 = 0x4c,
+        Interrupt_Level_13 = 0x4d,
+        Interrupt_Level_14 = 0x4e,
+        Interrupt_Level_15 = 0x4f,
+
+
+        Interrupt_Vector = 0x60,
+        PA_Watchpoint = 0x61,
+        VA_Watchpoint = 0x62,
+        Corrected_ECC_Error = 0x63,
+        
+        Fast_Instruction_Access_MMU_Miss = 0x64,
+        Fast_Data_Access_MMU_Miss = 0x68,
+        Fast_Data_Access_Protection = 0x6c,
+
+        Fast_ECC_Error = 0x70,
+
+
+
+        Spill_0_Normal = 0x080,
+        Spill_1_Normal = 0x084,
+        Spill_2_Normal = 0x088,
+        Spill_3_Normal = 0x08c,
+        Spill_4_Normal = 0x090,
+        Spill_5_Normal = 0x094,
+        Spill_6_Normal = 0x098,
+        Spill_7_Normal = 0x09c,
+        Spill_0_Other = 0x0a0,
+        Spill_1_Other = 0x0a4,
+        Spill_2_Other = 0x0a8,
+        Spill_3_Other = 0x0ac,
+        Spill_4_Other = 0x0b0,
+        Spill_5_Other = 0x0b4,
+        Spill_6_Other = 0x0b8,
+        Spill_7_Other = 0x0bc,
+        Fill_0_Normal = 0x0c0,
+        Fill_1_Normal = 0x0c4,
+        Fill_2_Normal = 0x0c8,
+        Fill_3_Normal = 0x0cc,
+        Fill_4_Normal = 0x0d0,
+        Fill_5_Normal = 0x0d4,
+        Fill_6_Normal = 0x0d8,
+        Fill_7_Normal = 0x0dc,
+        Fill_0_Other = 0x0e0,
+        Fill_1_Other = 0x0e4,
+        Fill_2_Other = 0x0e8,
+        Fill_3_Other = 0x0ec,
+        Fill_4_Other = 0x0f0,
+        Fill_5_Other = 0x0f4,
+        Fill_6_Other = 0x0f8,
+        Fill_7_Other = 0x0fc,
+        Trap_Instruction = 0x100,
+        Last_Real_Exception = 0x200
+} v9_exception_type_t;</pre>
+</dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   The <tt>v9_exception_type_t</tt> lists all hardware
+   exceptions defined in the UltraSPARC architecture. This type is
+   used in some cases where functions take the generic
+   <tt>exception_type_t</tt>.
+   </dd>
+
+   </dl>
+   <a name="label199"></a><h5 class="jdocu">v9_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label200"></a>v9_memory_transaction_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef struct v9_memory_transaction {
+        generic_transaction_t s;
+        unsigned              cache_virtual:1;
+        unsigned              cache_physical:1;
+        unsigned              side_effect:1;
+        unsigned              priv:1;
+        unsigned              red:1;
+        unsigned              hpriv:1;
+        unsigned              henb:1;
+        uint8                 address_space;
+        uint8                 prefetch_fcn;
+        sparc_access_type_t   access_type;
+
+        /* if non-zero, the id needed to calculate the program counter */
+        intptr_t turbo_miss_id;
+} v9_memory_transaction_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   This is the Sparc specific memory transaction data structure.
+   The generic data is stored in the <i>s</i> field.
+<p>
+   The <i>cache_virtual</i> bit is set if this memory transaction
+   corresponds to a TLB entry that has the <tt>CV</tt> (cache
+   virtual) bit set. Conversely, the <i>cache_physical</i> bit
+   corresponds to the TLB entry's <tt>CP</tt> (cache physical)
+   bit and the <i>side_effect</i> bit corresponds to the
+   <tt>E</tt> bit.
+<p>
+   The <i>priv</i> bit is cleared if the memory transaction 
+   comes from one of the <tt>USER</tt> ASI's.
+<p>
+   The <i>red</i> bit is set if the memory transaction was
+   generated by a CPU which has the <tt>RED</tt> bit in the
+   <tt>%pstate</tt> register set.
+<p>
+   SPARC-V9 uses an address space identifier (ASI) to qualify memory
+   access instructions. This is stored in the <i>address_space</i>
+   field; it will be set to <tt>ASI_PRIMARY</tt> for "normal"
+   memory transactions.
+<p>
+   The <i>prefetch_fcn</i> field is only set for memory
+   transactions of type <tt>Sim_Trans_Prefetch</tt>, for which
+   it contains the <tt>fcn</tt> field of the prefetch
+   instruction.
+<p>
+   The <i>access_type</i> field describes the type of the
+   access, as defined in the <tt>sparc_access_type_t</tt> enum.
+   <a name="label201"></a> For example if a load is for a
+   floating point register or a standard integer one.
+<p>
+   </dd>
+
+   </dl>
+   <a name="label202"></a><h5 class="jdocu">x86_memory_transaction_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label203"></a>x86_memory_transaction_t, 
+                    <a name="label204">p2_memory_transaction_t</a></dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+   <pre class="jdocu_small" style="color: black">typedef struct x86_memory_transaction {
+        generic_transaction_t s;                /* Superclass */
+        processor_mode_t      mode;
+        linear_address_t      linear_address;   
+        uint16                selector;         /* Segment selector */
+        unsigned              access_linear:1;  /* Linear access */
+        unsigned              io:1;             /* I/O (port) access */
+        unsigned              fault_as_if_write:1;
+        x86_access_type_t     access_type;
+        x86_memory_type_t     pat_type;
+        x86_memory_type_t     mtrr_type;
+        x86_memory_type_t     effective_type;
+        int                   sequence_number; /* used for -stall */
+
+        /* if non-zero, the id needed to calculate the program counter */
+        intptr_t turbo_miss_id;
+} x86_memory_transaction_t;
+
+typedef struct x86_memory_transaction p2_memory_transaction_t;
+</pre>
+<p>
+   
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+<p>
+   The <i>s</i> field contains generic information about memory
+   operations (see <tt>generic_transaction_t</tt>).
+   <p>
+   The <i>mode</i> is the current mode (user or supervisor) of the cpu.
+<p>
+   The <i>linear_address</i> contains the address for transactions
+   with linear addresses.
+<p>
+   The <i>access_linear</i> flag is set for all transactions with
+   linear addresses.
+<p>
+   The <i>access_type</i> field contains the type of the transaction.
+   <a name="label205"></a>
+   <span class="jdocu_smaller">
+    
+<pre class="jdocu_small" style="color: black">typedef enum x86_access_type {
+        X86_Other,               /* Access that is not categorized (rare) */
+        X86_Vanilla,             /* "Normal" access, such as a MOV to/from
+                                    memory. X86_Vanilla operations use the STCs. */
+        X86_Instruction,         /* Instruction fetch */
+        X86_Clflush,             /* Cache line flush from CLFLUSH */
+        X86_Fpu_Env,             /* Floating point environment (FLDENV, FNSTENV,
+                                    environment part of FRSTOR, FNSAVE) */
+        X86_Fpu_State,           /* Register part of FRSTOR and FNSAVE */
+        X86_Idt,                 /* Interrupt descriptor table */
+        X86_Gdt,                 /* Global descriptor table */
+        X86_Ldt,                 /* Local descriptor table */
+        X86_Task_Segment,        /* Task segment */
+        X86_Task_Switch,         /* Task save/restore during a task switch */
+        X86_Far_Call_Parameter,  /* Parameter copy in far call */
+        X86_Stack,               /* Stack accesses during complex control flow
+                                    operations (exception handling, etc.) */
+        X86_Pml4,                /* Page map level 4 table */
+        X86_Pdp,                 /* Page directory pointer table */
+        X86_Pd,                  /* Page directory table */
+        X86_Pt,                  /* Page table */
+        X86_Sse,                 /* 16-byte operations to/from SSE registers */
+        X86_Fpu,                 /* 10-byte and 16-byte operations to/from
+                                    X87 registers */
+        X86_Access_Simple,       /* Device accesses (DMA) */
+        X86_Microcode_Update,    /* Data read when performing a processor
+                                    microcode update */
+        X86_Non_Temporal,        /* Non temporal store (example: MOVNTI) */
+        X86_Prefetch_3DNow,      /* Prefetch with PREFETCH (3DNow!) */
+        X86_Prefetchw_3DNow,     /* Prefetch with PREFETCHW (3DNow!) */
+        X86_Prefetch_T0,         /* Prefetch with PREFETCHT0 (SSE) */
+        X86_Prefetch_T1,         /* Prefetch with PREFETCHT1 (SSE) */
+        X86_Prefetch_T2,         /* Prefetch with PREFETCHT2 (SSE) */
+        X86_Prefetch_NTA,        /* Prefetch with PREFETCHNTA (SSE) */
+        X86_Loadall,             /* State read by the loadall instruction */
+        X86_Atomic_Info,         /* Transaction sent with size 0 to
+                                    finish an atomic transaction */
+        X86_Cmpxchg16b,          /* CMPXCHG16B instruction */
+        X86_Smm_State            /* SMM state structure */
+} x86_access_type_t;</pre>
+
+   </span>
+<p>
+   The effective memory type for the access is contained in
+   <i>effective_type</i>. The MMU calculates the effective memory type
+   using both the PAT type (in <i>pat_type</i>) and the MTRR type (in
+   <i>mtrr_type</i>).
+   <a name="label206"></a>
+   <span class="jdocu_smaller">
+    
+<pre class="jdocu_small" style="color: black">typedef enum {
+        X86_None,
+        X86_Strong_Uncacheable,    /* UC */
+        X86_Uncacheable,           /* UC- */
+        X86_Write_Combining,       /* WC */
+        X86_Write_Through,         /* WT */
+        X86_Write_Back,            /* WB */
+        X86_Write_Protected        /* WP */
+} x86_memory_type_t;</pre>
+
+   </span>
+   </dd>
+
+   </dl>
+<p>
+   <a name="label207"></a><h5 class="jdocu">x86_sync_instruction_type_t</h5 class="jdocu">
+
+   
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label208"></a>x86_sync_instruction_type_t</dd>
+
+   <dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+
+   <span class="jdocu_smaller">
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        X86_SFence = 1,
+        X86_LFence = 2,
+        X86_MFence = 3
+} x86_sync_instruction_type_t;</pre>
+
+   </span>
+   </dd>
+
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   Type of synchronisation instruction for x86. Used in the <tt>Core_Sync_Instruction</tt> hap.
+   </dd>
+
+   </dl>
+   
+
+    
+    <a name="label209"></a><h4 class="jdocu">3.2.3&nbsp;&nbsp;&nbsp;Internal Data Types</h4 class="jdocu">
+<a name="label210"></a><h5 class="jdocu">addr_type_t,
+   assoc_table_t,
+   attr_initiator_t,
+   attr_set_t,
+   binary_heap_compare_func_t,
+   binary_heap_t,
+   byte_string_t,
+   struct dmacache,
+   event_queue_type_t,
+   for_all_assoc_table_func_t,
+   ht_entry_t,
+   ht_for_each_entry_func_t,
+   ht_iter_t,
+   ht_sorted_entries_func_t,
+   ht_table_t,
+   icode_mode_group_t,
+   icode_mode_t,
+   icode_page_t,
+   image_spage_t,
+   instruction_trace_callback_t,
+   interface_list_t,
+   intervals_func_t,
+   interval_set_t,
+   interval_set_iter_t,
+   io_trace_t,
+   mmu_error_info_t,
+   os_time_t,
+   struct os_tm,
+   page_info_t,
+   prof_data_t,
+   prof_data_address_t,
+   prof_data_counter_t,
+   prof_data_func_t,
+   prof_data_iter_t,
+   radix_bottom_t,
+   radix_middle_t,
+   radix_top_t,
+   rand_state_t,
+   range_node_t,
+   set_error_t,
+   sim_ic_type_t,
+   simics_internal_counters_t,
+   simics_symbol_lookup_t,
+   source_python_func_t,
+   source_python_module_func_t,
+   st_do_all_func_t,
+   st_for_all_func_t,
+   enum st_lookup_approx_result,
+   stall_id_num_t,
+   stall_id_t,
+   state_save_kind_t,
+   strbuf_t,
+   string_tree_t,
+   struct simcontext,
+   struct symtable,
+   table_t,
+   table_func_t,
+   turbo_exit_case_t,
+   struct ucontext,
+   vtmem_inform_opcode_t,
+</h5 class="jdocu">
+
+
+<p>
+   <dl class="jdocu_di">
+
+   <dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label211"></a>
+   <a name="label212">addr_type_t</a>,
+   <a name="label213">assoc_table_t</a>,
+   <a name="label214">attr_set_t</a>,
+   <a name="label215">attr_initiator_t</a>,
+   <a name="label216">binary_heap_compare_func_t</a>,
+   <a name="label217">binary_heap_t</a>,
+   <a name="label218">byte_string_t</a>,
+   struct dmacache<a name="label219"></a><a name="label220"></a>,
+   struct ether_addr<a name="label221"></a><a name="label222"></a>,
+   <a name="label223">for_all_assoc_table_func_t</a>,
+   <a name="label224">ht_entry_t</a>,
+   <a name="label225">ht_for_each_entry_func_t</a>,
+   <a name="label226">ht_iter_t</a>,
+   <a name="label227">ht_sorted_entries_func_t</a>,
+   <a name="label228">ht_table_t</a>,
+   <a name="label229">icode_mode_group_t</a>,
+   <a name="label230">icode_mode_t</a>,
+   <a name="label231">icode_page_t</a>,
+   <a name="label232">image_spage_t</a>,
+   <a name="label233">instruction_trace_callback_t</a>,
+   <a name="label234">interface_list_t</a>,
+   <a name="label235">intervals_func_t</a>,
+   <a name="label236">interval_set_t</a>,
+   <a name="label237">interval_set_iter_t</a>,
+   <a name="label238">io_trace_t</a>,
+   <a name="label239">io_trace_log_t</a>,
+   <a name="label240">mmu_error_info_t</a>,
+   <a name="label241">os_time_t</a>,
+   struct os_tm<a name="label242"></a><a name="label243"></a>,
+   <a name="label244">page_info_t</a>,
+   <a name="label245">prof_data_t</a>,
+   <a name="label246">prof_data_address_t</a>,
+   <a name="label247">prof_data_counter_t</a>,
+   <a name="label248">prof_data_func_t</a>,
+   <a name="label249">prof_data_iter_t</a>,
+   <a name="label250">radix_bottom_t</a>,
+   <a name="label251">radix_middle_t</a>,
+   <a name="label252">radix_top_t</a>,
+   <a name="label253">rand_state_t</a>,
+   <a name="label254">range_node_t</a>,
+   <a name="label255">set_error_t</a>,
+   <a name="label256">sim_ic_type_t</a>,
+   <a name="label257">simics_internal_counters_t</a>,
+   <a name="label258">simics_symbol_lookup_t</a>,
+   <a name="label259">source_python_func_t</a>,
+   <a name="label260">source_python_module_func_t</a>,
+   <a name="label261">st_do_all_func_t</a>,
+   <a name="label262">st_for_all_func_t</a>,
+   enum st_lookup_approx_result<a name="label263"></a>
+                               <a name="label264"></a>,
+   <a name="label265">stall_id_num_t</a>,
+   <a name="label266">stall_id_t</a>,
+   <a name="label267">state_save_kind_t</a>,
+   <a name="label268">strbuf_t</a>,
+   <a name="label269">string_tree_t</a>,
+   struct simcontext<a name="label270"></a><a name="label271"></a>,
+   struct symtable<a name="label272"></a><a name="label273"></a>,
+   <a name="label274">table_t</a>,
+   <a name="label275">table_func_t</a>,
+   <a name="label276">turbo_exit_case_t</a>,
+   struct ucontext<a name="label277"></a><a name="label278"></a>,
+   <a name="label279">vtmem_inform_opcode_t</a>
+   </dd>
+
+<p>
+   <dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+
+   These data types are exported for Simics internal use.
+   </dd>
+
+   </dl>
+   
+
+    <a name="label280"></a><h4 class="jdocu">3.2.4&nbsp;&nbsp;&nbsp;Simics Types in Python</h4 class="jdocu">
+
+    
+    When writing code in Python, almost all Simics API functions can be
+    used. Since not all C/C++ types are available in Python, Simics supplies
+    the following special type mappings.
+<p>
+    <table>
+<tr><td class="jdocu_border"><b>C/C++</b></td><td class="jdocu_border"><b>Python</b></td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_String</tt></td><td class="jdocu_border"><tt>str</tt> (a Python string)</td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Integer</tt></td><td class="jdocu_border"><tt>int</tt> or <tt>long</tt></td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Floating</tt></td><td class="jdocu_border"><tt>float</tt></td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_List</tt></td><td class="jdocu_border"><tt>list</tt></td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Data</tt></td><td class="jdocu_border"><tt>tuple</tt> of integers (bytes)</td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Nil</tt></td><td class="jdocu_border"><tt>None</tt></td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Object</tt></td><td class="jdocu_border">An object from the <b>conf</b> namespace.</td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Dict</tt></td><td class="jdocu_border"><tt>dict</tt></td></tr>
+<tr><td class="jdocu_border"><tt>attr_value_t, kind == Sim_Val_Boolean</tt></td><td class="jdocu_border"><tt>bool</tt></td></tr>
+<tr><td class="jdocu_border"><tt>conf_class_t *</tt></td><td class="jdocu_border"><tt>str</tt> (name of class)</td></tr>
+<tr><td class="jdocu_border"><tt>conf_object_t *</tt></td><td class="jdocu_border">An object from the <b>conf</b> namespace</td></tr>
+</table>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

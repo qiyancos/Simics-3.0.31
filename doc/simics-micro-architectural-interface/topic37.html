@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_get_user_data()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(66, true);
+</script>
+<a name="label343"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic36.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic38.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_get_user_data()</h4 class="jdocu">
+
+<a name="label344"></a><a name="label345"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label346"></a><b>SIM_instruction_get_user_data</b><b>, SIM_instruction_set_user_data</b> &#8212; get/set instruction user data</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">lang_void *
+SIM_instruction_get_user_data(instruction_id_t ii);
+</pre><pre class="jdocu_small" style="color: black">void
+SIM_instruction_set_user_data(instruction_id_t ii, 
+                              lang_void *data);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+These two functions are used to set and get user defined data for
+   instruction identified by <i>ii</i>. This is a convenient way to add
+   extra information to an instruction. Note that this information needs to be
+   deallocated by the user before <b><i>SIM_instruction_end</i></b> is called.
+<p>
+   If an instruction is squashed the Instruction_Squashed hap should
+   be used to handle the deallocation of user data.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is
+   illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+<b><i>SIM_instruction_get_user_data</i></b> returns the
+   user data.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic36.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic38.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Example of Distributed Simulation and Network</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(156, true);
+</script>
+<a name="label349"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic55.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic57.html">Next</a></span></p>
+<h4 class="jdocu">11.4&nbsp;&nbsp;&nbsp;Example of Distributed Simulation and Network</h4 class="jdocu">
+
+
+<p>
+This section is an extension of the First Steps guide in Chapter
+<a class="jdocu" href="topic12.html#label70">4</a>.
+<p>
+Simics allows you to distribute a simulation on several computers.
+The typical setup is to simulate one or more machines on each node.
+Simics will synchronize the nodes so that they will have the same
+simulated time elapsed, and also provides a way to share
+Ethernet links.
+<p>
+In this guide we will start two Simicses on the same computer and
+connect them together.
+<p>
+Create two terminals, and 
+launch the <tt>ebony-linux-firststeps.simics</tt> in both shells.
+To be able distinguish the machines, we change the Simics prompt.
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer: ebony$ <b>./simics ebony-linux-firststeps.simics</b>
+[...]
+simics&gt;  <b>@SIM_set_prompt("simics1&gt;  ")</b>
+simics1&gt; 
+</pre>
+<p>
+Likewise, in the second terminal:
+<p>
+<pre class="jdocu_small" style="color: black">
+joe@computer: ebony$ <b>./simics ebony-linux-firststeps.simics</b>
+[...]
+simics&gt;  <b>@SIM_set_prompt("simics2&gt;  ")</b>
+simics2&gt; 
+</pre>
+<p>
+Select the first simulation again, and enter the following commands in the
+Simics console:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics1&gt;  <b>new-central-server</b>
+[central_server info] Listening to port 1909
+[central_server info] Listening to unix socket [...]
+Created central_server
+simics1&gt; 
+</pre>
+<p>
+This will create the <b>central_server</b> object, which acts as the hub
+in our distributed simulation. All simulations will connect to the central
+server.
+The next step is to actually connect the first simulation to the server:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics1&gt;  <b>connect-central obj = central_server</b>
+Created central_client
+[central_server info] New connection with id 0
+Connected to Simics Central
+simics1&gt; 
+</pre>
+<p>
+<b>connect-central</b> will create a <b>central-client</b> object
+named <b>central_client</b> and connect it to our <b>central_server</b>
+object. Note the usage of the <i>obj</i> argument. Normally, we would
+supply the host name of the computer running the central server.
+However, since
+the client and server are running in the same Simics process, we connect
+directly to the <b>central_server</b> object.
+<p>
+<hr class="jdocu_note"><b>Note:</b> You can at any time run <b>central_server.info</b>
+or <b>central_client.info</b> to view the current status.<hr class="jdocu_note">
+<p>
+Now we are going to connect the other simulation to the central as well.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics2&gt;  <b>connect-central localhost</b>
+Created central_client
+[central_client info] Connected to server
+Connected to Simics Central
+simics2&gt;  <b>central_client.info</b>
+Information about central_client [class central-client]
+=======================================================
+                Identification : computer (process 2013)
+                        Server : /tmp/simics-central.joe
+simics2&gt; 
+</pre>
+<p>
+Since the <b>central-server</b> is running in another Simics
+process, on the same computer, we supply <tt>localhost</tt> as the
+host name.
+<p>
+Now both simulations are synchronized. However, the simulated machines are not
+able to talk to each other yet.
+<p>
+Both machines need a simulated Ethernet link.
+Create a <b>ethernet-link</b> to which we
+connect the simulated network card.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics2&gt;  <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics2&gt;  <b>emac0.connect ethlink0</b>
+simics2&gt;  <b>ethlink0.info</b>
+Information about ethlink0 [class ethernet-link]
+================================================
+[...]
+                  Distribution : local
+[...]
+simics2&gt; 
+</pre>
+<p>
+The first command will create the <b>ethlink0</b> object, and the second
+command connects it to the simulated network card. The
+<b>&lt;ethernet-link&gt;.info</b> shows two important things:
+the link is connected to the simulated network card, but
+<b>not</b> shared via the central yet. We will do that now:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics2&gt;  <b>ethlink0-&gt;central = central_client</b>
+[ethlink0 info] Adjusting latency to 0.01 s [...]
+simics2&gt;  <b>ethlink0.info</b>
+[...]
+                  Distribution : global
+[...]
+simics2&gt; 
+</pre>
+<p>
+Distribution has now changed from <i>local</i> to <i>global</i>.
+<p>
+Finally, we must also connect the first simulation to the simulated network.
+Switch to the first Simics instance and enter the following commands:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics1&gt;  <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics1&gt;  <b>emac0.connect ethlink0</b>
+simics1&gt;  <b>ethlink0-&gt;central = central_client</b>
+[ethlink0 info] Adjusting latency to 0.01 s [...]
+simics1&gt;  <b>ethlink0.info</b>
+[...]
+                 Local devices : &lt;0:0&gt; emac0
+                Remote devices : &lt;1:0&gt; emac0
+[...]
+simics1&gt; 
+</pre>
+<p>
+Here we see that the network card on the other simulated machine is
+added to the device list.
+Hopefully, the two machines are now able to talk to each
+other. Before we try anything, there is one more thing we must do. Since the
+two simulated machines are identical, they are assigned the same IP address.
+Thus, we must change the IP address on one of them.
+<p>
+Boot both machines by giving the <b>continue</b> command.
+<p>
+<hr class="jdocu_note"><b>Note:</b> You must resume <i>both</i> simulations. If you resume only
+one simulation it will appear to hang. This is because the simulations are
+synchronized through the central server.<hr class="jdocu_note">
+<p>
+Then, in one of the consoles, enter the following command:
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>ifconfig eth0 10.10.0.51</b>
+root@firststeps: ~#
+</pre>
+<p>
+This will change the IP on that machine to 10.10.0.51. The other machine should
+have the IP address 10.10.0.50. Try pinging (from 10.10.0.51):
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>ping -c 2 10.10.0.50</b>
+PING 10.10.0.50 (10.10.0.50): 56 data bytes
+64 bytes from 10.10.0.50: icmp_seq=0 ttl=64 time=10.0 ms
+64 bytes from 10.10.0.50: icmp_seq=1 ttl=64 time=10.0 ms
+
+--- 10.10.0.50 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 10.0/10.0/10.0 ms
+root@firststeps: ~#
+</pre>
+<p>
+You can read more about distributed simulation in chapter
+<a class="jdocu" href="topic52.html#label340">11</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic55.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic57.html">Next</a></span></p>
+</body>
+</html>

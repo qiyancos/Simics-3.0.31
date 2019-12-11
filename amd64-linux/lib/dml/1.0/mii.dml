@@ -1,0 +1,29 @@
+// mii.dml
+//
+// This module contains types needed when using or implementing MII interfaces
+
+dml 1.0;
+
+header %{
+#include <simics/devs/mii.h>
+%}
+
+typedef struct {
+        int    (*serial_access)(conf_object_t *obj, int data_in, int clock);
+        uint16 (*read_register)(conf_object_t *obj, int index);
+        void   (*write_register)(conf_object_t *obj, int index, uint16 value);
+} mii_interface_t;
+
+typedef void (*mii_register_watch_callback_t)(void *param,
+                                              uint16 old_value,
+                                              uint16 new_value);
+
+typedef struct {
+        int    (*serial_access)(conf_object_t *obj, int data_in, int clock);
+        uint16 (*read_register)(conf_object_t *obj, int phy, int reg);
+        void   (*write_register)(conf_object_t *obj, int phy, int reg,
+                                 uint16 value);
+        void   (*watch_register)(conf_object_t *obj, int phy, int reg,
+                                 mii_register_watch_callback_t callback,
+                                 void *param);
+} mii_management_interface_t;

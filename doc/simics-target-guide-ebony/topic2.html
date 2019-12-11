@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting Ebony machines are located in the
+<tt>[workspace]/targets/ebony/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/ebony/</tt>.
+<p>
+
+<p>
+<a name="label21"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Ebony</h3 class="jdocu">
+
+
+The default configuration can be modified as described in section 
+<a class="jdocu" href="#label23">3.2</a>.
+<a name="label22"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Ebony Scripts</h4 class="jdocu">
+
+
+This chapter explains the files used to boot Linux on Ebony.
+<dl><dt><b><tt>ebony-linux-common.simics</tt></b></dt><dd>Starts the Ebony machine with the default configuration to boot linux.</dd><dt><b><tt>ebony-linux-multi.simics</tt></b></dt><dd>Similar to ebony-common.simics, but instantiate 3 Ebony cards and creates
+a ethernet network.</dd><dt><b><tt>ebony-linux-scsi.simics</tt></b></dt><dd>Adds a PCI based SCSI controller and disk to the configuration. 
+Boots a linux configuration with the (larger) root disk on the SCSI disk.</dd></dl>
+<p>
+
+<p>
+
+<a name="label23"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>ebony-linux-common.simics</tt> scripts. 
+Other <tt>*-linux-*.simics</tt> scripts may set some of the parameters
+unconditionally, and do not allow the user to override them. 
+<a name="label24"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;ebony-linux-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$boot_command<a name="label25"></a></b></dt><dd>This the u-boot command automatically issued if <i>$do_boot</i> 
+parameter is set to <tt>yes</tt>. The command specifies how u-boot should
+start linux.</dd><dt><b>$create_network<a name="label26"></a></b></dt><dd>Set to <tt>yes</tt> if the script should create an Ethernet link and
+connect the primary Ethernet adapter to it.</dd><dt><b>$do_boot<a name="label27"></a></b></dt><dd>Set to <tt>yes</tt> if the script should automatically start linux
+from u-boot.</dd><dt><b>$do_login<a name="label28"></a></b></dt><dd>Set to <tt>yes</tt> if the script should automatically login as root
+on linux and configure the first ethernet device.</dd><dt><b>$ebony_u_boot<a name="label29"></a></b></dt><dd>U-boot binary which system bootstraps from. This file will automatically
+loaded into the flash memory. The file should be an elf format.</dd><dt><b>$eth_link<a name="label30"></a></b></dt><dd>The Ethernet link to connect the primary Ethernet adapter to. This
+parameter should be set when a link already exist and the
+<i>$create_network</i> parameter is <tt>no</tt>.</dd><dt><b>$freq_mhz<a name="label31"></a></b></dt><dd>The clock frequency in MHz for the processor.</dd><dt><b>$host_name<a name="label32"></a></b></dt><dd>The host name used by the DHCP and DNS servers for this machine This
+variable will not change the host name set for the machine on the disk
+dumps.</dd><dt><b>$initrd_image<a name="label33"></a></b></dt><dd>The file containing the initrd ram disk for Linux. 
+If set, this file is loaded directly into memory.</dd><dt><b>$ip_address<a name="label34"></a></b></dt><dd>The IP address used by the DHCP and DNS servers for this machine This
+variable will not change any IP address set for the machine on the disk
+dumps.</dd><dt><b>$kernel_image<a name="label35"></a></b></dt><dd>The Linux kernel image file (in u-boot format) that should be booted.</dd><dt><b>$mac_address<a name="label36"></a></b></dt><dd>MAC address of the primary Ethernet adapter.</dd><dt><b>$mac_address1<a name="label37"></a></b></dt><dd>MAC address of the secondary Ethernet adapter.</dd><dt><b>$machine_count<a name="label38"></a></b></dt><dd>Number of ebony cards to create.</dd><dt><b>$memory_megs<a name="label39"></a></b></dt><dd>Amount of RAM in megabytes installed on the card.</dd><dt><b>$rtc_time<a name="label40"></a></b></dt><dd>Date and time of the real-time clock at boot.</dd><dt><b>$service_node<a name="label41"></a></b></dt><dd>The <i>service node</i> to use for DHCP and DNS. This parameter should be
+set when a service noce already exist and the <i>$create_network</i>
+parameter is <tt>no</tt>.</dd></dl>
+
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

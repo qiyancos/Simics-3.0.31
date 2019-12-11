@@ -1,0 +1,2 @@
+run-command-file "%script%/add-gcache.include"
+run-command-file "%script%/peanut-common.simics"

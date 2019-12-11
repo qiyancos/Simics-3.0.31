@@ -1,0 +1,65 @@
+
+@if not "clock_freq_mhz"          in dir(): clock_freq_mhz = 75
+@if not "central_host"            in dir(): central_host = "localhost"
+# one of: none, local, exported and remote
+@if not "central_setup"           in dir(): central_setup = "none"
+@if not "real_network"            in dir(): real_network = 0
+@if not "cpu_class"		  in dir(): cpu_class = "ia64-itanium"
+@if not "num_processors"          in dir(): num_processors = 1
+@if not "memory_megs"             in dir(): memory_megs = 256
+@if not "ethernet"                in dir(): ethernet = "10:10:10:10:10:30"
+@if not "use_hostfs"              in dir(): use_hostfs = 1
+@if not "use_ragexl"              in dir(): use_ragexl = 0
+@if not "efi_emulation"           in dir(): efi_emulation = 1
+@if not "kernel"                  in dir(): kernel = "vmlinux-smp"
+@if not "use_video_xterm_console" in dir(): use_video_xterm_console = 0
+@if not "machines"                in dir(): machines = [""]
+
+run-python-file ../scripts/extrapath.py
+
+add-directory ../../import/ia64
+
+run-python-file ../scripts/ia64_conf.py
+
+#################
+
+@for m in machines:
+    set_machine(m) 
+    create_system(num_cpus = num_processors, 
+        mhz = clock_freq_mhz, mb = memory_megs,
+        cpu_class = cpu_class,
+        use_hostfs = use_hostfs, num_pci_buses = 1)
+    if use_ragexl:
+        add_ragexl(use_video_xterm_console)
+    else:
+        add_vga(use_video_xterm_console)
+    add_pci_sym53c810("0", 2)
+    add_scsi_disk("0", 2, 0, size = 18358824960, files = [["vasa5-rh72.craff", 1, 0, 18351959552]])
+    add_scsi_cdrom("0", 2, 1)
+
+default-port-forward-target 10.10.0.14
+
+run-command-file ../central/central-include.simics
+
+# call the user configuration function before finishing
+@if "user_config" in dir(): user_config()
+
+@finish_configuration()
+
+#################
+
+run-python-file "../scripts/ia64-fakeprom.py"
+
+# Load the ia64-fakeprom
+@for m in machines:
+    mem = SIM_get_object(m + "phys_mem0")
+    salentry = SIM_load_binary(mem, "ia64-fakeprom", 0, 0, 0)
+    # Load the kernel
+    if efi_emulation:
+        try:
+            entry = SIM_load_binary(mem, kernel, 0, 1, 0)
+        except SimExc_IOError:
+            print "Error: Could not load", kernel
+            SIM_command_has_problem()
+            entry = 0
+        sal_setup(m, num_processors, salentry, linuxentry = entry, cmdline = "single")

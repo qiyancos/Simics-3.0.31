@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/Ebony Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/Ebony Overview</h2 class="jdocu">
+
+
+<p>
+Simics/Ebony models the <i>IBM/AMCC PPC440GP Evaluation Board</i> often
+refered to as <i>Ebony reference board</i> .
+The Ebony board includes a PowerPC PPC440GP processor, memory, flash memory,
+four PCI slots, two ethernet interfaces, two serial ports, a real-time-clock
+and two i2c busses.
+<p>
+Linux, VxWorks and OSE are known to work on Simics/Ebony. Only files needed
+to boot Linux are availble from Virtutech. Scripts used to boot
+VxWorks are also included as examples, but not the VxWorks binaries.
+<p>
+The flashes on the Ebony board are setup according to <i>Configuration
+3</i> in the <i>PPC440GP Evaluation Board User's Manual</i>. Two large
+flashes are mapped at <tt>0xFFC0_0000 - 0xFFFF_FFFF</tt>. Two small
+flashes are mapped at <tt>0xFF80_0000 - 0xFF8F_FFFF</tt>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

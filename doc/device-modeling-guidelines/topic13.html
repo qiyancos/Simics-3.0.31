@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Avoid Modeling Error States</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(27, true);
+</script>
+<a name="label43"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic11.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+<h3 class="jdocu">6.2&nbsp;&nbsp;&nbsp;Avoid Modeling Error States</h3 class="jdocu">
+
+<a name="label44"></a> 
+
+<p>
+   The device model is typically expected to be accurate under normal
+   working conditions.  Error states (those that do not occur under
+   normal conditions) should never be entered.  Most errors are
+   hardware induced; e.g., parity errors, failure to read firmware ROM
+   data, etc.  These will never occur in Simics, because the virtual
+   hardware is controlled by the simulator.  The device model is
+   simplified by not having to represent the error states.
+<p>
+   Sometimes, though, the errors are the interesting parts of the
+   model.  If the model is to be used in developing the error handling
+   in a device driver, the error states need to be modeled in more
+   detail (and some means of triggering the errors must be added).
+   Fault-injection in simulated networks is another example.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic11.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+</body>
+</html>

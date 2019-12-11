@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="DML Tutorial" topic="html/index.html">
+ <topic label="1 Introduction" href="html/topic0.html">
+  <topic label="1.1 Requirements" href="html/topic1.html">
+  </topic>
+  <topic label="1.2 Installation" href="html/topic2.html">
+  </topic>
+  <topic label="1.3 Emacs DML Editing Mode" href="html/topic3.html">
+  </topic>
+  <topic label="1.4 Example Device Models" href="html/topic4.html">
+  </topic>
+ </topic>
+ <topic label="2 Getting Started" href="html/topic5.html">
+  <topic label="2.1 A Simple Device" href="html/topic6.html">
+  </topic>
+  <topic label="2.2 Loading And Testing" href="html/topic7.html">
+  </topic>
+  <topic label="2.3 Scripting" href="html/topic8.html">
+  </topic>
+  <topic label="2.4 Logging" href="html/topic9.html">
+  </topic>
+  <topic label="2.5 Configuration Attributes" href="html/topic10.html">
+   <topic label="2.5.1 Using Register Attributes" href="html/topic11.html">
+   </topic>
+   <topic label="2.5.2 User-defined Attributes" href="html/topic12.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="3 Using C code and the Simics API" href="html/topic13.html">
+ </topic>
+ <topic label="4 Events and Time" href="html/topic14.html">
+ </topic>
+ <topic label="5 Interfaces and Objects" href="html/topic15.html">
+  <topic label="5.1 Implementing an Interface" href="html/topic16.html">
+  </topic>
+  <topic label="5.2 Connecting Objects" href="html/topic17.html">
+   <topic label="5.2.1 Connect Example" href="html/topic18.html">
+   </topic>
+   <topic label="5.2.2 Sharing Definitions" href="html/topic19.html">
+   </topic>
+   <topic label="5.2.3 A Plug-in Module" href="html/topic20.html">
+   </topic>
+   <topic label="5.2.4 Testing the Connect" href="html/topic21.html">
+   </topic>
+  </topic>
+ </topic>
+</toc>

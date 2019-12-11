@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>branch_arc</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2227, true);
+</script>
+<a name="label17697"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic489.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic491.html">Next</a></span></p>
+<h3 class="jdocu">branch_arc</h3 class="jdocu">
+
+
+<a name="label17698"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic36.html#label3987">branch_recorder</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <a name="label17699"></a>
+   <a name="label17700"></a>
+   <a name="label17701"></a>
+   <a name="label17702"></a>
+<p>
+   Interface for getting branch arcs out profilers. The target is some kind of
+   profiler whose data can be meaningfully viewed as branch arcs (usually a
+   branch profiler).
+<p>
+   <b><i>iter</i></b> returns a branch arc iterator that will visit all branch
+   arcs in the range precisely once, in order of selected address (to or from,
+   selected with <i>dir</i>), other address and type. In Python, it
+   works just like any other iterator, and returns (from, to, counter, type)
+   tuples. Note that you may not continue to use the iterator after the
+   underlying profiler has been modified.
+<p>
+  <tt>branch_arc_type_t</tt> defines the branch types returned by a branch
+  arc iterator.
+<p>
+  <dl><dt><b><tt>Branch_Arc_Branch</tt></b></dt><dd>Normal branch operation</dd><dt><b><tt>Branch_Arc_Exception</tt></b></dt><dd>Branch because an exception 
+  was encountered</dd><dt><b><tt>Branch_Arc_Exception_Return</tt></b></dt><dd>Branch to finish an 
+  exception handler</dd></dl>
+<p>
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        Branch_Arc_Branch,
+        Branch_Arc_Exception,
+        Branch_Arc_Exception_Return,
+        Branch_Arc_Max
+} branch_arc_type_t;</pre>
+
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        BR_Direction_From,
+        BR_Direction_To
+} branch_recorder_direction_t;</pre>
+
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        uinteger_t addr_from;
+        uinteger_t addr_to;
+        integer_t count;
+        branch_arc_type_t type;
+} branch_arc_t;
+
+typedef struct branch_arc_iter {
+        branch_arc_t *(*next)(struct branch_arc_iter *i);
+        void (*destroy)(struct branch_arc_iter *i);
+} branch_arc_iter_t; 
+
+typedef struct branch_arc_interface {
+        branch_arc_iter_t *(*iter)(conf_object_t *prof_obj,
+                                   generic_address_t start,
+                                   generic_address_t stop,
+                                   branch_recorder_direction_t dir);
+} branch_arc_interface_t;
+
+#define BRANCH_ARC_INTERFACE "branch_arc"
+</pre>
+<p>
+
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic489.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic491.html">Next</a></span></p>
+</body>
+</html>

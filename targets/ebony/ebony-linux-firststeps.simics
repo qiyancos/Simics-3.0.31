@@ -1,0 +1,2 @@
+run-command-file "%script%/ebony-linux-common.simics"
+run-command-file "%script%/ebony-linux-firststeps-common.include"

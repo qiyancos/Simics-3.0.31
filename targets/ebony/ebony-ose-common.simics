@@ -1,0 +1,23 @@
+if not defined create_network {$create_network = "yes"}
+
+###
+#
+# OSE setup with networking relies on the binaries called
+# "polo_X", "rtose_X" for hardwired MAC addresses 00:00:12:34:56:X
+# To use these default binaries, set the variable "base_mac" to 78..82
+#
+if not defined base_mac {$base_mac     = "78"}
+$bootloader   = "polo_"+$base_mac+".bin"
+$kernel_image = "rtose_"+$base_mac+".elf"
+$mac_address   = "00:00:12:34:56:"+$base_mac
+$ip_address   = "10.10.0."+$base_mac
+
+run-command-file "%script%/ebony-system.include"
+
+instantiate-components
+
+$eth_comp = $system
+$eth_cnt = emac0
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/ebony-ose-setup.include"

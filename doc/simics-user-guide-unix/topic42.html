@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>IP Services</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(119, true);
+</script>
+<a name="label265"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic41.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic43.html">Next</a></span></p>
+<h4 class="jdocu">9.3&nbsp;&nbsp;&nbsp;IP Services</h4 class="jdocu">
+
+
+<p>
+It is often useful to be able to let the simulated machines use
+services available on the simulated network, especially for boot-time
+configuration.  Instead of adding a full system simulation of servers
+running these services, a more efficient implementation is provided as
+a Simics <em><a name="label266">service node</a></em>.
+<p>
+The <b><a name="label267">service-node</a></b> class provides a virtual
+network node that acts as a server for a number of protocols, and it
+can act as a IP router between networks.  The services supported are:
+<p>
+<ul>
+<li>IP Based Routing</li>
+<li>RARP</li>
+<li>DHCP/BOOTP</li>
+<li>DNS</li>
+<li>Bootparam/Whoami RPC (simplified)</li>
+<li>TFTP</li>
+<li>Real network connections (see section <a class="jdocu" href="topic45.html#label293">10</a>)</li>
+</ul>
+<p>
+There can be any number of <b>service-node</b> objects, and
+each object can be connected to any number of Ethernet links.  In most
+configurations, however, there will usually be a single service node
+object.  The links themselves do not provide any services, so a
+service node is needed to make the services available to target
+machines connected to the link.
+<p>
+A service node can be created using the <b>new-service-node</b>
+command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-service-node</b>
+Created service-node sn0
+</pre>
+<p>
+This service node can then be connected to an Ethernet link object. For
+example, if you already have an <b>ethernet-link</b> called
+<b>ethlink0</b> and want the service-node to use the IP address 10.10.0.1
+on it:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sn0.connect ethlink0 10.10.0.1</b>
+Connecting sn0 to ethlink0
+Setting IP address of sn0 on network ethlink0 to 10.10.0.1
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The service node needs to have an <a name="label268">IP address</a> on each
+link it is connected to.<hr class="jdocu_note">
+<p>
+The link to attach the service node to can also be specified when creating the
+service node.  This will make the default name given to the service reflect
+which link object it is connected to. For example, if you already have an
+<b>ethernet-link</b> called <b>ethlink0</b> and want the
+service-node to use the IP address 10.10.0.1 on it:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-service-node link = ethlink0 ip = 10.10.0.1</b>
+Created service-node ethlink0_sn0
+Connecting ethlink0_sn0 to ethlink0
+Setting IP address of ethlink0_sn0 on network ethlink0 to 10.10.0.1
+</pre>
+<p>
+For each link that the service node connects to, a
+<b>service-node-device</b> will be automatically created to
+act as an Ethernet interface.  The name of these device objects are a
+combination of the service node name and the link object name.
+<p>
+<a name="label269"></a><h5 class="jdocu">9.3.1&nbsp;&nbsp;&nbsp;IP Based Routing</h5 class="jdocu">
+
+<a name="label270"></a>
+
+<p>
+A <b>service-node</b> object can provide IP based routing
+between Ethernet links, allowing machines attached to different
+networks to communicate with each other.
+<p>
+<hr class="jdocu_note"><b>Note:</b> To use the routing mechanisms, simulated machines must use the
+<a name="label271">IP address</a> of the service node as a
+<em><a name="label272"></a>gateway</em> for IP based
+traffic. Configuring a gateway requires system administration skills,
+and the exact procedure depends on the target operating system.<hr class="jdocu_note">
+<p>
+The service node contains an internal IP routing table that is used
+for packet routing between connected links.  The routing table can be
+viewed using the <b>&lt;service-node&gt;.route</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sn0.route</b>
+Destination  Netmask        Gateway  Port
+-----------------------------------------------------
+10.10.0.0    255.255.255.0           sn0_ethlink0_dev
+</pre>
+<p>
+The output is quite similar to <tt>route</tt> command available on
+many systems. The <i>destination</i> and <i>netmask</i> fields specify
+a target that can be either a network (i.e., a range of addresses) or
+a single host (with netmask <tt>255.255.255.255</tt>). For packets
+with this target as their destination, the <i>port</i> field specifies
+the service node network device on which link the packet should be
+sent.
+<p>
+New entries can be added to the routing table with the <b>&lt;service-node&gt;.route-add</b> command. If you have a
+<b>service-node</b> called <b>sn0</b> connected to two links called
+<b>ethlink0</b> and <b>ethlink1</b>, you could, for example, set up
+routes like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sn0.route-add 192.168.0.0 255.255.0.0 link = ethlink0</b>
+simics&gt; <b>sn0.route-add 192.168.1.0/26 link = ethlink1</b>
+simics&gt; <b>sn0.route-add 10.10.0.0 255.255.0.0 192.168.0.1 ethlink0</b>
+simics&gt; <b>sn0.route-add 0.0.0.0 255.255.255.255 192.168.1.1 ethlink1</b>
+simics&gt; <b>sn0.route</b>
+Destination  Netmask          Gateway      Port
+-----------------------------------------------------------
+192.168.0.0  255.255.255.0                 sn0_ethlink0_dev
+192.168.1.0  255.255.255.192               sn0_ethlink1_dev
+10.10.0.0    255.255.0.0      192.168.0.1  sn0_ethlink0_dev
+default                       192.168.1.1  sn0_ethlink1_dev
+</pre>
+<p>
+The destination address and the netmask identify the target, and
+should be given as strings in dotted decimal form. If the target is a
+single host, the netmask should be given as
+<tt>"255.255.255.255"</tt>.
+<p>
+<a name="label273"></a><h5 class="jdocu">9.3.2&nbsp;&nbsp;&nbsp;DHCP and BOOTP</h5 class="jdocu">
+
+<a name="label274"></a>
+<a name="label275"></a>
+
+<p>
+A service node can act as a
+<i><a name="label276">Dynamic Host Configuration Protocol</a></i>
+(<a name="label277">DHCP</a>) or <i><a name="label278">Bootstrap Protocol</a></i>
+(<a name="label279">BOOTP</a>) server,
+ responding to requests from clients that can read their
+network configuration from such a server.  The DHCP protocol is an
+extension of the BOOTP protocol, and for many uses the feature set
+used are more or less the same.  The Simics implementation uses the
+same configuration for both services.
+<p>
+The service node has a table that maps <a name="label280">MAC addresses</a> to <a name="label281">IP
+addresses</a> and domain name.  This is used to answer DHCP or BOOTP
+request.  An entry to this table can be added with the <b>&lt;service-node&gt;.add-host</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sn0.add-host 10.10.0.1 node1 mac="10:10:10:10:10:01"</b>
+Adding host info for IP 10.10.0.1: node1.network.sim  MAC: 10:10:10:10:10:01
+</pre>
+<p>
+The current contents of the table can be viewed with the <b>&lt;service-node&gt;.list-host-info</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sn0.list-host-info</b>
+IP         name.domain        MAC
+-----------------------------------------------
+10.10.0.1  node1.network.sim  10:10:10:10:10:01
+</pre>
+<p>
+A pool of IP addresses for dynamic DHCP leases can be added with the
+<b>&lt;service-node&gt;.dhcp-add-pool</b> command.  This is used
+for dynamically assigning IP addresses to new clients.  When an entry
+from the pool is used, the new mapping is stored in the internal
+host info table, including an automatically generated name that can be
+found through DNS queries.
+<p>
+If a DHCP client's MAC address matches an entry in the table, it is assigned
+the corresponding IP address. If there is no matching MAC address, the dynamic
+address pools will be searched for an available IP address.
+<p>
+The DHCP implementation in <b>service-node</b> is simple, and might not
+work with all DHCP clients.
+<p>
+<a name="label282"></a><h5 class="jdocu">9.3.3&nbsp;&nbsp;&nbsp;DNS</h5 class="jdocu">
+
+<a name="label283"></a>
+
+<p>
+The service node includes the functionality of a simple <i>Domain Name
+Server</i> (DNS), that a simulated client can use to translate a
+host/domain name into an IP address and vice versa. The DNS service is
+based on the same host table as the DHCP service, and only answers
+requests for A and PTR records.
+<p>
+For entries in the table that will only be used for DNS requests, and
+not for assigning IP address by means of DHCP, the MAC address can be
+left out.  The <b>&lt;service-node&gt;.add-host</b> command can be
+used to add table entries, and the <b>&lt;service-node&gt;.list-host-info</b> command prints the current
+table.  By default, all host entries will use the <tt>network.sim</tt>
+domain.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>sn0.add-host 10.10.0.1 donut</b>
+Adding host info for IP 10.10.0.1: donut.network.sim
+simics&gt; <b>sn0.add-host 10.11.0.1 foo other.domain</b>
+Adding host info for IP 10.11.0.1: foo.other.domain
+simics&gt; <b>sn0.list-host-info</b>
+IP         name.domain        MAC | IP         name.domain        MAC
+----------------------------------+----------------------------------
+10.10.0.1  donut.network.sim      | 10.11.0.1  foo.other.domain
+</pre>
+<p>
+For dynamically added DHCP addresses, a DNS name will be added for the
+new IP number, so that any address handed out by a DHCP server can be
+found by the DNS service.
+<p>
+When connected to a real network, the DNS service can do external lookups for
+names it does not recognize.
+<p>
+<a name="label284"></a><h5 class="jdocu">9.3.4&nbsp;&nbsp;&nbsp;TFTP</h5 class="jdocu">
+
+<a name="label285"></a>
+
+<p>
+The service node also supports the <i>Trivial File Transfer
+Protocol</i> (<a name="label286">TFTP</a>, see <em>RFC 1350</em>) and can be
+used to transfer files between the host system (running the
+simulation) and a simulated (target) client. The TFTP functionality is
+often used in network booting, together with the BOOTP facilities, to
+load OS kernels and images, and can also be used interactively from
+the <tt>tftp</tt> command found on many systems.
+<p>
+Files that should be transferred from the host system to the simulated
+client should be located in a directory on the Simics path.
+<p>
+<hr class="jdocu_note"><b>Note:</b> This is the same path as used by image objects and can be viewed
+with <b>list-directory</b> command and modified with the
+<b>add-directory</b> command.<hr class="jdocu_note">
+<p>
+Files transferred from the simulated client to the host, will also end
+up in the same directory.
+<p>
+<hr class="jdocu_note"><b>Note:</b> TFTP is based on UDP, and each package is acknowledged
+individually before the transfer is allowed to continue. Depending on
+the latency of the link, the transfer of large files can be slow. In
+that case, ensuring that the link can use a lower latency will
+increase performance.<hr class="jdocu_note">
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic41.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic43.html">Next</a></span></p>
+</body>
+</html>

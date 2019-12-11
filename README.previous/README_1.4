@@ -1,0 +1,619 @@
+NOTES ON 1.4
+============
+
+General:
+--------
+
+This is Simics 1.4. It contains eight target architectures: Alpha, AMD x86-64,
+ARM, IA64, MIPS, PowerPC, UltraSPARC, and x86.
+
+
+Changes between 1.4.6 and 1.4.7
+-------------------------------
+
+ * UltraSPARC target only: Disassembler fix for several VIS instructions.
+
+ * UltraSPARC target only: Bug fix in the 'fmuld8ulx16' and 'fmuld8sux16'
+   instructions.
+
+ * X86 target only: Made 'rombios-2.42' default.
+
+ * x86-64 target only: fix subtract with carry (sbbq) bug.
+
+
+Changes between 1.4.5 and 1.4.6
+-------------------------------
+
+ * X86 target only: Updated BIOS, 'rombios-2.42'.
+
+ * UltraSPARC target only: Minor floating point exception fix.
+
+ * SunFire target only: Correct PCI slots set in the configuration scripts
+   for some SCSI/Ethernet boards.
+
+ * SunFire target only: Bug fix in the i21152 transparent PCI-to-PCI bridge.
+
+ * Several updates in customer specific packages.
+
+
+Changes between 1.4.4 and 1.4.5
+-------------------------------
+
+ * X86 targets only: Default BIOS changed to rombios 2.38 again due to bugs in
+   version 2.39. This BIOS does not support system reset (reboot) introduced
+   in Simics 1.4.3. There is an experimental rombios 2.40 included that does
+   support reboot, but this BIOS only works in single processor configurations.
+
+ * UltraSPARC targets only: 'rdpr' with an illegal register now generates a
+   Privileged_Opcode exception when accessed from user mode. It used to
+   generate 'Illegal_Instruction'.
+
+ * Serengeti target only: Correct PCI slots set in the configuration scripts
+   for some SCSI/Ethernet boards.
+
+ * Bug fix: Resuming checkpoints connected to Simics Central sometimes failed
+   synchronizing the correct start time.
+
+ * X86 targets only: Bug fix: Simics 1.4.3 complained about missing attribute
+   'reset_target' in old checkpoints.
+
+ * Minor IDE CD-ROM mount problem fixed.
+
+ * Several updates in customer specific packages.
+
+
+Changes between 1.4.3 and 1.4.4
+-------------------------------
+
+ * Serengeti target only: Old checkpoints from Simics 1.2 can now be loaded.
+
+ * Multiprocessor bug fix for all targets.
+
+ * It is now possible to use break-hap on the Core_Ascynchronous_Trap hap.
+
+ * The commands display, enable-external-commands, pipe, undisplay,
+   add-directory, add-to-simics-path, clear-directories, native-path,
+   print-directories, and resolve-file that were added to the reference manual
+   (their documentation was accidentally missing from there before).
+
+ * A bug was fixed when using Python lambda functions in interfaces, which
+   could potentially cause segmentation faults.
+
+ * X86 targets only: New os install scripts cdrom-install-no-acpi-[12].simics
+   added to home/dredd. These scripts differ from the normal scripts in that
+   the simulated machine does not have ACPI tables. Unlike with the normal
+   scripts, Windows 2000 (and flavors) does install properly with these
+   scripts.
+
+ * X86 targets only: New bios (2.39) with some bugfixes and with experimental
+   reboot support.
+
+ * X86 targets only: Experimental reboot (INIT) support in the cpu classes.
+
+
+Changes between 1.4.2 and 1.4.3
+-------------------------------
+
+ * The configure script checks that the found gmake/make binary is GNU make.
+
+ * UltraSPARC targets with subnormal exception handling only: Bugfix in the
+   fsmuld instruction.
+
+ * UltraSPARC targets only: New command "<cpu>.pregs-fpu".
+
+ * Bug fix: Using the 'memory-limit' command when processors were disabled
+   could cause the event queue to overflow.
+
+ * x86 target only: Minor floppy drive problem fixed.
+
+ * x86 target only: Experimental Sound Blaster 16 device added. No sound
+   output is guaranteed, but the device may be useful when running programs
+   that require a sound card present. (Linux host only).
+
+ * IA64 target only: Fixed compatibility issues in the ia64-fakeprom related
+   new (2.4.19) kernels.
+
+ * IA64 target only: Initial Itanium 2 support. There is a new machine model
+   called "pfalz", based on an Itanium 2 CPU, and an old 460GX chipset. Note
+   that the chipset model will be replaced by an E8870 in future Simics
+   relases. (Itanium 2 support in Simics is still to be considered as
+   experimental).
+
+ * IA64 target only: the semantics of the floating-point "unordered" relation
+   is now implemented correctly.
+        
+
+Changes between 1.4.1 and 1.4.2
+-------------------------------
+
+ * Missing 'import/arm/fakesetup' file included.
+
+ * Bug fix: Referencing non-existing CD-ROM files crashed Simics 1.4.1 on
+   Solaris host.
+
+ * Bug fix: Inserted CD objects in checkpoints were not correctly handled when
+   a checkpoint was loaded by Simics.
+
+ * Updated the ISP1040 SCSI controller to work with Windows XP.
+
+ * Updated the ISP2200 Fibre-Channel controller to work with new Linux drivers.
+
+ * Updated VGA devices with support for different fonts for character sets A
+   and B.
+
+ * Updated VGA devices with support for graphics modes 4, 5 (CGA) and 6 (b&w).
+
+ * UltraSPARC targets only: New MMU haps.
+   'MMU_Data_TLB_Replace'    'MMU_Instruction_TLB_Replace'
+   'MMU_Data_TLB_Overwrite'  'MMU_Instruction_TLB_Overwrite'
+
+ * Serengeti and SunFire targets only: Solaris 9 installation scripts tested
+   with Solaris 9 (9/02).
+
+ * UltraSPARC targets only: The 'MMU_Context_Register_Write' doesn't stop the
+   simulation incorrectly anymore.
+
+ * UltraSPARC I/II/III targets only: Floating point exception handling changes.
+
+ * UltraSPARC I/II targets only: The 'fp_follow_errata_69' attribute has been
+   removed (always off).
+
+ * generic-cache: hit penalties can be used again. Setting hit
+   penalties to a non-zero value gives a warning about STC usage.
+
+
+Changes between 1.4.0 and 1.4.1
+-------------------------------
+
+ * The correct libstdc++.so file is included with the v9-sol7-gcc host.
+
+ * The unsupported 'loxodrome' machine was removed from the Alpha package.
+
+ * Improved error handling in the 'file-cdrom', and 'host-cdrom' classes.
+
+ * Missing PC disk partition commands added.
+
+ * New commands in the 'file-cdrom', and 'host-cdrom' classes:
+       <file-cdrom>.delete
+       <host-cdrom>.delete
+
+ * New example Simics files in the x86 packages: 'dredd-1p.simics' and
+  'dredd-scsi.simics'.
+
+ * The Linux detection/configuration of Rage XL works better.
+
+ * Added all supported x86 processors (except Pentium) to the Windows hosted
+   distribution.
+
+ * The 'Core_Conf_Object_Delete' hap is now called after the object is deleted
+   successfully. The callback argument has changed to the name of the object.
+
+ * Solaris now finds all 8MB on the pgx64 graphics device, not only 2MB.
+
+ * New command line option '-license-file <file>'.
+
+ * Serengeti target only: UPA interrupt mapping registers added to Schizo.
+
+ * Serengeti target only: The 'Memory Address Decode Registers' are setup by
+   the Simics scripts before boot to reflect the actual memory configuration.
+
+ * UltraSPARC III target only: Added support for memory mapped MADR registers.
+
+ * x86 target only: Support for machines with more than 3840Mb added to the
+   configuration scripts. (currently only supported for x86-hammer).
+
+ * x86 target only: Legacy mode PAE paging supported. Note that the physical
+   address size is still limited to 32 bits for all targets except x86-hammer.
+
+ * x86 target only: New command '<DS12887>.cmos-info'.
+
+ * x86 target only: New bios (version 2.38) with a bugfix for INT 13h
+   subfunctions 42h (extended read), 43h (extended write), 44h (extended verify
+   sectors), and 48h (get drive parameters).
+
+ * Simics Central only: Bug fixes for alignment problems observed on Sparc
+   host.
+
+ * Simics Central only: Fixed a bug where packets were routed back to the same
+   network as they originated from.
+
+ * Simics Central only: Fixed a bug where the "ethernet-central" attribute was
+   uninitialized when a new network was created using the "network-add"
+   command.
+
+ * c-utils.h and vtprintf.h (included from global.h) were surrounded by extern
+   "C" { ... } blocks #ifdef __cplusplus
+
+ * In configuration object names, dashes and underscores are considered
+   equivalent (so foo_bar and foo-bar refer to the same object).
+
+ * The trace module was bugfixed to send output in the correct order (within
+   each trace line).
+
+Simics 1.4.0
+============
+
+Major Changes:
+--------------
+
+ * New PowerPC target 7450 including the Altivec instructions.
+
+ * Micro Architectural Interface added for UltraSPARC II and III. To use this,
+   you need to run a special binary: simics-sparc-u2-ma or simics-sparc-u3-ma.
+   More information is available in the "simics-out-of-order-guide" document.
+
+ * The module sample-micro-arch demonstrates the Micro Architecture Interface.
+   See the comments in the supplied source code for instructions on how to use
+   it.
+
+ * The x86 and x86_64 configuration scripts are now function based, similar to
+   the scripts for SunFire and Serengeti targets. This simplifies the creation
+   of new simulated machines, and makes the modification of the existing
+   targets simpler (for tasks such as adding PCI devices, disks, etc).
+
+ * Major update of the Simics User Guide.
+
+ * Major update of the Simics Reference Manuals.
+
+ * Major update of all "Target Guide" documents, including improved description
+   of the configuration scripts for x86, Serengeti and SunFire targets.
+
+ * Pentium 4 target added to Linux/x86 and Windows hosts.
+
+
+Minor Changes:
+--------------
+
+ * Attribute documentation is now available on-line with the list-attributes
+   command.
+
+ * API declarations and definitions can now be browsed from the Simics command
+   line using the api-help and api-apropos commands. See the Simics Reference
+   Manual for documentation on these commands.
+
+ * The license software used by Simics has been upgraded on Unix platforms. As
+   a result, some older license files may not work with the 1.4 version of
+   Simics.  If your license file does not contain any 'SIGN=...' field, please
+   contact Virtutech for an update. (The license software is FLEXlm v8.1)
+
+ * A number of commands related to tracing and breaking on internal events were
+   updated.  New commands are break-cr (previously available on SPARC targets),
+   trace-cr, break-hap, trace-hap.  The commands io-break and io-trace have
+   been renamed to break-io and trace-io, respectively.
+
+ * New commands for handling PC disk partitions:
+        print-partition-table
+        create-partition
+
+ * Several new example simics scripts included in the distribution.
+
+ * Configuration support for multiple machines running in one Simics. More
+   information is available in the Target Guides, and in the 'donut-x2.simics'
+   'sarek-x2.simics' and 'enterprise-x2.simics' scripts. Currently available
+   for the x86, SunFire and Serengeti targets.
+
+ * Incompatibility: The simics-path attribute is now a list instead of a
+   colon-separated string. The commands modifying this attribute have changed
+   as follows:
+       add-to-simics-path	-> add-directory
+       set-simics-path		-> (removed)
+       get-simics-path         -> (removed, use SIM_get_directories instead)
+       print-simics-path       -> print-directories
+       remove-from-simics-path -> (removed)
+   New commands:
+       clear-directories
+       print-directories
+       native-path
+
+ * The 'source' command is now called 'run-python-file', and 'include' has
+   been renamed 'run-command-file'. The old names are kept as aliases and will
+   work as before.
+
+ * The TARGET_32_BIT and TARGET_64_BIT pre-processor defines were replaced with
+   TARGET_VA_BITS and TARGET_PA_BITS that are set to 32 or 64.
+
+ * X86 disassembly class added.
+
+ * Using a text-console (xterm-console) to display the text on a VGA display is
+   faster than before.
+
+ * SIM_new_object will fail if given an invalid instance name. See its entry in
+   the Simics Reference Manual.
+
+ * SIM_breakpoint was slightly changed. Its last argument is now a flag field.
+   See its documentation in the Simics Reference Manual.
+
+ * When compiling modules for Simics central, only TARGET_CENTRAL will be
+   #define'd, and not CENTRAL, which used to be defined too.
+
+ * The previously exported functions stat_vector_val and page_cache_clean have
+   been removed. Use SIM_stat_vector_val instead of stat_vector_val.
+
+ * The enum endianess and the typedef endianess_t were typofixed, and are now
+   called enum endianness and endianness_t, respectively.
+
+ * Sim_Set_Constraint_Violated has been removed from the set_error_t enum.
+
+ * The function st_dump has been renamed st_free to better reflect its purpose.
+
+ * The API functions SIM_simics_quitting and SIM_write_documentation_docu have
+   been removed.
+
+ * Bugfix in the CD media change handling for both IDE and SCSI CD-ROMs.
+
+ * New command <gfx-console>.input, similar to <text-console>.input.
+
+ * The scrollbar attribute in xterm-console works again.
+
+ * The v9-sol7-gcc host type is now compiled with GCC 3.0 (3.0.4).
+
+ * The log_constructor API function was removed and replaced with
+   SIM_log_constructor.  If you add #define SIM_BC_LOG_CONSTRUCTOR before
+   #include <simics_api.h>, log_constructor will be #defined to be an alias
+   for SIM_log_constructor. See the SIM_BC_LOG_CONSTRUCTOR chapter in the
+   Simics Reference Manual.
+
+ * The obsolete function SIM_get_processor_cache was removed.
+
+ * The obsolete command line option '-no-tty' has been removed. '-no-win'
+   should be used instead.
+
+ * The haps Core_Conf_Object_Create and Core_Conf_Object_Delete now only take a
+   conf_object_t * parameter. They used to take the name of the object as a
+   char * and the pointer to the object cast to an integer_t.
+
+ * SIM_get_configuration_file_prefix() returns NULL if called outside
+   the saving of a configuration.
+
+ * Generic-cache now behaves as a real write-back cache, and generates a
+   copy-back operation only when the line is dirty. Several bugs in the
+   statistics gathering have been fixed.
+
+ * Bugfix in the pci-to-pci class' handling of hierarchical busses. This also
+   affects classes that inherit pci-to-pci (such as i21152).
+
+ * New command <image>.x that can be used to inspect data in an image object.
+
+
+IA64 target only:
+
+ * The IA64 fakeprom now supports ACPI 1.0 as specified by the IA64 extensions
+   rev. 0.71 to the ACPI 1.0 specification. (In previous version, only ACPI 2.0
+   was supported).
+
+ * lfetch will no longer incorrectly (regardless of the ".fault" completer)
+   signal faults.
+
+ * The "fr" attribute is now correct with respect to register rotation (using
+   old configurations - see "Known Problems" below).
+
+ * Fixed a bug where floating point comparison for equality didn't take the
+   sign bit into account.
+
+ * Fixed a bug where the word order in fetches, as seen by a snoop device, was
+   wrong.
+
+ * The set-prefix, set-substr, and set-pattern commands now work as they
+   should.
+
+ * Fixed a bug where external interrupts failed to trigger the exception hap.
+
+
+PowerPC target only:
+
+ * TAU (Thermal Assist Unit) support added. New command and attribute:
+   <cpu>.temperature
+
+ * New TLB implementation which works according to the architecture. The old
+   TLB could be disabled with an attribute and command, this is not longer
+   possible.
+
+
+UltraSPARC targets only:
+
+ * New API function SIM_sparc_ASI_info.
+
+ * The 'no_unpriv_nucleus_ifetch' attribute was moved from the mmu class to the
+   processor class.
+
+ * A 'side_effect' member was added to the memory_transaction_t data structure.
+   The store_buffer extension (consistency controller) uses this feature to
+   avoid sending out speculative mem ops that can have side effects.
+
+ * Incompatibility: An extra argument (target_mid) was added to the
+   'interrupt_cpu' function in the sparc interrupt interface
+   (sparc_interrupt_interface_t). See the documentation of the sparc-interrupt
+   interface in the Reference Manual.
+
+ * Incompatibility: Alignment check and restricted ASI check was moved from the
+   MMU (or ASI handlers) to the Simics core. This only affects user-implemented
+   MMU models.
+
+ * Incompatibility: The following bits were removed from the
+   'memory_transaction_t' structure: 'am', 'cle', 'tl'. The functionality in
+   the MMU modules that needed those bits was moved to the Simics core.
+
+ * Incompatibility: Some minor changes in the mmu_interface_t structure.
+
+ * Incompatibility: Simics scripts that use the 'glob' variable from the
+   configuration script 'sunfire_conf.py' or 'serengeti_conf.py' should use
+   the 'conf_list' variable instead.
+
+ * SunFire target only: New commands added (mostly for fun):
+   '<sun4u-systemregs>.show-leds' and'<sun4u-systemregs>.hide-leds'
+
+ * The IMPLICIT_ASI value is not used anymore.
+
+
+X86 and X86-64 targets only:
+
+ * Branch and jump destinations are now printed (instead of the displacement)
+   when instructions are disassembled.
+
+ * New Linux dumps for the hippie (RH6.2) and enterprise (RH7.3) simulated
+   machines available for download.
+
+ * New machine 'dredd' that's intended for OS installations on Simics. The
+   script for booting from a CD-ROM was moved from the 'x86-test-machine'
+   directory to 'dredd' and updated.
+
+ * Incompatibility: The 'x86-conf.py' and 'acpi.py' files have changed to
+   support the new function based configuration scripting. The old files are
+   still distributed as 'x86-conf-old.py' and 'acpi-old.py'.
+
+ * The TLBs are now implemented by an external class using the new
+   'x86_tlb_iface' interface. This allows the user to build his/her own TLB.
+
+ * TLB_Miss_Instruction and TLB_Miss_Data haps added.
+
+ * New bios (2.37) with improved support for PCI-to-PCI bridges. The PCI
+   interrupt to ISA interrupt mapping has also been changed, making this
+   bios incompatible with startup scripts from earlier Simics releases.
+
+ * New DSDT table (19.0.2.1) matching the PCI interrupt mapping in the new
+   bios (2.37).
+
+ * Improved support for cache studies:
+    - Prefetch operations (from the 3DNow!, SSE, and SSE2 instruction sets) are
+      now passed on to the timing model. They have type set to
+      Sim_Trans_Prefetch, and the specific prefetch type is encoded in the
+      access_type field.
+    - Non-temporal store instructions now have a special access_type
+      (X86_Non_Temporal). The effective_type is also automatically set to WC
+      when a non-temporal access targets cachable memory.
+    - Fence operations (SFENCE, LFENCE, and MFENCE) now trigger the new
+      Core_Fence hap.
+
+Simics Central:
+
+ * Fixed a bug where data was written to unallocated memory in response to DNS
+   queries.
+
+ * Fixed a bug where Simics clients failed to correctly initialize the global
+   start time, when connecting to a Simics Central that was already running.
+
+ * Fixed a bug where intense network traffic would cause the Simics
+   event queue to overflow at the receiver end.
+
+ * Fixed a bug where a connected Simics client sometimes failed to send data
+   to Simics Central (a nonblocking write operation failed as the buffer
+   associated with the socket became full).
+
+ * Fixed a bug where a simulated network adapter failed to reconnect with
+   Ethernet Central after a disconnect.
+
+ * Fixed a bug where the DNS service sometimes failed to lookup entries in the
+   in-addr.arpa domain.
+
+ * The Ethernet Central module is now implemented as a log object, and the
+   verbosity level can be adjusted with the debug-level command.
+
+ * Ethernet networks are now separate objects that implement the new
+   "ethernet-net-interface". There are currently two classes -
+   "ethernet-network" that connects simulated machines in a simulated network,
+   and "real-network" that connects Ethernet Central to a real world network.
+
+ * ARP entries are now assigned per network. The same ethernet (mac) address
+   can be present on multiple networks.
+
+ * The "arp" command now operates on network objects (not ethernet-central
+   objects).
+
+ * Ethernet Central can now be connected to multiple real networks at the same
+   time, using multiple instances of the "real-network" class.
+
+ * Ethernet Central can automatically assign new ethernet (mac) addresses to
+   avoid conflicts when a simulated device connects. This makes it easy to
+   create large configurations with multiple instances of the same, simulated
+   host.
+
+ * Simics Central configuration is now scripted (see scripts/central-conf.py),
+   which makes it easier to create large configurations.
+
+ * Ethernet Central now implements a "ETH_packet_sent" hap that is
+   triggered every time a packet is transmitted
+
+ * Ethernet Central now implements a routing table that can be manipulated
+   with the route, route-add, and route-del commands. The scripted
+   configuration will automatically add new routes as networks are created.
+
+ * Ethernet Central has a new attribute, "dhcp-auto". When this is set, IP
+   addresses are automatically allocated in response to DHCP discover requests
+   (if there is no corresponding ARP entry).
+
+ * Ethernet Central now keeps a list of DHCP provisional leases, i.e. addresses
+   that have been allocated in response to a "discover" message (see above),
+   but not yet received a "request" message.
+
+ * The DNS server of Simics Central will automatically assign host names to
+   allocated addresses (see dhcp-auto above).
+   
+
+Known Problems & Limitations:
+-----------------------------
+
+All targets:
+
+ * Simics-central communication does not work when central and Simics are
+   running on hosts with different endianness.
+
+ * Simics doesn't honor Ctrl-C when running with all processors disabled.
+
+ * Craff sometimes produces corrupt output files on Linux over NFS. We have
+   found problems running craff on Red Hat 6.2 when the output file is mounted
+   over NFS. This is a problem with Linux and might have been solved in newer
+   distributions (kernels). Note that craff is used when a checkpoint is
+   saved.
+
+ * Some operating systems don't work. Not all devices in Simics implement all
+   possible features exactly like actual hardware. If an operating system you
+   are interested in does not run on Simics, please let us know.
+
+ * Weird output in the console window when running Simics on a remote desktop
+   (WindowsXP). This problem can be worked around by adding the line
+
+      set SDL_VIDEODRIVER=windib
+
+   to the script that starts Simics (typically home/x86-test-machine/simics.bat
+   or x86-win32-gcc/bin/simics-x86-hammer.bat).
+
+
+UltraSPARC targets only:
+
+ * Refer to the Simics/Sunfire and Simics/Serengeti Target Guides.
+
+
+Alpha target only:
+
+ * Only limited support for VAX floating-point instructions.
+
+
+X86 and X86-64 targets only:
+
+ * Refer to the Simics/x86 Target Guide.
+
+
+IA64 target only:
+
+ * The IA32 mode is not implemented.
+
+ * Some floating-point exceptions are unimplemented.
+
+ * The only supported OS is Linux.
+
+ * The ALAT is not implemented, which means that data speculation always
+   fails.
+
+ * Parts of the instruction set are still missing.
+
+ * As the "fr" attribute has been modified, loading old configurations
+   (from previous versions of Simics) may fail if the rotation base
+   (cr.rrb.fr) is not is equal to zero.
+
+
+Simics Central (Ethernet Central):
+
+ * IP broadcasting is not supported - neither limited broadcasts
+   (i.e. 255.255.255.255), nor directed (net/subnet) broadcasts.
+
+ * IP multicasting is not supported.

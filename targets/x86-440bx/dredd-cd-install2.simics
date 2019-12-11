@@ -1,0 +1,12 @@
+if not `SIM_lookup_file("dredd-install.disk")` {
+    echo "The file 'dredd-install.disk' is missing."
+    echo "Run dredd-cd-install1.simics first."
+    echo ""
+    quit 1
+}
+
+$create_network = "yes"
+$disk_image = ""
+@disk_files = [["dredd-install.disk", "rw", 0, 20496236544]]
+
+run-command-file "%script%/dredd-common.simics"

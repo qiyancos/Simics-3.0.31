@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Provide Reaction Immediately</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(30, true);
+</script>
+<a name="label53"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic15.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic17.html">Next</a></span></p>
+<h3 class="jdocu">7.1&nbsp;&nbsp;&nbsp;Provide Reaction Immediately</h3 class="jdocu">
+
+<a name="label54"></a>
+
+<p>
+   Where possible, the device model should react immediately to
+   stimuli, even though the real device would take some time to finish
+   the effect.  This improves efficiency, because the model is invoked
+   fewer times, and simplifies the implementation since there is no
+   need to store transaction state for later or insert things into the
+   event queues.
+<p>
+   For example, a model of a network device can send a packet
+   immediately upon request, reading the content directly from main
+   memory rather than, e.g., initiating a DMA transfer to an internal
+   FIFO, waiting for it to fill up, etc.  Another example is an
+   address/data register pair, where the real device requires that the
+   data access must not occur within a specified time from the address
+   write.  The model does not need to check for this condition, since
+   the driver will always wait long enough before attempting to read
+   or write the data.
+<p>
+   It is often useful to have a simple configurable delay for
+   hardware events that take time.  Sometimes the software is
+   sensitive to things that occur too quickly (e.g., immediately) in
+   the model compared to the real world.  Adjusting a delay attribute
+   is a simple solution for such problems.
+<p>
+   Often, hardware reports the completion of an action like a DMA
+   transfer, packet transfer, or similar operation with an interrupt
+   towards the CPU. In general, the timing of such an interrupt should
+   be similar to what one would see on real hardware. Note that some
+   driver software crashes if the response comes immediately, as it is
+   not built to handle an interrupt in the middle of the send routine --
+   it assumes a certain delay before a completion interrupt and does not
+   protect itself against it.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic15.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic17.html">Next</a></span></p>
+</body>
+</html>

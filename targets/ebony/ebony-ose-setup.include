@@ -1,0 +1,50 @@
+if not defined do_boot      	   {$do_boot      = "yes"}
+if not defined polo_prompt_string {$polo_prompt_string = "> "}
+if not defined boot_command 	   {$boot_command = "go 0x100000"}
+if not defined host_name          {$host_name    = "ebony"}
+if not defined bootloader         {$bootloader   = "polo.bin"}
+if not defined kernel_image       {$kernel_image = "rtose.elf"}
+if not defined mac_address        {$mac_address   = "00:00:12:34:56:78"}
+if not defined ip_address         {$ip_address   = "10.10.0.78"}
+if not defined service_node       {}
+
+###
+#
+# NOTE: the OSE kernels request their IP via DHCP, so the
+# add-host command is very important; without it, networking
+# between OSEs will not work
+#
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    # setup DHCP for this node, so it can gets its IP info
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+$plb = ($system.get-component-object plb)
+$plb.load-file $bootloader 0x1fff00000
+#$plb.load-file $kernel_image 0x1ffc00000
+
+# The initrd image overwrites the MAC addresses, restore here
+@from components import mac_as_list
+@plb = sim.objects[simenv.system].object_list['plb']
+@plb.memory[[0x1fffffe0c, 0x1fffffe11]] = mac_as_list(simenv.mac_address)
+@plb.memory[[0x1fffffe18, 0x1fffffe1d]] = mac_as_list(simenv.mac_address1)
+
+if $do_boot == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+	local $cpu = ($system.get-component-object cpu)
+    	local $cmd = $boot_command
+	local $kernel = $kernel_image
+    	# Wait for u-boot prompt, type boot
+    	$con.wait-for-string $polo_prompt_string
+	$cpu.load-binary $kernel
+	$con.input $cmd + "\n"
+	#log-level 4
+	#log-setup -time-stamp
+    }
+}

@@ -1,0 +1,48 @@
+#
+# Example setup file to run Virtutech-supplied RTEMS
+# demo applications. 
+#
+if not defined binary_to_load    {$binary_to_load = "rtems-hello2.elf"}
+if not defined skip_memory_zero  {$skip_memory_zero = 0 }
+
+#
+# Setup the basic machine with fake PMON
+#
+run-command-file "%script%/leon2-simple.simics"
+
+#
+# Load a binary into memory
+#
+add-directory "%script%/images"
+
+$cpu.set-pc ($cpu.load-binary $binary_to_load)
+
+#
+# If the "skip_memory_zero" variable is set to non-zero,
+# do a quick patch to the program execution to avoid the
+# initialization of memory by RTEMS. 
+#
+if ($skip_memory_zero) {
+	local $localcpu = ($system.get-component-object cpu)
+	script-branch { 
+		local $time_to_wait = -1
+		if ($binary_to_load == "rtems-dhrystone.elf") {
+			$time_to_wait = 105089
+		} else if ($binary_to_load == "rtems-paranois.elf") {
+			$time_to_wait = 100000
+		} else if ($binary_to_load == "rtems-tasks.elf") {
+			$time_to_wait = 98686
+		} else {
+			echo
+			echo "Warning: $skip_memory_zero set for unknown program,"
+			echo "  	       nothing will be done to skip memory initialization."
+			echo	
+		}
+		if ($time_to_wait != -1) {
+			$localcpu.wait-for-cycle $time_to_wait
+			$localcpu.write-reg "o2" 16
+			continue
+		}
+	}
+}
+

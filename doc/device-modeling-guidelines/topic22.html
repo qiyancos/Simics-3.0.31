@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Checkpointing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(36, true);
+</script>
+<a name="label67"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic20.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+<h3 class="jdocu">9.2&nbsp;&nbsp;&nbsp;Checkpointing</h3 class="jdocu">
+
+<a name="label68"></a>
+
+<p>
+   The ability to checkpoint and restore the state of a system is
+   crucial to Simics functionality. Your device model should support
+   checkpointing. In particular, you should ensure that:
+   <ul>
+   <li>All relevant state can be accessed as attributes</li>
+   <li>The device can have its entire relevant state restored by writing
+       to those attributes</li>
+   <li>That an attribute can be written to any number of times while the
+       device is active, and not assume that only a single
+       initialization will be performed (to support the quick
+       checkpoints of Simics Hindsight)</li>
+   </ul>
+<p>
+   Attributes containing information which is set when a configuration
+   is first loaded, have historically been coded as not being
+   dynamically settable (as changing such information on the fly could
+   compromise the stability and consistency of the simulation). Their
+   contents are supposed to maintain the same value over the entire life
+   of a Simics process; thus, updating them does not make sense. In
+   order to support Simics Hindsight, however, it is necessary to make
+   these attributes settable. The solution is to check that the value
+   being set is the same as the previous value (i.e., the one set upon
+   initialization), and if not, report an error.
+<p>
+   Furthermore, device models often cache parts of their state
+   internally for the sake of speed, rather than keeping it accessible
+   via attributes. To ensure correct behavior, e.g. when reversing to a
+   micro-checkpoint, all internal caches have to be cleared when an
+   attribute is set.
+<p>
+   In the case that a module lacks any attributes that can be used to
+   indicate flushing of the state, there is a special interface
+   <tt>temporal_state_interface_t</tt> available that lets a module get
+   callbacks when the state is being reset for Hindsight
+   micro-checkpoints. This is however very rarely needed.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic21.html">Previous</a> - <a class="jdocu" href="topic20.html">Up</a> - <a class="jdocu" href="topic23.html">Next</a></span></p>
+</body>
+</html>

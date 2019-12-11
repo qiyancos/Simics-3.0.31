@@ -1,0 +1,67 @@
+if not defined hostid        {$hostid        = 0x80804a6c}
+if not defined freq_mhz      {$freq_mhz      = 75}
+if not defined mac_address   {$mac_address   = "10:10:10:10:10:24"}
+if not defined disk_size     {$disk_size     = 2128486400}
+if not defined rtc_time      {$rtc_time      = "2002-06-02 17:00:00 UTC"}
+if not defined num_cpus      {$num_cpus      = 1}
+if not defined megs_per_cpu  {$megs_per_cpu  = 256}
+if not defined cpu_class     {$cpu_class     = "ultrasparc-iii-plus"}
+
+###
+
+add-directory "%simics%/targets/serengeti/images/"
+
+import-pci-components
+import-std-components
+import-sun-components
+import-serengeti-components
+
+if $cpu_class == "ultrasparc-iii-plus" {
+    $create_function = "create-serengeti-us-iii-plus-cpu-board"
+} else if $cpu_class == "ultrasparc-iii" {
+    $create_function = "create-serengeti-us-iii-cpu-board"
+} else if $cpu_class == "ultrasparc-iv" {
+    $create_function = "create-serengeti-us-iv-cpu-board"
+} else if $cpu_class == "ultrasparc-iv-plus" {
+    $create_function = "create-serengeti-us-iv-plus-cpu-board"
+} else {
+    echo "Unknown cpu_class" + $cpu_class
+    exit 1
+}
+
+$system = (create-serengeti-6800-chassis hostid = $hostid
+                                         mac_address = $mac_address
+                                         rtc_time = $rtc_time)
+$board = 0
+$cpus_left = $num_cpus
+while $cpus_left > 0 {
+    $cpus = (min 4 $cpus_left)
+    $cpubrd[$board] = ($create_function num_cpus = $cpus
+                                        cpu_frequency = $freq_mhz
+                                        memory_megs = ($megs_per_cpu * $cpus))
+    $system.connect ("cpu-slot" + $board) $cpubrd[$board]
+    $board += 1
+    $cpus_left -= 4
+}
+unset cpus
+
+$pciboard = (create-serengeti-pci8-board)
+
+$pci_hme = (create-sun-pci-hme mac_address = $mac_address)
+$pci_glm = (create-pci-sym53c875)
+$scsi_bus = (create-std-scsi-bus)
+$scsi_disk = (create-std-scsi-disk scsi_id = 0 size = $disk_size)
+$scsi_cdrom = (create-std-scsi-cdrom scsi_id = 6)
+$console = (create-std-text-console)
+
+###
+
+$system.connect io-slot6 $pciboard
+$pciboard.connect pci-slot0 $pci_hme
+$pciboard.connect pci-slot5 $pci_glm
+$scsi_bus.connect $pci_glm
+$scsi_bus.connect $scsi_disk
+$scsi_bus.connect $scsi_cdrom
+$system.connect $console
+
+$machine_defined = 1

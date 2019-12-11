@@ -1,0 +1,5 @@
+run-command-file "%script%/ppc970-simple-system.include"
+
+instantiate-components
+
+run-command-file "%script%/yellow-setup.include"

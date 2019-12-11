@@ -1,0 +1,57 @@
+if not defined hostid        {$hostid        = 0x80804a6c}
+if not defined freq_mhz      {$freq_mhz      = 168}
+if not defined mac_address   {$mac_address   = "10:10:10:10:10:12"}
+if not defined disk_size     {$disk_size     = 2128486400}
+if not defined rtc_time      {$rtc_time      = "2002-06-02 13:00:00 UTC"}
+if not defined num_cpus      {$num_cpus      = 1}
+if not defined memory_megs   {$memory_megs   = 256}
+if not defined save_slot2    {$save_slot2    = "no"}
+
+###
+
+add-directory "%simics%/targets/sunfire/images/"
+
+import-pci-components
+import-std-components
+import-sun-components
+import-sunfire-components
+
+$system = (create-sunfire-6500-backplane cpu_frequency = $freq_mhz
+                                         hostid = $hostid
+                                         mac_address = $mac_address
+                                         rtc_time = $rtc_time)
+
+$board = 0
+$cpus_left = $num_cpus
+$megs_left = $memory_megs
+
+while $cpus_left or $megs_left {
+    $cpubrd[$board] = (create-sunfire-cpu-board
+                           num_cpus = (min $cpus_left 2)
+                           memory_megs = (min $megs_left 4096))
+    $system.connect ("slot" + $board) $cpubrd[$board]
+    if $board == 0 {
+        $system.connect central-cpu $cpubrd[$board]
+    }
+    $cpus_left = (max ($cpus_left - 2) 0)
+    $megs_left = (max ($megs_left - 4096) 0)
+    $board += 1
+    if $board == 1 {$board = 2}
+    if $board == 2 and ($save_slot2 == yes) {$board = 3}
+}
+
+$sbusbrd = (create-sunfire-sbus-board mac_address = $mac_address)
+$scsi_bus = (create-std-scsi-bus)
+$scsi_disk = (create-std-scsi-disk scsi_id = 1 size = $disk_size)
+$scsi_cdrom = (create-std-scsi-cdrom scsi_id = 6)
+$console = (create-std-text-console)
+
+###
+
+$system.connect slot1 $sbusbrd
+$sbusbrd.connect $scsi_bus
+$scsi_bus.connect $scsi_disk
+$scsi_bus.connect $scsi_cdrom
+$system.connect ttya $console
+
+$machine_defined = 1

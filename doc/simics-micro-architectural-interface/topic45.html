@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_opcode()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(74, true);
+</script>
+<a name="label368"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic44.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic46.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_opcode()</h4 class="jdocu">
+
+<a name="label369"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label370"></a><b>SIM_instruction_opcode</b> &#8212; get the opcode of the instruction</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">attr_value_t 
+SIM_instruction_opcode(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Returns the opcode of an instruction as a <tt>attr_value_t</tt>. If the
+   instruction fits in a 64 bits integer, it will be returned as a
+   <tt>Sim_Val_Integer</tt>, otherwise as a <tt>Sim_Val_Data</tt>.
+<p>
+   If the opcode is unknown, i.e. the instruction has not yet been
+   fetched, Sim_Val_Nil is returned.</dd>
+
+<p>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The value of the opcode.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic44.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic46.html">Next</a></span></p>
+</body>
+</html>

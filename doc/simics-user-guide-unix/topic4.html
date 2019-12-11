@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Glossary</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="topic0.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h3 class="jdocu">2&nbsp;&nbsp;&nbsp;Glossary</h3 class="jdocu">
+
+    <a name="label21"></a>
+<p>
+   This is a list of terms that have a special meaning in Simics documentation.
+<p>
+   <ul>
+<p>
+   <li> <b><a name="label22">callback</a></b> &#8212; A user-defined function
+   installed so that it will be called from Simics, for example when a
+   <i>hap</i> occurs.</li>
+<p>
+   <li> <b><a name="label23">checkpoint</a></b> &#8212; The state of simulation, 
+   saved as a number of files, that can be loaded to continue simulation
+   at the point the checkpoint was saved.</li>
+<p>
+   <li> <b>CLI</b> &#8212; See Command Line Interface.</li>
+<p>
+   <li> <a name="label24"></a><b>Command Line Interface</b> &#8212;
+   The default Simics command-line (user interface). It uses a simple language
+   implemented in Python, and is variously called the Simics "front end" or the
+   "CLI".</li>
+<p>
+   <li><b><a name="label25">component</a></b> &#8212;
+   A component is typically the smallest hardware unit that can be
+   used when configuring a real machine, and examples include
+   motherboards, PCI cards, hard disks, and backplanes. Components
+   are usually implemented in Simics using several <i>configuration
+   objects</i>.
+   </li>
+<p>
+   <li> <b><a name="label26">configuration</a></b> &#8212; A configuration is a
+   description of a target architecture, and is loaded into Simics with the
+   <i>read-configuration</i> command. Note that a configuration can also
+   include the state of the target, and saved from within Simics using the
+   <i>write-configuration</i> command, in which case it provides a portable
+   <i>checkpoint</i> facility.</li>
+<p>
+   <li> <b><a name="label27">configuration object</a></b> &#8212;
+   Simics's configuration system is object-oriented: a simulated
+   machine is represented as a set of <em>components</em>, which
+   are implemented by <em>configuration objects</em>. 
+   </li>   
+<p>
+   <li> <b><a name="label28">context</a></b> &#8212; Each processor has a
+   <em><a name="label29">current context</a></em><a name="label30"></a>, which
+   represents the virtual address space currently visible to code running on
+   the processor.
+   </li>   
+<p>
+   <li> <b><a name="label31">craff</a></b> &#8212; <b>C</b>ompressed <b>R</b>andom
+   <b>A</b>ccess <b>F</b>ile <b>F</b>ormat, used to save raw data for objects,
+   such as disk dumps and target memory contents. A separate utility allows you
+   to compress input data to Simics, such as target disk dumps, in a format
+   that Simics can use directly.</li>
+<p>
+   <li> <b><a name="label32">cycle</a></b> &#8212; The smallest unit of time in
+   Simics. When using Simics in its default mode, the cycle count is usually
+   the same as the <i>step</i> count, but this can be changed in various ways
+   to improve the fidelity of the simulation.</li>
+<p>
+   <li> <b><a name="label33">device</a></b> &#8212; A module modeling a hardware
+   device.</li>
+<p>
+   <li> <b><a name="label34">event</a></b> &#8212; A Simics event occurs at some
+   predefined point of simulated time. Time can be specified either as a number
+   of steps on a simulated processor, or a number of simulated clock
+   cycles.</li>
+<p>
+
+   <li> <b><a name="label35">extension</a></b> &#8212; A module which is not a device, but
+   adds features to Simics; e.g., a statistics collection module.</li>
+<p>
+   <li> <b><a name="label36">hap</a></b> &#8212; Defined simulation or simulator state
+   changes that may trigger callback functions.</li>
+<p>
+   <li> <b><a name="label37">Hindsight</a>&trade;</b> &#8212; The technology utilized
+   by Simics to achieve reverse execution.</li>
+<p>
+   <li> <a name="label38"></a><b>host addresses</b> &#8212; Logical memory
+   addresses on the host machine; i.e., addresses in the virtual memory space
+   that the simulator itself is running in.</li>
+<p>
+   <li> <b>host</b> &#8212; The machine the simulator (Simics) is running
+   on.</li>
+<p>
+
+   <li> <a name="label39"></a><b>logical addresses</b> &#8212; Memory
+   addresses corresponding to virtual or logical addresses on the target
+   machine. These are typically translated by a memory management unit (MMU) to
+   physical addresses.</li>
+<p>
+   <li> <b>memory hierarchy</b> &#8212; A user defined module that simulates
+   caches and timing of memory operations. Interfaces to Simics using
+   a memory transaction data structure.</li>
+<p>
+   <li> <a name="label40"></a>
+   <b>module</b> &#8212; A dynamically linked library or a script that
+   interfaces to Simics and extends the functionality of the simulator. A
+   module is either an <i>extension</i> or a <i>device</i>.</li>
+<p>
+   <li> <b>object</b> &#8212; See Configuration object.</li>
+<p>
+
+
+   <li> <a name="label41"></a>
+        <b>physical addresses</b> &#8212; Memory addresses corresponding to
+   physical/real addresses on the target machine; i.e., the actual
+   address bits put out on the memory bus.</li>
+<p>
+
+   <li> <b><a name="label42">Python</a></b> &#8212; An object oriented script
+   language. See <a class="jdocu" href="http://www.python.org" target="_top">http://www.python.org</a> for more info.</li>
+<p>
+   <li> <b><a name="label43">reverse execution</a></b> &#8212; Execution of a simulation
+   backwards in simulated time.</li>
+<p>
+   <li> <b>Simics console</b> &#8212; The Simics console is a text console
+   where you can issue commands to Simics, and where Simics will display
+   status information, log messages, and printout from issued commands.
+   The Simics console is available in all Simics user interfaces but
+   in slightly different versions.
+   </li>
+<p>
+   <li> <b><a name="label44">SimicsFS</a></b> &#8212; A "magic" feature allowing simple
+   accesses from a simulated system to the host's real file
+   system. Pre-configured disk dumps use the <tt>/host</tt> mount point for
+   the magic device. This is presently only supported when running Solaris or
+   Linux on the target machine.</li>
+<p>
+   <li> <b>Simics object</b> &#8212; See Configuration object.</li>
+<p>
+   <li> <b><a name="label45">STC</a></b> &#8212; Simulator Translation Cache. A mechanism
+   in the simulator to improve simulator performance. Among other things, it
+   filters uninteresting memory accesses from the memory hierarchy.</li>
+<p>
+   <li> <b><a name="label46">step</a></b> &#8212; An issued instruction that completes or
+   causes an exception, or an external interrupt.</li>
+<p>
+   <li> <b>system level instruction set simulation</b> &#8212; The effect of
+   every single instruction is simulated both on user and supervisor
+   level. At any instruction, the simulation can be stopped and state
+   can be inspected (and changed).</li>
+<p>
+   <li> <b>target</b> &#8212; The simulated machine.</li>
+<p>
+
+   <li> <b>virtual machine</b> &#8212; The simulated machine.</li>
+<p>
+   <li> <b><a name="label47">workspace</a></b> &#8212; The primary area where the
+   user's files (scripts, checkpoints, source code, etc.) are placed.
+   </li>
+<p>
+
+   </ul>
+<p>
+   <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="topic0.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

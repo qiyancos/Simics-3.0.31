@@ -1,0 +1,8 @@
+
+###
+
+run-command-file "%script%/alpha-lx164-system.include"
+
+instantiate-components
+
+run-command-file "%script%/torus-setup.include"

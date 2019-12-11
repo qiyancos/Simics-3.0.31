@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>The dbuffer library</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(189, true);
+</script>
+<a name="label355"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic67.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic69.html">Next</a></span></p>
+<h2 class="jdocu">14&nbsp;&nbsp;&nbsp;The dbuffer library</h2 class="jdocu">
+
+
+<a name="label356"></a>
+<p>
+When sending blocks of data around in the simulation, it is often very
+important that this can be done in an efficient manner, which usually
+means that memory copies need to be avoided as much as possible.  The
+typical case for this is in the simulation of networks or other
+communication links where the hardware model constructs network
+packets, often by reading from simulated memory, and sends the them
+over a network link to one or more receivers.  These receivers can
+then each do their modifications to the packets and hand them over to
+software running on the simulated target system.  By using the
+<tt>dbuffer_t</tt> type, Simics network simulation can do this
+with a minimum of overhead.
+<p>
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic69.html#label357" target="main">14.1&nbsp;&nbsp;&nbsp;Dbuffer fundamentals</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic70.html#label359" target="main">14.2&nbsp;&nbsp;&nbsp;Usage</a></p>
+
+<p class="jdocu_ph3 class="jdocu""><a class="jdocu" href="topic71.html#label360" target="main">14.3&nbsp;&nbsp;&nbsp;Conventions</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic67.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic69.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Logging</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(40, true);
+</script>
+<a name="label86"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+<h3 class="jdocu">4.4&nbsp;&nbsp;&nbsp;Logging</h3 class="jdocu">
+
+
+<p>
+It is often a good idea for a module to be able to log what is happening. The
+Simics API provides logging facilities based on the following criteria:
+<p>
+<dl><a name="label87"></a><dt><b><em>level</em></b></dt><dd>The verbosity level ranging from 1 through 4 in
+decreasing importance order.</dd><a name="label88"></a><dt><b><em>type</em></b></dt><dd>Each log message belongs to a specific category:
+<p>
+<dl><dt><b><tt>info</tt></b></dt><dd>Info or debug message without any consequence on the
+simulation.</dd><dt><b><tt>error</tt></b></dt><dd>An error occurred that prevents the simulation (or
+part of the simulation) from running properly. Note that error messages do not
+have any logging level and are always printed out.</dd><dt><b><tt>unimplemented</tt></b></dt><dd>A model does not implement a specific
+functionality, bit or register.</dd><dt><b><tt>spec_violation</tt></b></dt><dd>A model received commands from the target
+program that violates the device specification.</dd><dt><b><tt>target_error</tt></b></dt><dd>An error occurred in the target machine (not
+in the simulator).</dd>.<dt><b><tt>undefined</tt></b></dt><dd>The simulation has been put in a state where
+the device behavior is undefined.</dd></dl></dd><a name="label89"></a><dt><b><em>group</em></b></dt><dd>A bit-field, defined and registered by the module,
+used to separate different part of the device, for example to separate between
+the configuration of a device and using the device's services, or the PCI
+interface and the Ethernet interface, etc.</dd></dl>
+<p>
+To learn more about logging in DML, refer to section <a class="jdocu" href="topic21.html#label103">5.4</a>. For C and Python, refer to section <a class="jdocu" href="topic30.html#label152">6.6</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic12.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic14.html">Next</a></span></p>
+</body>
+</html>

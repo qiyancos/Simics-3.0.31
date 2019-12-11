@@ -1,0 +1,55 @@
+if not defined os           {$os = "solaris9"}
+if not defined do_boot      {$do_boot  = "yes"}
+if not defined do_login     {$do_login = "yes"}
+if not defined ip_address   {$ip_address = "10.10.0.5"}
+if not defined host_name    {$host_name = "peanut"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+default-port-forward-target $ip_address
+
+if $os == solaris10 {$state = "peanut-sol10.state"}
+if $os == solaris9  {$state = "peanut-sol9.state"}
+if $os == solaris8  {$state = "peanut-sol8.state"}
+
+if $os != "none" {
+    if $state {
+        if not `SIM_lookup_file(simenv.state)` {
+            echo "An OS must be installed before this script can be run."
+            echo "File " + $state + " is missing."
+            echo
+            python "SIM_command_has_problem()"
+        }
+    } else {
+        echo "Unknown OS selected: "  + $os
+        echo
+        python "SIM_command_has_problem()"
+    }
+}
+
+if $os != none {
+    load-persistent-state prefix = (get-component-prefix) $state
+    # user override
+    $system.set-nvram-hostid $hostid
+    $system.set-nvram-mac $mac_address
+}
+
+if $do_boot == "no" {
+    $system.set-prom-env auto-boot? false
+}
+
+if $do_login == "yes" {
+    script-branch {
+        local $con = ($console.get-component-object con)
+        $con.wait-for-string "ogin: "
+        $con.input "root\n"
+    }
+}

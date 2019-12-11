@@ -1,0 +1,32 @@
+if not defined num_cpus {$num_cpus  = 1}
+if not defined freq_mhz {$freq_mhz  = 5}
+if not defined rtc_time {$rtc_time  = "2006-04-04 12:00:00 UTC"}
+
+###
+
+add-directory "%simics%/targets/niagara-simple/images/"
+
+import-std-components
+import-niagara-simple-components
+
+if $num_cpus == 1 {
+    $num_cores = 1
+    $num_strands = 1
+} else if $num_cpus == 2 {
+    $num_cores = 2
+    $num_strands = 1
+} else if $num_cpus == 32 {
+    $num_cores = 8
+    $num_strands = 4
+} else {
+    echo "Unsupported number of processors. (Use 1, 2, or 32)"
+}
+
+$system = (create-niagara-simple-system cpu_frequency = $freq_mhz
+                                        num_cores = $num_cores
+                                        strands_per_core = $num_strands
+                                        rtc_time = $rtc_time)
+$console = (create-std-text-console)
+$system.connect com1 $console
+
+$machine_defined = 1

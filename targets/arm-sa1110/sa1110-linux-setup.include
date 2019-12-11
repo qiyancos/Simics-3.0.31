@@ -1,0 +1,11 @@
+if not defined initrd     {$initrd   = "initrd"}
+if not defined vmlinux    {$vmlinux  = "vmlinux"}
+if not defined fakesetup  {$fakesetup = "fakesetup"}
+
+
+phys_mem.load-file $initrd    0xc0400000
+phys_mem.load-file $fakesetup 0xc0000100
+
+cpu.set-pc (load-binary $vmlinux)
+
+write-reg r1 25

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Examples</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(91, true);
+</script>
+<a name="label607"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Examples</h2 class="jdocu">
+
+
+<a name="label608"></a><h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Adding a SCSI Disk to an x86-440bx Machine</h3 class="jdocu">
+
+
+<p>
+The following section described how to add a SCSI controller and a single
+empty SCSI disk to the Enterprise machine. Adding a disk to other simulated
+machines is done in a similar way.
+<p>
+<ol>
+<p>
+<li><b>Add SCSI Controller and Disk Components</b>
+<p>
+First create a file in <tt>[workspace]/targets/x86-440bx/</tt>
+called <tt>enterprise-disk.simics</tt>. In this file add the
+following contents:
+<p>
+<pre class="jdocu_small" style="color: black">
+script-branch {
+    wait-for-variable machine_defined
+    local $sym = (create-pci-sym53c810)
+    local $scsi_bus = (create-std-scsi-bus)
+    local $scsi_disk = (create-std-scsi-disk scsi_id = 0 size = 4256972800)
+
+    $nb.connect pci-slot2 $sym
+    $scsi_bus.connect $sym
+    $scsi_bus.connect $scsi_disk
+}
+
+run-command-file enterprise-common.simics
+</pre>
+<p>
+This will run a <em>script branch</em> that first waits for the machine to
+be defined by the machine configuration script (included from
+<tt>enterprise-common.simics</tt>). Once the <i>$machine_defined</i>
+variable has triggered, a SCSI controller, SCSI bus and a SCSI disk component
+representing a 4GB disk, will be created. On the last lines the controller
+is connected to the north-bridge (the <tt>$nb</tt> variable) in PCI slot 2,
+and to the SCSI bus. The disk is also connected to the SCSI bus.
+<p>
+The SCSI id must be specified for attached SCSI devices, and we choose
+to use id 0 for the disk. We do not have to specify an id for the
+sym53c810 controller since it always uses id 7.
+</li>
+<p>
+<li><b>Prepare the Boot</b>
+<p>
+Start Simics, but do not start the simulation. Before booting, it is a good
+idea to enable <i>real-time mode</i> in Simics by issuing the command
+<b>enable-real-time-mode</b>. The reason for this is that the Linux
+hardware configurator program (kudzu) will detect the SCSI controller and ask
+if it should be configured. Kudzu then waits for 30 seconds for input, but this
+wait will run much faster than in reality since Simics optimizes the idle loop.
+<p>
+When kudzu has detected the SCSI controller, choose the option of configuring
+it. After this point the real-time mode can be disabled again in Simics. If the
+kudzu times out before it receives any user input, it can be run from the Linux
+command line manually once the machine has booted. (<b>/sbin/kudzu</b>).
+</li>
+<p>
+<li><b>Configure Linux</b>
+<p>
+Once Linux has booted, and detected the SCSI controller, run <b>fdisk</b>
+to create a partition on the new disk. At the menu, select <tt>n</tt> to create
+a new partition, then <tt>p</tt> for primary partition and <tt>1</tt> for the
+first partition.
+<p>
+<pre class="jdocu_small" style="color: black"><span class="jdocu_small">
+# <b>fdisk /dev/sda</b>
+ncr53c8xx: setting PCI_COMMAND_MASTER...(fix-up)
+ncr53c8xx: changing PCI_LATENCY_TIMER from 0 to 32.
+  Vendor: Vtech     Model: Turbo_Disk(tm)    Rev: 0001
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+Attached scsi disk sda at scsi0, channel 0, id 0, lun 0
+SCSI device sda: 8314400 512-byte hdwr sectors (4257 MB)
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF diskla
+bel
+Building a new DOS disklabel. Changes will remain in memory only,
+until you decide to write them. After that, of course, the previous
+content won't be recoverable. 
+
+
+Command (m for help): <b>n</b>
+Command action
+   e   extended
+   p   primary partition (1-4)
+<b>p</b>
+Partition number (1-4): <b>1</b>
+</span></pre>
+Next use the default options for cylinder, by simply pressing return on each
+line. Finally select the <tt>w</tt> command to write the partition table to the
+new disk.
+<pre class="jdocu_small" style="color: black"><span class="jdocu_small">
+First cylinder (1-1023, default 1):
+Using default value 1 
+Last cylinder or +size or +sizeM or +sizeK (1-1023, default 1023):
+Using default value 1023
+
+Command (m for help): <b>w</b>
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+SCSI device sda: 8314400 512-byte hdwr sectors (4257 MB)
+SCSI device sda: 8314400 512-byte hdwr sectors (4257 MB)
+Syncing disks.
+</span></pre>
+<p>
+A file system now has to be created on the new partition using the
+<b>mkfs</b> command. At the same time, also add a mount point, and an
+entry in the file-system table. This way Linux will automatically mount the
+disk on the next boot.
+<pre class="jdocu_small" style="color: black"><span class="jdocu_small">
+# <b>mkfs /dev/sda1</b>
+
+&lt;output from mkfs here&gt;
+
+# <b>mkdir /disk</b>
+# <b>cat &gt;&gt; /etc/fstab
+/dev/sda1       /disk       ext2    defaults  1 2</b>
+&lt;control-D&gt;
+# <b>mount /disk</b>
+</span></pre>
+The disk can now be accessed as <tt>/disk/</tt> in the file-system.
+</li>
+<p>
+<li><b>Save the Changes</b>
+<p>
+To save the changes to the new disk, shut down the simulated machine and
+save the modifications. Issue:
+<p>
+<pre class="jdocu_small" style="color: black">
+# <b>init 0</b>
+</pre>
+then wait for Linux to shut down, stop the simulation and save the all
+modifications using the <b>save-persistent-state</b> command.
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>save-persistent-state new-disk1.state</b>
+</pre>
+Now exit Simics, and restart the <tt>enterprise-disk.simics</tt> script.
+Before running, load the disk modifications saved earlier:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>load-persistent-state new-disk1.state</b>
+</pre>
+Now boot the machine again. The new disk will be mounted as
+<tt>/disk/</tt>.
+</li>
+</ol>
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

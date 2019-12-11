@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(26, true);
+</script>
+<a name="label102"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+<h3 class="jdocu">4.1&nbsp;&nbsp;&nbsp;Overview</h3 class="jdocu">
+
+
+<p>
+DML is not a general-purpose programming language, but a modeling
+language, targeted at writing Simics device models. The algorithmic part
+of the language is an extended subset of ISO C; however, the main power
+of DML is derived from its simple object-oriented constructs for
+defining and accessing the static data structures that a device model
+requires, and the automatic creation of bindings to Simics.
+<p>
+Furthermore, DML provides syntax for <em>bit-slicing</em>, which much
+simplifies the manipulation of bit fields in integers; <tt>new</tt> and
+<tt>delete</tt> operators for allocating and deallocating memory; a
+basic <tt>try</tt>/<tt>throw</tt> mechanism for error handling; built-in
+<tt>log</tt> and <tt>assert</tt> statements; and a powerful
+metaprogramming facility using <em>templates</em>, method inlining, and
+compile-time evaluation for shaping the generated code.
+<p>
+Most of the built-in Simics-specific logic is implemented directly in
+DML, in standard library modules that are automatically imported; the
+<tt>dmlc</tt> compiler itself contains as little knowledge as possible
+about the specifics of Simics.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Testing Device Models</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(33, true);
+</script>
+<a name="label59"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+<h2 class="jdocu">8&nbsp;&nbsp;&nbsp;Testing Device Models</h2 class="jdocu">
+
+<a name="label60"></a>
+
+<p>
+   <a name="label61"></a>How do you test a completed model to see if it is
+   accurate and efficient enough?  Basically, you try to find software
+   that stresses the device as much as possible.  Try different
+   OS/driver combinations (if this is a requirement).  Find programs
+   on top of the OS that exercise the device in different ways.
+   Perhaps there are diagnostic programs that verify that the device
+   functions correctly.  It is a good idea to run the programs on real
+   hardware first, to make sure the software is functional, before
+   trying them on the virtual hardware.
+<p>
+   Run the selected programs in Simics, with the device model in
+   place, and look for signs of trouble.  Such signs may be
+<p>
+   <ol>
+   <li>The device reports accesses to unimplemented features.  These
+   will need to be modeled.</li>
+<p>
+   <li>The program, OS, or simulated machine behaves strangely,
+   indicating flaws in the device model's functional behavior.</li>
+<p>
+   <li>Simulation performance is poor.  The model needs to be made
+   more efficient.</li>
+   </ol>
+<p>
+   It is also a good idea to sometimes let the tests run for a longer
+   time. This allows you to spot problems with, e.g., memory leaks in
+   the model implementation, or diagnose situations where the driver
+   has entered some fall-back mode after seeing too many errors.  The
+   <tt>VTMEM</tt> package can help in diagnosing memory-related
+   problems (see the <em>Simics Reference Manual</em> for
+   details).
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+</body>
+</html>

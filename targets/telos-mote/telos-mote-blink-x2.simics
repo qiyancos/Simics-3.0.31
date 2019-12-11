@@ -1,0 +1,16 @@
+#
+# Start two motes, each with the blink application
+#
+$mote_binary = "images/Blink/main.bin"
+
+$mote_name = mote0_
+set-component-prefix $mote_name
+run-command-file "%script%/telos-mote-common.simics"
+
+$mote_name = mote1_
+set-component-prefix $mote_name
+run-command-file "%script%/telos-mote-common.simics"
+
+# so that we can see the output, demo mode
+mote0_io_ports.log-level 2
+mote1_io_ports.log-level 2

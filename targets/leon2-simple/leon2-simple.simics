@@ -1,0 +1,20 @@
+run-command-file "%script%/leon2-system.include"
+
+instantiate-components
+
+if not defined use_pmon_emulation	{$use_pmon_emulation 	= TRUE}
+if not defined pmon_memcfg1      	{$pmon_memcfg1	     	= 0x00080000}
+if not defined pmon_memcfg2		{$pmon_memcfg2		= 0x03806000}
+if not defined pmon_ram_banks		{$pmon_ram_banks    	= 2}
+if not defined pmon_bank_size		{$pmon_bank_size	= 0x20000000}
+if not defined pmon_timer_scale		{$pmon_timer_scale	= 1000000}
+if not defined pmon_baud_rate		{$pmon_baud_rate	= 38400}
+
+$cpu = ($system.get-component-object cpu)
+
+@if simenv.use_pmon_emulation:
+	from pmon import *
+	pmon_setup(SIM_get_object(simenv.cpu), simenv.pmon_timer_scale, simenv.pmon_baud_rate,
+		simenv.pmon_bank_size, simenv.pmon_ram_banks,
+		simenv.pmon_memcfg1, simenv.pmon_memcfg2)
+

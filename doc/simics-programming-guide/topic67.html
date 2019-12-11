@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Chaining Timing Models</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(188, true);
+</script>
+<a name="label352"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic66.html">Previous</a> - <a class="jdocu" href="topic64.html">Up</a> - <a class="jdocu" href="topic68.html">Next</a></span></p>
+<h3 class="jdocu">13.3&nbsp;&nbsp;&nbsp;Chaining Timing Models</h3 class="jdocu">
+
+
+<a name="label353"></a>
+<p>
+Sometimes it is desirable to chain timing models, e.g., if you are implementing
+a multi-level cache model and want to model each level of the cache as an
+individual class. To do this, the <b><i>operate()</i></b> function must call the
+corresponding functions of the lower levels (a <i>lower</i> or <i>next</i>
+level cache means a cache further away from the CPU, closer to the
+actual memory).
+<p>
+The <a name="label354"></a> <tt>g-cache</tt> source code included with Simics
+is an example of how to do this. Whenever there is a miss in the cache, the
+<b>g-cache</b> object creates a new memory operation and calls the
+<b><i>operate()</i></b> method of the <tt>timing-model</tt> interface from
+the next level cache specified by the <i>timing_model</i> attribute.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic66.html">Previous</a> - <a class="jdocu" href="topic64.html">Up</a> - <a class="jdocu" href="topic68.html">Next</a></span></p>
+</body>
+</html>

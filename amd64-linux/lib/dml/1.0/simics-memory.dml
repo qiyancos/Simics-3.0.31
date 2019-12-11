@@ -1,0 +1,363 @@
+dml 1.0;
+
+/*
+ * simics/core/memory.h
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+typedef uint16 stall_id_num_t;
+typedef struct {
+        stall_id_num_t explicit_num;
+        stall_id_num_t implicit_num;
+} stall_id_t;
+
+extern int Sim_Trn_Instr;
+extern int Sim_Trn_Write;
+extern int Sim_Trn_Control;
+extern int Sim_Trn_Prefetch;
+
+extern mem_op_type_t Sim_Trans_Load;
+extern mem_op_type_t Sim_Trans_Store;
+extern mem_op_type_t Sim_Trans_Instr_Fetch;
+extern mem_op_type_t Sim_Trans_Prefetch;
+extern mem_op_type_t Sim_Trans_Cache;
+typedef int mem_op_type_t; 
+
+typedef struct {
+    logical_address_t   logical_address;
+    physical_address_t  physical_address;
+    uint32              size;
+    mem_op_type_t       type;
+    uint1               atomic;
+    uint1               inquiry;
+    uint1               speculative;
+    uint1               ignore;
+    uint1               may_stall;
+    uint1               ma_no_reissue;
+    uint1               reissue;
+    uint1               block_STC;
+    uint1               use_page_cache;
+    uint1               inverse_endian;
+    uint2               page_cross;
+    uint1               use_iostc;
+    uint1               iostc_blocked;
+    ini_type_t          ini_type;
+    conf_object_t      *ini_ptr;
+    int                 id;
+    exception_type_t    exception;
+    void               *user_ptr;
+    char               *real_address;
+    int                space_count;
+    // page_t *page;
+    // page_t *tag_page;
+    // unsigned tag_page_ofs;
+
+    physical_address_t  source_physical_address;
+    arc_type_t          arc_type;
+    int                 allocation_size;
+    stall_id_t          stall_id;
+} generic_transaction_t;
+
+extern map_type_t Sim_Map_Ram;
+extern map_type_t Sim_Map_Rom;
+extern map_type_t Sim_Map_IO;
+extern map_type_t Sim_Map_Port;
+extern map_type_t Sim_Map_Translate;
+extern map_type_t Sim_Map_Translate_To_Space;
+extern map_type_t Sim_Map_Translate_To_Ram;
+extern map_type_t Sim_Map_Translate_To_Rom;
+typedef int map_type_t;
+
+typedef struct {
+    physical_address_t  base;
+    physical_address_t  start;
+    physical_address_t  length;
+    int                 function;
+    uint8               priority;
+    int                 align_size;
+    swap_mode_t         reverse_endian;
+} map_info_t;
+
+typedef struct {
+    map_type_t       map_type;
+    conf_object_t   *object;
+    void            *interface_ptr;
+    void            *target_interface;
+    void            *breakpoint_interface;
+    void            *bridge_interface;
+    conf_object_t   *target_object;
+    conf_object_t   *bridge;
+    map_info_t       map_info;
+    physical_address_t map_size;
+    int              deleted;
+} map_list_t;
+
+typedef struct {
+    void *data;
+    void *meta_data;
+    char dirty;
+    char zero_backed;
+    char all_zeros;
+    int mmapped_fd;
+    uint32 gen_count;
+    uint64 offs;
+    conf_object_t *img_obj;
+} image_spage_t;
+
+typedef uint64 vdisk_addr_t;
+
+typedef struct {
+    void (*read)(conf_object_t *img, void *to_buf, vdisk_addr_t start,
+                 size_t length);
+    void (*write)(conf_object_t *img, void *from_buf, vdisk_addr_t start,
+                  size_t length);
+    int (*for_all_spages)(conf_object_t *img,
+                          int (*f)(image_spage_t *p, vdisk_addr_t a, void *d),
+                          void *arg);
+    void (*set_persistent)(conf_object_t *obj);
+    void (*save_to_file)(conf_object_t *obj, const char *file,
+                         uint64 start, uint64 length);
+    void (*save_diff)(conf_object_t *obj, const char *file);
+} image_interface_t;
+
+constant IMAGE_INTERFACE = "image";
+
+typedef struct {
+    char *(*get_base)(conf_object_t *obj, size_t *retsize);
+    void (*prepare_range)(conf_object_t *obj, access_t type, size_t offs,
+                          size_t size);
+} linear_image_interface_t;
+constant LINEAR_IMAGE_INTERFACE = "linear_image";
+
+extern uinteger_t SIM_read_phys_memory(conf_object_t *cpu,
+                                       physical_address_t paddr,
+                                       int length);
+
+extern void SIM_write_phys_memory(conf_object_t *cpu,
+                                  physical_address_t paddr,
+                                  uinteger_t value, int length);
+
+extern uint8 SIM_read_byte(conf_object_t *obj, generic_address_t paddr);
+
+extern void SIM_write_byte(conf_object_t *obj, generic_address_t paddr, uint8 value);
+
+extern physical_address_t SIM_logical_to_physical(conf_object_t *cpu,
+                                                  data_or_instr_t data_or_instr,
+                                                  logical_address_t vaddr);
+
+extern void SIM_flush_I_STC_logical(conf_object_t *cpu,
+                                    logical_address_t vaddr,
+                                    logical_address_t length);
+extern void SIM_flush_D_STC_logical(conf_object_t *cpu,
+                                    logical_address_t vaddr,
+                                    logical_address_t length);
+extern void SIM_flush_I_STC_physical(conf_object_t *cpu,
+                                     physical_address_t paddr,
+                                     physical_address_t length);
+extern void SIM_flush_D_STC_physical(conf_object_t *cpu,
+                                     physical_address_t paddr,
+                                     physical_address_t length,
+                                     read_or_write_t read_or_write);
+extern void SIM_STC_flush_cache(conf_object_t *cpu);
+extern void SIM_for_all_memory_pages(void (*func)(integer_t), int d_or_i);
+
+extern void SIM_c_get_mem_op_value_buf(generic_transaction_t *mop, char *dst);
+extern void SIM_c_set_mem_op_value_buf(generic_transaction_t *mop, char *src);
+
+extern attr_value_t SIM_get_mem_op_value_buf(generic_transaction_t *mop);
+extern void SIM_set_mem_op_value_buf(generic_transaction_t *mop, attr_value_t value);
+
+extern bool SIM_mem_op_is_data(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_instruction(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_read(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_write(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_control(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_prefetch(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_from_cpu(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_from_cpu_arch(const generic_transaction_t *mop, ini_type_t arch);
+extern bool SIM_mem_op_is_from_device(const generic_transaction_t *mop);
+extern bool SIM_mem_op_is_from_cache(const generic_transaction_t *mop);
+extern mem_op_type_t SIM_get_mem_op_type(const generic_transaction_t *mop);
+extern void SIM_set_mem_op_type(generic_transaction_t *mop, mem_op_type_t type);
+
+extern const char *SIM_get_mem_op_type_name(mem_op_type_t type);
+
+extern uinteger_t SIM_get_mem_op_value_le(generic_transaction_t *mop);
+extern uinteger_t SIM_get_mem_op_value_be(generic_transaction_t *mop);
+extern uinteger_t SIM_get_mem_op_value_cpu(generic_transaction_t *mop);
+
+extern void SIM_set_mem_op_value_le(generic_transaction_t *mop, uinteger_t value);
+extern void SIM_set_mem_op_value_be(generic_transaction_t *mop, uinteger_t value);
+extern void SIM_set_mem_op_value_cpu(generic_transaction_t *mop, uinteger_t value);
+
+extern void SIM_set_mem_op_value(generic_transaction_t *mop, uinteger_t value);
+
+typedef cycles_t (*operate_func_t)(conf_object_t *mem_hier,
+                                   conf_object_t *space,
+                                   map_list_t *map_list,
+                                   generic_transaction_t *mem_op);
+
+typedef struct {
+    operate_func_t operate;
+} timing_model_interface_t;
+
+typedef struct {
+    operate_func_t operate;
+} snoop_memory_interface_t;
+
+constant TIMING_MODEL_INTERFACE = "timing_model";
+constant SNOOP_MEMORY_INTERFACE = "snoop_memory";
+
+typedef struct {
+    void (*set_a20_line)(conf_object_t *o, int a);
+    int (*get_a20_line)(conf_object_t *o);
+} a20_interface_t;
+
+constant A20_INTERFACE = "a20";
+
+extern physical_address_t SIM_load_binary(conf_object_t *obj, const char *file,
+                                          physical_address_t offset,
+                                          int use_pa, int verbose);
+
+extern void SIM_load_file(conf_object_t *obj, const char *file,
+                          physical_address_t paddr, int verbose);
+
+constant MEMORY_SPACE_INTERFACE = "memory_space";
+typedef struct {
+    map_list_t *          (*space_lookup)(conf_object_t *obj,
+                                          generic_transaction_t *mem_op,
+                                          map_info_t mapinfo);
+    exception_type_t            (*access)(conf_object_t *obj,
+                                          generic_transaction_t *mem_op);
+    exception_type_t     (*access_simple)(conf_object_t *obj,
+                                          conf_object_t *initiator,
+                                          physical_address_t addr,
+                                          char *buf,
+                                          physical_address_t len,
+                                          read_or_write_t type,
+                                          endianness_t endian);
+    exception_type_t (*access_simple_inq)(conf_object_t *obj,
+                                          conf_object_t *initiator,
+                                          physical_address_t addr,
+                                          char *buf,
+                                          physical_address_t len,
+                                          read_or_write_t type,
+                                          endianness_t endian);
+    attr_value_t                  (*read)(conf_object_t *obj,
+                                          conf_object_t *initiator,
+                                          physical_address_t addr,
+                                          int length,
+                                          int inquiry);
+    exception_type_t             (*write)(conf_object_t *obj,
+                                          conf_object_t *initiator,
+                                          physical_address_t addr,
+                                          attr_value_t data,
+                                          int inquiry);
+    cycles_t      (*timing_model_operate)(conf_object_t *space,
+                                          generic_transaction_t *mem_op);
+} memory_space_interface_t;
+
+typedef struct {
+    page_t *(*phys_to_real_p)(conf_object_t *obj, physical_address_t addr);
+    page_t *(*get_page)(conf_object_t *obj, physical_address_t addr,
+                        page_t **tags_ret, uint32 *tag_ofs_ret);
+} ram_interface_t;
+
+typedef ram_interface_t rom_interface_t;
+
+constant RAM_INTERFACE = "ram";
+constant ROM_INTERFACE = "rom";
+
+typedef int (*map_func_t)(conf_object_t *obj,
+                          addr_space_t memory_or_io,
+                          map_info_t map_info);
+typedef exception_type_t (*operation_func_t)(conf_object_t *obj,
+                                             generic_transaction_t *mem_op,
+                                             map_info_t map_info);
+
+typedef struct {
+    map_func_t map;
+    operation_func_t operation;
+} io_memory_interface_t;
+
+constant IO_MEMORY_INTERFACE = "io_memory";
+
+typedef struct {
+    conf_object_t *(*translate)(conf_object_t *obj,
+                                generic_transaction_t *mem_op,
+                                map_info_t mapinfo);
+} translate_interface_t;
+
+constant TRANSLATE_INTERFACE = "translate";
+
+typedef struct {
+    exception_type_t (*not_taken)(conf_object_t *obj,
+                                  conf_object_t *src_space,
+                                  conf_object_t *dst_space,
+                                  exception_type_t ex,
+                                  generic_transaction_t *mem_op,
+                                  map_info_t mapinfo);
+} bridge_interface_t;
+
+constant BRIDGE_INTERFACE = "bridge";
+
+typedef struct {
+    int (*add_map)(conf_object_t *space,
+                   conf_object_t *dev,
+                   conf_object_t *target,
+                   map_info_t map_info);
+    int (*remove_map)(conf_object_t *space,
+                      conf_object_t *dev,
+                      int function);
+    int (*add_default)(conf_object_t *space,
+                       conf_object_t *dev,
+                       conf_object_t *target,
+                       map_info_t map_info);
+    void (*remove_default)(conf_object_t *space);
+} map_demap_interface_t;
+
+constant MAP_DEMAP_INTERFACE = "map_demap";
+
+typedef struct {
+    void (*cache_miss)(conf_object_t *obj,
+                       data_or_instr_t data_or_instr,
+                       read_or_write_t read_or_write,
+                       logical_address_t logical_address,
+                       physical_address_t physical_address);
+} cache_miss_interface_t;
+
+constant CACHE_MISS_INTERFACE = "cache_miss";
+
+typedef struct {
+    generic_transaction_t s;
+    uint32 original_size;
+    int bus_address;
+} pci_memory_transaction_t;
+
+// struct alpha_memory_transaction *SIM_alpha_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct arm_memory_transaction *SIM_arm_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct ia64_memory_transaction *SIM_ia64_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct mips_memory_transaction *SIM_mips_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct ppc_memory_transaction *SIM_ppc_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct v9_memory_transaction *SIM_v9_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct x86_memory_transaction *SIM_x86_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);
+// struct pci_memory_transaction *SIM_pci_mem_trans_from_generic(
+//                                                    generic_transaction_t *mop);

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Various Component Features</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(177, true);
+</script>
+<a name="label335"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic61.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic63.html">Next</a></span></p>
+<h3 class="jdocu">12.5&nbsp;&nbsp;&nbsp;Various Component Features</h3 class="jdocu">
+
+
+<p>
+The following additional "good to know" information about
+components is provided to help the programmer gain a better
+understanding of components rather than as coding guidelines.
+<p>
+<a name="label336"></a><h4 class="jdocu">12.5.1&nbsp;&nbsp;&nbsp;Checkpointing</h4 class="jdocu">
+
+
+<p>
+Most of the state in a component is usually checkpointed via the attributes
+used to configure it. There are also separate attributes that are only used for
+checkpointing, discussed in sections <a class="jdocu" href="topic60.html#label280">12.3.1</a> and <a class="jdocu" href="topic61.html#label331">12.4.3</a>.
+<p>
+Things to checkpoint include state calculated or received during the connection
+phase, since it may be needed to support later reconfiguration for hotplugging
+components.
+<p>
+All information about connectors and connections is checkpointed automatically
+by the component base class.
+<p>
+
+<a name="label337"></a><h4 class="jdocu">12.5.2&nbsp;&nbsp;&nbsp;Automatic Queue Assignment</h4 class="jdocu">
+
+
+<p>
+All configuration objects in Simics that handle time in some way need a
+<i><a name="label338">queue</a></i> attribute set. The queue is an object implementing an
+event queue, also called time queue, needed for the time to advance. All
+objects that have the same queue are said to be part of the same <em><a name="label339">time
+domain</a></em>. The only objects that can be currently used as queues are
+processors and objects of the class <b>clock</b>.
+<p>
+The component system automatically sets the queue attribute for all objects at
+instantiation time, based on the component hierarchy. To override the automatic
+queue assignment, for example on multi-processor boards where each processor
+should be its own queue, simply assign the queue attribute when adding the
+pre-configuration objects.
+<p>
+
+<a name="label340"></a><h4 class="jdocu">12.5.3&nbsp;&nbsp;&nbsp;Automatic Recorder Assignment</h4 class="jdocu">
+
+
+<p>
+Devices that handle input such as serial and network devices, keyboards and
+mice, usually implement a connection to a <b>recorder</b> object. All
+their input passes through the recorder so that it may record the input to the
+file and later replay the same input from the file.
+<p>
+The component system automatically creates a recorder and connects it to all
+input devices that have a recorder attribute. A component can override this
+automatic assignment by setting the recorder attribute itself for its objects.
+<p>
+
+<a name="label341"></a><h4 class="jdocu">12.5.4&nbsp;&nbsp;&nbsp;Inheritance</h4 class="jdocu">
+
+
+Since components are written as classes in object-oriented Python, it is easy
+to create new components that are similar to existing ones by using
+<a name="label342">inheritance</a>. Instead of basing the component on the
+<b>component_object</b> base class, another component class can be
+used. The new component class can, for example, modify the connector list,
+override the methods for adding object and connection information in the
+parent class. Several south bridge components supported by Simics are all based
+on the same <b>south_bridge_component</b> class, that in turn is based
+on a class supplying legacy PC devices.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic61.html">Previous</a> - <a class="jdocu" href="topic57.html">Up</a> - <a class="jdocu" href="topic63.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Module System</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(28, true);
+</script>
+<a name="label105"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+<h3 class="jdocu">4.3&nbsp;&nbsp;&nbsp;Module System</h3 class="jdocu">
+
+
+<a name="label106"></a>
+<p>
+DML employs a very simple module system, where a <em>module</em> is any
+source file that can be imported using the <tt>import</tt> directive.
+Such files may not contain a <tt>device</tt> declaration, but otherwise
+look like normal DML source files. The imported modules are merged into
+the main program as if all the code was contained in a single file (with
+some exceptions). This is similar to C preprocessor <tt>#include</tt>
+directives, but in DML each imported file must be possible to parse in
+isolation, and may contain declarations (such as <tt>bitorder</tt>) that
+are only effective for that file.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+</body>
+</html>

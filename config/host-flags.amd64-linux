@@ -1,0 +1,26 @@
+# -*- makefile -*-
+
+DEFS += -D_LARGEFILE64_SOURCE
+CFLAGS_INCLUDE +=
+
+CCLD = $(CXX)
+LD=ld
+
+ASFLAGS =
+ASCPPFLAGS = -DAMD64 -traditional-cpp -P
+
+DEP_CC = $(CC)
+DEP_CFLAGS = -M -MG
+DEP_CXX = $(CXX)
+DEP_CXXFLAGS = $(DEP_CFLAGS)
+
+SIM_DEFS +=
+
+MUNCHFLAG = -DLINUX
+
+WXWIDGETS_LIB_PATH=/home/virtutech/lib/amd64-linux/lib
+
+LIBXML2_INCLUDE_PATH=-I/home/packages/libxml2/include/libxml2
+LIBXML2=/home/packages/libxml2/amd64-linux/lib/libxml2.a -lz -lpthread -lm
+
+TURBO_HOST_BITS = 64

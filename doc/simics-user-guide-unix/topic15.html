@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Checkpointing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(40, true);
+</script>
+<a name="label75"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic16.html">Next</a></span></p>
+<h4 class="jdocu">4.3&nbsp;&nbsp;&nbsp;Checkpointing</h4 class="jdocu">
+
+
+<p>
+In order to avoid booting First Steps every time, we use the facility known as
+<i>configuration checkpointing</i> or simply <i>checkpointing</i>.
+This enables Simics to save the entire state of the simulation to disk.
+The files are saved in a portable format and can be loaded at a later time.
+<p>
+
+To write a checkpoint, use the <b>write-configuration</b> command.
+The command expects a filename as argument. Name the checkpoint
+<tt>after_boot.conf</tt>.
+<p>
+
+<pre class="jdocu_small" style="color: black">
+<b>[control-C]</b>
+simics&gt;  <b>write-configuration after_boot.conf</b>
+simics&gt; 
+</pre>
+<p>
+The state is now saved, and you can safely terminate the simulation.
+<pre class="jdocu_small" style="color: black">
+simics&gt;  <b>quit</b>
+joe@computer: simics-workspace$
+</pre>
+All that remains of the simulation is the checkpoint we just created.
+To load the checkpoint, use the <i>-c</i> flag when starting
+Simics.
+<pre class="jdocu_small" style="color: black">
+joe@computer: ebony$ <b>./simics -c after_boot.conf</b>
+[...]
+simics&gt; 
+</pre>
+<p>
+The terminal contents is also restored and you should end up in the same
+state as before. Remember to resume the simulation (by
+entering <b>continue</b>) before typing more commands at the console.
+<p>
+You can read more about configuration and checkpointing in chapter
+<a class="jdocu" href="topic24.html#label121">6</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic16.html">Next</a></span></p>
+</body>
+</html>

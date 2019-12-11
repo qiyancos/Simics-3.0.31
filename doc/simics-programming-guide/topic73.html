@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Time client library</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(194, true);
+</script>
+<a name="label363"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic72.html">Previous</a> - <a class="jdocu" href="topic72.html">Up</a> - <a class="jdocu" href="topic74.html">Next</a></span></p>
+<h3 class="jdocu">15.1&nbsp;&nbsp;&nbsp;Time client library</h3 class="jdocu">
+
+
+<a name="label364"></a>
+<p>
+The client library provides non-threaded C primitives for all features of the
+time server protocol. Using the time client library, interfacing to the time
+server is as easy as a C function call.
+<p>
+The following primitives exists:
+<p>
+<pre class="jdocu_small" style="color: black">
+    typedef enum {
+            Simtime_No_Error,
+            Simtime_Socket_Error,         // errno contains last error
+            Simtime_Timeout,              // global timeout (as specified in
+                                          // simtime_connect)
+            Simtime_Receive_Buffer_Full,  // the received message did not fit
+                                          // in the buffer. It's probably a bug
+                                          // in the time client library if it
+                                          // happens
+            Simtime_Parse_Error           // received message could not be
+                                          // parsed
+    } simtime_error_t;
+
+
+    simtime_error_t simtime_query_time(simtime_context_t *ctx,
+                                       double *time);
+
+    simtime_error_t simtime_sleep(simtime_context_t *ctx,
+                                  double seconds,
+                                  double *time);
+
+    simtime_error_t simtime_periodic_ping(simtime_context_t *ctx,
+                                          double interval,
+                                          double how_long,
+                                          simtime_callback_t cb,
+                                          void *user_data);
+</pre>
+<p>
+<b><i>simtime_query_time</i></b> will return the current virtual time. It is not
+expected to block very long (the time server will respond immediately when it
+receives the query).
+<p>
+Although tempting, <b><i>simtime_query_time</i></b> should not be used in a tight
+polling loop, as it will degrade Simics performance quite noticeable.
+<p>
+Depending on what the timing code looks like, one of the other primitives
+should be used instead.
+<p>
+The <b><i>simtime_sleep</i></b> function will block for a specified number of
+virtual seconds. Note that this function will never return if Simics is not
+simulating, unless a global timeout is specified (see the
+<b><i>simtime_connect</i></b> function). This is obviously because the virtual
+time is not progressing when the simulation is not running.
+<p>
+If the timeout is not known beforehand, it may not be possible to use
+<b><i>simtime_sleep</i></b>. In this case, <b><i>simtime_periodic_ping</i></b> might
+be the solution. It will cause Simics to send periodic pings to the client.
+The interval between each ping is in real seconds, i.e. host time, not Simics
+time. It is also possible to specify a duration, also in real seconds, after
+which Simics will stop sending ping messages. If <i>duration</i> is
+negative or zero, Simics will continue to send ping messages until told to
+stop (non-zero return value from ping message callback function).
+<p>
+For every ping message, the callback function <b><i>cb</i></b> will be called:
+<p>
+<pre class="jdocu_small" style="color: black">
+    typedef int (*simtime_callback_t)(void *data,
+                                      simtime_context_t *ctx,
+                                      int seq_no, double time);
+</pre>
+<p>
+<i>seq_no</i> contains the sequence number of the received ping
+message and <i>time</i> contains the current virtual time.
+<p>
+If the callback function returns a value other than zero, the periodic pings
+will be aborted, even though <i>duration</i> real seconds has not yet
+passed.
+<p>
+Note that <b><i>simtime_periodic_ping</i></b> will not return until
+<i>duration</i> real seconds has passed, or until the callback function
+returns a non-zero value. Also note that no simtime API calls should be made
+from the callback.
+<p>
+Before any of the above primitives can be used, a connection to the time server
+has to be established:
+<p>
+<pre class="jdocu_small" style="color: black">
+    simtime_context_t *simtime_connect(const char *host,
+                                       int port,
+                                       int global_timeout);
+    void simtime_disconnect(simtime_context_t *ctx);
+</pre>
+<p>
+The time client will connect to a time server on <i>host</i> at port
+<i>port</i>. If <i>global_timeout</i> is larger than zero,
+all calls to simtime will timeout after <i>global_timeout</i> real
+seconds. This is useful to detect, for example, a crashed Simics session. But
+note that a call to e.g. <b><i>simtime_sleep</i></b> may take very long real time,
+depending on how fast Simics is simulating (and, of course, how long the
+sleep time is).
+<p>
+To disconnect from the time server, call the function
+<b><i>simtime_disconnect</i></b>.
+<p>
+If the client is threaded, care must be taken to not make more than one API
+call at a time. The time client library is not designed to handle simultanious
+calls.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic72.html">Previous</a> - <a class="jdocu" href="topic72.html">Up</a> - <a class="jdocu" href="topic74.html">Next</a></span></p>
+</body>
+</html>

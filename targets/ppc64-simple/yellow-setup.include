@@ -1,0 +1,69 @@
+if not defined kernel_image  {$kernel_image  = "linux-2.6.6"}
+if not defined initrd_image  {$initrd_image  = "initrd.img"}
+if not defined kernel_base   {$kernel_base   = 0xc000000000000000}
+if not defined load_base     {$load_base     = 0x1000000}
+
+###
+
+# Search for the images
+if `SIM_lookup_file(simenv.kernel_image) == None` == 1 {
+  echo "Could not find image "+ $kernel_image + "."
+  echo "Virtutech provides all needed images on www.simics.net."
+  quit
+}
+if `SIM_lookup_file(simenv.initrd_image) == None` == 1 {
+  echo "Could not find image "+ $initrd_image + "."
+  echo "Virtutech provides all needed images on www.simics.net."
+  quit
+}
+
+
+$cpu = ($system.get-component-object "cpu[0]")
+
+# Load the Linux kernel. The binary is linked to virtual address
+# $kernelbase, but yaboot will load it somewhere in the low 32 bit
+# address space (we chose $load_base above), so we need to add a displacement.
+# Linux will then move itself down to physical address 0 and finally set up
+# the MMU to run at $kernel_base.
+# $load_base must be greater than the kernel size because of a bug that does
+# not permit overlapping copies (present in 2.4.13).
+
+$start = (load-binary $kernel_image
+                      (($load_base - $kernel_base) & 0xffffffffffffffff))
+$cpu.set-pc $start
+
+# The kernel assumes the following registers to have been set up:
+#  r1  initial stack pointer, with at least 32K available for growth below
+#      and 32 bytes above the address.
+#  r2  TOC pointer; should be 0
+#  r3  reserved for platform binding
+#  r4  reserved for platform binding
+#  r5  OpenFirmware entry point
+#  r6  OF bootinfo records: This points out to a structure that contains
+#      the boot command line, bootloader ID, initrd, sysmap, machine type etc.
+#      (see include/asm-ppc64/bootinfo.h and arch/ppc64/prom.c)
+#  r7  length of OF boot args (not used by Linux)
+#  r8  yaboot debug_print()
+#  r9  yaboot debug_delay()
+#  r10 yaboot debug_prom()
+
+# In the MSR, FP and ME should be set, and the rest clear.
+# This means 32 bit mode, supervisor, interrupts disabled.
+
+$cpu->msr = ($cpu->msr | (1 << 13)) # FP=1
+
+$cpu.write-reg r1 $load_base - 0x1000        # initial stack pointer
+$cpu.write-reg r2 0                          # initial TOC
+$cpu.write-reg r5 0x7000000                  # OpenFirmware entry point
+
+# load an initial ram disk image
+$initrd_base = $load_base + 32 * 1024 * 1024
+$initrd_size = `os.stat(SIM_lookup_file(simenv.initrd_image)).st_size`
+load-file $initrd_image $initrd_base
+
+# construct bootinfo records to pass location of the initial ram disk
+$boot_info = $initrd_base + $initrd_size
+$cpu.write-reg r6 $boot_info
+
+# setup boot-info
+@conf.of.boot_info = [simenv.boot_info, simenv.initrd_base, simenv.initrd_size]

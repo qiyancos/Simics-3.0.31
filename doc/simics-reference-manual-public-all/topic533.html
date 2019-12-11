@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>sparc_irq_bus</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2274, true);
+</script>
+<a name="label17957"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic532.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic534.html">Next</a></span></p>
+<h3 class="jdocu">sparc_irq_bus</h3 class="jdocu">
+
+
+<a name="label17958"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic378.html#label14021">sparc-irq-bus</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Handle interrupts over a bus.
+ <p>
+   This interface is implemented by bus devices that are used to
+   send interrupts between SPARC processors, and between devices
+   and processors.
+<p>
+   <a name="label17959"></a>
+   <a name="label17960"></a>
+   <a name="label17961"></a>
+   <a name="label17962"></a>
+<p>
+   <pre class="jdocu_small" style="color: black">typedef int (*set_bus_id_t)(conf_object_t *obj, conf_object_t *src, int id);
+
+typedef void (*interrupt_by_id_t)(conf_object_t *obj,
+                                  conf_object_t *src, 
+                                  int src_id,
+                                  int dst_id,
+                                  interrupt_ack_t interrupt_ack,
+                                  uint64 *data,
+                                  lang_void *usr,
+                                  int dummy0,
+                                  int dummy1);
+
+typedef conf_object_t *(*get_object_by_id_t)(conf_object_t *obj, int id);
+
+typedef void (*reset_all_t)(conf_object_t *obj, int reset_type);
+
+typedef struct sparc_irq_bus_interface {
+        set_bus_id_t set_bus_id;
+        interrupt_by_id_t interrupt_by_id;
+        get_object_by_id_t get_object_by_id;
+        reset_all_t reset_all;
+} sparc_irq_bus_interface_t;
+
+#define SPARC_IRQ_BUS_INTERFACE "sparc-irq-bus"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic532.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic534.html">Next</a></span></p>
+</body>
+</html>

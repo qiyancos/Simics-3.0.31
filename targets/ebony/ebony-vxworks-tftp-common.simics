@@ -1,0 +1,3 @@
+$create_network = "yes"
+$tftp_boot = "yes"
+run-command-file "%script%/ebony-vxworks-common.simics"

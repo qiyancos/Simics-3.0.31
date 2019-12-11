@@ -1,0 +1,6 @@
+$create_network = "yes"
+
+@solaris8_diffs = [["donut4.1.1-dhcp.craff", "ro", 0, 2128486400]]
+@solaris9_diffs = [["donut5.1.1-dhcp.craff", "ro", 0, 2128486400]]
+
+run-command-file "%script%/donut-common.simics"

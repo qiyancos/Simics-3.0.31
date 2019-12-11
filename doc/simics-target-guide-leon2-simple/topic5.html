@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(26, true);
+</script>
+<a name="label60"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+<h2 class="jdocu">6&nbsp;&nbsp;&nbsp;Limitations</h2 class="jdocu">
+
+
+<a name="label61"></a><h3 class="jdocu">6.1&nbsp;&nbsp;&nbsp;LEON2 Simics Features</h3 class="jdocu">
+
+
+<nobr>Simics/LEON2</nobr> features most of the generic Simics features.
+There are, however, a number of features not yet supported by <nobr>Simics/LEON2</nobr>:
+<dl><dt><b>User decoder</b></dt><dd>It is currently not possible for the user to define or override
+    instructions in <nobr>Simics/LEON2</nobr>.</dd><dt><b>User MMU</b></dt><dd>It is currently not possible for the user to override the MMU in
+    <nobr>Simics/LEON2</nobr>.</dd><dt><b>Memory hierachy</b></dt><dd>It is currently not possible to connect a simulated memory hierachy to
+    <nobr>Simics/LEON2</nobr>.</dd><dt><b>Symtable</b></dt><dd>The <b>symtable</b> module has not been updated to
+    support the SPARC V8 ABI and is therefore not supported.</dd><dt><b>Haps</b></dt><dd> Many haps are not implemented. This means that the
+     <b>break-hap</b> command does not work on these haps and that modules
+     cannot depend on these unimplemented haps.</dd></dl>
+<p>
+
+<a name="label62"></a><h3 class="jdocu">6.2&nbsp;&nbsp;&nbsp;LEON2 Model Features</h3 class="jdocu">
+
+
+<nobr>Simics/LEON2</nobr> implements the devices that are needed to boot and
+run RTEMS. Some devices functionality may be missing, and some devices are not
+implemented.
+<dl><dt><b>Memory controller registers</b></dt><dd>The memory controller registers have no effect and neither has the CCR.
+        The write protection registers are unimplemented.</dd><dt><b>Timers</b></dt><dd>The LEON2 timer implementation utilize lazy evaluation of counter registers,
+        this result in that the counter registers return incorrect values in
+        some cases, e.g. when a timer is disabled the counter register will
+        evaluate to the reload value. 
+<p>
+        The counters will also differ from real hardware as the LEON2 Simics model
+        is not cycle accurate.</dd><dt><b>Watchdog</b></dt><dd>The watchdog timer is unimplemented.</dd><dt><b>UARTs</b></dt><dd>The UARTs do not support timing. They run at infinite speed even if a baud
+        rate is specified.</dd><dt><b>Parallel I/O</b></dt><dd>The parallel I/O port is unimplemented.</dd><dt><b>Secondary Interrupt Controller</b></dt><dd>The secondary interrupt controller is currently not supported.</dd><dt><b>OpenCores Ethernet MAC</b></dt><dd>The OpenCores Ethernet MAC is unimplemented at the moment.</dd></dl>
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic4.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic6.html">Next</a></span></p>
+</body>
+</html>

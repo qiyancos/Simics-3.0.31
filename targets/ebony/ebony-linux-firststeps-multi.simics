@@ -1,0 +1,24 @@
+if not defined machine_count  {$machine_count = 2}
+if not defined mac_address    {$mac_address = "00:04:ac:00:50:00"}
+if not defined ip_address     {$ip_address = "10.10.0.50"}
+if not defined host_name      {$host_name = "firststeps"}
+
+@from components import mac_as_list, mac_from_list
+@from components import ip_as_list, ip_from_list
+@mac = mac_as_list(simenv.mac_address)
+@ip = ip_as_list(simenv.ip_address)
+
+$host = $host_name
+
+$id = 0
+while $id < $machine_count {
+        set-component-prefix "ebony" + $id + "_"
+        $mac_address = `mac_from_list(mac)`
+        $ip_address = `ip_from_list(ip)`
+        $host_name = $host + $id
+        run-command-file "%script%/ebony-linux-common.simics"
+        run-command-file "%script%/ebony-linux-firststeps-common.include"
+        python "mac[5] += 1"
+        python "ip[3] += 1"
+        $id += 1
+}

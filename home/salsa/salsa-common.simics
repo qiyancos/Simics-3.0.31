@@ -1,0 +1,85 @@
+@if not "cdrom_path"      in dir(): cdrom_path = ""
+@if not "central_host"    in dir(): central_host = "localhost"
+# one of: none, local, exported and remote
+@if not "central_setup"   in dir(): central_setup = "none"
+@if not "real_network"    in dir(): real_network = 0
+@if not "cpu_spaces"      in dir(): cpu_spaces = 0
+@if not "solaris_version" in dir(): solaris_version = 9
+@if not "use_dhcp"        in dir(): use_dhcp = 0
+@if not "do_login"        in dir(): do_login = 1
+@if not "ethernet"        in dir(): ethernet = "10:10:10:10:10:36"
+@if not "memory_megs"     in dir(): memory_megs = 256
+@if not "cpu_freq"        in dir(): cpu_freq = 96
+
+@from text_console_common import wait_for_string
+
+add-directory "%simics%/import/fiesta"
+
+run-python-file "../scripts/fiesta_conf.py"
+
+@set_global_config(system = "Taco",
+                   hostid = 0x80804a6c,
+                   cpu_freq = cpu_freq,
+                   mac_address = ethernet,
+                   tod = "2004-03-22 10:00:00 UTC",
+                   num_cpus = 1,
+                   mb = memory_megs)
+
+@if "salsa_files" in dir():
+    print "Using user-specified disk files"
+elif solaris_version == 9:
+    salsa_files = [["salsa2-solaris9.craff", "ro", 0, 9115287552]]
+    if use_dhcp:
+        salsa_files += [["salsa2.1-dhcp.craff", "ro", 0, 9115287552]]
+elif solaris_version == 8:
+    salsa_files = [["salsa1-solaris8.craff", "ro", 0, 9115287552]]
+    if use_dhcp:
+        salsa_files += [["salsa1.1-dhcp.craff", "ro", 0, 9115287552]]
+else:
+    print "Unsupported Solaris version %d" % solaris_version
+    SIM_command_has_problem()
+
+@add_ide_disk(controller = 0, slot = "master",
+              size = 9115287552, files = salsa_files)
+
+@add_ide_cdrom(controller = 1, slot = "master", file = cdrom_path)
+
+@add_ide_disk(controller = 0, slot = "slave", size = 9115287552)
+
+@add_ide_disk(controller = 1, slot = "slave", size = 9115287552)
+
+@add_pci_bge(slot_no = 4, mac_address = ethernet)
+
+# call the user configuration function before finishing
+@if "user_config" in dir(): user_config()
+
+@if cpu_spaces == 1:
+    create_cpu_spaces()
+
+default-port-forward-target 10.10.0.18
+
+run-command-file ../central/central-include.simics
+
+@finish_configuration()
+
+# only auto-connect one interface
+bge4.connect -auto net0
+
+disk1.create-sun-vtoc-header -quiet
+disk2.create-sun-vtoc-header -quiet
+
+@conf.sb_pm0.show_leds = 1
+
+system.set-prom-env "diag-switch?" true
+system.set-prom-env "use-nvramrc?" true
+system.set-prom-env "nvramrc"      "devalias disk1 /pci@1e,600000/ide@d/disk@0,0"
+system.set-prom-env "diag-device"  "disk1"
+system.set-prom-env "boot-command" "boot -v"
+
+@def do_boot():
+    wait_for_string(conf.con0, "ogin: ")
+    conf.con0.input = "root\n"
+
+# set do_login to 0 to avoid the automatic login
+@if do_login == 1:
+    start_branch(do_boot)

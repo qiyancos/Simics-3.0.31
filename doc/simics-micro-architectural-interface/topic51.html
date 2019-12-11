@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_set_stop_phase()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(80, true);
+</script>
+<a name="label394"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_set_stop_phase()</h4 class="jdocu">
+
+<a name="label395"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label396"></a><b>SIM_instruction_set_stop_phase</b> &#8212; set breakpoint on instruction phase</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">void
+SIM_instruction_set_stop_phase(conf_object_t *NOTNULL cpu, 
+                               instruction_phase_t phase, 
+                               int on);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function is used to instruct Simics on which instruction
+   phases <b><i>SIM_instruction_proceed</i></b> should stop on. The
+   defined phases are currently:
+ <p>
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum instruction_phase {
+        Sim_Phase_Initiated,
+        Sim_Phase_Fetched,
+        Sim_Phase_Decoded,
+        Sim_Phase_Executed,
+        Sim_Phase_Retired,
+        Sim_Phase_Committed,
+        Sim_Phases
+} instruction_phase_t;</pre>
+
+<p>
+   Thus <b><i>SIM_instruction_set_stop_phase(cpu, Sim_Phase_Executed, 1)</i></b>
+   will cause every call to <b><i>SIM_instruction_proceed(cpu, ii)</i></b> to
+   advance instruction <i>ii</i> to the point where its semantics has been
+   executed.</dd>
+
+<p>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic50.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic52.html">Next</a></span></p>
+</body>
+</html>

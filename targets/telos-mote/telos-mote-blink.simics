@@ -1,0 +1,6 @@
+#
+# Start one mote with the blink application
+#
+set-component-prefix mote_
+$mote_binary = "images/Blink/main.bin"
+run-command-file "%script%/telos-mote-common.simics"

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>tracker_settings</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2282, true);
+</script>
+<a name="label17990"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic538.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic540.html">Next</a></span></p>
+<h3 class="jdocu">tracker_settings</h3 class="jdocu">
+
+
+<a name="label17991"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic148.html#label7590">linux-process-tracker</a>, <a class="jdocu" href="topic253.html#label9319">ppc32-linux-process-tracker</a>, <a class="jdocu" href="topic298.html#label11244">ppc64-linux-process-tracker</a>, <a class="jdocu" href="topic474.html#label16866">x86-linux-process-tracker</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+<p>
+   <hr class="jdocu_note"><b>Note:</b> This interface is not supported, and may change in the future.<hr class="jdocu_note">
+<p>
+   This interface is a way of giving names to sets of attribute values for
+   process trackers. For example, a Linux process tracker might have a few
+   integer attributes that store memory offsets that differ between different
+   versions of the operating system. Rather than forcing the user to look up
+   the values appropriate to her version and setting the attributes manually,
+   the settings for the different supported versions can be given names.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        attr_value_t (*settings_id_list)(void);
+        const char *(*describe_settings)(const char *NOTNULL settings_id);
+        int (*use_settings)(conf_object_t *NOTNULL tracker,
+                            const char *NOTNULL settings_id);
+} tracker_settings_interface_t;
+#define TRACKER_SETTINGS_INTERFACE "tracker_settings"
+</pre>
+<p>
+
+   <b><i>settings_id_list</i></b> returns a list of strings. Each string is the ID
+   of a set of attributes (for example "linux-4.7.11").
+<p>
+   <b><i>describe_settings</i></b> returns a human-readable description of a
+   settings ID (for example, "linux-4.7.11" might give "Linux 4.7.11").
+<p>
+   <b><i>use_settings</i></b> sets the attributes to the values in the named set.
+   It returns true on success, false on error (the typical error would be an
+   invalid settings ID name).
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic538.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic540.html">Next</a></span></p>
+</body>
+</html>

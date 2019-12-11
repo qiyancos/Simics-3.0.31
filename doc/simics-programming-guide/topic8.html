@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Advanced Tweaks</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(27, true);
+</script>
+<a name="label58"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic7.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic9.html">Next</a></span></p>
+<h3 class="jdocu">3.4&nbsp;&nbsp;&nbsp;Advanced Tweaks</h3 class="jdocu">
+
+
+<a name="label59"></a>
+<p>
+<a name="label60"></a><h4 class="jdocu">3.4.1&nbsp;&nbsp;&nbsp;Platform specific notes</h4 class="jdocu">
+
+
+<a name="label61"></a>
+<p>
+The workspace setup script has a default set of make-variables
+(<i>CC</i>, <i>CFLAGS</i>, etc.), which are setup in the
+<tt>compiler.mk</tt> and <tt>[simics]/config/config.mk</tt> files.
+If you need to change any of the variables in <tt>config.mk</tt>, you
+may override them in <tt>config-user.mk</tt>. The <tt>compiler.mk</tt>
+may be edited by the user.
+<p>
+The makefile with the actual build rules for all modules is
+<tt>[simics]/config/module.mk</tt>. This file is included at the end of
+each module <tt>Makefile</tt>. To override rules or variables in this
+<tt>module.mk</tt>, add a <tt><a name="label62">module-user.mk</a></tt> file in the
+workspace, similar to the <tt>config-user.mk</tt> file described above.
+<p>
+<dl><dt><b>Windows</b></dt><dd>There is a special wrapper utility called
+<tt>cygwrap</tt> which is used for launching native windows binaries, which
+converts the Cygwin-style paths used by GNU make to native paths. It also
+does some argument translation, for example, to allow the <i>LIBS</i>
+variable to contain Unix-style <tt>-l</tt> library options.</dd></dl>
+<p>
+The default set of variables assumes that you will be using GCC. If you
+want to use a different compiler, you need to change the <i>CC</i>
+variable in <tt>compiler.mk</tt>. The flags for the compiler are
+setup in <tt>[simics]/config/config.mk</tt>.
+<p>
+If your compiler is not supported by <tt>config.mk</tt>, please
+report to Virtutech.
+<a name="label63"></a><h4 class="jdocu">3.4.2&nbsp;&nbsp;&nbsp;Module Makefiles</h4 class="jdocu">
+
+
+<a name="label64"></a>
+<a name="label65"></a>
+<p>
+In order to make the build environment in Simics recognize a module as a build
+target, there must be a makefile called <tt>Makefile</tt> in its source
+directory.
+<p>
+A module makefile must set up a number of make variables and then include the
+generic makefile for Simics modules. The following is an example of a module's
+<tt>Makefile</tt>, for a module written in C:
+<p>
+<pre class="jdocu_small" style="color: black">
+MODULE_CLASSES=FAS366U
+
+SRC_FILES=esp.c
+
+MODULE_CFLAGS=-DFAS
+
+SIMICS_API = 3.0
+
+include $(MODULE_MAKEFILE)
+</pre>
+<p>
+<ul>
+<p>
+<li> <tt>MODULE_CLASSES</tt> (optional) is a space-separated list of
+configuration classes that this module registers. This information is used
+by <b><i>SIM_get_class()</i></b> to determine that this module should be
+automatically loaded when one of the listed classes is requested.</li>
+<p>
+<li> <tt>SRC_FILES</tt> is a list of all source files for the module. You
+should only list C or C++ files here. Note that C source files must have a
+<tt>.c</tt> suffix, and that C++ source files must have a <tt>.cc</tt>
+suffix. For modules written in python a <tt>.py</tt> file can be listed
+instead.</li>
+<p>
+<li> <tt>MODULE_DIR</tt> (optional) is the name of the module source
+directory; this may be different from the module name. Defaults to
+<tt>[workspace]/modules/&lt;module&gt;</tt>. This primarily affects how the
+module makefile sets up <tt>VPATH</tt>, but do not use this just
+to allow source files to be found in another directory, use
+<tt>EXTRA_VPATH</tt> for that. </li>
+<p>
+<li> <tt>MODULE_CFLAGS</tt> (optional) are module specific flags for
+the compiler.  </li>
+<p>
+<li> <tt>MODULE_LDFLAGS</tt> (optional) are module specific flags for
+the linker.  </li>
+<p>
+<li> <tt>SIMICS_API</tt> (optional) specifies the version of the Simics API
+that the module is written for. See section
+<a class="jdocu" href="topic46.html#label237">9.3</a> for a description on how
+to compile old modules with a new Simics version.
+ </li>
+<p>
+<li> <tt>MODULE_EXPORT_SYMS</tt> (optional) <a name="label66"></a><a name="label67"></a> is a space separated list of file
+names.  These files should contain symbol names, each on a separate line, to
+be exported globally from the module. This information is used when linking
+the module. Setting this variable could be useful if your module wants to load
+other shared object files or DLLs. The symbols
+<tt>init_local<a name="label68"></a></tt> and
+<tt>_module_capabilities_</tt> are always exported.</li>
+<p>
+<li> <tt>EXTRA_VPATH</tt> (optional) can be set to instruct the
+generic module makefile to look for source files in more directories
+than in <tt>MODULE_DIR</tt>.  </li>
+<p>
+<li> <tt>EXTRA_OBJ_FILES</tt> (optional) may contain names of object
+files already compiled, that should be linked into the final module.
+</li>
+<p>
+</ul>
+<p>
+The user can also add new rules to the makefile, either before or after the
+inclusion of the generic <tt>$(MODULE_MAKEFILE)</tt>. This is usually not
+needed.
+<p>
+The following variables can be used in the module's makefile
+(i.e. <tt>[workspace]/modules/&lt;module&gt;/Makefile</tt>). They should be
+considered <i>read-only</i>, i.e. they should not be changed.
+<p>
+<ul>
+<p>
+<li> <tt>SIMICS_WORKSPACE</tt> is the full path to the workspace
+directory. </li>
+<p>
+<li> <tt>TARGET_DIR</tt> is the directory in which compiled modules are
+placed (<tt>[workspace]/[host-type]/lib</tt>). </li>
+<p>
+<li> <tt>SRC_BASE</tt> is the full path to the workspace modules directory
+(<tt>[workspace]/modules</tt>).</li>
+<p>
+<li> <tt>HOST_TYPE</tt> is the Simics host architecture, i.e. what OS/hardware
+Simics has been compiled for, such as <tt>x86-win32</tt> or 
+<tt>v9-sol8-64</tt>.</li>
+<p>
+<li> <tt>TARGET</tt> is the name of the module being compiled. </li>
+<p>
+</ul>
+<p>
+<a name="label69"></a><h4 class="jdocu">3.4.3&nbsp;&nbsp;&nbsp;Standard Module Host Defines</h4 class="jdocu">
+
+
+<p>
+There are a number of defines that are set depending on the host that
+the module is being compiled on. They are usually not needed, but
+useful in some special cases. Examples: <tt>HOST_64_BIT</tt>,
+<tt>HOST_32_BIT</tt>, <tt>HOST_BIG_ENDIAN</tt>,
+and <tt>HOST_LITTLE_ENDIAN</tt>. There are also defines specifying the
+host architecture and host operating system. All these defines are set
+in the Simics include file <tt>global.h</tt>.
+<a name="label70"></a><h4 class="jdocu">3.4.4&nbsp;&nbsp;&nbsp;User Defined Module Version Numbers</h4 class="jdocu">
+
+
+<a name="label71"></a><a name="label72"></a>
+<p>
+It is possible to set a user defined version number (or string) in
+loadable modules. This is done by setting the
+<tt><a name="label73">USER_VERSION</a></tt> define in
+<tt>MODULE_CFLAGS</tt> in the module's
+<tt>Makefile</tt>. The version number will be printed by the
+<b>list-modules</b> and <b>list-failed-modules</b> commands.
+<p>
+<a name="label74"></a><h4 class="jdocu">3.4.5&nbsp;&nbsp;&nbsp;Module Loading Support</h4 class="jdocu">
+
+
+<p>
+When Simics starts, it will check all modules for their supported architecture
+and word size. Only modules that match the running Simics binary will be
+available for loading into Simics.  While scanning the modules, Simics will
+also check what classes the module will register when it is loaded. This way
+modules can be loaded automatically when classes they define are used in a
+configuration.
+<p>
+If a module does not match the current Simics, it will be added to the
+list of failed modules. This list can be displayed with
+<b>list-failed-modules</b>, that takes an optional parameter
+<tt>-v</tt> for more verbose output.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>list-failed-modules</b>
+
+Current module version number: 1050  Lowest version number supported: 1050
+
+MODULE           DUP  VERSION USR_VERS  LINK
+---------------------------------------------
+8042                   1040
+image                  1040
+spitfire-mmu.so                          X
+</pre>
+<p>
+The columns after the module name (or file name in the case of a link
+error) indicate different kinds of errors. An <tt>X</tt> in the
+<tt>DUP</tt> column means that this module could not be loaded because
+this module has the same name as another module found in the Simics
+module search path, and that this one was overridden. An <tt>X</tt> in
+the <tt>VERSION</tt> column means that the module was created for
+another, non-compatible, version of Simics. <tt>LINK</tt> means that
+this module cannot be loaded into Simics because of unresolved
+symbols. Use <b>list-failed-modules -v</b> to see the actual error
+message from the run-time module loader.  
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic7.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic9.html">Next</a></span></p>
+</body>
+</html>

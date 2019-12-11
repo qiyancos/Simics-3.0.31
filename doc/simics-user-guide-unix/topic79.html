@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Observing Instruction Fetches</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(205, true);
+</script>
+<a name="label480"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic78.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic80.html">Next</a></span></p>
+<h4 class="jdocu">16.3&nbsp;&nbsp;&nbsp;Observing Instruction Fetches</h4 class="jdocu">
+
+
+<p>
+For performance reasons, instruction fetches are not sent to the memory
+hierarchy interface by default. You can activate instruction fetches for each
+processor by using the command
+<b>&lt;cpu&gt;.instruction-fetch-mode</b>. It can take several values:
+<p>
+<dl><dt><b><i>no-instruction-fetch</i></b></dt><dd>No instruction fetches are sent to
+the memory hierarchy interface.
+<p>
+</dd><dt><b><i>instruction-cache-access-trace</i></b></dt><dd>An instruction fetch is
+sent every time a different cache line is accessed by the processor. The size of the
+cache line is set by the processor attribute
+<i>instruction-fetch-line-size</i>. This option is available for
+UltraSPARC processors.
+<p>
+This option is meant to be used for cache simulation where successive accesses
+to the same cache line do not modify the cache state.</dd><dt><b><i>instruction-fetch-trace</i></b></dt><dd>All instruction fetches are
+sent to the memory hierarchy interface. This option is often implemented as
+<i>instruction-cache-access-trace</i> with a line size equal to the size of
+one instruction. This option is available for UltraSPARC and x86 processors.
+<p>
+This option is meant to provide a complete trace of fetch transactions.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic78.html">Previous</a> - <a class="jdocu" href="topic76.html">Up</a> - <a class="jdocu" href="topic80.html">Next</a></span></p>
+</body>
+</html>

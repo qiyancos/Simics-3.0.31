@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ieee_802_3_mac</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2238, true);
+</script>
+<a name="label17741"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic499.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic501.html">Next</a></span></p>
+<h3 class="jdocu">ieee_802_3_mac</h3 class="jdocu">
+
+
+<a name="label17742"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic23.html#label3245">AM79C973</a>, <a class="jdocu" href="topic69.html#label5056">DEC21140A-dml</a>, <a class="jdocu" href="topic188.html#label8445">opencores_eth</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <pre class="jdocu_small" style="color: black">#define IEEE_802_3_MAC_INTERFACE "ieee_802_3_mac"
+typedef struct {
+        int (*receive_frame)(conf_object_t *obj, int phy,
+                             dbuffer_t *buf, int crc_ok);
+        void (*tx_bandwidth_available)(conf_object_t *obj, int phy);
+        void (*link_status_changed)(conf_object_t *obj, int phy,
+                                    ieee_802_3_link_status_t status);
+} ieee_802_3_mac_interface_t;
+</pre>
+<p>
+
+   Interface that should be implemented by 802.3 media access control layers.
+<p>
+   The <b><i>receive_frame</i></b> function is called when a frame has
+   been received by the phy.  The frame is passed as a
+   <tt><a name="label17743">dbuffer_t</a></tt> that may not be modified without
+   cloning it first. The return value have no meaning, callers should
+   ignore it, and new implementations should return 0.
+<p>
+   The <b><i>tx_bandwith_available</i></b> is called by the PHY when a
+   previous call to <b><i>send_frame</i></b> or <b><i>check_tx_bandwidth</i></b>
+   in the <tt>ieee_802_3_phy</tt> have returned no bandwidth available.
+<p>
+   <b><i>link_status_changed</i></b> is called when the phy detects a change
+   of the link status.
+<p>
+   The phy parameter is a number that identifies this particular
+   PHY, in configurations with several PHYs connected to the same MAC.
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic499.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic501.html">Next</a></span></p>
+</body>
+</html>

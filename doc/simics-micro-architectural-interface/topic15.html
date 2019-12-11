@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Load-Store Queue</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(43, true);
+</script>
+<a name="label203"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic16.html">Next</a></span></p>
+<h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Load-Store Queue</h3 class="jdocu">
+
+
+<p>
+The <a name="label204">LSQ</a> built into Simics is based on the instruction tree. Store transactions
+are kept in the tree to make it possible to inspect the store queue state in
+the different speculation paths.
+<p>
+Inserting a <a name="label205">store transaction</a> in the queue takes no time and the LSQ has an
+infinite size. It is up to the user module to set delays and restrictions to
+limit the LSQ.
+<p>
+The LSQ enforces program-order consistency. The following rules apply:
+<p>
+<dl><dt><b>Loads from memory</b></dt><dd><a name="label206"></a>A load transaction is allowed to execute only if all previous stores have
+been executed (i.e., there have been inserted in the <a name="label207">LSQ</a>). If there are
+instructions potentially performing stores higher up in the execution path that
+are still at the decode phase, the load is blocked until the blocking stores
+have been executed.
+<p>
+If the load is not blocked, it is matched against speculative stores in the LSQ
+(in the corresponding execution path). If matches are found, the data is
+retrieved from the LSQ. If more data is needed, the load is sent to memory. The
+resulting data is merged with the LSQ data and the result is returned to the
+processor.</dd><dt><b>Loads from devices</b></dt><dd><a name="label208"></a>A load transaction that accesses a device is only allowed to execute as
+root of the tree (which makes it non-speculative).</dd><dt><b>Stores to memory</b></dt><dd><a name="label209"></a>When the instruction enters the execute phase, stores are inserted in
+the LSQ. 
+<p>
+When the instruction enters the retire phase, the corresponding stores are sent
+to memory (in order if the instruction has performed several). The LSQ searches
+for potential conflicting stores and forces stores that would overlap each
+other to execute in-order.</dd><dt><b>Stores to devices</b></dt><dd><a name="label210"></a>A store transaction that accesses a
+device is only allowed to execute as root of the tree (which makes it
+non-speculative).</dd><dt><b>Atomic instructions</b></dt><dd><a name="label211"></a><a name="label212"></a><a name="label213"></a>Atomic instructions will
+be blocked if they may conflict within a certain granularity with an
+earlier load in the tree that has not been executed or an earlier
+store in the tree that has not been retired. This is because atomic
+instructions lock a ram region when they have reached the execute
+phase (see section <a class="jdocu" href="topic16.html#label220">5.2</a>) which means
+that a deadlock situation may occur if an atomic instruction executes
+before an earlier conflicting instruction. The earlier instruction
+will in this case wait for the lock to be released and the atomic
+instruction will wait for the earlier instruction to complete
+according to the above rules of the LSQ. To avoid this atomic
+instructions will have to wait until there are no conflicts. Due to
+the locking mechanism the load part of an atomic instruction will
+always be sent to memory although all its data can be found in the
+LSQ.
+<p>
+The granularity can be set by an attribute in the processor object,
+<i>&lt;processor&gt;.lock_granularity</i>. If set to zero atomic
+instructions will not be blocked and it is up to the processor model
+to avoid deadlocks. If set to non-zero it should be set to the same
+granularity as set for the ram objects. The default granularity is 8
+bytes which is the same as the default granularity for the ram
+object.</dd></dl>
+<p>
+Some memory transactions bypass the <a name="label214">LSQ</a>:
+<p>
+<ul>
+<p>
+<li>Instruction fetches <a name="label215"></a>are always sent
+directly to memory. If you want your model to handle self-modifying
+code (instead of letting the software synchronize this itself), you
+will need to reorder instruction fetches when they arrive to the
+memory hierarchy.</li>
+<p>
+<li>Control (cache lock, flush, ...) and <a name="label216">prefetch
+transactions</a><a name="label217"></a><a name="label218"></a> bypass the LSQ as well.</li>
+<p>
+<li>Some special x86 transactions may bypass the LSQ but there are usually
+associated to synchronizing instruction so it will not matter. The model
+limitations are listed in section <a class="jdocu" href="topic13.html#label196">4.6</a>.</li>
+<p>
+</ul>
+<p>
+<a name="label219"></a><h4 class="jdocu">5.1.1&nbsp;&nbsp;&nbsp;Disabling the Load-Store Queue</h4 class="jdocu">
+
+
+<p>
+The internal LSQ can be disabled by setting the attribute
+<i>lsq_enabled</i> to 0 in each CPU object. When the LSQ is
+disabled all memory transactions are sent to memory during the
+execution phase. The retire phase thus becomes superfluous and
+proceeding instructions through it will have no effect. 
+<p>
+Note that when the LSQ is turned off program order consistency will
+<b>not</b> be maintained any longer by Simics. It is up to the timing
+model to ensure that memory operations does not complete in wrong
+order. It is therefore strongly recommended that the LSQ never disabled
+unless you are 100% sure of what you are doing.
+<p>
+The main reason for disabling the LSQ would be if a model of a memory
+system should be simulated that is more relaxed than what is allowed by
+the internal LSQ.
+<p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic16.html">Next</a></span></p>
+</body>
+</html>

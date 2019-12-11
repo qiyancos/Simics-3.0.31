@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Logging</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(10, true);
+</script>
+<a name="label13"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+<h3 class="jdocu">2.4&nbsp;&nbsp;&nbsp;Logging</h3 class="jdocu">
+
+
+<p>
+DML has direct support for writing log messages to the Simics logging
+facility, through the <tt>log</tt> statement. The most important logging
+concepts are the <em>type</em> and the <em>verbosity level</em> of the
+message, where the most common message types are <tt>"info"</tt> and
+<tt>"error"</tt>. The verbosity level is a number between 1 and 4, where 1
+is used for important messages that should always be displayed, and 4 is
+used for messages that should only be printed when verbose logging has been
+requested. For error messages, the level is always 1. By default, Simics
+only displays messages of level 1 on the console.
+<p>
+In the previous example, no level was provided, which will make it default
+to 1. To set the level of a message, add it after the type string, but before
+the colon, as in:
+<pre class="jdocu_small" style="color: black">
+    log "info", 2: "This is a level 2 message.";
+</pre>
+<p>
+To change what messages are displayed, use the <b>log-level</b> command.
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>log-level 4</b>
+</pre>
+Now make a memory access to the device, as before:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>phys_mem.get 0x1000</b>
+</pre>
+This time (apart from the "Hello bus!" message), you should see an info
+message saying something like <tt>"Inquiry read from register
+b.r0"</tt>. This is logged by the built-in code that handles register
+read accesses, and messages like this can be very useful when debugging
+a device model.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic8.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic10.html">Next</a></span></p>
+</body>
+</html>

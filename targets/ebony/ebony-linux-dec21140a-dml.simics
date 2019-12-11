@@ -1,0 +1,25 @@
+# Ebony start script that uses the DEC21140A-dml network card
+
+@try:
+    SIM_load_module("DEC21140A-dml")
+except Exception, msg:
+    print msg
+    print
+    print "This machine configuration requires the DML Toolkit package to run."
+    print "Make sure that you have installed the DML Toolkit package and that"
+    print "you have compiled the DEC21140A-dml module."
+    print
+    SIM_quit(1)
+
+$create_network = "yes"
+$mac_address = "10:10:10:10:10:26"
+
+script-branch {
+    wait-for-variable machine_defined
+    $dec = (create-pci-dec21140a-dml mac_address = $mac_address) 
+    $system.connect pci-slot2 $dec
+}
+
+run-command-file "%script%/ebony-linux-common.simics"
+
+@conf.dec0_phy.link = conf.link0

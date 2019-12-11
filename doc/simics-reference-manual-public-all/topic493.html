@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>cache_miss</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2231, true);
+</script>
+<a name="label17721"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic492.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic494.html">Next</a></span></p>
+<h3 class="jdocu">cache_miss</h3 class="jdocu">
+
+
+<a name="label17722"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic237.html#label9059">perfanalyze</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface can be used to gather cache miss traces. Classes
+   that model caches typically provide an attribute through which
+   on object implementing the cache miss interface can be connected.
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        void (*cache_miss)(conf_object_t *NOTNULL obj,
+                           data_or_instr_t data_or_instr,
+                           read_or_write_t read_or_write,
+                           logical_address_t logical_address,
+                           physical_address_t physical_address);
+} cache_miss_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic492.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic494.html">Next</a></span></p>
+</body>
+</html>

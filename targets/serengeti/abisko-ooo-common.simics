@@ -1,0 +1,2 @@
+run-command-file "%script%/add-ooo.include"
+run-command-file "%script%/abisko-common.simics"

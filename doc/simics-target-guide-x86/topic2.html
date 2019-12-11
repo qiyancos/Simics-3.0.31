@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label22"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting x86-440bx machines are located in the
+<tt>[workspace]/targets/x86-440bx/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/x86-440bx/</tt>.
+<p>
+
+<a name="label23"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Tango</h3 class="jdocu">
+
+
+<p>
+Tango has Fedora Core 5 installed. The base configuration has a single 20 MHz
+Pentium 4 processor, 256 MB memory, one 19GB IDE disk and one IDE CD-ROM.
+There is also an AGP based Voodoo3 graphics card and a PCI based DEC21143
+network adapter. The default configuration can be modified as described in
+section <a class="jdocu" href="#label31">3.5</a>.
+<p>
+Additional information:
+<ul>
+<li>Fedora Core 5. Installed on Simics with developer support with several
+services disabled.</li>
+<li>Linux kernel 2.6.15, including SMP support.</li>
+<li>SimicsFS support (read-only, write support experimental).</li>
+<li>Login <tt>root</tt>, password "simics".</li>
+<li>X11 configured for Voodoo 3 in 800x600 24-bit.</li>
+<li>Configured to get IP address using DHCP.</li>
+</ul>
+<p>
+<a name="label24"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Tango Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>tango-common.simics</tt></b></dt><dd>Starts the Tango machine with the default configuration.</dd><dt><b><tt>tango-gcache-common.simics</tt></b></dt><dd>Default Tango machine with a <i>g-cache</i> cache model
+connected.</dd><dt><b><tt>tango-ma-common.simics</tt></b></dt><dd>Default Tango machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>tango-multi.simics</tt></b></dt><dd>Example script with two Tango machines in the same session, connected
+by an Ethernet link. Note that the graphics console module for Windows host
+machines can only display one console, meaning that this script cannot be used
+on windows unless video text consoles are used. Video text consoles are enabled
+with the <tt>$text_console</tt> variable (see section <a class="jdocu" href="#label31">3.5</a>).</dd></dl>
+<p>
+
+<p>
+
+<a name="label25"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Enterprise</h3 class="jdocu">
+
+
+<p>
+Enterprise has Red Hat Linux 7.3 installed. The base configuration has a single 20 MHz Pentium 4 processor, 256 MB memory, one
+19GB IDE disk and one IDE CD-ROM. There is also an AGP based Voodoo3 graphics
+card and an ISA based LANCE network adapter. The default configuration can be
+modified as described in section <a class="jdocu" href="#label31">3.5</a>.
+<p>
+Additional information:
+<ul>
+<li>Red Hat Linux 7.3. Installed on Simics as Workstation with no firewall,
+containing the KDE and Software Developer package groups.</li>
+<li>Linux kernel 2.4.18, including SMP support.</li>
+<li>SimicsFS support (read-only, write support experimental).</li>
+<li>Login <tt>root</tt>, no password.</li>
+<li>X11 configured for Voodoo 3 in 800x600 32-bit.</li>
+<li>Configured with static IP address 10.10.0.15, gateway 10.10.0.1, when DHCP not used.</li>
+</ul>
+<p>
+<a name="label26"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;Enterprise Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>enterprise-common.simics</tt></b></dt><dd>Starts the Enterprise machine with the default configuration.</dd><dt><b><tt>enterprise-dhcp-common.simics</tt></b></dt><dd>Similar to enterprise-common.simics, but gets the host name and IP address
+from the DHCP server.</dd><dt><b><tt>enterprise-gcache-common.simics</tt></b></dt><dd>Default Enterprise machine with a <i>g-cache</i> cache model
+connected.</dd><dt><b><tt>enterprise-ma-common.simics</tt></b></dt><dd>Default Enterprise machine with a simple processor timing model connected.
+Simics must be stared in MAI mode (-ma) to run this script.</dd><dt><b><tt>enterprise-multi.simics</tt></b></dt><dd>Example script with two Enterprise machines in the same session, connected
+by an Ethernet link. Note that the graphics console module for Windows host
+machines can only display one console, meaning that this script cannot be used
+on windows unless video text consoles are used. Video text consoles are enabled
+with the <tt>$text_console</tt> variable (see section <a class="jdocu" href="#label31">3.5</a>).</dd></dl>
+<p>
+
+<p>
+
+<a name="label27"></a><h3 class="jdocu">3.3&nbsp;&nbsp;&nbsp;Hippie</h3 class="jdocu">
+
+
+<p>
+Hippie includes a standard Red Hat Linux 6.2 install. In the
+default configuration hippie has a single 20MHz Pentium 4 processor, 256 MB memory, one 1GB IDE
+disk and one IDE CD-ROM. There is also a PCI based Voodoo3 graphics card and
+an ISA based LANCE network adapter. The default configuration can be modified
+as described in section <a class="jdocu" href="#label31">3.5</a>.
+<p>
+Additional information:
+<ul>
+<li>Red Hat Linux 6.2, installed on Simics as "KDE Workstation".</li>
+<li>Linux kernel 2.2.14, including SMP support.</li>
+<li>SimicsFS support.</li>
+<li>Login <tt>root</tt>, no password.</li>
+<li>X11 configured for Voodoo 3 in 800x600 32-bit.</li>
+<li>Configured with static IP address 10.10.0.9, gateway 10.10.0.1, when DHCP not used.</li>
+</ul>
+<p>
+<a name="label28"></a><h4 class="jdocu">3.3.1&nbsp;&nbsp;&nbsp;Hippie Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>hippie-common.simics</tt></b></dt><dd>Starts the Hippie machine with the default configuration.</dd><dt><b><tt>hippie-dhcp-common.simics</tt></b></dt><dd>Similar to hippie-common.simics, but gets the host name and IP address
+from the DHCP server.</dd><dt><b><tt>hippie-gcache-common.simics</tt></b></dt><dd>Default Hippie machine with a <i>g-cache</i> cache model
+connected.</dd></dl>
+<p>
+
+<p>
+
+<a name="label29"></a><h3 class="jdocu">3.4&nbsp;&nbsp;&nbsp;Dredd</h3 class="jdocu">
+
+
+<p>
+Dredd ships without software, and is intended to be used for installing new OSes on Simics.
+<p>
+In the default configuration dredd has a single 20MHz Pentium 4 processor,
+256 MB memory, one 19GB IDE disk and one IDE CD-ROM. There is also an AGP
+based Voodoo3 graphics card and a PCI based DEC21143 network adapter. The
+default configuration can be modified as described in section
+<a class="jdocu" href="#label31">3.5</a>.
+<p>
+Information about how to install an OS in described in more detail in
+chapter <a class="jdocu" href="topic5.html#label609">6</a>.
+<p>
+<a name="label30"></a><h4 class="jdocu">3.4.1&nbsp;&nbsp;&nbsp;Dredd Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>dredd-cd-install1.simics</tt></b></dt><dd>Script for installing an OS on Dredd in Simics, phase 1.</dd><dt><b><tt>dredd-cd-install2.simics</tt></b></dt><dd>Script for installing an OS on Dredd in Simics, phase 2.</dd><dt><b><tt>dredd-common.simics</tt></b></dt><dd>Starts the Dredd machine with the default configuration. Can not be run
+until after an OS has been installed on Simics.</dd><dt><b><tt>dredd-gcache-common.simics</tt></b></dt><dd>Default Dredd machine with a <i>g-cache</i> cache model
+connected.</dd></dl>
+<p>
+
+<p>
+
+<a name="label31"></a><h3 class="jdocu">3.5&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>tango-common.simics</tt>, <tt>enterprise-common.simics</tt>,
+<tt>hippie-common.simics</tt>,  or <tt>dredd-common.simics</tt>
+scripts. Other <tt>.simics</tt> scripts may set some of the parameters
+unconditionally, and do not allow the user to override them. For example, the
+<tt>enterprise-dhcp-common.simics</tt> script will always set the
+<i>$create_network</i> variable to <tt>yes</tt>.
+<p>
+Parameters can be specified directly on the Simics command line
+with the run expression (-e) switch:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>./simics -e '$cpu_class="pentium-ii"' targets/x86-440bx/enterprise-common.simics</b>
+</pre>
+<p>
+They can also be initialized within Simics before the base script is run:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>./simics</b>
+simics&gt; <b>$cpu_class="pentium-ii"</b>
+simics&gt; <b>run-command-file "targets/x86-440bx/enterprise-common.simics"</b>
+</pre>
+<p>
+If you are using the wxWindows frontend on Windows, you will need to
+create a script that both sets the parameter and includes the base
+script.
+<p>
+<a name="label32"></a><h4 class="jdocu">3.5.1&nbsp;&nbsp;&nbsp;tango-common, enterprise-common, hippie-common and dredd-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$create_network</b></dt><dd>Set to <tt>yes</tt> if the script should create an Ethernet link and
+connect the primary Ethernet adapter to it.</dd><dt><b>$cpu_class</b></dt><dd>The type of processor to create. Should be one of <tt>pentium</tt>,
+<tt>pentium-mmx</tt>, <tt>pentium-pro</tt>, <tt>pentium-ii</tt>,
+<tt>pentium-iii</tt>, <tt>pentium-4</tt>, <tt>pentium-4e</tt>,
+<tt>pentium-4e-2ht</tt>, <tt>pentium-4e-4ht</tt>
+and <tt>x86-hammer</tt>.</dd><dt><b>$disk_size</b></dt><dd>Size of the primary hard disk. This parameter must match any disk images
+that are added to the primary disk.</dd><dt><b>$enter_in_boot_menu</b></dt><dd>Set to <tt>no</tt> to prevent the script from pressing enter in the boot
+menu, default is <tt>yes</tt>. This option does not apply to the dredd
+machine.</dd><dt><b>$eth_link</b></dt><dd>The Ethernet link to connect the primary Ethernet adapter to. This
+parameter should be set when a link already exist and the
+<i>$create_network</i> parameter is <tt>no</tt>.</dd><dt><b>$freq_mhz</b></dt><dd>The clock frequency in MHz for all processors.</dd><dt><b>$host_name</b></dt><dd>The host name used by the DHCP and DNS servers for this machine. This
+variable will not change the host name set for the machine on the disk
+dumps.</dd><dt><b>$ip_address</b></dt><dd>The IP address used by the DHCP and DNS servers for this machine. This
+variable will not change any IP address set for the machine on the disk
+dumps.</dd><dt><b>$mac_address</b></dt><dd>MAC address of the primary Ethernet adapter.</dd><dt><b>$memory_megs</b></dt><dd>The total amount of system memory, in MB, in the system.</dd><dt><b>$num_cpus</b></dt><dd>The number of processors in the machine.</dd><dt><b>$rtc_time</b></dt><dd>Date and time of the real-time clock at boot.</dd><dt><b>$service_node</b></dt><dd>The <i>service node</i> to use for DHCP and DNS. This parameter should be
+set when a service noce already exist and the <i>$create_network</i>
+parameter is <tt>no</tt>.</dd><dt><b>$text_console</b></dt><dd>Set to <tt>yes</tt> to connect a text console to the VGA display instead
+of a graphical console that is default.</dd></dl>
+<p>
+
+<p>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

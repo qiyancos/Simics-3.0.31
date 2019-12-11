@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(35, true);
+</script>
+<a name="label80"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h2 class="jdocu">8&nbsp;&nbsp;&nbsp;Limitations</h2 class="jdocu">
+
+
+<a name="label81"></a><h3 class="jdocu">8.1&nbsp;&nbsp;&nbsp;Simics Features</h3 class="jdocu">
+
+
+<nobr>Simics/ARM</nobr> features most of the generic Simics features.
+There are, however, a number of features not yet supported by <nobr>Simics/ARM</nobr>:
+<dl><dt><b>User decoder</b></dt><dd>It is currently not possible for the user to define or override
+    instructions in <nobr>Simics/ARM</nobr>.</dd><dt><b>User MMU</b></dt><dd>It is currently not possible for the user to override the MMU in
+    <nobr>Simics/ARM</nobr>.</dd><dt><b>Memory hierachy</b></dt><dd>It is currently not possible to connect a simulated memory hierachy to
+    <nobr>Simics/ARM</nobr>.</dd><dt><b>Tracing</b></dt><dd>It is currently not possible to do tracing of memory accesses with
+    <nobr>Simics/ARM</nobr>.</dd><dt><b>Networking</b></dt><dd>It is currently not possible to connect <nobr>Simics/ARM</nobr> to a
+    simulated network.</dd><dt><b>Symtable</b></dt><dd>The <b>symtable</b> module has not been updated to
+    support the ARM ABI and is
+    therefore only partially supported.</dd><dt><b>Haps</b></dt><dd> Many haps are not implemented. This means that the
+     <b>break-hap</b> command does not work on these haps and that modules
+     cannot depend on these unimplemented haps.</dd></dl>
+<p>
+<a name="label82"></a><h3 class="jdocu">8.2&nbsp;&nbsp;&nbsp;ARM ISA</h3 class="jdocu">
+
+
+<p>
+<nobr>Simics/ARM</nobr> has a fairly complete implementation of the core ARMv5 instruction
+set. The Thumb and enhanced DSP extensions are not implemented.
+<p>
+Only the instructions and functions of the system control coprocessor that are
+needed to boot Linux are implemented.
+<p>
+No floating-point coprocessor is implemented.
+<p>
+<a name="label83"></a><h3 class="jdocu">8.3&nbsp;&nbsp;&nbsp;ARM Miscellaneous</h3 class="jdocu">
+
+
+<nobr>Simics/ARM</nobr> currently only supports little-endian mode.
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

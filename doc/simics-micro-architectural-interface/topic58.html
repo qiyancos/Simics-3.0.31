@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SPARC-V9 Instructions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(87, true);
+</script>
+<a name="label416"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic57.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic59.html">Next</a></span></p>
+<h2 class="jdocu">Appendix B -&nbsp;&nbsp;&nbsp;SPARC-V9 Instructions</h2 class="jdocu">
+
+
+<p>
+Here follows a list of the SPARC instructions that cannot run out of
+order. The synchronous column tells if the instructions falls into
+category 1 or 2. Category 1 means that the instructions can only be
+executed if all earlier instructions in the instruction tree has been
+executed. Category 2 means that the instruction can only be executed
+if it is the only instruction in the tree. For comments see below.
+<p>
+<table>
+<tr><td class="jdocu_border"><b>Instruction </b></td><td class="jdocu_border"><b>synchronous</b></td><td class="jdocu_border"><b>comment</b></td></tr>
+<tr><td class="jdocu_border">CASA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">CASXA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">DONE</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">FLUSH</td><td class="jdocu_border">1</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">FLUSHW</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">ILLTRAP</td><td class="jdocu_border">2</td><td class="jdocu_border">1</td></tr>
+<tr><td class="jdocu_border">LD(SB,SH,SW,UB,UH,UW,X)A</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">LDDA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">LDDFA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">LDFA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">LDFSR</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">LDQFA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">LDSTUBA</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">LDXFSR</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">MEMBAR</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">PREFETCHA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">RDSTICK</td><td class="jdocu_border">1</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">RDTICK</td><td class="jdocu_border">1</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">RETRY</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">ST(B,H,W,X)A</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">STBAR</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">STDA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border"><b>Instruction</b></td><td class="jdocu_border"><b>synchronous</b></td><td class="jdocu_border"><b>comment</b></td></tr>
+<tr><td class="jdocu_border">STDFA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">STFA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">STFSR</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">STQFA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">STXFSR</td><td class="jdocu_border">2</td><td class="jdocu_border"></td></tr>
+<tr><td class="jdocu_border">SWAPA</td><td class="jdocu_border"></td><td class="jdocu_border">2</td></tr>
+<tr><td class="jdocu_border">Tcc</td><td class="jdocu_border">2</td><td class="jdocu_border">1</td></tr>
+<tr><td class="jdocu_border">WRASR</td><td class="jdocu_border">2</td><td class="jdocu_border">3</td></tr>
+<tr><td class="jdocu_border">WRPR</td><td class="jdocu_border">2</td><td class="jdocu_border">4</td></tr>
+</table>
+<p>
+Comments:
+<p>
+<ol>
+<li>The instruction will cause an exception which makes it synchronous</li>
+<li>If the ASI used by the instruction changes mappings in
+the MMU the instruction will be synchronous of category 2 otherwise it
+is not synchronous.</li>
+<li>Writes to the registers %y, %ccr, %asi, %pc are NOT synchronous.</li>
+<li>Writes to the registers %cansave, %canrestore, %otherwin, and %cleanwin are NOT synchronous.</li>
+</ol>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic57.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic59.html">Next</a></span></p>
+</body>
+</html>

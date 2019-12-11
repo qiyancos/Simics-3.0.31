@@ -1,0 +1,24 @@
+dml 1.0;
+
+import "pci-bridge.dml";
+
+connect secondary_bus {
+    interface pci_express;
+}
+
+// Compute the map of the PCI configuration space of the secondary bus to put it
+// in the primary bus configuration space
+method compute_conf_space_window(map, sec, sub) default 
+{
+    map->base = sec << 20;
+    map->start = sec << 20;
+    map->length = (1 << 20) * (sub - sec + 1);    
+}
+
+implement pci_express {
+    method send_message(conf_object_t *src, pcie_message_type_t type, 
+                        byte_string_t payload) -> (int h) default {
+        // send message to implement
+        h = 0;
+    }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simulated Machines</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label22"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+<h2 class="jdocu">3&nbsp;&nbsp;&nbsp;Simulated Machines</h2 class="jdocu">
+
+
+<p>
+Simics scripts for starting IA64-460GX machines are located in the
+<tt>[workspace]/targets/ia64-460gx/</tt> directory, while the actual
+configuration scripts can be found in
+<tt>[simics]/targets/ia64-460gx/</tt>.
+<p>
+
+<a name="label23"></a><h3 class="jdocu">3.1&nbsp;&nbsp;&nbsp;Vasa</h3 class="jdocu">
+
+
+<p>
+Vasa is a multi-processor machine based on the 460GX chipset, with a single
+Itanium processor running at 75 MHz, and 1024 MB of memory. It has one SCSI
+disk and one SCSI CD-ROM, but no network device. The default configuration can
+be modified as described in section
+<a class="jdocu" href="#label25">3.2</a>.
+<p>
+Vasa is configured for an existing Red Hat Linux 7.1 disk dump, that can be
+downloaded from the Virtutech web site. There is no <em>SimicsFS</em> support
+on this disk dump.
+<p>
+Additional information:
+<ul>
+<li>Red Hat 7.1 Linux.</li>
+<li>Linux kernel 2.4.7</li>
+<li>Login <tt>root</tt>, no password.</li>
+</ul>
+<p>
+<a name="label24"></a><h4 class="jdocu">3.1.1&nbsp;&nbsp;&nbsp;Vasa Scripts</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b><tt>vasa-common.simics</tt></b></dt><dd>Starts the Vasa machine with the default configuration.</dd><dt><b><tt>vasa-multi.simics</tt></b></dt><dd>Example script with two Vasa machines in the same session.</dd></dl>
+<p>
+
+<p>
+
+<a name="label25"></a><h3 class="jdocu">3.2&nbsp;&nbsp;&nbsp;Parameters for Machine Scripts</h3 class="jdocu">
+
+
+<p>
+The following parameters can be set before running the
+<tt>vasa-common.simics</tt> script. Other <tt>.simics</tt>
+scripts may set some of the parameters unconditionally, and do not
+allow the user to override them.
+<p>
+<a name="label26"></a><h4 class="jdocu">3.2.1&nbsp;&nbsp;&nbsp;vasa-common</h4 class="jdocu">
+
+
+<p>
+<dl><dt><b>$disk_size</b></dt><dd>Size of the primary hard disk. This parameter must match any disk images
+that are added to the primary disk.</dd><dt><b>$freq_mhz</b></dt><dd>The clock frequency in MHz for all processors.</dd><dt><b>$memory_megs</b></dt><dd>The total amount of system memory, in MB.</dd><dt><b>$num_cpus</b></dt><dd>The number of processors in the machine.</dd><dt><b>$rtc_time</b></dt><dd>Date and time of the real-time clock at boot.</dd><dt><b>$text_console</b></dt><dd>Set to "yes" in order to use a text console with the VGA device
+(by default, a graphical console will be opened).</dd></dl>
+<p>
+
+<p>
+
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic1.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic3.html">Next</a></span></p>
+</body>
+</html>

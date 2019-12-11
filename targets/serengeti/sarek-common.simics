@@ -1,0 +1,15 @@
+if not defined create_network {$create_network = yes}
+
+###
+
+if $os == solaris10 { $disk_size = 8513945600}
+
+run-command-file "%script%/serengeti-6800-system.include"
+
+instantiate-components
+
+$eth_comp = $pci_hme
+$eth_cnt = ""
+run-command-file "%simics%/targets/common/add-eth-link.include"
+
+run-command-file "%script%/sarek-setup.include"

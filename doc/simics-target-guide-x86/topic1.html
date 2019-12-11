@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Simics/x86 Overview</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(17, true);
+</script>
+<a name="label19"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+<h2 class="jdocu">2&nbsp;&nbsp;&nbsp;Simics/x86 Overview</h2 class="jdocu">
+
+
+<a name="label20"></a><h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+
+<p>
+Simics x86-440bx can model various PC systems with x86 or AMD64 processors
+based on the 440BX chipset. Legacy systems based on ISA are modelled by
+Simics/x86-PC-AT. Supported Intel processors range from 486sx to Pentium 4
+with EM64T. There is also support for a generic AMD64 processor with some
+K8-like features, but still using the Intel 440BX chipset.
+<p>
+Several operating systems, including versions of Windows, Linux, and NetBSD
+have been installed and run successfully on Simics.
+<p>
+Note that the same basic machine configuration is used for all the available
+target processors. Some operating systems might be confused to see machines
+that cannot exist in reality, such as a 12 processor 486sx system, or an AMD64
+machine with an Intel chipset.
+<p>
+With Simics comes a custom BIOS with full support for multiprocessing
+according to the MPS and ACPI specifications. The custom BIOS supports
+up to 15 processors, but note that most Linux versions are limited to
+8 processors, and that Windows has different limits depending on which
+flavour of Windows it is.
+<p>
+Virtutech provides hard-disk dumps for some Linux versions on x86. Windows
+dumps are not available from Virtutech, but it is possible to create disk
+dumps by installing Windows on top of Simics. More information on how to
+install an OS on Simics is available in chapter
+<a class="jdocu" href="topic5.html#label609">6</a>.
+<p>
+
+<a name="label21"></a><h3 class="jdocu">2.2&nbsp;&nbsp;&nbsp;Simulated Hardware</h3 class="jdocu">
+
+
+<p>
+Not all supported hardware models are available in every Simics
+distribution. Contact your Virtutech sales representative if you are
+interested in hardware that is not included in your distribution.
+<p>
+<dl><dt><b>Processors</b></dt><dd><ul>
+    <li>Intel 80386DX with optional 80387 coprocessor</li>
+    <li>Intel 80486SX</li>
+    <li>Intel 80486DX2</li>
+    <li>Intel Pentium</li>
+    <li>Intel Pentium MMX</li>
+    <li>Intel Pentium Pro</li>
+    <li>Intel Pentium II</li>
+    <li>Intel Pentium III</li>
+    <li>Intel Pentium 4 with optional support for hyper-threading technology, EM64T, and SSE3.</li>
+    <li>AMD Opteron with optional support for SSE3.</li>
+</ul></dd></dl>
+<p>
+<dl><dt><b>PC architecture devices</b></dt><dd><ul>
+    <li>Keyboard and mouse (8042)</li>
+    <li>Floppy controller and connected drives (82077)</li>
+    <li>DMA controller (two 8237)</li>
+    <li>Programmable interval timer (8254)</li>
+    <li>Programmable interrupt controller (two 8259)</li>
+    <li>Real time clock (DS12887)</li>
+    <li>Advanced programmable interrupt controller (APIC)</li>
+</ul></dd></dl>
+<p>
+<dl><dt><b>Chipset ASICs</b></dt><dd><ul>
+    <li>North bridge 82443BX and south bridge PIIX4 (440BX)</li>
+    <li>North bridge 82437FX and south bridge PIIX (430FX)</li>
+    <li>South bridge MD1535D (experimental)</li>
+    <li>FDC37C665GT (for 80486 systems)</li>
+    <li>Simulator specific shadow memory controller</li>
+    <li>I/O-APIC</li>
+</ul></dd></dl>
+<p>
+<dl><dt><b>ISA devices</b></dt><dd><ul>
+    <li>Standard VGA</li>
+    <li>Sound Blaster 16 (experimental)</li>
+    <li>Lance ethernet controller (AM79C960)</li>
+    <li>IDE controller</li>
+    <li>Serial port (NS16450 and NS16550)</li>
+</ul></dd></dl>
+<p>
+
+<dl><dt><b>PCI devices</b></dt><dd><ul>
+<li>BCM5703C Gigabit Ethernet Controller</li>
+<li>BCM5704C Dual Gigabit Ethernet Controller</li>
+<li>Intel i82543 (Intel PRO) Gigabit Ethernet Controller</li>
+<li>Intel i82546 (Intel PRO) Dual Gigabit Ethernet Controller</li>
+<li>ISP1040 SCSI controller</li>
+<li>ISP2200 Fibre-Channel SCSI Controller</li>
+<li>SymbiosLogic SYM53C810 PCI-SCSI I/O Processor</li>
+<li>SymbiosLogic SYM53C875 PCI-SCSI I/O Processor</li>
+<li>SymbiosLogic SYM53C876 PCI-SCSI I/O Processor</li>
+<li>DEC21041 PCI Ethernet LAN Controller </li>
+<li>DEC21140A PCI Fast Ethernet LAN Controller </li>
+<li>DEC21143 PCI Ethernet LAN Controller </li>
+<li>ATI Rage XL/XC (Mach64) video device </li>
+<li>3Dfx Voodoo3 graphics card (both PCI and AGP versions)</li>
+</ul></dd></dl>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic0.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic2.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Cluster Events</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(31, true);
+</script>
+<a name="label55"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+<h3 class="jdocu">7.2&nbsp;&nbsp;&nbsp;Cluster Events</h3 class="jdocu">
+
+<a name="label56"></a>
+
+<p>
+   If the device performs a series of small related events, it is
+   desirable to cluster these events into larger chunks, even if the
+   simulator cannot respond immediately.  For example, in a DMA
+   transfer, rather than moving a few bytes every single cycle, the
+   simulated device can move a whole memory page at a time every N
+   cycles, where N is adapted to give the same overall transfer rate.
+   Again, this means the model is invoked fewer times, and furthermore
+   it will trigger other devices less often, too.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic16.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic18.html">Next</a></span></p>
+</body>
+</html>

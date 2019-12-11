@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>x86_tlb</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2287, true);
+</script>
+<a name="label18012"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic542.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic544.html">Next</a></span></p>
+<h3 class="jdocu">x86_tlb</h3 class="jdocu">
+
+
+<a name="label18013"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic480.html#label17612">x86-tlb</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The x86 tlb interface is used for communication between an x86 cpu
+   and its TLB. The TLB is implemented as a separate class for greater
+   flexibility.
+<p>
+   <a name="label18014"></a>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        int                  valid;
+        physical_address_t   paddr;
+} tagged_physical_address_t;
+
+typedef struct {
+        void (*flush_all)(conf_object_t *obj,
+                            int keep_global_entries);
+        void (*flush_page)(conf_object_t *obj,
+                           linear_address_t laddr);
+        int (*lookup)(conf_object_t *obj,
+                      x86_memory_transaction_t *mem_tr);
+        void (*add)(conf_object_t *obj,
+                    processor_mode_t mode,
+                    read_or_write_t read_or_write,
+                    data_or_instr_t data_or_instr,
+                    int global_page,
+                    x86_memory_type_t pat_type,
+                    x86_memory_type_t mtrr_type,
+                    linear_address_t laddr,
+                    physical_address_t paddr,
+                    int page_size);
+        tagged_physical_address_t (*itlb_lookup)(conf_object_t *obj,
+                                                 linear_address_t laddr,
+                                                 processor_mode_t mode);
+} x86_tlb_interface_t;
+
+#define X86_TLB_INTERFACE "x86-tlb"
+</pre>
+<p>
+
+   All functions in the interface get the <i>object</i> implementing
+   the interface as their first parameter.
+<p>
+   <b>flush_all</b> is called when all TLB entries should be
+   flushed. If <i>keep_global_entries</i> is set, then TLB entries
+   with their global bit set should not be flushed.
+<p>
+   <b>flush_page</b> is invoked when pages containing <i>laddr</i> are
+   to be removed from the TLB.
+<p>
+   <b>lookup</b> is used by the CPU when a memory access misses the
+   STC. It must return true (non-zero) if and only if the memory
+   operation specified by <i>mem_tr</i> hits the TLB and does not
+   raise an exception. The <i>mode</i>, <i>linear_address</i> are valid when
+   the method is invoked. The other fields passed through <i>mem_tr</i>
+   are undefined. If the method returns true, the
+   <i>s.physical_address</i>, <i>pat_type</i>, and <i>mtrr_type</i>
+   fields of <i>mem_tr</i> must be updated by <b>lookup</b>.
+<p>
+   An access that misses in <b>lookup</b> but does not raise a fault
+   is inserted into the TLB with <b>add</b>. The <i>page_size</i>
+   encoding is 0 for 4 kb pages, 1 for 2 Mb pages, and 2 for 4 Mb
+   pages.
+<p>
+   <b>itlb_lookup</b> is a simplified version of <b>lookup</b> used
+   only for instruction TLB lookups. If the lookup is successful
+   <i>valid</i> and <i>paddr</i> should be set, otherwise <i>valid</i>
+   should be cleared.
+<p>
+   It class implementing the interface must make sure that only
+   addresses mapped in the TLB are present in the STCs.
+<p>
+   This interface may be changed or replaced with an architecture
+   independent interface in future versions of Simics.
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic542.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic544.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Instruction Execution Timing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(210, true);
+</script>
+<a name="label491"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic83.html">Previous</a> - <a class="jdocu" href="topic82.html">Up</a> - <a class="jdocu" href="topic85.html">Next</a></span></p>
+<h4 class="jdocu">17.2&nbsp;&nbsp;&nbsp;Instruction Execution Timing</h4 class="jdocu">
+
+
+<p>
+<a name="label492"></a><h5 class="jdocu">Simics in-order</h5 class="jdocu">
+
+
+<p>
+In the default model, the execution of a step takes no time by itself,
+and steps are run in program order. This is called the Simics
+<em><a name="label493">in-order</a></em> model. It implements the basic instruction set
+abstraction that instructions execute discretely and sequentially.
+This minimalistic approach makes simulation fast but does not attempt
+to model <a name="label494">execution timing</a> in any way.
+<p>
+Normally one step is executed every cycle, so that the step and cycle
+counts are the same. See the section <b>Changing the Step Rate</b> for
+how to change this.
+<p>
+
+<a name="label495"></a><h5 class="jdocu">Stalling</h5 class="jdocu">
+
+
+<p>
+The in-order model can be extended by adding <em><a name="label496">timing
+models</a></em> to control the timing of memory operations,
+typically using the memory hierarchy interface described in chapter
+<a class="jdocu" href="topic76.html#label477">16</a>. When timing models are introduced,
+steps are no longer atomic operations taking no time. A step
+performing a memory operation (whether an instruction fetch or a data
+transaction) can <a name="label497">stall</a> for a number of cycles. Cycle events
+are performed during the <a name="label498">stalling period</a> as time goes
+forward. Step events are performed just before the step execution, as
+in the default model. Note that in this mode, Simics still executes
+one step at a time, with varying timing for each step, so the
+simulation is still performing an in-order execution of the
+instruction flow. The basic step rate can also be changed; see the section
+<b>Changing the Step Rate</b> below.
+<p>
+
+<a name="label499"></a><h5 class="jdocu">Simics MAI</h5 class="jdocu">
+
+
+<p>
+Simics also has an extended timing control mode called <em>Micro-architectural
+Interface</em> (MAI). When running in MAI mode, step execution is completely
+under user control. Cycle events are still executed one cycle at a time, but no
+step execution is performed unless a user <em>processor timing model</em> is
+driving it. This user timing model is usually called every cycle to make
+instructions advance in the processor pipeline, stall, allocate resources,
+etc. Whenever an instruction is committed by the processor timing model, Simics
+increases the step counter, executes all step events related to this step and
+finally commits the step execution. From the point of view of event handling,
+Simics MAI is similar to the standard model, but the number of steps executed
+(or, in this case, committed) per cycle is entirely under user control.
+<p>
+Simics MAI transcends the standard model by providing an infrastructure for
+parallelized and speculative execution, allowing a much more accurate timing
+simulation of complex processors. Simics MAI mode is also called Simics
+<em>out-of-order</em> mode. A complete description of Simics MAI is available
+in the <em>Simics Micro-Architectural Interface</em> document. Note that
+Simics MAI is only available for the UltraSPARC and x86/x86-64 processor
+models.
+<p>
+
+<a name="label500"></a><h5 class="jdocu">Choosing an Execution Mode</h5 class="jdocu">
+
+
+<p>
+Choosing an execution mode is matter of trade-off between performance and
+accuracy. As the timing control becomes more refined, the simulation slows
+down. Simics allows you to choose the execution mode dynamically (using
+checkpoints), so it is possible to use a simple model to reach interesting
+parts of the simulation quickly, then switch to a more complex model.
+<p>
+
+<a name="label501"></a><h5 class="jdocu">Changing the Step Rate</h5 class="jdocu">
+
+
+<p>
+The <em><a name="label502">step rate</a></em> is the number of steps executed each
+cycle, disregarding any stalling. It is expressed as the quotient
+q/p. By default, p=q=1; this
+schedules one step to run in each cycle. This can be changed by
+setting the <i>step_rate</i> processor attribute to
+[q, p, r] where the last
+r parameter is a remainder to keep track of the relative
+phase of the cycle and step counters; set it to zero if you are not
+interested in sub-cycle accuracy. For example,
+<p>
+<pre class="jdocu_small" style="color: black">
+@conf.cpu0.step_rate = [3, 4, 0]
+</pre>
+<p>
+will set the step rate of <b>cpu0</b> to 3/4; that is, three steps
+every four cycles.
+<p>
+If q&lt;p, then some cycles will execute no step at all; if
+q&gt;p, then some cycles will execute more than one step.  The step
+rate parameters are currently limited to 1 &lt;= p &lt;= 128 with
+p=2<sup>k</sup> for some integer k, and 1 &lt;= q &lt;=
+128.
+<p>
+Setting a non-unity step rate can be used to better approximate the
+timing of a target machine averaging more or less than one instruction
+per cycle. It can also be used to compensate for Simics running
+instructions slower than actual hardware when it is desirable to have
+the simulated time match real time; specifying a lower step rate will
+cause simulated time go faster.
+<p>
+The step rate is sometimes called <a name="label503">IPC</a> (instructions per
+cycle), and its inverse, the <em><a name="label504">cycle rate</a></em>, may be
+called <a name="label505">CPI</a> (cycles per instruction). The actual rates will
+depend on how many extra cycles are added by stalling.
+<p>
+Let us look at an example using a single Ebony card. We will first run 1
+million steps with the default settings:
+<p>
+<pre class="jdocu_small" style="color: black">
+                                
+  +----------------+    Copyright 1998-2005 by Virtutech, All Rights Reserved
+  |   Virtutech    |    Version: 
+  |     Simics     |    Build: 
+  +----------------+
+    www.simics.com      "Virtutech" and "Simics" are trademarks of Virtutech AB
+
+simics&gt; <b>c 1000000</b>
+[cpu0] v:0xfff8a610 p:0x1fff8a610  mftbu r5
+simics&gt; <b>ptime</b>
+processor                 steps             cycles    time [s]
+cpu0                    1000000            1000000       0.010
+</pre>
+<p>
+The processor has run 1 million steps, taking 1 million cycles to execute
+them. Let us set the cycle rate to the value mentioned above, 3 steps for every
+4 cycles:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.cpu0.step_rate = [3, 4, 0]</b>
+simics&gt; <b>cb 1200000</b>
+simics&gt; <b>c</b>
+Caught time breakpoint
+[cpu0] v:0xfff8a634 p:0x1fff8a634  bl 0xfff8a608
+simics&gt; <b>ptime</b>
+processor                 steps             cycles    time [s]
+cpu0                    1900000            2200000       0.022
+simics&gt; 
+</pre>
+<p>
+When running the next 1.2 million cycles, the processor executes only 900000
+steps, which corresponds to the 3/4 rate that we configured.
+<p>
+
+<a name="label506"></a><h5 class="jdocu">Suspending Time or Execution</h5 class="jdocu">
+
+
+<p>
+<a name="label507"></a>
+It is possible to set the <a name="label508">step rate</a> to infinity, or equivalently, to
+suspend <a name="label509">simulated time</a> while executing steps. This is done by
+setting the <i>step_per_cycle_mode</i> processor attribute to one of the
+following values:
+<p>
+<dl><dt><b><tt>"constant"</tt></b></dt><dd>Steps are executed at the constant and finite rate specified in
+     the <i>step_rate</i> attribute</dd><dt><b><tt>"infinite"</tt></b></dt><dd>Steps are executed with no progress in simulated time</dd></dl>
+<p>
+While time is suspended, the cycle counter does not advance, nor are
+any time events run. To the simulated machine this appears as if all
+instructions are run infinitely fast.
+<p>
+<a name="label510"></a>
+<a name="label511"></a><a name="label512"></a>
+<a name="label513"></a><a name="label514"></a>
+Conversely, it is possible set the step rate to zero, thus suspending
+execution while letting simulated time pass. This can be done by
+<a name="label515">stalling</a> the processor for a finite time (see
+<b>Stalling</b> above) or by <em>disabling</em>
+the processor for an indefinite time. Disabling and re-enabling
+processors is done with the commands <b>&lt;processor&gt;.enable</b>
+and <b>&lt;processor&gt;.disable</b>.
+<p>
+Using the same example as above, we set the step per cycle mode to "infinite"
+to prevent the simulated time from advancing:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>@conf.cpu0.step_per_cycle_mode = "infinite"</b>
+simics&gt; <b>c 1000000</b>
+[cpu0] v:0xfff8a614 p:0x1fff8a614  cmpw r3,r5
+simics&gt; <b>ptime</b>
+processor                 steps             cycles    time [s]
+cpu0                    1000000                  0       0.000
+simics&gt;
+</pre>
+<p>
+The processor has executed 1 million steps but the simulated time has not
+advanced. Note that setting this mode would probably prevent a machine like
+Ebony from booting since many hardware events (like interrupts) are time-based.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic83.html">Previous</a> - <a class="jdocu" href="topic82.html">Up</a> - <a class="jdocu" href="topic85.html">Next</a></span></p>
+</body>
+</html>

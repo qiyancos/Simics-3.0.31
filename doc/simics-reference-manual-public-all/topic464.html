@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>vga_pci</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2143, true);
+</script>
+<a name="label16014"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic463.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic465.html">Next</a></span></p>
+<h3 class="jdocu">vga_pci</h3 class="jdocu">
+
+
+<a name="label16015"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2970">vga-pci</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>vga_pci</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a>, <a class="jdocu" href="topic506.html#label17759">io_memory</a>, <a class="jdocu" href="topic517.html#label17806">pci_device</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The VGA-PCI device is identical to the VGA device except it connects to the PCI bus instead of the ISA bus. This functionality of this device can also be inherited by more advanced graphic devices such as the Voodoo3 device. Limitations: Not all possible video modes are tested. The CGA Compatibility modes are not yet supported. Different character maps are not yet supported. Read Mode 1 is not yet implemented. Panning is not supported. Spilt Screen is not supported. Blinking text is not supported. Blinking color in video mode 0xf is not supported. Underlining in MDA compatibility mode is not supported. Extend ninth bit in text mode is not implemented.
+
+</dd>
+
+</dl>
+<a name="label16016"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>attrib_next_index</i></b></dt><a name="label16017"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Decides whether the next next access to an attribute controller register (through port 0x3C0) will contain an address or data.</dd></dl>
+<dl><dt><b><i>attrib_next_reg</i></b></dt><a name="label16018"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+The address of the attribute controller register designated for the next access.</dd></dl>
+<dl><dt><b><i>attrib_regs</i></b></dt><a name="label16019"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-20</i>) is a list of attribute registers.</dd></dl>
+<dl><dt><b><i>attrib_video_enable</i></b></dt><a name="label16020"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Decides whether video is enabled or not.</dd></dl>
+<dl><dt><b><i>config_register_info</i></b></dt><a name="label16021"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[isii]*]</b>.
+<p>
+Register info for all registered configuration registers. The format for each entry is (offset, name, size, write-mask).</dd></dl>
+<dl><dt><b><i>config_registers</i></b></dt><a name="label16022"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{64}]</b>; <b>integer</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+The 64 PCI configuration registers, each 32 bits in size.</dd></dl>
+<dl><dt><b><i>console</i></b></dt><a name="label16023"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Console object that must implement either gfx-console or both the serial-device and extended-serial interfaces.</dd></dl>
+<dl><dt><b><i>crtc_next</i></b></dt><a name="label16024"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Integer register representing the next CRTC address.</dd></dl>
+<dl><dt><b><i>crtc_regs</i></b></dt><a name="label16025"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-24</i>) is a list of CRTC registers.</dd></dl>
+<dl><dt><b><i>dump_charset</i></b></dt><a name="label16026"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Write-only pseudo attribute. A write operation will print the current character map to the console if the vga device is in alpha-numeric mode.</dd></dl>
+<dl><dt><b><i>expansion_rom</i></b></dt><a name="label16027"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[oii]</b>.
+<p>
+ROM object, map size, and map function number for the Expansion ROM.</dd></dl>
+<dl><dt><b><i>gfx_latch</i></b></dt><a name="label16028"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Latch-0</i> ... <i>Latch-4</i>) List of four graphics data controller latches.</dd></dl>
+<dl><dt><b><i>gfx_next</i></b></dt><a name="label16029"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Represents the address of the graphics controller register designated for the next read/write access.</dd></dl>
+<dl><dt><b><i>gfx_regs</i></b></dt><a name="label16030"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-8</i>) is a list of the nine graphics controller registers found in an VGA adapter.</dd></dl>
+<dl><dt><b><i>h_cnt</i></b></dt><a name="label16031"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Horizontal counter (used for generating retrace signals).</dd></dl>
+<dl><dt><b><i>image</i></b></dt><a name="label16032"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Image object containing the VRAM.</dd></dl>
+<dl><dt><b><i>interrupt_pin</i></b></dt><a name="label16033"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iiii]</b>.
+<p>
+State of the interrupt pin.</dd></dl>
+<dl><dt><b><i>mappings</i></b></dt><a name="label16034"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{5:8}]|[iiiiiiiio|nii]*]</b>.
+<p>
+List of all current PCI IO and memory mappings.</dd></dl>
+<dl><dt><b><i>memory_space</i></b></dt><a name="label16035"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Memory space to which the device is mapped. Needed for dynamic remapping.</dd></dl>
+<dl><dt><b><i>misc_reg</i></b></dt><a name="label16036"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Miscellaneous output register.</dd></dl>
+<dl><dt><b><i>pci_bus</i></b></dt><a name="label16037"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+The PCI bus this device is connected to, implementing the <tt>pci-bus</tt> interface.</dd></dl>
+<dl><dt><b><i>pel_addr</i></b></dt><a name="label16038"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+PEL address register.</dd></dl>
+<dl><dt><b><i>pel_mask</i></b></dt><a name="label16039"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+PEL mask register.</dd></dl>
+<dl><dt><b><i>pel_next_color</i></b></dt><a name="label16040"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Next color in access to PEL data register (read, green, or blue).</dd></dl>
+<dl><dt><b><i>pel_pal</i></b></dt><a name="label16041"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+((<i>red</i>, <i>green</i>, <i>blue</i>) ... (<i>red</i>, <i>green</i>, <i>blue</i>)) List of 256 colors, each a tuple of red, green, and blue.</dd></dl>
+<dl><dt><b><i>ramdac_rw_state</i></b></dt><a name="label16042"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+RAMDAC read/write state.</dd></dl>
+<dl><dt><b><i>redraw</i></b></dt><a name="label16043"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>a</b>.
+<p>
+Forces a complete update when set.</dd></dl>
+<dl><dt><b><i>refresh_rate</i></b></dt><a name="label16044"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Refresh rate (in Hertz).</dd></dl>
+<dl><dt><b><i>seq_next</i></b></dt><a name="label16045"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Represents the address of the sequence register designated for the next read/write access.</dd></dl>
+<dl><dt><b><i>seq_regs</i></b></dt><a name="label16046"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+(<i>Register-0</i> ... <i>Register-4</i>) is a list of sequence registers found in the VGA adapter.</dd></dl>
+<dl><dt><b><i>text_page</i></b></dt><a name="label16047"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>.
+<p>
+A list representation (one line per element) of the text mode contents.</dd></dl>
+<dl><dt><b><i>v_cnt</i></b></dt><a name="label16048"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Vertical counter (used for generating retrace signals).</dd></dl>
+<dl><dt><b><i>vga_memory</i></b></dt><a name="label16049"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+Contains the VGA memory (256 KB of data).</dd></dl>
+<dl><dt><b><i>view_size_x</i></b></dt><a name="label16050"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+With of the internal cache.</dd></dl>
+<dl><dt><b><i>view_size_y</i></b></dt><a name="label16051"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Height of the internal cache.</dd></dl>
+<dl><dt><b><i>write_masks</i></b></dt><a name="label16052"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[ii]*]</b>.
+<p>
+Write masks for all registered configuration registers. The format for each entry is (offset, mask).</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label16053"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16055">info</a></b></td><td class="jdocu_noborder">Print device status</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16057">redraw</a></b></td><td class="jdocu_noborder">Redraw display</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16059">refresh-rate</a></b></td><td class="jdocu_noborder">Set rate at which vga_pci updated display</td></tr>
+<tr><td class="jdocu_noborder"><b><a class="jdocu" href="#label16061">text-dump</a></b></td><td class="jdocu_noborder">Print text contents of display</td></tr>
+</table>
+</dd>
+
+</dl>
+
+<a name="label16054"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label16055"></a><a name="label16056"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;vga_pci&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;vga_pci&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print information about the device registers.<br></dd>
+
+</dl>
+
+
+
+<a name="label16057"></a><a name="label16058"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;vga_pci&gt;.redraw</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;vga_pci&gt;.redraw</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command sends the current frame buffer contents of the simulated
+                video device to the graphics console. If a simulated cursor is active,
+                it is updated as well.<br></dd>
+
+</dl>
+
+
+
+<a name="label16059"></a><a name="label16060"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;vga_pci&gt;.refresh-rate</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;vga_pci&gt;.refresh-rate</b> [<i>rate</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set the rate at which the vga_pci device updates the display.<br>
+                The default is 1000 Hz (simulated). NOTE: The rate is currently
+                the same for all vga_pci devices.</dd>
+
+</dl>
+
+
+
+<a name="label16061"></a><a name="label16062"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;vga_pci&gt;.text-dump</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;vga_pci&gt;.text-dump</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print the contents of the display in text mode.<br></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic463.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic465.html">Next</a></span></p>
+</body>
+</html>

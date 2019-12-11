@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Memory Space Commands</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(232, true);
+</script>
+<a name="label537"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic99.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic101.html">Next</a></span></p>
+<h4 class="jdocu">19.2&nbsp;&nbsp;&nbsp;Memory Space Commands</h4 class="jdocu">
+
+
+<p>
+All mappings in a memory-space can be viewed with the
+<b>&lt;memory-space&gt;.map</b> command. Example:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; phys_io0.map 
+base               object               fn offs               length
+0x0000040000400000 chmmu0                0 0x0                0x48
+0x000004000c000000 schizo24              0 0x0                0x800000
+0x000004000c800000 schizo25              0 0x0                0x800000
+0x000007fff0000000 serengeti_cpuprom     0 0x0                0xbd3b0
+0x000007fff0102000 serengeti_fpost_code  0 0x0                0x2000
+0x000007fff0104000 fpost_data0           0 0x0                0x2000
+0x000007fff0800060 empty0_0              0 0x60               0x10
+0x000007fff091e000 empty1_0              0 0x0                0x120
+</pre>
+<p>
+Another useful command is <b>devs</b>, that lists all mapped devices in
+the system.
+<pre class="jdocu_small" style="color: black">
+simics&gt; devs
+ Count    Device        Space            Range                                   Func
+       0  chmmu0        phys_io0         0x0000040000400000 - 0x0000040000400047    0
+       0  e2bus24B_1    bus_pcicfg24B    0x0000000000000800 - 0x00000000000008ff  255
+       0  empty0_0      phys_io0         0x000007fff0800060 - 0x000007fff080006f    0
+       0  empty1_0      phys_io0         0x000007fff091e000 - 0x000007fff091e11f    0
+       0  fpost_data0   phys_io0         0x000007fff0104000 - 0x000007fff0105fff    0
+       0  glm0          bus_pcicfg25B    0x0000000000001000 - 0x00000000000010ff  255
+...
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic99.html">Previous</a> - <a class="jdocu" href="topic98.html">Up</a> - <a class="jdocu" href="topic101.html">Next</a></span></p>
+</body>
+</html>

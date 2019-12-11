@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Synchronization</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(153, true);
+</script>
+<a name="label341"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic52.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic54.html">Next</a></span></p>
+<h4 class="jdocu">11.1&nbsp;&nbsp;&nbsp;Synchronization</h4 class="jdocu">
+
+
+<p>
+Ideally, the parallel simulation processes should be completely
+synchronized, so that anything that happens simultaneously in
+simulated time also happens simultaneously in real time.  This would
+allow events triggered in one process to almost immediately have a
+deterministic effect in another process.
+<p>
+Unfortunately, this is not realistic.  The amount of overhead to keep
+the processes synchronized would be overwhelming, leaving little time to
+do real work.  Furthermore, the speed of the simulation varies over
+time, so that the second 1000 cycles of simulated time may take longer
+or shorter time to simulate than the first 1000 cycles etc.  If all
+simulation processes were executed in lock-step synchronization, it
+would mean that most processes would constantly be waiting for the one
+that was currently slowest.
+<p>
+The remedy for this is to allow the processes some slack.  The
+distributed simulation is not kept completely synchronized, but there
+is an upper bound placed on the allowed difference in time.  If one
+process is simulating at a certain point in simulated time, all other
+processes must be kept at a point in simulated time that is close
+enough to that process.
+<p>
+To put it more mathematically, the absolute difference
+|T<i>n</i> &minus; T<i>m</i>| is always less
+than or equal to the maximum slack D for any two processes
+<i>n</i> and <i>m</i>.
+<p>
+The effect of this is that any event in the simulation can not have
+any deterministic effect in a simulation process other than the one
+triggering it, unless the effect happens long enough in simulated time
+after the event that triggered it.  The delay that must pass is the
+same as the maximum slack allowed by the synchronization protocol, and
+the reason is that the other process may already be that much ahead in
+simulated time, so it is impossible to make the event have any effect
+any sooner.
+<p>
+The maximum slack thus defines the <em><a name="label342">minimum
+latency</a><a name="label343"></a></em> for inter-process communication.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic52.html">Previous</a> - <a class="jdocu" href="topic52.html">Up</a> - <a class="jdocu" href="topic54.html">Next</a></span></p>
+</body>
+</html>

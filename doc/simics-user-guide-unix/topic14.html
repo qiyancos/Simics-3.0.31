@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Running the Simulation</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(39, true);
+</script>
+<a name="label73"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+<h4 class="jdocu">4.2&nbsp;&nbsp;&nbsp;Running the Simulation</h4 class="jdocu">
+
+
+<p>
+You start the simulation with the command <b>continue</b>.
+<p>
+<pre class="jdocu_small" style="color: black">
+[...]
+simics&gt;  <b>continue</b>
+</pre>
+<p>
+As the simulation is running, you will see the boot process
+in the terminal connected to <i>Ebony</i>.
+<p>
+At any time you can pause the simulation by pressing control-C. Simics
+will stop between two instructions and bring you back to the prompt.
+<p>
+<pre class="jdocu_small" style="color: black">
+<b>[press control-C]</b>
+[cpu0] v:0xc0003d0c p:0x000003d0c  beq- cr4,0xc0003d1c
+simics&gt;  <b>continue</b>
+</pre>
+<p>
+After some time Linux will be up and running and you arrive at the
+command line prompt.
+See figure <a class="jdocu" href="#label74">1</a>.
+<p>
+<a name="label74"></a>
+<table>
+<tr><td style="border: none; ">
+<center>
+<img src="fs-booted.png">
+
+</center>
+</td></tr>
+<tr><td style="text-align: center">Figure 1. A booted Montavista Linux</td></tr>
+</table>
+
+<p>
+You can now try typing a few commands on the prompt:
+<p>
+<pre class="jdocu_small" style="color: black">
+root@firststeps: ~# <b>pwd</b>
+/root
+root@firststeps: ~# <b>ls /</b>
+LICENSE     dev         host        lost+found  proc        tmp
+bin         etc         lib         mnt         root        usr
+boot        home        linuxrc     opt         sbin        var
+root@firststeps: ~#
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> If the terminal console does not respond, make
+sure that the simulation is actually running.<hr class="jdocu_note">
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic13.html">Previous</a> - <a class="jdocu" href="topic12.html">Up</a> - <a class="jdocu" href="topic15.html">Next</a></span></p>
+</body>
+</html>

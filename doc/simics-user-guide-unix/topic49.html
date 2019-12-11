@@ -1,0 +1,1065 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Connection Types</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(132, true);
+</script>
+<a name="label306"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic48.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic50.html">Next</a></span></p>
+<h4 class="jdocu">10.4&nbsp;&nbsp;&nbsp;Connection Types</h4 class="jdocu">
+
+
+<p>
+There are a four different types of connections between simulated networks and
+real networks in Simics. Each connection type has its advantages and drawbacks,
+and which one you should use depends on what you want to do.
+<p>
+All connection types except port forwarding require low-level access to the
+simulation host's Ethernet interfaces, and therefore require administrative
+privileges to set up. In most cases, however, you no longer need administrative
+privileges to access the real network from Simics once low-level access has
+been set up. See section <a class="jdocu" href="topic46.html#label296">10.1</a> for details.
+<p>
+To help you select what type of connection to use, here is a short description
+of each connection type:
+<p>
+<dl><dt><b>Port forwarding
+        <a name="label307"></a>
+        <a name="label308"></a></b></dt><dd>Port forwarding is the easiest connection type to set up for simple
+    uses. It does not require administrative privileges and does not require
+    you to configure the simulation host or other hosts in any way.
+<p>
+    However, port forwarding is limited to TCP and UDP traffic. Other traffic,
+    for example, ping packets that use the ICMP protocol, will not pass through
+    the connection. Since the port forwarding uses ports on the simulation host
+    you will also not be able to use incoming ports that are already used by
+    the simulation host, or ports below 1024 unless you have administrative
+    privileges.
+<p>
+    You need to set up a separate forwarding rule for each incoming TCP port
+    and each incoming or outgoing UDP port. This means that if you are using an
+    application that uses many ports, or random ports, the configuration will
+    become cumbersome or impossible.
+<p>
+    Outgoing TCP connections on many or random ports can be handled by NAPT, so
+    that is not a problem.
+<p>
+    Port forwarding allows communication between the simulated machines and
+    both the simulations host and other hosts on the real network.</dd><dt><b><a name="label309"></a>
+        Ethernet bridging connection</b></dt><dd>With an Ethernet bridging connection it appears like the simulated
+    machines are directly connected to the real network, both to the simulated
+    machines and the real hosts. The connection allows any kind of Ethernet
+    traffic between the simulated and real networks.
+<p>
+    Usually IP addresses from the IP subnet of the real network are used by the
+    simulated machines. In that case you do not have to configure the hosts on
+    the real network in any way.
+<p>
+    You can not access the simulation host from the simulated machines using an
+    Ethernet bridging connection.</dd><dt><b>IP routing connection<a name="label310"></a></b></dt><dd>An IP routing connection acts just like an IPv4 router between the
+    simulated and real networks. The connection will therefore allow any kind
+    of IPv4 traffic between the the simulated network and the real
+    network. Other protocols, for example, IPv6 or IPX, are not supported.
+<p>
+    Since the simulated machines and real hosts will be on different subnets,
+    you need to configure routes to the simulated network on real hosts that
+    need to access it.
+<p>
+    You can not access the simulation host from the simulated machines using an
+    IP routing connection.</dd><dt><b>Host connection<a name="label311"></a></b></dt><dd>With a host connection you connect the simulation host to a simulated
+    network, allowing any kind of Ethernet traffic between the simulation host
+    and the simulated machines.
+<p>
+    Host connections do not enable the simulated machines to access other hosts
+    on the real network, unless you enable IP routing on the simulation
+    host. In that case you need to configure routes to the simulated network on
+    real hosts that need to access it.</dd></dl>
+<p>
+Basically, if you are only going to use simple TCP services like FTP, HTTP or
+telnet, you should probably use port forwarding. If you can not use port
+forwarding but have available IP addresses on the IP subnet of the real
+network, or if you use other network protocols than IPv4, you should probably
+use an Ethernet bridging connection. If you do not have available IP addresses
+on the IP subnet of the real network, but can configure routes on the other
+hosts on the real network, you should probably use an IP routing
+connection. Finally, if you want to access the simulated machines from the
+simulation host but can not use port forwarding, you have to use a host
+connection.
+<p>
+The commands to create a connection to the real network start with
+<b>connect-real-network</b>, with different suffixes depending on the
+connection type. They come in two variants.
+<p>
+For each connection type there is a global command that assumes that there is
+at most one <b>ethernet-link</b> object. If there is no
+<b>ethernet-link</b> object one is created. All Ethernet interfaces of
+all simulated machines in the Simics process are then automatically connected
+to the <b>ethernet-link</b>, and the <b>ethernet-link</b> is
+connected to the real network. This is an easy way to connect all simulated
+machines in the Simics process to the real network with a single command. For
+example, to connect all simulated machines to the real network using an
+Ethernet bridging connection, you would use the global command
+<b>connect-real-network-bridge</b>.
+<p>
+If you have a more complex simulated network setup, you probably do not want to
+connect all simulated Ethernet interfaces to the same network. In that case,
+you first create your simulated network setup, and then connect specific
+<b>ethernet-link</b>s to the real network. For each connection type
+there is a command with the same name as the global command that you can run on
+an <b>ethernet-link</b> object to connect it to the real network. For
+example, if you have an <b>ethernet-link</b> object named
+<b>ethlink0</b>, you would use the command
+<b>ethlink0.connect-real-network-bridge</b> to create an Ethernet bridging
+connection between that particular link and the real network.
+<p>
+The commands related to port forwarding are an exception to this rule. They do
+not come in variants that can be run on <b>ethernet-link</b> objects,
+but instead have an <i>ethernet-link</i> argument that can be used to
+specify a link.
+<p>
+<a name="label312"></a><h5 class="jdocu">10.4.1&nbsp;&nbsp;&nbsp;Port Forwarding</h5 class="jdocu">
+
+
+<a name="label313"></a>
+<a name="label314"></a> 
+<p>
+Port forwarding forwards traffic on TCP and UDP ports between the simulated
+network and the real network. There is also support for forwarding DNS queries
+from the simulated network to the real network. Port forwarding can be used
+with any kind of IP network on the host, it is not limited to Ethernet
+networks.
+<p>
+Port forwarding is probably the easiest way to access the real network if you
+only need simple TCP or UDP connectivity, for example, for telnet or FTP. Port
+forwarding is easy to set up. Simics does not need administrative privileges to
+run port forwarding, and you do not need to configure the simulation host or
+other hosts on the real network in any way.
+<p>
+The port forwarding is managed by a <b>service-node</b> on the
+<b>ethernet-link</b>. It is the <b>service-node</b> that
+listens for traffic both on the real and simulated networks and forwards it to
+the other side. All port forwarding commands except
+<b>connect-real-network</b> therefore require an
+<b>ethernet-link</b> with a <b>service-node</b> as argument.
+<p>
+There are really four distinct parts to Simics's port forwarding
+solution. There is forwarding of specific ports from the real network to the
+simulated network, there is forwarding of specific ports from the simulated
+network to the real network network, there is NAPT from the simulated network
+to the real network, and there is forwarding of DNS queries to the real
+network.
+<p>
+There is also a convenience command named <b>connect-real-network</b> that
+automatically sets up NAPT for outgoing traffic, forwarding of DNS queries to
+the real network, and incoming port forwarding for some common services.
+<p>
+If you want to view the current port forwarding setup, you can use the
+<b>list-port-forwarding-setup</b> command. It will list all incoming and
+outgoing ports, NAPT and DNS forwarding.
+<p>
+<hr class="jdocu_note"><b>Note:</b> Pinging between the simulated network and the real network will not work
+when using port forwarding, so ping should not be used to test if the
+connection is working. Ping uses the ICMP protocol, but only TCP and UDP
+traffic is supported with port forwarding.<hr class="jdocu_note">
+<p>
+<a name="label315"></a><h6 class="jdocu">10.4.1.1&nbsp;&nbsp;&nbsp;The connect-real-network Command</h6 class="jdocu">
+
+
+<p>
+The <b>connect-real-network</b> command is a convenience command that sets
+up NAPT for outgoing traffic, enables forwarding of DNS queries to the real
+network, and opens incoming ports for FTP, HTTP and telnet to a simulated
+machine. This is an easy way to get inbound and outbound access for common
+services on a simulated machine.
+<p>
+The command requires a <i>target-ip</i> argument that specifies the IP
+address of the simulated machine that should be targeted by the incoming
+traffic. If you have multiple simulated machines you can run
+<b>connect-real-network</b> once for each machine. Simics will select
+different ports on the simulation host for the incoming services for each
+simulated machine, and the selected ports are printed in the Simics console.
+<p>
+The <b>connect-real-network</b> command does not require you to specify an
+<b>ethernet-link</b>, unless there is more than one. If there is no
+<b>ethernet-link</b> or <b>service-node</b>, they will be
+created automatically.
+<p>
+<a name="label316"></a><h6 class="jdocu">10.4.1.1.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+The <b>connect-real-network</b> lets us set up all connections that are
+needed for most simple real network uses with one simple command. We can start
+from the checkpoint prepared in section <a class="jdocu" href="topic48.html#label305">10.3</a>,
+and then run the <b>connect-real-network</b> command with the IP address
+10.10.0.15, which is the default address of the enterprise machine:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-real-network 10.10.0.15</b>
+No ethernet-link found, creating 'ethlink0'.
+No service-node found, creating 'ethlink0_sn0' with IP '10.10.0.1'.
+Connecting device 'lance0' to 'ethlink0'
+NAPT enabled with gateway 10.10.0.1 on link ethlink0.
+Host TCP port 4021 -&gt; 10.10.0.15:21 on link ethlink0
+Host TCP port 4023 -&gt; 10.10.0.15:23 on link ethlink0
+Host TCP port 4080 -&gt; 10.10.0.15:80 on link ethlink0
+Real DNS enabled at 10.10.0.1 on link ethlink0.
+</pre>
+<p>
+From the output you can see that an <b>ethernet-link</b> and a
+<b>service-node</b> have been automatically created and connected to
+the simulated machine. NAPT, DNS forwarding, and incoming port forwarding for
+FTP, HTTP and telnet have been also enabled.
+<p>
+You should now be able configure the service node as default gateway on the
+enterprise machine and to telnet to a host on the real network as described in
+the example of section <a class="jdocu" href="#label321">10.4.1.4</a>, and to configure
+the service node as DNS server on the enterprise machine and use it to look up
+real DNS names as described in the example of section <a class="jdocu" href="#label327">10.4.1.5</a>.
+<p>
+If you have FTP, HTTP or telnet servers on your simulated machine, which the
+enterprise machine does not have by default, you should also be able to access
+these servers from the real network through the ports they have been assigned
+on the simulation host.
+<p>
+
+<p>
+
+<a name="label317"></a><h6 class="jdocu">10.4.1.2&nbsp;&nbsp;&nbsp;Incoming Port Forwarding</h6 class="jdocu">
+
+
+<p>
+The <b>connect-real-network-port-in</b> command sets up port forwarding
+from a port on the host machine to a specific port on a simulated machines. It
+takes required three arguments <i>ethernet-link</i>, <i>target-ip</i>
+and <i>target-port</i>, that specify the <b>ethernet-link</b>, IP
+address and port the traffic should be forwarded to.
+<p>
+You can also specify what port on the simulation host should be used to receive
+the incoming traffic by specifying the <i>host-port</i> argument. If you do
+not, Simics will automatically select a port and print it on the Simics
+console.
+<p>
+The command can also take the flags <i>-tcp</i> and <i>-udp</i>, that
+let you specify whether you want to set up forwarding for a TCP or UDP port. If
+neither is specified forwarding will be set up for both the TCP and UDP port.
+<p>
+The <b>service-node</b> acts as a proxy for incoming traffic, so when
+you want to connect to a port on the simulated machine from the real network,
+you should connect to the corresponding port on the simulation host. You should
+not use the simulation host as gateway for the simulated network.
+<p>
+Any UDP packets sent to port on the simulation host are forwarded to the
+specified port and IP address on the simulated network. For the simulated
+machine to be able to return UDP packets to the real network, a separate
+forwarding rule must be set up using the
+<b>connect-real-network-port-out</b> command.
+<p>
+Any TCP connections to the port on the simulation host are forwarded to the
+specified port and IP address on the simulated network. Since TCP connections
+are two-way, once a connection has been established, data can be sent in both
+directions.
+<p>
+The FTP protocol needs to open additional ports when transferring files. Simics
+handles this by automatically opening outgoing ports for FTP when needed, so
+FTP will work as long as you use active mode FTP.
+<p>
+<a name="label318"></a><h6 class="jdocu">10.4.1.2.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+In the checkpoint we prepared in section <a class="jdocu" href="topic48.html#label305">10.3</a>
+we started the echo service on port 7 of the simulated machine. We can now set
+up a port forwarding rule that lets us access the echo service from the real
+network. Start from the checkpoint, create an <b>ethernet-link</b> and
+<b>service-node</b>, connect the simulated machine to the
+<b>ethernet-link</b> and run the
+<b>connect-real-network-port-in</b> command like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics&gt; <b>new-service-node link = ethlink0 ip = 10.10.0.1 <img src="nextline.png">
+netmask = 255.255.255.0</b>
+Created service-node ethlink0_sn0
+Connecting ethlink0_sn0 to ethlink0
+Setting IP address of ethlink0_sn0 on network ethlink0 to 10.10.0.1
+simics&gt; <b>lance0.connect ethlink0</b>
+simics&gt; <b>connect-real-network-port-in ethernet-link = ethlink0 <img src="nextline.png">
+target-ip = 10.10.0.15 target-port = 7 host-port = 2007 -tcp</b>
+Host TCP port 2007 -&gt; 10.10.0.15:7 on link ethlink0
+</pre>
+<p>
+The enterprise machine uses the IP address 10.10.0.15 and the echo service runs
+on TCP port 7. We use port 2007 on the simulation host, but you can use any
+free port.
+<p>
+Start the simulation. You should now be able to telnet from a real host to the
+echo port of the simulated machine by telnetting to port 2007 of the simulation
+host. In our case the simulation host has the IP address 10.0.0.129, replace it
+with the IP address of your simulation host:
+<p>
+<pre class="jdocu_small" style="color: black">
+bash-2.05# <b>telnet 10.0.0.129 2007</b>
+Trying 10.0.0.129...
+Connected to 10.0.0.129.
+Escape character is '^]'.
+<b>Echo this</b>!
+Echo this!
+
+<i>Press <tt>Ctrl</tt> and <tt>5</tt>.</i>
+
+<b>^]</b>
+telnet&gt; q
+Connection to 10.0.0.129 closed.
+bash-2.05#
+</pre>
+<p>
+
+
+<p>
+
+<a name="label319"></a><h6 class="jdocu">10.4.1.3&nbsp;&nbsp;&nbsp;Outgoing Port Forwarding</h6 class="jdocu">
+
+
+<p>
+The <b>connect-real-network-port-out</b> command sets up port forwarding
+from a port on a <b>service-node</b> to a specific port on a host on
+the real network. It takes three required arguments <i>ethernet-link</i>,
+<i>target-ip</i> and <i>target-port</i>, that specify the
+<b>ethernet-link</b> the <b>service-node</b> is connected to,
+and the IP address and port on the real network the traffic should be
+forwarded.
+<p>
+You can also specify what port on the <b>service-node</b> should be
+used to receive the outgoing traffic by specifying the
+<i>service-node-port</i> argument. If you do not, Simics will automatically
+select a port and print it on the Simics console.
+<p>
+The command can also take the flags <i>-tcp</i> and <i>-udp</i>, that
+let you specify whether you want to set up forwarding for a TCP or UDP port. If
+neither is specified forwarding will be set up for both the TCP and UDP port.
+<p>
+The <b>service-node</b> acts as a proxy for outgoing traffic, so when
+you want to connect to a port on the host on the real network from a simulated
+machine, you should connect to the corresponding port on the
+<b>service-node</b>. You should not use the <b>service-node</b>
+as gateway for the real network.
+<p>
+Any UDP packets sent to port on the <b>service-node</b> are forwarded
+to the specified port and IP address on the real network. For the real host to
+be able to return UDP packets to the simulated network, a separate forwarding
+rule must be set up using the <b>connect-real-network-port-in</b> command.
+<p>
+Any TCP connections to the port on the <b>service-node</b> are
+forwarded to the specified port and IP address on the real network. Since TCP
+connections are two-way, once a connection has been established, data can be
+sent in both directions.
+<p>
+<a name="label320"></a><h6 class="jdocu">10.4.1.3.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+By setting up forwarding from a port on a <b>service-node</b> to port
+23 of a host on the real network, we should be able to telnet to the real host
+by telnetting to the port on the <b>service-node</b> from the
+enterprise machine. We can start from the checkpoint we prepared in section
+<a class="jdocu" href="topic48.html#label305">10.3</a>, and create an
+<b>ethernet-link</b> and <b>service-node</b>, connect the
+simulated machine to the <b>ethernet-link</b> and run the
+<b>connect-real-network-port-out</b> command. Here we use a host on the
+real network with IP address 10.0.0.240, replace it with the IP address of a
+real host on your network:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics&gt; <b>new-service-node link = ethlink0 ip = 10.10.0.1 <img src="nextline.png">
+netmask = 255.255.255.0</b>
+Created service-node ethlink0_sn0
+Connecting ethlink0_sn0 to ethlink0
+Setting IP address of ethlink0_sn0 on network ethlink0 to 10.10.0.1
+simics&gt; <b>lance0.connect ethlink0</b>
+simics&gt; <b>connect-real-network-port-out ethernet-link = ethlink0 <img src="nextline.png">
+service-node-port = 2323 target-ip = 10.0.0.240 target-port = 23 -tcp</b>
+Got service node ethlink0_sn0 for ethlink0
+10.10.0.1 TCP port 2323 on link ethlink0 -&gt; host 10.0.0.240:23
+</pre>
+<p>
+Now start the simulation. We used the IP address 10.10.0.1 and the port 2323
+for the <b>service-node</b>, so we should be able to telnet to the real
+host by telnetting to port 2323 of 10.10.0.1 from the enterprise machine:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# telnet 10.10.0.1 2323
+Trying 10.10.0.1...
+Connected to 10.10.0.1.
+Escape character is '^]'.
+
+
+SunOS 5.9
+
+login: joe
+Password:
+No directory! Logging in with home=/
+Last login: Sun Jun  2 07:45:58 from 10.0.0.211
+
+Sun Microsystems Inc.   SunOS 5.9       Generic May 2002
+$ exit
+[root@enterprise root]#
+</pre>
+<p>
+
+<p>
+
+<a name="label321"></a><h6 class="jdocu">10.4.1.4&nbsp;&nbsp;&nbsp;NAPT</h6 class="jdocu">
+
+
+<a name="label322"></a>
+<a name="label323"></a>
+<a name="label324"></a>
+<a name="label325"></a>
+<p>
+The <b>connect-real-network-napt</b> command sets up <em>NAPT</em>
+(<em>network address port translation</em>, also known as just <em>NAT</em> or
+<em>network address translation</em>) from the simulated network to the real
+network. With NAPT enabled, the <b>service-node</b> will act as a
+gateway on the simulated network and automatically forward TCP connections to
+the real network.
+<p>
+The <b>connect-real-network-napt</b> only has one required argument,
+<i>ethernet-link</i>, that specifies the Ethernet link that should be
+connected to the real network.
+<p>
+You must configure the simulated machines to use the
+<b>service-node</b> as gateway for the real network, so that it is able
+to capture the outgoing traffic. The simulated machines will then be able to
+access hosts on the real network using their real IP addresses. If you combine
+NAPT with DNS forwarding, described in section <a class="jdocu" href="#label327">10.4.1.5</a>, you will be able to
+use the real DNS names of hosts on the real network too.
+<p>
+The NAPT setup is not specific to a simulated machine, so you only need to run
+<b>connect-real-network-napt</b> once for each
+<b>ethernet-link</b>, and all simulated machines on the link get
+outbound access.
+<p>
+Since NAPT only allows new TCP connections to be opened from the simulated
+network to the real network, and the FTP protocol need to open new ports when
+transferring files, you should use passive mode FTP if you connect to an FTP
+server on a host on the real network from a simulated machine.
+<p>
+<a name="label326"></a><h6 class="jdocu">10.4.1.4.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+To try NAPT, we can start from the checkpoint we prepared in section <a class="jdocu" href="topic48.html#label305">10.3</a>, create an <b>ethernet-link</b> and
+<b>service-node</b>, connect the simulated machine to the
+<b>ethernet-link</b> and run the <b>connect-real-network-napt</b>
+command like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics&gt; <b>new-service-node link = ethlink0 ip = 10.10.0.1 <img src="nextline.png">
+netmask = 255.255.255.0</b>
+Created service-node ethlink0_sn0
+Connecting ethlink0_sn0 to ethlink0
+Setting IP address of ethlink0_sn0 on network ethlink0 to 10.10.0.1
+simics&gt; <b>lance0.connect ethlink0</b>
+simics&gt; <b>connect-real-network-napt ethernet-link = ethlink0</b>
+NAPT enabled with gateway 10.10.0.1 on link ethlink0.
+</pre>
+<p>
+Now start the simulation. Since we gave the <b>service-node</b> the IP
+address 10.10.0.1, the enterprise machine should be configured with 10.10.0.1
+as default gateway. This is already the default, which you can see by running
+<b>route</b> in the the simulated console:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>route</b>
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+10.10.0.0       *               255.255.255.0   U     0      0        0 eth0
+127.0.0.0       *               255.0.0.0       U     0      0        0 lo
+default         10.10.0.1       0.0.0.0         UG    0      0        0 eth0
+</pre>
+<p>
+If this had not been the case, we could have added 10.10.0.1 as default gateway
+with the command <tt>route add default gw 10.10.0.1</tt>.
+<p>
+You should now be able to telnet from the simulated machine to hosts on the
+real network. In this case we telnet to a Solaris machine with IP address
+10.0.0.240, replace this with the address of another host on your real network:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>telnet 10.0.0.240</b>
+Trying 10.0.0.240...
+Connected to 10.0.0.240.
+Escape character is '^]'.
+
+
+SunOS 5.9
+
+login: joe
+Password:
+Sun Microsystems Inc.   SunOS 5.9       Generic May 2002
+$ exit
+Connection closed by foreign host.
+[root@enterprise root]#
+</pre>
+<p>
+
+<p>
+
+<a name="label327"></a><h6 class="jdocu">10.4.1.5&nbsp;&nbsp;&nbsp;DNS Forwarding</h6 class="jdocu">
+
+
+<p>
+The <b>enable-real-dns</b> and <b>disable-real-dns</b> commands of the
+<b>service-node</b> class enable and disable forwarding of DNS requests
+to the real network by a <b>service-node</b>. This allows simulated
+machines to look up names and IP addresses of hosts on the real network, using
+the <b>service-node</b> as DNS server.
+<p>
+<a name="label328"></a><h6 class="jdocu">10.4.1.5.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+To try DNS forwarding, we can start from the checkpoint we prepared in section
+<a class="jdocu" href="topic48.html#label305">10.3</a>, and create an
+<b>ethernet-link</b> and <b>service-node</b>, connect the
+simulated machine to the <b>ethernet-link</b> and run the
+<b>enable-real-dns</b> command like this:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-ethernet-link</b>
+Created ethernet-link ethlink0
+simics&gt; <b>new-service-node link = ethlink0 ip = 10.10.0.1 <img src="nextline.png">
+netmask = 255.255.255.0</b>
+Created service-node ethlink0_sn0
+Connecting ethlink0_sn0 to ethlink0
+Setting IP address of ethlink0_sn0 on network ethlink0 to 10.10.0.1
+simics&gt; <b>lance0.connect ethlink0</b>
+simics&gt; <b>ethlink0_sn0.enable-real-dns</b>
+</pre>
+<p>
+Now start the simulation. To tell the simulated machine to use the
+<b>service-node</b> as DNS server, the line <tt>nameserver
+10.10.0.1</tt> is needed in the file <tt>/etc/resolv.conf</tt> on the
+simulated machine. However, this is already the default, so nothing needs to be
+done.
+<p>
+You should now be able to look up the addresses of real hosts on
+the simulated machine, for example, www.google.com:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>nslookup www.google.com</b>
+Note:  nslookup is deprecated and may be removed from future releases.
+Consider using the `dig' or `host' programs instead.  Run nslookup with
+the `-sil[ent]' option to prevent this message from appearing.
+Server:         10.10.0.1
+Address:        10.10.0.1#53
+
+Name:   www.google.com
+Address: 216.239.59.104
+</pre>
+<p>
+
+<p>
+
+<p>
+
+<a name="label329"></a><h5 class="jdocu">10.4.2&nbsp;&nbsp;&nbsp;Ethernet Bridging</h5 class="jdocu">
+
+
+<a name="label330"></a>
+<p>
+Simics can act as a bridge between simulated Ethernet networks and the real
+Ethernet networks of the host. With this type of connection it will appear that
+the simulated machines are directly connected to the real network, both to the
+simulated machines and to the hosts on the real network. Because of this you
+should configure your simulated machines with IP addresses from the same subnet
+as the real hosts.
+<p>
+Since the simulated machines appear to be located on the real network, there is
+no need to configure routes on real hosts that communicate with it. They can
+find the simulated machines by sending ARP requests, just like they would find other
+real hosts. You will not be able to access the simulated network from the
+simulation host.
+<p>
+To create a bridged connection to the real network, use the
+<b>connect-real-network-bridge</b> command. It takes an argument
+<i>interface</i> that specifies what Ethernet interface on the host should
+be used. It also takes an argument <i>host-access</i> that specifies how
+Simics should access the host's Ethernet interface, see section <a class="jdocu" href="topic46.html#label296">10.1</a>. If you omit the arguments, Simics will use raw
+access to the first interface it finds.
+<p>
+By default Simics will translate MAC addresses between the simulated network
+and the real network, so that the host's MAC address is used for all packets
+sent on the real network. This has two advantages. First of all, the simulation
+host does not have to listen on the real network in promiscuous mode, reducing
+the load on it. It also avoids problems with MAC address collisions between
+multiple simulations connected to the same real network. Each simulated machine
+communicating with the real network must still be configured with a unique IP
+address, though.
+<p>
+There are a couple of drawbacks with MAC address translation. One is that it is
+limited to ARP and IPv4 packets; other kinds of packets will not be
+bridged. There may also be problems with setting up routing on simulated
+machines. Since the destination MAC addresses are translated, the packets may
+not go where you expect them.
+<p>
+To be able to bridge other kinds of traffic than ARP and IPv4, for example,
+DHCP, IPv6, or IPX, you can turn off MAC address translation by specifying the
+<i>-no-mac-xlate</i> flag to <b>connect-real-network-bridge</b>. This
+enables all kinds Ethernet traffic to be bridged between the simulated network
+and the real network. You must then make sure that each simulated machine
+connected to the real network is configured with a unique MAC address, to avoid
+MAC address collisions on the real network.
+<p>
+A big drawback with disabling MAC address translation is that the host must
+listen on the real network in promiscuous mode. This increases the risk of
+dropping packets from the real network that were intended for the simulated
+network, because unrelated traffic will be bridged to the simulated network. It
+is therefore recommended that bridging without MAC address translation only be
+used on dedicated networks, or on network interfaces with very little unrelated
+traffic.
+<p>
+
+<hr class="jdocu_note"><b>Note:</b> To use bridging without MAC address translation with raw access you must
+set the host's Ethernet interface to promiscuous mode, as described in section
+<a class="jdocu" href="topic46.html#label300">10.1.1</a>. If you do not, traffic will be bridged
+from the simulated network to the real network, but not the other way
+around.<hr class="jdocu_note">
+<p>
+
+When you run the <b>connect-real-network-bridge</b> command with TAP
+access, the operating system must be configured to act as a bridge between the
+virtual interface and the real interface. That is done by the following steps:
+<p>
+<hr class="jdocu_note"><b>Note:</b> When you set up bridging between a TAP interface and a real Ethernet
+interface, the host will no longer accept traffic on the real interface. All
+connections the host has open on the interface will be lost. We therefore
+strongly recommend that you only set up bridging on dedicated host
+interfaces.<hr class="jdocu_note">
+<p>
+
+<ol>
+<p>
+    <li>Create a TAP interface, as described in <a class="jdocu" href="topic46.html#label301">10.1.2</a></li>
+<p>
+    <li>Create a bridge interface and connect the TAP interface and the real
+    interface. You may also want to turn off STP (Spanning Tree Protocol) in
+    the bridge, otherwise you will get STP traffic from the bridge into both
+    the simulated and the real network. Here the name of the created bridge
+    interface is <tt>sim_br0</tt> and the interface used is <tt>eth1</tt>, but
+    you can of course use other names and interfaces.
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b><a name="label331">brctl</a> addbr sim_br0</b>
+computer# <b>brctl addif sim_br0 sim_tap0</b>
+computer# <b>brctl addif sim_br0 eth1</b>
+computer# <b>brctl stp sim_br0 off</b>
+</pre></li>
+<p>
+    <li>Bring up the TAP interface and the bridge interface.
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>ifconfig sim_tap0 promisc up</b>
+computer# <b>ifconfig sim_br0 promisc up</b>
+</pre></li>
+<p>
+</ol>
+<p>
+To remove the bridging when you are done, do the following:
+<p>
+<ol>
+<p>
+    <li>Bring down the TAP interface and the bridge interface.
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>ifconfig sim_tap0 down</b>
+computer# <b>ifconfig sim_br0 down</b>
+</pre></li>
+<p>
+    <li>Delete the bridge interface.
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>brctl delbr sim_br0</b>
+</pre></li>
+<p>
+</ol>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <tt><a name="label332">brctl</a></tt> utility is usually not present in default
+Linux installations, so you may therefore have to install it
+yourself. It is usually included in the <tt>bridge-utils</tt>
+package. For convenience, a pre-built version is included in
+<tt>[simics]/</tt><em>hosttype</em><tt>/sys/bin/</tt> (replace
+<tt></tt><em>hosttype</em><tt></tt> with <tt>x86-linux</tt> or
+<tt>amd64-linux</tt> depending on your host type).<hr class="jdocu_note">
+<p>
+
+
+<a name="label333"></a><h6 class="jdocu">10.4.2.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+This example assumes that you are starting from the checkpoint prepared in
+section <a class="jdocu" href="topic48.html#label305">10.3</a>, and that you have installed
+the <tt>openif</tt> helper program
+according to the instructions in <em>Simics Installation Guide</em>.
+<p>
+To set up an Ethernet bridging connection between the real network and the
+simulated network, run the <b>connect-real-network-bridge</b> command. This
+will automatically create an <b>ethernet-link</b>, connect it to the
+simulated machine and set up bridging to the real network:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-real-network-bridge host-access = raw</b>
+Created ethernet-link ethlink0
+Connecting lance0 to ethlink0
+[real_net0 info] Receive buffer size 262142 bytes.
+[real_net0 info] Using mmap packet capture.
+Ethernet-link 'ethlink0' connected to real network.
+</pre>
+<p>
+When using Ethernet bridging, the simulated machine should be configured with
+an unused IP address and netmask from the real network. In this case we use
+10.0.0.241 and 255.255.255.0, replace it with an unused IP address and netmask
+from your real network:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>ifconfig eth0 10.0.0.241 netmask 255.255.255.0</b>
+</pre>
+<p>
+The simulated machine is now connected to the real network. Any kind of IP
+traffic is bridged between the simulated network and the real network. You
+should be able to ping any real host from the simulated machine. Replace
+<em>10.0.0.240</em> with the address of a host on your real network.
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>ping 10.0.0.240 -c 5</b>
+PING 10.0.0.240 (10.0.0.240) from 10.0.0.241 : 56(84) bytes of data.
+64 bytes from 10.0.0.240: icmp_seq=1 ttl=255 time=28.0 ms
+64 bytes from 10.0.0.240: icmp_seq=2 ttl=255 time=60.9 ms
+64 bytes from 10.0.0.240: icmp_seq=3 ttl=255 time=40.9 ms
+64 bytes from 10.0.0.240: icmp_seq=4 ttl=255 time=50.9 ms
+64 bytes from 10.0.0.240: icmp_seq=5 ttl=255 time=1.10 ms
+
+--- 10.0.0.240 ping statistics ---
+5 packets transmitted, 5 received, 0% loss, time 4047ms
+rtt min/avg/max/mdev = 1.106/36.409/60.950/20.734 ms
+</pre>
+<p>
+Of course, it should also be possible to ping from the real host to the
+simulated machine. Running <tt>traceroute</tt> shows that the simulated machine
+is connected directly to the real network; there are no routers between it and
+the real host. Again, replace <em>10.0.0.240</em> with another host on your
+real network.
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>traceroute 10.0.0.240</b>
+traceroute to 10.0.0.240 (10.0.0.240), 30 hops max, 38 byte packets
+ 1  10.0.0.240 (10.0.0.240)  2.568 ms  1.291 ms  1.292 ms
+</pre>
+<p>
+If the IP address of the simulated machine itself is printed and <tt>!H</tt> is
+printed after the response times, it means the simulated machine can not reach
+the real host, and you need to check your configuration.
+<p>
+You should also, for example, be able to telnet from the simulated machine to a
+real host. Again, replace <em>10.0.0.240</em> with another host on your real
+network.
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>telnet 10.0.0.240</b>
+Trying 10.0.0.240...
+Connected to 10.0.0.240.
+Escape character is '^]'.
+
+
+SunOS 5.9
+
+login: joe
+Password:
+Last login: Sun Jun  2 07:21:44 from 10.0.0.129
+Sun Microsystems Inc.   SunOS 5.9       Generic May 2002
+$ exit
+Connection closed by foreign host.
+</pre>
+<p>
+
+<p>
+
+<a name="label334"></a><h5 class="jdocu">10.4.3&nbsp;&nbsp;&nbsp;IP Routing</h5 class="jdocu">
+
+
+<p>
+Simics can act as an IP router between simulated Ethernet networks and the real
+Ethernet networks of the host. This allows any kind of IPv4 traffic between the
+simulated machines and hosts on the real network. It will appear to both the
+simulated machine and the real hosts that there is an ordinary IP router
+between them.
+<p>
+To create a routed connection to the real network, use the
+<b>connect-real-network-router</b> command. The arguments <i>ip</i> and
+<i>netmask</i> specify what IP address and netmask the real network router
+should use on the simulated network. It will always use the simulation host's
+IP address on the real network. The <i>gateway</i> argument tells the real
+network router what machine on the simulated network should be used as gateway
+to other simulated networks, in case there are multiple simulated networks with
+routers between them. The <i>interface</i> argument specifies what Ethernet
+interface on the host should be used, if there are more than one.
+<p>
+Simics creates a new real network router object, typically named
+<b>real_net0</b>, that performs the routing. It is independent of any
+<b>service-node</b> on the <b>ethernet-link</b>, and should use
+a unique IP address.
+<p>
+When acting as an IP router, Simics will always use <em>raw</em> access to the
+host's Ethernet interface; see section <a class="jdocu" href="topic46.html#label296">10.1</a> for
+more information.
+<p>
+For the routing to work, you have to configure the simulated machine with a
+route to the real network with the real network router's IP address as
+gateway. You will also have to set up a route to the simulated network with the
+simulation host as gateway on all real hosts that are going to communicate with
+the simulated machines. Also, you will probably not be able to access the
+simulated network from the simulation host unless you set up fairly complicated
+routing rules.
+<p>
+<hr class="jdocu_note"><b>Note:</b> The real network router routes ICMP packets between the real network and
+the simulated network, but it does not implement the ICMP protocol itself. This
+means that it will not respond to ping. It also means that it will only show up
+as an unknown router if you run <tt>traceroute</tt> between the real and
+simulated network.<hr class="jdocu_note">
+<p>
+
+<a name="label335"></a><h6 class="jdocu">10.4.3.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+This example assumes that you are starting from the checkpoint prepared in
+section <a class="jdocu" href="topic48.html#label305">10.3</a>, and that you have installed
+the <tt>openif</tt> helper program
+according to the instructions in <em>Simics Installation Guide</em>.
+<p>
+To set up an IP routing connection between simulated network to the real
+network, run the <b>connect-real-network-router</b> command. This will
+automatically create an <b>ethernet-link</b> and real network router,
+and connect the simulated machine and real network router to the
+<b>ethernet-link</b>. Here the IP address 10.10.0.1 is used for the
+real network router.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-real-network-router ip = 10.10.0.1</b>
+Created ethernet-link ethlink0
+Connecting lance0 to ethlink0
+[real_net0 info] Receive buffer size 262142 bytes.
+[real_net0 info] Using mmap packet capture.
+Ethernet-link 'ethlink0' connected to real network.
+</pre>
+<p>
+The simulated machine must have a route to the real network with the real
+network router as gateway, so add one using the <tt>route</tt> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>route add -net 10.0.0.0 netmask 255.255.255.0 <img src="nextline.png">
+gw 10.10.0.1</b>
+</pre>
+<p>
+We also need to create a route to the simulated network with the simulation
+host as gateway on the real hosts that are going to communicate with the
+simulated network. The command to do this is different depending on the
+operating system of the real host. In this case <i>10.10.0.0</i> and
+<i>255.255.255.0</i> are the IP address and the netmask of the simulated
+network, and <i>10.0.0.129</i> is the IP address of the simulation
+host. Replace these with the correct addresses and netmask for your setup. Note
+that you must have administrative privileges to run these commands.
+<p>
+<dl><dt><b>Linux</b></dt><dd><pre class="jdocu_small" style="color: black">/sbin/route add -net 10.10.0.0 netmask 255.255.255.0 gw 10.0.0.129</pre></dd><dt><b>Solaris</b></dt><dd><pre class="jdocu_small" style="color: black">/sbin/route add -net 10.10.0 10.0.0.129</pre></dd><dt><b>Windows</b></dt><dd><pre class="jdocu_small" style="color: black">route add 10.10.0.0 mask 255.255.255.0 10.0.0.129</pre></dd></dl>
+<p>
+Once this is done, you should be able to ping the real host from the simulated
+machine. Replace <em>10.0.0.240</em> with the address of another host on your
+real network:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>ping 10.0.0.240 -c 5</b>
+PING 10.0.0.240 (10.0.0.240) from 10.10.0.15 : 56(84) bytes of data.
+64 bytes from 10.0.0.240: icmp_seq=1 ttl=255 time=158 ms
+64 bytes from 10.0.0.240: icmp_seq=2 ttl=255 time=10.9 ms
+64 bytes from 10.0.0.240: icmp_seq=3 ttl=255 time=1.10 ms
+64 bytes from 10.0.0.240: icmp_seq=4 ttl=255 time=1.10 ms
+64 bytes from 10.0.0.240: icmp_seq=5 ttl=255 time=1.10 ms
+
+--- 10.0.0.240 ping statistics ---
+5 packets transmitted, 5 received, 0% loss, time 4047ms
+rtt min/avg/max/mdev = 1.106/34.582/158.650/62.150 ms
+</pre>
+<p>
+Of course it should also be possible to ping from the real host to the
+simulated machine too. By running <tt>traceroute</tt> from the simulated
+machine to the real host, we can see the real network router. It shows up as an
+unknown router (<tt>1 * * *</tt>), since it does not implement the ICMP
+protocol. Again, replace <em>10.0.0.240</em> with the address of another host
+on your real network:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>traceroute 10.0.0.240</b>
+traceroute to 10.0.0.240 (10.0.0.240), 30 hops max, 38 byte packets
+ 1  * * *
+ 2  10.0.0.240 (10.0.0.240)  100.883 ms  939.796 ms  1.288 ms
+</pre>
+<p>
+If this works, the IP routing between the real and simulated network is
+working, so any kind of IP traffic can pass between them. You should, for
+example, be a able to telnet from the real host to the echo port on the
+simulated machine, using the simulated machine's IP address:
+<p>
+<pre class="jdocu_small" style="color: black">
+bash-2.05# <b>telnet 10.10.0.15 7</b>
+Trying 10.10.0.15...
+Connected to 10.10.0.15.
+Escape character is '^]'.
+<b>Echo echo echo echo!</b>
+Echo echo echo echo!
+
+<i>Press <tt>Ctrl</tt> and <tt>5</tt>.</i>
+
+<b>^]</b>
+telnet&gt; <b>q</b>
+Connection to 10.10.0.15 closed.
+</pre>
+<p>
+
+
+<p>
+
+<a name="label336"></a><h5 class="jdocu">10.4.4&nbsp;&nbsp;&nbsp;Host Connection</h5 class="jdocu">
+
+
+<p>
+Simics can connect a simulated network to a virtual Ethernet (TAP) interface on
+the simulation host. The simulation host and the simulated machines will then
+be able to communicate as if they were connected to the same Ethernet
+network. For example, by configuring the simulation host with an IP address on
+the TAP interface, the simulation host and the simulated machines will be able
+to send IP traffic to each other.
+<p>
+
+Host connection is not supported on Solaris host, since it can only use TAP
+access, and TAP access is not supported on Solaris.
+<p>
+
+To connect the simulated network to the TAP interface, you first have to
+configure the TAP interface on the simulation host, as described in section
+<a class="jdocu" href="topic46.html#label301">10.1.2</a>. You then use the
+<b>connect-real-network-host</b> command, which simply takes the name of
+the TAP interface as the <i>interface</i> argument. The simulation host
+will now appear on the simulated network. It should be configured with an IP
+addresses from the same subnet as the simulated machines. The simulated
+machines will then be able to communicate with it without any further
+configuration.
+<p>
+If you enable IP routing on the simulation host you will also be able to access
+other hosts on the real network, very similar to using an IP routing connection
+as described above. You must then configure the simulated machines to use the
+simulation host's IP address on the TAP interface as gateway for the real
+network, and real hosts to use the simulation host's IP address on the real
+network as gateway for the simulated network.
+<p>
+
+To enable IP traffic between the simulation host and the simulated machines,
+you have to set up an IP address on the TAP interface. The simulation host will
+use this address on the simulated network. Here the IP address <i>10.10.0.1</i>
+and the netmask <i>255.255.255.0</i> are used, replace them with an IP address
+from the subnet used by the simulated machines and the corresponding
+netmask. This requires administrative privileges:
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>ifconfig sim_tap0 10.10.0.1 netmask 255.255.255.0 up</b>
+</pre>
+<p>
+Simulated machine configurations provided with Simics usually use IP addresses
+from the 10.10.0.<i>x</i> subnet, so you should typically select an IP address
+on the form 10.10.0.<i>x</i> and the netmask 255.255.255.0.
+<p>
+If you enable IP forwarding on the simulation host, you will also be able to
+access the simulated network from other hosts on the real network by routing
+the traffic through the simulation host:
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>sysctl -w net.ipv4.ip_forward=1</b>
+net.ipv4.ip_forward = 1
+</pre>
+<p>
+To disable IP forwarding again:
+<p>
+<pre class="jdocu_small" style="color: black">
+computer# <b>sysctl -w net.ipv4.ip_forward=0</b>
+net.ipv4.ip_forward = 0
+</pre>
+<p>
+
+
+<a name="label337"></a><h6 class="jdocu">10.4.4.1&nbsp;&nbsp;&nbsp;Example</h6 class="jdocu">
+
+
+<p>
+
+This example assumes that you are starting from the checkpoint prepared in
+section <a class="jdocu" href="topic48.html#label305">10.3</a>, that you have set up a TAP
+interface on the simulation host for host connection according to section <a class="jdocu" href="topic46.html#label301">10.1.2</a>, and that you have configured it with the the
+IP address 10.10.0.1 as described above. Here the name if the TAP interface is
+assumed to be <tt>sim_tap0</tt>, replace it with the name of your TAP
+interface.
+<p>
+Since host connection is not supported supported on Solaris host, this example
+will not work if your simulation host is running Solaris.
+<p>
+
+
+To connect the TAP interface to the simulated network, use the
+<b>connect-real-network-host</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>connect-real-network-host interface = sim_tap0</b>
+Created ethernet-link ethlink0
+Connecting lance0 to ethlink0
+[real_net0 info] Connecting to existing TUN/TAP device 'sim_tap0'
+Ethernet-link 'ethlink0' connected to real network.
+</pre>
+<p>
+
+Any kind of Ethernet traffic can now pass between the simulated network and the
+simulation host. You should, for example, be able to ping the simulation host
+from the simulated machine, at the IP address you configured on the TAP
+interface:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>ping 10.10.0.1 -c 5</b>
+PING 10.10.0.1 (10.10.0.1) from 10.10.0.15 : 56(84) bytes of data.
+64 bytes from 10.10.0.1: icmp_seq=1 ttl=64 time=1.15 ms
+64 bytes from 10.10.0.1: icmp_seq=2 ttl=64 time=1.11 ms
+64 bytes from 10.10.0.1: icmp_seq=3 ttl=64 time=10.9 ms
+64 bytes from 10.10.0.1: icmp_seq=4 ttl=64 time=1.11 ms
+64 bytes from 10.10.0.1: icmp_seq=5 ttl=64 time=1.11 ms
+
+--- 10.10.0.1 ping statistics ---
+5 packets transmitted, 5 received, 0% loss, time 4037ms
+rtt min/avg/max/mdev = 1.113/3.085/10.932/3.923 ms
+</pre>
+<p>
+
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic48.html">Previous</a> - <a class="jdocu" href="topic45.html">Up</a> - <a class="jdocu" href="topic50.html">Next</a></span></p>
+</body>
+</html>

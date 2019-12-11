@@ -1,0 +1,15 @@
+add-directory "%script%"
+
+set-component-prefix leon21_
+
+$binary_to_load = "rtems-dhrystone.elf"
+$skip_memory_zero = 0
+run-command-file leon2-simple-rtems.simics
+
+set-component-prefix leon22_
+
+$binary_to_load = "rtems-dhrystone.elf"
+$skip_memory_zero = 1
+run-command-file leon2-simple-rtems.simics
+
+

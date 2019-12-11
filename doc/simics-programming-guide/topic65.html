@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Implementing the Interface</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(184, true);
+</script>
+<a name="label348"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic64.html">Previous</a> - <a class="jdocu" href="topic64.html">Up</a> - <a class="jdocu" href="topic66.html">Next</a></span></p>
+<h3 class="jdocu">13.1&nbsp;&nbsp;&nbsp;Implementing the Interface</h3 class="jdocu">
+
+
+<p>
+The <tt>timing-model</tt> and <tt>snoop-memory</tt> contains only
+one function called <b><i>operate()</i></b>:
+<p>
+<pre class="jdocu_small" style="color: black">
+static cycles_t
+my_timing_model_operate(conf_object_t         *mem_hier,
+                        conf_object_t         *mem_space,
+                        map_list_t            *map_list,
+                        generic_transaction_t *mem_op);
+</pre>
+<p>
+The four arguments are:
+<p>
+<dl><dt><b><tt>conf_object_t *</tt><i>mem_hier</i></b></dt><dd>This points to
+the timing model or snooper itself; it can be safely cast to the actual type of
+the listening object.</dd><dt><b><tt>conf_object_t *</tt><i>mem_space</i></b></dt><dd>The
+<i>mem_space</i> argument is the memory space object that the timing
+model or snooper is connected to.</dd><dt><b><tt>map_list_t *</tt><i>map_list</i></b></dt><dd>The
+<i>map_list</i> argument describes the entry in the <i>map</i>
+attribute list that this memory operation matched (as returned from a call to
+the <b><i>space_lookup()</i></b> function in the <tt>lookup</tt>
+interface).</dd><dt><b><tt>generic_transaction_t *</tt><i>mem_op</i></b></dt><dd>This is
+a pointer to information about the current memory operation. The
+<tt>generic_transaction_t</tt> data structure is explained in detail in the
+Simics API Data Types section of the API chapter in the <em>Simics Reference
+Manual</em>.</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic64.html">Previous</a> - <a class="jdocu" href="topic64.html">Up</a> - <a class="jdocu" href="topic66.html">Next</a></span></p>
+</body>
+</html>

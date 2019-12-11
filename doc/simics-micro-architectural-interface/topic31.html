@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_child()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(60, true);
+</script>
+<a name="label322"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_child()</h4 class="jdocu">
+
+<a name="label323"></a><a name="label324"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label325"></a><b>SIM_instruction_child</b><b>, SIM_instruction_parent</b> &#8212; get the parent or child</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_id_t
+SIM_instruction_child(instruction_id_t ii, int n);
+</pre><pre class="jdocu_small" style="color: black">instruction_id_t
+SIM_instruction_parent(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+<b><i>SIM_instruction_child</i></b> returns the child <i>n</i>
+   (counting started from 0) for instruction <i>ii</i>. Child
+   0 will always be valid if the instruction has a child, i.e. if
+   child 0 is squashed child 1 will become 0 etc.
+<p>
+   <b><i>SIM_instruction_parent</i></b> returns the parent instruction.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if ii is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+The instruction id of the requested instruction, or
+   0 if there is none.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic30.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic32.html">Next</a></span></p>
+</body>
+</html>

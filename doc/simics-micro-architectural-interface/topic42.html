@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_is_sync()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(71, true);
+</script>
+<a name="label359"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic41.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic43.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_is_sync()</h4 class="jdocu">
+
+<a name="label360"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label361"></a><b>SIM_instruction_is_sync</b> &#8212; check for sync instruction</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">int
+SIM_instruction_is_sync(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+Some instructions need to synchronize the pipeline and cannot run out of
+   order. This function checks if the instruction identified by
+   <i>ii</i> needs to synchronize the CPU.  Such instructions need to
+   be executed non-speculatively. The reason for this limitation is that
+   synchronizing instructions may update CPU state that cannot be restored.
+<p>
+   There are currently two types of synchronizing instructions, category 1 and
+   category 2.  An instruction in category 1 can only be executed if all
+   previous instructions in the tree has been executed (reached the
+   <tt>Sim_Phase_Executed</tt>) non-speculatively.  An instruction in
+   category 2 has to be alone in the instruction tree to be able to execute.
+<p>
+   Note that this is a Simics limitation and not an architectural
+   limitation. The instructions that can execute out of order may change in
+   future.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+1 for category 1, 2 for category 2, and 0 for non-synchronous.</dd>
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic41.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic43.html">Next</a></span></p>
+</body>
+</html>

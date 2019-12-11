@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Configuration and Checkpointing</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(49, true);
+</script>
+<a name="label121"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic23.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic25.html">Next</a></span></p>
+<h3 class="jdocu">6&nbsp;&nbsp;&nbsp;Configuration and Checkpointing</h3 class="jdocu">
+
+
+<a name="label122"></a>
+<p>
+Simics includes a <em>configuration system</em> used to describe the state of
+the simulated machines.
+<p>
+Simics's configuration system is object-oriented: a simulated machine is
+represented as a set of <em>objects</em> that interact when the simulated time
+advances. Typically, processors, memories and devices are modeled as
+objects. Each object is defined by a number of properties that are called
+<em>attributes</em>. A processor object, for example, will have an attribute
+called <i>freq_mhz</i> to define its clock frequency (in MHz).
+<p>
+Simics's configuration system is flexible: it is possible to create and delete
+objects dynamically, as well as access the attributes of all objects for
+reading and writing at any time.
+<p>
+Simics's configuration system allows its elements to be saved so that a complete
+simulated machine state can be written to a set of files. This set of files is
+called a <em>checkpoint</em>.
+<p>
+This chapter describes the Simics configuration system as well as the different
+layers built on top of it to handle more specific tasks:
+<p>
+<ul>
+<p>
+  <li>Checkpoints: how a simulated state is saved and restored via
+  checkpointing;</li>
+<p>
+  <li>Inspection: how the simulated state can be examined and changed during
+  simulation;</li>
+<p>
+  <li>Start Scripts: the components and scripts used to define the initial
+  state of a machine in the examples provided with Simics.</li>
+</ul>
+<p>
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic25.html#label123" target="main">6.1&nbsp;&nbsp;&nbsp;Basics</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic26.html#label124" target="main">6.2&nbsp;&nbsp;&nbsp;Checkpointing</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic27.html#label134" target="main">6.3&nbsp;&nbsp;&nbsp;Inspecting the Configuration</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic28.html#label135" target="main">6.4&nbsp;&nbsp;&nbsp;Components</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic29.html#label148" target="main">6.5&nbsp;&nbsp;&nbsp;Ready-to-run Configurations</a></p>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic23.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic25.html">Next</a></span></p>
+</body>
+</html>

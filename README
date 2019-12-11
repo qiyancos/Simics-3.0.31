@@ -1,0 +1,57 @@
+
+General README file for Virtutech Simics
+
+Copyright (c) 1998-2006 Virtutech AB, All Rights Reserved
+This product may include components with other copyrights.
+
+
+Installation Notes
+==================
+
+Refer to the Simics Installation Guide in the doc subdirectory for more
+information.
+
+
+Release Notes
+=============
+
+The RELEASENOTES file is installed in this distribution's main directory. It
+describes new features and version specific changes. Old release note files can
+be found in the README.previous subdirectory.
+
+
+Package Specific Release Notes
+==============================
+
+Release notes that are package specific may be found in the distribution's main
+directory, in a README.<package> or README.<customer> file.
+
+
+Limitations
+===========
+
+The LIMITATIONS file contains a list of known problems and limitations. More
+architecture specific limitations are listed in the Simics Target Guides.
+
+
+Documentation
+=============
+
+All Simics documentation is available in the doc subdirectory of this
+installation.
+
+
+Internet Contact Points
+=======================
+
+http://www.simics.net            support info, discussion groups, mailing lists
+
+http://www.virtutech.com         Virtutech home pages
+
+info@virtutech.com               general information and contact info
+
+
+
+Different parts of the Simics tree are distributed under various
+licenses, and may be subject to specific agreements between your
+organization and Virtutech.

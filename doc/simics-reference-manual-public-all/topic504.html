@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>interrupt_ack</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2242, true);
+</script>
+<a name="label17753"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic503.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic505.html">Next</a></span></p>
+<h3 class="jdocu">interrupt_ack</h3 class="jdocu">
+
+
+<a name="label17754"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic61.html#label4873">CY82C693_0</a>, <a class="jdocu" href="topic99.html#label5989">GT64120</a>, <a class="jdocu" href="topic371.html#label13958">SIO82378ZB</a>, <a class="jdocu" href="topic25.html#label3378">apic-bus</a>, <a class="jdocu" href="topic187.html#label8432">open-pic</a>, <a class="jdocu" href="topic468.html#label16229">x86-486sx</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a>, <a class="jdocu" href="topic475.html#label16876">x86-p2</a>, <a class="jdocu" href="topic476.html#label17148">x86-p4</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   The <tt>interrupt_ack_fn_t</tt> function is called by an interrupt target
+   to ack an interrupt. Returns the interrupt vector.
+   <a name="label17755"></a>
+   
+<pre class="jdocu_small" style="color: black">typedef int (*interrupt_ack_fn_t)(conf_object_t *NOTNULL);</pre>
+
+   Interface for acked interrupts. The target is typically a cpu that
+   later calls the supplied ack function when the interrupt is
+   actually taken.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct interrupt_ack_interface {
+        void (*raise_interrupt)(conf_object_t *NOTNULL obj,
+                                interrupt_ack_fn_t, 
+                                conf_object_t *);
+        void (*lower_interrupt)(conf_object_t *NOTNULL obj,
+                                interrupt_ack_fn_t);
+} interrupt_ack_interface_t;
+
+#define INTERRUPT_ACK_INTERFACE "interrupt_ack"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic503.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic505.html">Next</a></span></p>
+</body>
+</html>

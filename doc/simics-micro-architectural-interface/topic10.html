@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Proceeding Instructions</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(31, true);
+</script>
+<a name="label114"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+<h3 class="jdocu">4.3&nbsp;&nbsp;&nbsp;Proceeding Instructions</h3 class="jdocu">
+
+
+<p>
+<a name="label115"></a>
+So far our instruction tree contains only empty instruction data
+structures. <b><i><a name="label116">SIM_instruction_proceed</a></i></b> is used both to
+initialize these data structures and to move the instruction between
+the phases of instruction operation. The defined instruction phases
+are: initiated, fetched, decoded, executed, retired, and
+committed. More phases may be added in the future. These phases do not
+map directly to a modern processor pipeline but define the atomic
+phases an instruction can be broken down to inside Simics. Somewhere
+along the pipeline an instruction need to pass through some or all
+of these phases.
+<p>
+The user can define which phases to proceed to by calling
+<b><i><a name="label117">SIM_instruction_set_stop_phase</a></i></b>. This function takes a phase
+and a boolean value. <b><i><a name="label118">SIM_instruction_proceed</a></i></b> will then stop
+after the next phase that is set to true.  For convenience there are
+predefined functions that combine setting a stop phase and
+proceeding. These shortcuts are: <b><i><a name="label119">SIM_instruction_fetch</a></i></b>,
+<b><i><a name="label120">SIM_instruction_decode</a></i></b>, 
+<b><i><a name="label121">SIM_instruction_execute</a></i></b>,
+<b><i><a name="label122">SIM_instruction_retire</a></i></b>, and
+<b><i><a name="label123">SIM_instruction_commit</a></i></b>.
+<p>
+Instructions can be proceeded to the decoded phase before they are
+inserted in the instruction tree, this is useful if the tree location
+for a decoded instruction depends on its type (the type of an
+instruction can be determined when it is decoded). For example the
+instruction following a delay slot have a different parent depending
+on whether the delay slot is annulled or not.
+<p>
+<a name="label124"></a><h4 class="jdocu">4.3.1&nbsp;&nbsp;&nbsp;Fetch Phase</h4 class="jdocu">
+
+
+<p>
+<a name="label125"></a><a name="label126"></a>
+During the fetch phase an instruction is copied from memory into the
+internal instruction data structures created by
+<b><i><a name="label127">SIM_instruction_insert</a></i></b>. As this is a memory operation, any
+memory hierarchy attached to Simics will be called during the
+phase. The memory hierarchy may indicate that the memory access should
+stall the CPU. If this occurs <b><i><a name="label128">SIM_instruction_proceed</a></i></b> or
+its shortcuts will return a status value to notify the caller about
+this.  <b><i><a name="label129">SIM_instruction_remaining_stall_time</a></i></b> will return the
+number of cycles remaining. Once the stall has completed
+<b><i><a name="label130">SIM_instruction_remaining_stall_time</a></i></b> will return zero and
+the instruction can be proceeded to the next phase. If
+<b><i><a name="label131">SIM_instruction_proceed</a></i></b> or any of its shortcuts is called
+before the stall time has completed they will return the same status
+value again.
+<p>
+Fetching an instruction may also generate an exception. In this case
+another status value is returned. Exception handling is described in section
+<a class="jdocu" href="#label169">4.3.6</a>.
+<p>
+A <a name="label132">program counter</a> value is necessary to fetch an
+instruction. Simics can look for the value in several places. If the
+instruction is at the head of the instruction tree or not yet inserted
+in the tree, Simics will read the <a name="label133">architectural state</a>. For
+instructions at other locations in the tree, Simics will look in the
+output of the parent instruction. If the parent has not reached the
+executed phase the program counter output field will be invalid and
+the instruction will not be able to proceed to fetched. However the
+user can also override the default program counter value with the
+function <b><i><a name="label134">SIM_instruction_write_input_reg</a></i></b>. This
+is the only way to fetch instructions whose parent has not yet
+executed. This will also mark the instruction as
+speculative<a name="label135"></a>. As soon as the parent
+instruction is executed the child will become non-speculative if the
+produced value of the program counter matches the one set (if the
+parent was non-speculative). When the written program counter does not
+match the generated program counter the instruction is incorrect and
+will eventually need to be discarded. See section <a class="jdocu" href="topic11.html#label180">4.4</a>.
+<p>
+When simulating the SPARC architecture the above applies to
+<a name="label136">nPC</a> as well.
+<p>
+When an instruction is fetched <b><i><a name="label137">SIM_instruction_opcode</a></i></b> can
+be used to retrieve the opcode.
+<a name="label138"></a><h4 class="jdocu">4.3.2&nbsp;&nbsp;&nbsp;Decode Phase</h4 class="jdocu">
+
+
+<p>
+<a name="label139"></a><a name="label140"></a>
+During the decode phase Simics translates the fetched instruction into
+the internal data structures that are used during execution. It is
+then possible to use <b><i><a name="label141">SIM_instruction_type</a></i></b> to determine the
+type of the instruction and <b><i><a name="label142">SIM_instruction_get_reg_info</a></i></b> to
+find the registers used by the instruction. These registers can then
+be read and written with <b><i><a name="label143">SIM_instruction_read_input_reg</a></i></b> and
+<b><i><a name="label144">SIM_instruction_write_input_reg</a></i></b>.
+<p>
+Under special circumstances the instruction cannot be decoded until
+the value of a certain register that determines the instruction is
+known. For example on the SPARC architecture the value of the asi
+register can change the instruction from a normal memory operation
+into a <a name="label145">block operation</a>. In this case
+<b><i><a name="label146">SIM_instruction_proceed</a></i></b> and
+<b><i><a name="label147">SIM_instruction_decode</a></i></b> will return an error code until the
+value of the asi register is known.
+<p>
+<a name="label148"></a><h4 class="jdocu">4.3.3&nbsp;&nbsp;&nbsp;Execution Phase</h4 class="jdocu">
+
+
+<p>
+<a name="label149"></a><a name="label150"></a> Instruction semantics
+are modeled during the execution phase. Thus <a name="label151">input values</a>
+are used to produce <a name="label152">output values</a>. The input values used
+are collected from previously executed instructions by reading from
+the pool of internal registers or from the architectural register
+state. The output values are written to the internal registers. As
+stated before Simics has no restrictions on the number of internal
+registers.
+<p>
+Before an instruction can execute all the input values must have been
+produced, i.e. all dependences must be fulfilled. This is done either
+by executing all instructions that the instruction depends on or by
+explicitly setting the value of an input register with
+<b><i><a name="label153">SIM_instruction_write_input_reg</a></i></b>. As with the program
+counter the latter case will also make the instruction speculative
+until an earlier instruction produces the same value. This is how
+value speculation can be handled.
+<p>
+Instructions that access memory may stall if the connected memory
+hierarchy returns a stall time. <b><i><a name="label154">SIM_instruction_proceed</a></i></b> and
+<b><i><a name="label155">SIM_instruction_execute</a></i></b> will then return a status code to
+signal this.
+<p>
+As with the fetch and decode phases, a status code will be returned if
+the execution phase does not complete due to an exception.
+<p>
+<a name="label156"></a><h4 class="jdocu">4.3.4&nbsp;&nbsp;&nbsp;Retire Phase</h4 class="jdocu">
+
+
+<p>
+<a name="label157"></a><a name="label158"></a>
+During the Retire phase, all stores that were speculatively executed and kept
+in the <a name="label159">LSQ</a> are sent to memory, one by one and in order if the instruction
+executed several. 
+<p>
+Before an instruction can retire it must have become
+non-speculative. Retiring stores can be done out-of-order
+<a name="label160"></a>since the LSQ will take care of
+reordering stores that are conflicting. Note that starting the Retire
+phase makes the instruction unsquashable since the <a name="label161">architectural
+state</a> will be modified.
+<p>
+An instruction may stall during the Retire phase since memory operations are
+sent to the memory hierarchy. The status codes are the same as for the Execute
+phase. A retiring store may trigger an exception (like a memory parity
+error). In this case, it will be marked as faulting with status executed.
+<p>
+<a name="label162"></a><h4 class="jdocu">4.3.5&nbsp;&nbsp;&nbsp;Commit Phase</h4 class="jdocu">
+
+
+<p>
+Instruction output is written back to the <a name="label163">architectural
+state</a> during the <a name="label164">commit
+phase</a><a name="label165"></a>. When committed, the instruction is
+automatically removed from the instruction tree, but the data
+structures remain until explicitly deallocated by calling
+<b><i><a name="label166">SIM_instruction_end</a></i></b>.  Instructions marked as
+speculative cannot be committed. However the user can force
+speculative commit by calling
+<b><i><a name="label167">SIM_instruction_force_correct</a></i></b> to remove the
+speculative status before committing. This is strongly discouraged
+since it may lead to incorrect execution. In addition, an instruction
+can only be committed if it is at the root of the instruction tree and
+it has only one child instruction. The one child limit is to avoid the
+creation of two separate instruction trees.
+<p>
+Committed instructions cannot be discarded since their output have
+been copied to <a name="label168">architectural state</a> and thus cannot be rolled back.
+<p>
+<a name="label169"></a><h4 class="jdocu">4.3.6&nbsp;&nbsp;&nbsp;Exceptions</h4 class="jdocu">
+
+
+<p>
+Exceptions may occur at any phase of instruction
+operation. Exceptions are signaled by a return code from
+<b><i><a name="label170">SIM_instruction_proceed</a></i></b> or its shortcuts. Once an exception
+has been signaled the instruction cannot proceeded to further
+phases. The exception should be handled by calling
+<b><i><a name="label171">SIM_instruction_handle_exception</a></i></b> on the <a name="label172">faulting
+instruction</a>. This call will set the program counter to the first
+instruction in the corresponding exception handler.  Currently this
+function requires that the instruction tree contains only the faulting
+instruction. All earlier instructions must have been committed and all
+later instructions need to be discarded. All previous instruction must
+be committed as Simics can only service exception handlers in order
+and non-speculatively. This cannot be guaranteed unless the instruction
+with the exception is the oldest instruction in the tree.
+<p>
+<a name="label173"></a><h4 class="jdocu">4.3.7&nbsp;&nbsp;&nbsp;Interrupts</h4 class="jdocu">
+
+
+<p>
+<a name="label174"></a>
+Interrupts differ from exceptions in that they are inherently
+asynchronous. Thus while the handling mechanism is similar the
+signaling mechanism is quite different. Simics signals that an
+interrupt has occurred by raising an <a name="label175">Asynchronous_Trap</a> hap. The user
+must install a handler for this hap. The suggested operation is that
+the hap handler set a flag visible to the <a name="label176">cycle handler</a>. Once the
+cycle handler is aware of an interrupt it may choose to service the
+interrupt by calling <b><i><a name="label177">SIM_instruction_handle_interrupt</a></i></b> at
+any time, subject to one restriction - the instruction tree must be
+empty. When <b><i><a name="label178">SIM_instruction_handle_interrupt</a></i></b> is called
+Simics will cache the current value for the next instruction and
+replace it with the address of the first instruction in the <a name="label179">interrupt
+vector</a>. When the interrupt completes the cached address will be used
+to return control to the interrupted location.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic9.html">Previous</a> - <a class="jdocu" href="topic7.html">Up</a> - <a class="jdocu" href="topic11.html">Next</a></span></p>
+</body>
+</html>

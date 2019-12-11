@@ -1,0 +1,26 @@
+if `SIM_lookup_file("dredd-install.disk")` {
+    echo "The file 'dredd-install.disk' already exists."
+    echo "Move or delete this file before continuing."
+    echo ""
+    quit 1
+}
+
+$create_network = "yes"
+$disk_image = ""
+@disk_files = [["dredd-install.disk", "rw", 0, 20496236544]]
+
+run-command-file "%script%/dredd-common.simics"
+
+$system.cmos-boot-dev A
+
+echo ""
+echo "################### OS installation from floppy"
+echo ""
+echo "Now insert floppy using:"
+echo ""
+echo "simics> flp0.insert-floppy A <flp-file>"
+echo ""
+echo "Where <flp-file> is the name of the floppy image."
+echo ""
+echo "###################"
+echo ""

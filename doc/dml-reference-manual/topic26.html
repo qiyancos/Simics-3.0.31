@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Comparison to C/C++</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(55, true);
+</script>
+<a name="label173"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+<h3 class="jdocu">4.10&nbsp;&nbsp;&nbsp;Comparison to C/C++</h3 class="jdocu">
+
+
+<a name="label174"></a>
+<a name="label175"></a>
+<p>
+The algorithmic language used to express method bodies in DML is an
+extended subset of ISO C, with some C++ extensions such as <tt>new</tt>
+and <tt>delete</tt>. The DML-specific statements and expressions are
+described in Sections <a class="jdocu" href="topic27.html#label176">4.11</a> and <a class="jdocu" href="topic28.html#label213">4.12</a>.
+<p>
+DML defines the following additional built-in data types:
+<dl><dt><b><tt>int1</tt>, ..., <tt>int64</tt>, <tt>uint1</tt>, ...,
+<tt>uint64</tt></b></dt><dd>Signed and unsigned specific-width integer types. Widths from 1 to
+64 are allowed.</dd><dt><b><tt>bool</tt></b></dt><dd>The generic boolean datatype, consisting of the values <tt>true</tt>
+and <tt>false</tt>. It is is not an integer type, and the only implicit
+conversion is to <tt>uint1</tt></dd></dl>
+DML also supports the non-standard C extension
+<tt>typeof(</tt><i>expr</i><tt>)</tt> operator, as provided by some modern C
+compilers such as GCC.
+<p>
+Most forms of C statements and expressions can be used in DML, with the
+exceptions listed below. Some of these limitations may be removed in a
+later version of DML.
+<p>
+<ul>
+<p>
+<li>Local variable declarations must use the keyword <tt>local</tt> or
+<tt>static</tt>, as in
+<pre class="jdocu_small" style="color: black">
+    method m() {
+        static int call_count = 0;
+        local int n = 0;
+        local float f;
+        ...
+    }
+</pre>
+(only one variable can be introduced per declaration). Local variables
+must be declared at the beginning of a compound statement. Static
+variables have the same meaning as in C. For symmetry with C, the keyword
+<tt>auto</tt> may be used as a synonym for <tt>local</tt>.
+</li>
+<p>
+<li>Plain C functions (i.e., not DML methods) can be called using normal
+function call syntax, as in "<tt>f(x)</tt>", but C functions can not be
+defined in DML itself; they can either be placed in a C file and be
+compiled and linked separately, or be placed in a <tt>%footer</tt> or
+<tt>%header</tt> section in the DML file. In both cases, the function
+must also be declared as <tt>extern</tt> in the DML source code.</li>
+<p>
+<li><tt>return</tt> statements do not take a return value as argument;
+output parameters of methods must be assigned explicitly.</li>
+<p>
+<li>Type casts must be written as <tt>cast(</tt><i>expr</i><tt>,
+</tt><i>type</i><tt>)</tt>.</li>
+<p>
+<li>Comparison operators and logical operators produce results of type
+<tt>bool</tt>, not integers.</li>
+<p>
+<li>Conditions in <tt>if</tt>, <tt>for</tt>, <tt>while</tt>, etc. must
+be proper booleans; e.g., <tt>if (i == 0)</tt> is allowed, and <tt>if
+(b)</tt> is allowed if <tt>b</tt> is a boolean varable, but <tt>if
+(i)</tt> is not, if <tt>i</tt> is an integer.</li>
+<p>
+<li>the <tt>sizeof</tt> operator can only be used on expressions. To
+take the size of a datatype, the <tt>sizeoftype</tt> operator must be
+used.</li>
+<p>
+<li>Comma-expressions are only allowed in the head of
+<tt>for</tt>-statements, as in
+<pre class="jdocu_small" style="color: black">
+    for (i = 10, k = 0; i &gt; 0; --i, ++k) ...
+</pre>
+</li>
+<p>
+<li><tt>delete</tt> and <tt>throw</tt> can only be used as statements
+in DML, not as expressions.</li>
+<p>
+<li><tt>throw</tt> does not take any argument, and <tt>catch</tt> cannot
+switch on the type or value of an exception.</li>
+<p>
+<li>Type declarations do not allow the use of <tt>union</tt>.</li>
+<p>
+</ul>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic25.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic27.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Tab Completion</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(198, true);
+</script>
+<a name="label466"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic71.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic73.html">Next</a></span></p>
+<h4 class="jdocu">15.2&nbsp;&nbsp;&nbsp;Tab Completion</h4 class="jdocu">
+
+   
+   <a name="label467"></a><a name="label468"></a>
+<p>
+   The command line interface has a tab-completion facility (if the
+   <tt>readhist</tt> helper program has been started&#8212;Simics should do that
+   automatically when supported). It works not only on commands but on their
+   arguments as well. The philosophy is that the user should be able to press
+   the tab key when uncertain about what to type, and Simics should fill in the
+   text or list alternatives.
+<p>
+
+   For example <b>com</b>&lt;tab&gt; will expand to the command
+   beginning with <b>com</b> or list all commands with that prefix if there
+   are several. Similarly, <b>disassemble </b>&lt;tab&gt; will display
+   all arguments available for the command. In this case Simics will
+   write:
+<p>
+   <pre class="jdocu_small" style="color: black">
+address =   count =     cpu-name =
+</pre>
+<p>
+   to indicate that these alternatives for arguments exists. Typing
+   <b>disassemble cp</b>&lt;tab&gt; will expand to <b>disassemble
+   cpu-name = </b> and a further tab will fill in the name
+   of the CPU that is defined (or list all of them).
+<p>
+   <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic71.html">Previous</a> - <a class="jdocu" href="topic70.html">Up</a> - <a class="jdocu" href="topic73.html">Next</a></span></p>
+</body>
+</html>

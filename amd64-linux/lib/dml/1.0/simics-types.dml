@@ -1,0 +1,167 @@
+dml 1.0;
+
+/*
+ * simics-types.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+typedef int64 integer_t;
+typedef uint64 uinteger_t;
+
+extern integer_t MAX_INTEGER_T;
+extern integer_t MIN_INTEGER_T;
+extern uinteger_t MAX_UINTEGER_T;
+extern uinteger_t MIN_UINTEGER_T;
+
+typedef struct {
+    int integer;
+    const char *string;
+} tuple_int_string_t;
+
+extern data_or_instr_t Sim_DI_Instruction;
+extern data_or_instr_t Sim_DI_Data;
+typedef int data_or_instr_t;
+
+//#ifdef _WIN32
+//typedef SOCKET socket_t;
+//#else
+//typedef int socket_t;
+//#endif /* !_WIN32 */
+
+typedef conf_object_t processor_t;
+
+typedef struct {
+    size_t len;
+    uint8 *str;
+} byte_string_t;
+
+typedef uint64 logical_address_t;
+typedef uint64 physical_address_t;
+typedef uint64 generic_address_t;
+typedef uint64 linear_address_t;
+
+extern addr_space_t Sim_Addr_Space_Conf;
+extern addr_space_t Sim_Addr_Space_IO;
+extern addr_space_t Sim_Addr_Space_Memory;
+typedef int addr_space_t;
+
+extern processor_mode_t Sim_CPU_Mode_User;
+extern processor_mode_t Sim_CPU_Mode_Supervisor;
+typedef int processor_mode_t;
+
+extern read_or_write_t Sim_RW_Read;
+extern read_or_write_t Sim_RW_Write;
+typedef int read_or_write_t;
+
+extern ini_type_t Sim_Initiator_Illegal;
+extern ini_type_t Sim_Initiator_CPU;
+extern ini_type_t Sim_Initiator_CPU_V9;
+extern ini_type_t Sim_Initiator_CPU_UII;
+extern ini_type_t Sim_Initiator_CPU_UIII;
+extern ini_type_t Sim_Initiator_CPU_UIV;
+extern ini_type_t Sim_Initiator_CPU_X86;
+extern ini_type_t Sim_Initiator_CPU_PPC;
+extern ini_type_t Sim_Initiator_CPU_Alpha;
+extern ini_type_t Sim_Initiator_CPU_IA64;
+extern ini_type_t Sim_Initiator_CPU_MIPS;
+extern ini_type_t Sim_Initiator_CPU_MIPS_RM7000;
+extern ini_type_t Sim_Initiator_CPU_MIPS_E9000;
+extern ini_type_t Sim_Initiator_CPU_ARM;
+extern ini_type_t Sim_Initiator_Device;
+extern ini_type_t Sim_Initiator_PCI_Device;
+extern ini_type_t Sim_Initiator_Cache;
+extern ini_type_t Sim_Initiator_Other;
+typedef int ini_type_t;
+
+extern endianness_t Sim_Endian_Target;
+extern endianness_t Sim_Endian_Host_From_BE;
+extern endianness_t Sim_Endian_Host_From_LE;
+typedef int endianness_t;
+
+extern pseudo_exceptions_t Sim_PE_No_Exception;
+extern pseudo_exceptions_t Sim_PE_Code_Break;
+extern pseudo_exceptions_t Sim_PE_Silent_Break;
+extern pseudo_exceptions_t Sim_PE_Inquiry_Outside_Memory;
+extern pseudo_exceptions_t Sim_PE_Inquiry_Unhandled;
+extern pseudo_exceptions_t Sim_PE_IO_Not_Taken;
+extern pseudo_exceptions_t Sim_PE_IO_Error;
+extern pseudo_exceptions_t Sim_PE_Interrupt_Break;
+extern pseudo_exceptions_t Sim_PE_Interrupt_Break_Take_Now;
+extern pseudo_exceptions_t Sim_PE_Exception_Break;
+extern pseudo_exceptions_t Sim_PE_Hap_Exception_Break;
+extern pseudo_exceptions_t Sim_PE_Stall_Cpu;
+extern pseudo_exceptions_t Sim_PE_Locked_Memory;
+extern pseudo_exceptions_t Sim_PE_Return_Break;
+extern pseudo_exceptions_t Sim_PE_Instruction_Finished;
+extern pseudo_exceptions_t Sim_PE_Default_Semantics;
+extern pseudo_exceptions_t Sim_PE_Ignore_Semantics;
+extern pseudo_exceptions_t Sim_PE_Speculation_Failed;
+extern pseudo_exceptions_t Sim_PE_Invalid_Address;
+extern pseudo_exceptions_t Sim_PE_MAI_Return;
+extern pseudo_exceptions_t Sim_PE_Last;
+typedef int pseudo_exceptions_t;
+
+typedef int exception_type_t;
+
+extern bool IS_PSEUDO_EXCEPTION(int exp);
+
+extern swap_mode_t Sim_Swap_None;
+extern swap_mode_t Sim_Swap_Bus;
+extern swap_mode_t Sim_Swap_Bus_Trans;
+extern swap_mode_t Sim_Swap_Trans;
+typedef int swap_mode_t;
+
+typedef integer_t simtime_t;
+typedef simtime_t cycles_t;
+typedef simtime_t pc_step_t;
+typedef simtime_t nano_secs_t;
+
+typedef int hap_type_t;
+
+typedef void (*hap_func_t)(void *d);
+typedef void (*str_hap_func_t)(void *d);
+typedef void (*obj_hap_func_t)(void *d, conf_object_t *ini_obj);
+
+typedef struct {} page_t;
+typedef int hap_handle_t;
+
+extern breakpoint_kind_t Sim_Break_Physical;
+extern breakpoint_kind_t Sim_Break_Virtual;
+extern breakpoint_kind_t Sim_Break_Linear;
+typedef int breakpoint_kind_t;
+
+extern access_t Sim_Access_Read;
+extern access_t Sim_Access_Write;
+extern access_t Sim_Access_Execute;
+typedef int access_t;
+
+typedef int breakpoint_id_t;
+
+extern ireg_info_t Sim_RegInfo_Catchable;
+typedef int ireg_info_t;
+
+extern arc_type_t Arc_None;
+extern arc_type_t Arc_Taken_Branch;
+extern arc_type_t Arc_Init;
+extern arc_type_t Arc_Cache_Line_Start;
+extern arc_type_t Arc_User;
+extern arc_type_t Arc_Compensate;
+extern arc_type_t Arc_Interrupt;
+extern arc_type_t Arc_Page_Start;
+extern arc_type_t Arc_Exception_Counted;
+extern arc_type_t Arc_Exception_Not_Counted;
+extern arc_type_t Arc_Return_From_Exception;
+extern arc_type_t Arc_To_From_Interpreter;
+extern arc_type_t Arc_End_Of_Page;
+typedef int arc_type_t;

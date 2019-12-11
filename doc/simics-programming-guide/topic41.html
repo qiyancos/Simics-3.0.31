@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Using Threads in Simics Modules</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(109, true);
+</script>
+<a name="label227"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic40.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic42.html">Next</a></span></p>
+<h3 class="jdocu">8.3&nbsp;&nbsp;&nbsp;Using Threads in Simics Modules</h3 class="jdocu">
+
+
+<p>
+It is possible to write modules for Simics that use POSIX <a name="label228">threads</a>,
+though the Simics API functions can only be called from the main Simics
+thread. For another thread to get control of the main thread, it can call the
+only thread-safe Simics API function
+<b><i>SIM_thread_safe_callback()</i></b>. This function will install a callback
+that Simics main thread will call as soon as possible, even if Simics is at
+prompt waiting for a command input.
+<p>
+When the user-installed callback is run, it is executed in the main Simics
+thread, and it is safe to call API functions from there. Another thread
+in the module may at this time also call API functions, if it synchronizes
+correctly with the callback function.
+<p>
+Some support functions for C/C++ programmers, that are not really part of the
+Simics API, are also safe to call from a thread. This includes the
+<b><i>vtprintf()</i></b> family of functions, such as <b><i><a name="label229">pr</a>()</i></b>,
+and also the VTMEM malloc routines.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic40.html">Previous</a> - <a class="jdocu" href="topic38.html">Up</a> - <a class="jdocu" href="topic42.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+if not defined freq_mhz      	{$freq_mhz      = 24.576000}
+if not defined prom_size      	{$prom_size     = 0x00010000}
+if not defined has_sram		{$has_sram	= FALSE}
+if not defined sram_size       	{$sram_size    	= 0}
+if not defined sdram_size      	{$sdram_size	= 0x40000000}
+if not defined num_windows     	{$num_windows	= 8}
+if not defined has_v8e_mac     	{$has_v8e_mac	= TRUE}
+if not defined has_v8_mul      	{$has_v8_mul	= TRUE}
+if not defined has_v8_div      	{$has_v8_div	= TRUE}
+
+###
+
+#add-directory "%simics%/targets/leon2-simple/images"
+
+import-std-components
+import-memory-components
+load-module leon2-components
+
+$system = (create-leon2-simple	cpu_frequency	= $freq_mhz
+				prom_size	= $prom_size
+				has_sram	= $has_sram
+				sram_size	= $sram_size
+				sdram_size	= $sdram_size
+				num_windows	= $num_windows
+				has_v8e_mac	= $has_v8e_mac
+				has_v8_mul	= $has_v8_mul
+				has_v8_div	= $has_v8_div)
+
+$console = (create-std-text-console)
+$system.connect uart1 $console
+
+# Terminal color & font, optionally settable
+if $terminal_bg_color {$console->bg_color = $terminal_bg_color}
+if $terminal_fg_color {$console->fg_color = $terminal_fg_color}
+if $terminal_win32_font {$console->win32_font = $terminal_win32_font}
+if $terminal_x11_font {$console->x11_font = $terminal_x11_font}
+
+$machine_defined = 1

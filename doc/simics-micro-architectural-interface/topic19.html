@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Instruction Fetches</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(48, true);
+</script>
+<a name="label249"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+<h3 class="jdocu">5.5&nbsp;&nbsp;&nbsp;Instruction Fetches</h3 class="jdocu">
+
+
+<p>
+Instruction fetches <a name="label250"></a> are not sent to
+the memory hierarchy by default. To enable this set the attribute
+<i>instruction-fetch-mode</i> to the string
+<tt>"<a name="label251">instruction-fetch-trace</a>"</tt> in each processor object or use the
+command <b><a name="label252">instruction-fetch-mode</a></b> to enable it on
+all processors, e.g.
+<p>
+<pre class="jdocu_small" style="color: black">
+instruction-fetch-mode instruction-fetch-trace
+</pre>
+<p>
+<hr class="jdocu_note"><b>Note:</b> The <i>instructions-fetch-mode</i> is a session attribute
+and Simics does not save session attributes in a checkpoint. Therefor
+it is necessary to reset this attribute or rerun the command each time
+a checkpoint is loaded. You can also add the attribute to each CPU
+object in the the checkpoint file by hand.<hr class="jdocu_note">
+<p>
+For instructions fetches that cross page boundaries (x86 only) the
+memory transaction will be split in two parts, where the first part
+will have <i><a name="label253">page_cross</a></i> set to one and the second part will
+have <i>page_cross</i> set to 2.  For non-crossing transactions
+<i>page_cross</i> will be zero. This applies to data accesses as
+well.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic18.html">Previous</a> - <a class="jdocu" href="topic14.html">Up</a> - <a class="jdocu" href="topic20.html">Next</a></span></p>
+</body>
+</html>

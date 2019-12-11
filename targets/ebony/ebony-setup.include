@@ -1,0 +1,25 @@
+if not defined flash_image_1 {$flash_image_1 = ""}
+if not defined flash_image_2 {$flash_image_2 = ""}
+
+if not defined ip_address   {$ip_address   = "10.10.0.50"}
+if not defined host_name    {$host_name    = "ebony"}
+if not defined service_node {}
+
+###
+
+if $service_node {
+    local $sn = ($service_node.get-component-object sn)
+    ($sn.add-host name = $host_name
+                         ip = $ip_address domain = network.sim
+                         mac = $mac_address)
+}
+
+$plb = ($system.get-component-object plb)
+
+if $flash_image_1 != "" {
+    $plb.load-file $flash_image_1 0x1ffc00000
+}
+
+if $flash_image_2 != "" {
+    $plb.load-file $flash_image_2 0x1ffd00000
+}

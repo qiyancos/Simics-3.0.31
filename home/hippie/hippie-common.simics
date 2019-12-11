@@ -1,0 +1,25 @@
+# Hippie
+
+@sys.path += ['../scripts']
+@import x86_conf
+
+default-port-forward-target 10.10.0.9
+
+run-python-file hippie-common.py
+
+#################
+
+@if "lance0" in dir(conf):
+    eval_cli_line("lance0.connect -auto net0")
+
+run-python-file "../scripts/expect.py"
+
+# Choose kernel at LILO prompt
+@def start_linux():
+    branch_wait_for_string("LILO boot:", 200000000, 1000000)
+    if num_processors > 1:
+        eval_cli_line("con0.input \"linux-smp\n\"")
+    else:
+        eval_cli_line("con0.input \"linux-up\n\"")
+
+@start_branch(start_linux)

@@ -1,0 +1,402 @@
+dml 1.0;
+
+/*
+ * simics-configuration.dml
+ *
+ * This file is part of Virtutech Simics
+ *
+ * Copyright (C) 1998-2005 Virtutech AB, All Rights Reserved
+ *
+ * The Virtutech Simics API is distributed under license. Please refer to
+ * the 'LICENSE' file for details.
+ *
+ * For documentation on the Virtutech Simics API, please refer to the
+ * Simics Reference Manual. Please report any difficulties you encounter
+ * with this API through the Virtutech Simics website at www.simics.com
+ *
+ */
+
+//typedef struct interface_list interface_list_t;
+//typedef struct attr_data attr_data_t;
+//typedef struct attr_list attr_list_t;
+//typedef struct attr_dict_pair attr_dict_pair_t;
+
+extern attr_kind_t Sim_Val_Invalid;
+extern attr_kind_t Sim_Val_String;
+extern attr_kind_t Sim_Val_Integer;
+extern attr_kind_t Sim_Val_Floating;
+extern attr_kind_t Sim_Val_List;
+extern attr_kind_t Sim_Val_Data;
+extern attr_kind_t Sim_Val_Nil;
+extern attr_kind_t Sim_Val_Object;
+extern attr_kind_t Sim_Val_Dict;
+extern attr_kind_t Sim_Val_Boolean;
+typedef int attr_kind_t;
+
+extern attr_attr_t Sim_Attr_Required;
+extern attr_attr_t Sim_Attr_Optional;
+extern attr_attr_t Sim_Attr_Session;
+extern attr_attr_t Sim_Attr_Pseudo;
+extern attr_attr_t Sim_Attr_Flag_Mask;
+extern attr_attr_t Sim_Init_Phase_Shift;
+extern attr_attr_t Sim_Init_Phase_0;
+extern attr_attr_t Sim_Init_Phase_1;
+extern attr_attr_t Sim_Init_Phase_Bits;
+extern attr_attr_t Sim_Init_Phase_Mask;
+extern attr_attr_t Sim_Init_Phase_Pre1;
+extern attr_attr_t Sim_Attr_Class;
+extern attr_attr_t Sim_Attr_Internal;
+extern attr_attr_t Sim_Attr_Integer_Indexed;
+extern attr_attr_t Sim_Attr_String_Indexed;
+extern attr_attr_t Sim_Attr_List_Indexed;
+extern attr_attr_t Sim_Attr_Persistent;
+extern attr_attr_t Sim_Attr_Read_Only;
+extern attr_attr_t Sim_Attr_Write_Only;
+typedef int attr_attr_t;
+
+extern set_error_t Sim_Set_Ok;
+extern set_error_t Sim_Set_Need_Integer;
+extern set_error_t Sim_Set_Need_Floating;
+extern set_error_t Sim_Set_Need_String;
+extern set_error_t Sim_Set_Need_List;
+extern set_error_t Sim_Set_Need_Dict;
+extern set_error_t Sim_Set_Need_Boolean;
+extern set_error_t Sim_Set_Need_Data;
+extern set_error_t Sim_Set_Need_Object;
+extern set_error_t Sim_Set_Object_Not_Found;
+extern set_error_t Sim_Set_Interface_Not_Found;
+extern set_error_t Sim_Set_Illegal_Value;
+extern set_error_t Sim_Set_Illegal_Type;
+extern set_error_t Sim_Set_Illegal_Index;
+extern set_error_t Sim_Set_Attribute_Not_Found;
+extern set_error_t Sim_Set_Not_Writable;
+extern set_error_t Sim_Set_Ignored;
+typedef int set_error_t;
+
+typedef struct {
+    integer_t size;
+    attr_value_t *vector;
+} attr_list_t;
+
+typedef struct {
+    integer_t size;
+    attr_dict_pair_t *vector;
+} attr_dict_t;
+
+typedef struct {
+    integer_t size;
+    uint8 *data;
+} attr_data_t;
+
+typedef struct {
+    attr_kind_t kind;
+    struct { // actually a union
+        const char    *string;   /* Sim_Val_String   */
+        integer_t      integer;  /* Sim_Val_Integer  */
+        integer_t      boolean;  /* Sim_Val_Boolean  */
+        double         floating; /* Sim_Val_Floating */
+        attr_list_t    list;     /* Sim_Val_List     */
+        attr_dict_t    dict;     /* Sim_Val_Dict     */
+        attr_data_t    data;     /* Sim_Val_Data     */
+        conf_object_t *object;   /* Sim_Val_Object   */
+    } u;
+} attr_value_t;
+
+typedef struct {
+    attr_value_t key;
+    attr_value_t value;
+} attr_dict_pair_t;
+
+extern class_kind_t Sim_Class_Kind_Vanilla;
+extern class_kind_t Sim_Class_Kind_Session;
+extern class_kind_t Sim_Class_Kind_Pseudo;
+typedef int class_kind_t;
+
+typedef struct {
+    conf_class_t *class_data;
+    const char *name;
+    conf_object_t *queue;
+    int object_id;
+    bool configured;
+} conf_object_t;
+
+typedef struct {
+        void (*save)(conf_object_t *obj, const char *path);
+        void (*finish)(conf_object_t *obj, int success);
+        int (*has_persistent_data)(conf_object_t *obj);
+} checkpoint_interface_t;
+
+constant CHECKPOINT_INTERFACE = "checkpoint";
+
+typedef struct {} parse_object_t;
+
+typedef attr_value_t (*get_attr_t)(void *ptr,
+                                   conf_object_t *obj,
+                                   attr_value_t *idx);
+
+typedef attr_value_t (*get_class_attr_t)(void *ptr,
+                                         conf_class_t *c,
+                                         attr_value_t *idx);
+
+typedef set_error_t (*set_attr_t)(void *ptr,
+                                  conf_object_t *obj,
+                                  attr_value_t *val,
+                                  attr_value_t *idx);
+
+typedef set_error_t (*set_class_attr_t)(void *ptr,
+                                        conf_class_t *c,
+                                        attr_value_t *val,
+                                        attr_value_t *idx);
+
+typedef void interface_t;
+
+typedef struct {
+        conf_object_t *(*new_instance)(parse_object_t *parse_obj);
+        int (*delete_instance)(conf_object_t *obj);
+        void (*finalize_instance)(conf_object_t *obj);
+        attr_value_t (*default_get_attr)(const char *name,
+                                         conf_object_t *obj,
+                                         attr_value_t *idx);
+        set_error_t (*default_set_attr)(const char *name,
+                                        conf_object_t *obj,
+                                        attr_value_t *val,
+                                        attr_value_t *idx);
+        conf_class_t         *parent;
+        const char           *description;
+        class_kind_t          kind;
+} class_data_t;
+
+typedef struct {
+} conf_class_t;
+
+typedef struct {} pre_conf_object_set_t;
+
+extern void SIM_read_configuration(const char *file);
+
+extern void SIM_set_configuration(attr_value_t conf);
+
+extern void SIM_add_configuration(pre_conf_object_set_t *object_list,
+                                  const char *file);
+
+extern void SIM_flush_all_caches();
+
+extern int SIM_initial_configuration_ok();
+
+extern void VT_finalize_object(conf_object_t *obj);
+
+extern const char *SIM_get_class_name(conf_class_t *class_data);
+
+extern int SIM_write_configuration_to_file(const char *file);
+
+extern int VT_write_configuration_persistent(const char *file);
+
+extern int VT_is_saving_persistent_data();
+
+extern conf_class_t *SIM_register_class(const char *name,
+                                        class_data_t *class_data);
+extern void SIM_register_class_alias(const char *alias, const char *name);
+
+extern int SIM_register_interface(conf_class_t *cls, const char *name,
+                           interface_t *iface);
+
+extern void VT_describe_interface(const char *name, const char *desc);
+
+extern int SIM_register_attribute(conf_class_t *cls, const char *name,
+                                  get_attr_t get_attr, void *user_data_get,
+                                  set_attr_t set_attr, void *user_data_set,
+                                  attr_attr_t attr,
+                                  const char *desc);
+
+extern int SIM_register_typed_attribute(
+    conf_class_t *cls, const char *name,
+    get_attr_t get_attr, void *user_data_get,
+    set_attr_t set_attr, void *user_data_set,
+    attr_attr_t attr, const char *type, const char *idx_type,
+    const char *desc);
+
+extern int SIM_register_class_attribute(
+    conf_class_t *cls, const char *name,
+    get_class_attr_t get_attr, void *user_data_get,
+    set_class_attr_t set_attr, void *user_data_set,
+    attr_attr_t attr,
+    const char *desc);
+
+extern int SIM_register_typed_class_attribute(
+    conf_class_t *cls, const char *name,
+    get_class_attr_t get_attr, void *user_data_get,
+    set_class_attr_t set_attr, void *user_data_set,
+    attr_attr_t attr, const char *type, const char *idx_type,
+    const char *desc);
+
+extern void SIM_ensure_partial_attr_order(conf_class_t *cls, const char *attr1,
+                                          const char *attr2);
+
+
+extern void SIM_attribute_error(const char *msg);
+
+extern attr_attr_t SIM_get_attribute_attributes(conf_class_t *cls,
+                                                const char *attr);
+
+extern int SIM_change_attribute_attribute(conf_class_t *cls,
+                                          const char *name, attr_attr_t attr);
+
+extern int SIM_class_has_attribute(conf_class_t *cls, const char *attr);
+
+extern const char *SIM_get_configuration_file_prefix();
+
+extern conf_class_t *SIM_get_class(const char *name);
+extern const char *VT_get_class_description(conf_class_t *cls);
+
+extern attr_value_t VT_get_all_known_classes();
+
+extern conf_object_t *SIM_get_object(const char *name);
+
+extern interface_t *SIM_get_interface(const conf_object_t *obj,
+                                      const char *name);
+extern interface_t *SIM_get_port_interface(const conf_object_t * obj,
+                                           const char *name,
+                                           const char *instance_name);
+extern interface_t *SIM_get_class_interface(const conf_class_t *cls,
+                                            const char *name);
+extern interface_t *SIM_get_class_port_interface(const conf_class_t *cls,
+                                                 const char *name,
+                                                 const char *instance_name);
+
+extern attr_value_t VT_get_attributes(conf_class_t *cls);
+extern attr_value_t VT_get_interfaces(conf_class_t *cls);
+
+extern attr_value_t SIM_get_all_objects();
+extern attr_value_t SIM_get_all_classes();
+
+extern conf_object_t *SIM_new_object(conf_class_t *cls, const char *name);
+extern conf_object_t *SIM_create_object(conf_class_t *cls, const char *name,
+                                 attr_value_t attrs);
+extern void VT_rename_object(conf_object_t *obj, const char *newname);
+
+extern conf_object_t *SIM_alloc_conf_object(parse_object_t *pa);
+extern conf_object_t *VT_alloc_log_object(parse_object_t *pa);
+
+extern int SIM_delete_object(conf_object_t *obj);
+
+
+extern attr_value_t SIM_get_attribute(conf_object_t *obj, const char *name);
+extern attr_value_t SIM_get_attribute_idx(conf_object_t *obj, const char *name,
+                                   attr_value_t *index);
+
+extern attr_value_t SIM_get_class_attribute(conf_class_t *cls, const char *name);
+extern attr_value_t SIM_get_class_attribute_idx(conf_class_t *cls,
+                                                const char *name,
+                                                attr_value_t *index);
+
+extern set_error_t SIM_set_attribute(conf_object_t *obj, const char *name,
+                              attr_value_t *value);
+
+extern set_error_t SIM_set_attribute_idx(conf_object_t *obj, const char *name,
+                                  attr_value_t *index, attr_value_t *value);
+
+extern set_error_t SIM_set_class_attribute(conf_class_t *cls, const char *name,
+                                    attr_value_t *value);
+
+extern set_error_t SIM_set_class_attribute_idx(conf_class_t *cls, const char *name,
+                                        attr_value_t *index,
+                                        attr_value_t *value);
+
+extern void SIM_free_attribute(attr_value_t value);
+
+extern void SIM_object_constructor(conf_object_t *obj, parse_object_t *pobj);
+
+extern int SIM_object_is_processor(conf_object_t *obj);
+
+extern attr_value_t SIM_make_attr_integer(integer_t i);
+extern attr_value_t SIM_make_attr_boolean(integer_t i);
+extern attr_value_t SIM_make_attr_string(const char *str);
+extern attr_value_t SIM_make_attr_floating(double d);
+extern attr_value_t SIM_make_attr_object(conf_object_t *obj);
+extern attr_value_t SIM_make_attr_invalid();
+extern attr_value_t SIM_make_attr_nil();
+//extern attr_value_t SIM_make_attr_list_vararg(int length, va_list va);
+extern attr_value_t SIM_make_attr_list(int length, ...);
+extern attr_value_t SIM_alloc_attr_list(int length);
+extern attr_value_t SIM_make_attr_data(integer_t size, void *data);
+extern attr_value_t SIM_alloc_attr_dict(int length);
+
+extern int SIM_ascanf(attr_value_t *list, const char *fmt, ...);
+
+typedef struct {
+    attr_value_t (*eval_sym)(conf_object_t *cpu, const char *expr,
+                             attr_value_t *frame, const char *format);
+    attr_value_t (*stack_trace)(conf_object_t *cpu, int maxframes);
+    attr_value_t (*fun_args)(conf_object_t *cpu, attr_value_t *frame);
+    attr_value_t (*source_profile)(conf_object_t *symtable,
+                                   conf_object_t *profile);
+} symtable_interface_t;
+
+constant SYMTABLE_INTERFACE = "symtable";
+
+typedef struct {
+    void (*init_control_pipes)(const char *s);
+    int (*have_mi_frontend)();
+    void (*notify_break_on_breakpoint)(integer_t break_id);
+    void (*send_control_message)(attr_value_t *val);
+    void (*send_checkpoint_progress_message)(const char *msg,
+                                             conf_object_t *obj);
+} frontend_server_interface_t;
+
+constant FRONTEND_SERVER_INTERFACE = "_frontend_server";
+
+extern log_type_t Sim_Log_Info;
+extern log_type_t Sim_Log_Error;
+extern log_type_t Sim_Log_Undefined;
+extern log_type_t Sim_Log_Spec_Violation;
+extern log_type_t Sim_Log_Target_Error;
+extern log_type_t Sim_Log_Unimplemented;
+extern log_type_t Sim_Log_Num_Types;
+typedef int log_type_t;
+
+extern int MIN_LOG_LEVEL;
+extern int MAX_LOG_LEVEL;
+
+//typedef struct io_trace io_trace_t;
+//typedef struct io_trace_log io_trace_log_t;
+
+typedef struct {
+    conf_object_t   obj;
+    uint32          access_cnt;
+    int             access_active;
+    //io_trace_log_t *active_trace;
+    //io_trace_t     *trace_buffer;
+    int             trace_next;
+    int             trace_wrap;
+    int             trace_size;
+
+    int             log_level;
+    int             group_mask;
+    int             type_mask;
+} log_object_t;
+
+constant LOG_OBJECT_INTERFACE = "log_object";
+
+typedef struct {
+} log_object_interface_t;
+
+extern void SIM_log_constructor(log_object_t *logobj,
+                                parse_object_t *obj);
+extern void SIM_log_register_groups(conf_class_t *cls, const char **names);
+extern void SIM_log_message(conf_object_t *obj,
+                            int level,
+                            int group_ids,
+                            log_type_t log_type,
+                            const char *message);
+
+// util/log.h
+
+extern void SIM_log_error(log_object_t *logobj, int group_ids, ...);
+extern void SIM_log_info(int level, log_object_t *logobj, int group_ids, ...);
+extern void SIM_log_undefined(int level, log_object_t *logobj,
+                              int group_ids, ...);
+extern void SIM_log_spec_violation(int level, log_object_t *logobj,
+                                   int group_ids, ...);
+extern void SIM_log_target_error(int level, log_object_t *logobj,
+                                 int group_ids, ...);
+extern void SIM_log_unimplemented(int level, log_object_t *logobj,
+                                  int group_ids, ...);

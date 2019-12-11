@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Serial Links</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(125, true);
+</script>
+<a name="label289"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic43.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic45.html">Next</a></span></p>
+<h4 class="jdocu">9.5&nbsp;&nbsp;&nbsp;Serial Links</h4 class="jdocu">
+
+<a name="label290"></a>
+
+<p>
+Connecting simulated machines over a simulated <a name="label291">serial</a>
+connection is done by creating a <b>serial-link</b> object
+that connects to the serial devices in the machines.  The link
+object can be thought of as modeling a serial cable that is plugged
+in to the connectors on the devices.
+<p>
+The <a name="label292">link object</a> models serial communication at the
+character level in a simplified way.  The bandwidth for the connection
+is configured in the link object, which means that the serial devices
+do not need to be explicitly configured by software.
+<p>
+New <b>serial-link</b> objects can be added with the
+<b>new-serial-link</b> command:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>new-serial-link</b>
+Created serial-link serlink0
+</pre>
+<p>
+The serial devices can then connect to that link instead of connecting
+to another device:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>com0-&gt;link = serlink0</b>
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic43.html">Previous</a> - <a class="jdocu" href="topic39.html">Up</a> - <a class="jdocu" href="topic45.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Simics User Guide for Unix" topic="html/index.html">
+ <topic label="Part I - Simics Documentation" href="html/topic0.html">
+  <topic label="1 About Simics Documentation" href="html/topic1.html">
+   <topic label="1.1 Conventions" href="html/topic2.html">
+   </topic>
+   <topic label="1.2 Simics Guides and Manuals" href="html/topic3.html">
+    <topic label="Simics Installation Guide for Unix and for Windows" href="html/topic4.html">
+    </topic>
+    <topic label="Simics User Guide for Unix and for Windows" href="html/topic5.html">
+    </topic>
+    <topic label="Simics Eclipse User Guide" href="html/topic6.html">
+    </topic>
+    <topic label="Simics Target Guides" href="html/topic7.html">
+    </topic>
+    <topic label="Simics Programming Guide" href="html/topic8.html">
+    </topic>
+    <topic label="DML Tutorial" href="html/topic9.html">
+    </topic>
+    <topic label="DML Reference Manual" href="html/topic10.html">
+    </topic>
+    <topic label="Simics Reference Manual" href="html/topic11.html">
+    </topic>
+    <topic label="Simics Micro-Architectural Interface" href="html/topic12.html">
+    </topic>
+    <topic label="RELEASENOTES and LIMITATIONS files" href="html/topic13.html">
+    </topic>
+    <topic label="Simics Technical FAQ" href="html/topic14.html">
+    </topic>
+    <topic label="Simics Support Forum" href="html/topic15.html">
+    </topic>
+    <topic label="Other Interesting Documents" href="html/topic16.html">
+    </topic>
+   </topic>
+  </topic>
+  <topic label="2 Glossary" href="html/topic17.html">
+  </topic>
+ </topic>
+ <topic label="Part II - Simulating with Simics" href="html/topic18.html">
+  <topic label="3 Introduction" href="html/topic19.html">
+   <topic label="3.1 Hosts and Targets" href="html/topic20.html">
+   </topic>
+   <topic label="3.2 Host Recommendations" href="html/topic21.html">
+   </topic>
+   <topic label="3.3 Simics Targets" href="html/topic22.html">
+    <topic label="3.3.1 AlphaPC 164LX" href="html/topic23.html">
+    </topic>
+    <topic label="3.3.2 ARM SA1110" href="html/topic24.html">
+    </topic>
+    <topic label="3.3.3 Ebony" href="html/topic25.html">
+    </topic>
+    <topic label="3.3.4 Fiesta" href="html/topic26.html">
+    </topic>
+    <topic label="3.3.5 IA-64 460GX" href="html/topic27.html">
+    </topic>
+    <topic label="3.3.6 Malta/MIPS4kc" href="html/topic28.html">
+    </topic>
+    <topic label="3.3.7 PM/PPC" href="html/topic29.html">
+    </topic>
+    <topic label="3.3.8 Simple PPC64" href="html/topic30.html">
+    </topic>
+    <topic label="3.3.9 Serengeti" href="html/topic31.html">
+    </topic>
+    <topic label="3.3.10 SunFire" href="html/topic32.html">
+    </topic>
+    <topic label="3.3.11 x86 440BX" href="html/topic33.html">
+    </topic>
+   </topic>
+   <topic label="3.4 Simics Version Number" href="html/topic34.html">
+   </topic>
+   <topic label="3.5 Simics Compatibility" href="html/topic35.html">
+   </topic>
+  </topic>
+  <topic label="4 First Steps" href="html/topic36.html">
+   <topic label="4.1 Launch Simulation" href="html/topic37.html">
+   </topic>
+   <topic label="4.2 Running the Simulation" href="html/topic38.html">
+   </topic>
+   <topic label="4.3 Checkpointing" href="html/topic39.html">
+   </topic>
+   <topic label="4.4 Hindsight" href="html/topic40.html">
+   </topic>
+   <topic label="4.5 Getting Files into a Simulated System" href="html/topic41.html">
+   </topic>
+   <topic label="4.6 Debugging" href="html/topic42.html">
+   </topic>
+   <topic label="4.7 Tracing" href="html/topic43.html">
+   </topic>
+   <topic label="4.8 Scripting" href="html/topic44.html">
+   </topic>
+   <topic label="4.9 Simple Virtual Network" href="html/topic45.html">
+   </topic>
+   <topic label="4.10 Connect to a Real Network" href="html/topic46.html">
+   </topic>
+  </topic>
+  <topic label="5 Command-line Interface: Basics" href="html/topic47.html">
+  </topic>
+  <topic label="6 Configuration and Checkpointing" href="html/topic48.html">
+   <topic label="6.1 Basics" href="html/topic49.html">
+   </topic>
+   <topic label="6.2 Checkpointing" href="html/topic50.html">
+    <topic label="6.2.1 Attributes" href="html/topic51.html">
+    </topic>
+    <topic label="6.2.2 Images" href="html/topic52.html">
+     <topic label="Image Search Path" href="html/topic53.html">
+     </topic>
+    </topic>
+    <topic label="6.2.3 Saving and Restoring Persistent Data" href="html/topic54.html">
+    </topic>
+    <topic label="6.2.4 Modifying Checkpoints" href="html/topic55.html">
+    </topic>
+    <topic label="6.2.5 Merging Checkpoints" href="html/topic56.html">
+    </topic>
+   </topic>
+   <topic label="6.3 Inspecting the Configuration" href="html/topic57.html">
+   </topic>
+   <topic label="6.4 Components" href="html/topic58.html">
+    <topic label="6.4.1 Component Definitions" href="html/topic59.html">
+    </topic>
+    <topic label="6.4.2 Importing Component Commands" href="html/topic60.html">
+    </topic>
+    <topic label="6.4.3 Creating Components" href="html/topic61.html">
+    </topic>
+    <topic label="6.4.4 Connectors" href="html/topic62.html">
+    </topic>
+    <topic label="6.4.5 Instantiation" href="html/topic63.html">
+    </topic>
+    <topic label="6.4.6 Inspecting Component Configurations" href="html/topic64.html">
+    </topic>
+    <topic label="6.4.7 Accessing Objects from Components" href="html/topic65.html">
+    </topic>
+    <topic label="6.4.8 Available Components" href="html/topic66.html">
+    </topic>
+   </topic>
+   <topic label="6.5 Ready-to-run Configurations" href="html/topic67.html">
+    <topic label="6.5.1 Customizing the Configurations" href="html/topic68.html">
+    </topic>
+    <topic label="6.5.2 Adding Devices to Existing Configurations" href="html/topic69.html">
+    </topic>
+   </topic>
+  </topic>
+  <topic label="7 Managing Disks, Floppies, and CD-ROMs" href="html/topic70.html">
+   <topic label="7.1 Working with Images" href="html/topic71.html">
+    <topic label="7.1.1 Saving Changes to an Image" href="html/topic72.html">
+    </topic>
+    <topic label="7.1.2 Reducing Memory Usage Due to Images" href="html/topic73.html">
+    </topic>
+    <topic label="7.1.3 Using Read/Write Images" href="html/topic74.html">
+    </topic>
+    <topic label="7.1.4 Editing Images Using Mtools" href="html/topic75.html">
+    </topic>
+    <topic label="7.1.5 Editing Images Using Loopback Mounting" href="html/topic76.html">
+    </topic>
+    <topic label="7.1.6 Constructing a Disk from Multiple Files" href="html/topic77.html">
+    </topic>
+    <topic label="7.1.7 The Craff Utility" href="html/topic78.html">
+    </topic>
+   </topic>
+   <topic label="7.2 CD-ROMs and Floppies" href="html/topic79.html">
+    <topic label="7.2.1 Accessing a Host CD-ROM Drive" href="html/topic80.html">
+    </topic>
+    <topic label="7.2.2 Accessing a CD-ROM Image File" href="html/topic81.html">
+    </topic>
+    <topic label="7.2.3 Accessing a Host Floppy Drive" href="html/topic82.html">
+    </topic>
+    <topic label="7.2.4 Accessing a Floppy Image File" href="html/topic83.html">
+    </topic>
+   </topic>
+   <topic label="7.3 Using SimicsFS" href="html/topic84.html">
+    <topic label="7.3.1 Installing SimicsFS on a Simulated Linux System" href="html/topic85.html">
+    </topic>
+    <topic label="7.3.2 Installing SimicsFS on a Simulated Solaris System" href="html/topic86.html">
+    </topic>
+    <topic label="7.3.3 Using SimicsFS" href="html/topic87.html">
+    </topic>
+   </topic>
+   <topic label="7.4 Importing a Real Disk into Simics" href="html/topic88.html">
+   </topic>
+  </topic>
+  <topic label="8 Simics Scripting Environment" href="html/topic89.html">
+   <topic label="8.1 Script Support in CLI" href="html/topic90.html">
+    <topic label="8.1.1 Variables" href="html/topic91.html">
+    </topic>
+    <topic label="8.1.2 Command Return Values" href="html/topic92.html">
+    </topic>
+    <topic label="8.1.3 Control Flow Commands" href="html/topic93.html">
+    </topic>
+    <topic label="8.1.4 Integer Conversion" href="html/topic94.html">
+    </topic>
+    <topic label="8.1.5 Accessing Configuration Attributes" href="html/topic95.html">
+    </topic>
+    <topic label="8.1.6 Script Branches" href="html/topic96.html">
+     <topic label="8.1.6.1 Introduction to Script Branches" href="html/topic97.html">
+     </topic>
+     <topic label="8.1.6.2 Waiting for Haps in Script Branches" href="html/topic98.html">
+     </topic>
+     <topic label="8.1.6.3 How Script Branches Work" href="html/topic99.html">
+     </topic>
+     <topic label="8.1.6.4 Script Branch Commands" href="html/topic100.html">
+     </topic>
+     <topic label="8.1.6.5 Variables in Script Branches" href="html/topic101.html">
+     </topic>
+     <topic label="8.1.6.6 Canceling Script Branches" href="html/topic102.html">
+     </topic>
+     <topic label="8.1.6.7 Script Branch Limitations" href="html/topic103.html">
+     </topic>
+    </topic>
+   </topic>
+   <topic label="8.2 Scripting Using Python" href="html/topic104.html">
+    <topic label="8.2.1 Python in Simics" href="html/topic105.html">
+    </topic>
+    <topic label="8.2.2 Accessing CLI Variables from Python" href="html/topic106.html">
+    </topic>
+    <topic label="8.2.3 Accessing the Configuration from Python" href="html/topic107.html">
+     <topic label="8.2.3.1 Configuration Objects" href="html/topic108.html">
+     </topic>
+     <topic label="8.2.3.2 Creating Configurations in Python" href="html/topic109.html">
+     </topic>
+    </topic>
+    <topic label="8.2.4 Accessing Command-Line Commands from Python" href="html/topic110.html">
+    </topic>
+    <topic label="8.2.5 The Simics API" href="html/topic111.html">
+    </topic>
+    <topic label="8.2.6 Haps" href="html/topic112.html">
+     <topic label="8.2.6.1 Example of Python Callback on a Hap" href="html/topic113.html">
+     </topic>
+    </topic>
+   </topic>
+  </topic>
+ </topic>
+ <topic label="Part III - Simics Networking" href="html/topic114.html">
+  <topic label="9 Network Simulation" href="html/topic115.html">
+   <topic label="9.1 Ethernet Links" href="html/topic116.html">
+   </topic>
+   <topic label="9.2 Link Object Timing" href="html/topic117.html">
+   </topic>
+   <topic label="9.3 IP Services" href="html/topic118.html">
+    <topic label="9.3.1 IP Based Routing" href="html/topic119.html">
+    </topic>
+    <topic label="9.3.2 DHCP and BOOTP" href="html/topic120.html">
+    </topic>
+    <topic label="9.3.3 DNS" href="html/topic121.html">
+    </topic>
+    <topic label="9.3.4 TFTP" href="html/topic122.html">
+    </topic>
+   </topic>
+   <topic label="9.4 Distributed Network Simulation" href="html/topic123.html">
+   </topic>
+   <topic label="9.5 Serial Links" href="html/topic124.html">
+   </topic>
+  </topic>
+  <topic label="10 Connecting to a Real Network" href="html/topic125.html">
+   <topic label="10.1 Accessing Host Ethernet Interfaces" href="html/topic126.html">
+    <topic label="10.1.1 Raw Access" href="html/topic127.html">
+    </topic>
+    <topic label="10.1.2 TAP Access" href="html/topic128.html">
+    </topic>
+   </topic>
+   <topic label="10.2 Selecting Host Ethernet Interface" href="html/topic129.html">
+   </topic>
+   <topic label="10.3 Preparing for the Examples" href="html/topic130.html">
+   </topic>
+   <topic label="10.4 Connection Types" href="html/topic131.html">
+    <topic label="10.4.1 Port Forwarding" href="html/topic132.html">
+     <topic label="10.4.1.1 The connect-real-network Command" href="html/topic133.html">
+      <topic label="10.4.1.1.1 Example" href="html/topic134.html">
+      </topic>
+     </topic>
+     <topic label="10.4.1.2 Incoming Port Forwarding" href="html/topic135.html">
+      <topic label="10.4.1.2.1 Example" href="html/topic136.html">
+      </topic>
+     </topic>
+     <topic label="10.4.1.3 Outgoing Port Forwarding" href="html/topic137.html">
+      <topic label="10.4.1.3.1 Example" href="html/topic138.html">
+      </topic>
+     </topic>
+     <topic label="10.4.1.4 NAPT" href="html/topic139.html">
+      <topic label="10.4.1.4.1 Example" href="html/topic140.html">
+      </topic>
+     </topic>
+     <topic label="10.4.1.5 DNS Forwarding" href="html/topic141.html">
+      <topic label="10.4.1.5.1 Example" href="html/topic142.html">
+      </topic>
+     </topic>
+    </topic>
+    <topic label="10.4.2 Ethernet Bridging" href="html/topic143.html">
+     <topic label="10.4.2.1 Example" href="html/topic144.html">
+     </topic>
+    </topic>
+    <topic label="10.4.3 IP Routing" href="html/topic145.html">
+     <topic label="10.4.3.1 Example" href="html/topic146.html">
+     </topic>
+    </topic>
+    <topic label="10.4.4 Host Connection" href="html/topic147.html">
+     <topic label="10.4.4.1 Example" href="html/topic148.html">
+     </topic>
+    </topic>
+   </topic>
+   <topic label="10.5 Performance" href="html/topic149.html">
+   </topic>
+   <topic label="10.6 Troubleshooting" href="html/topic150.html">
+   </topic>
+  </topic>
+  <topic label="11 Distributed Simulation" href="html/topic151.html">
+   <topic label="11.1 Synchronization" href="html/topic152.html">
+   </topic>
+   <topic label="11.2 Architecture" href="html/topic153.html">
+   </topic>
+   <topic label="11.3 Running distributed" href="html/topic154.html">
+   </topic>
+   <topic label="11.4 Example of Distributed Simulation and Network" href="html/topic155.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="Part IV - Developing with Simics" href="html/topic156.html">
+  <topic label="12 Debugging Tools" href="html/topic157.html">
+   <topic label="12.1 Breakpoints" href="html/topic158.html">
+    <topic label="12.1.1 Memory Breakpoints" href="html/topic159.html">
+    </topic>
+    <topic label="12.1.2 Temporal Breakpoints" href="html/topic160.html">
+    </topic>
+    <topic label="12.1.3 Control Register Breakpoints" href="html/topic161.html">
+    </topic>
+    <topic label="12.1.4 I/O Breakpoints" href="html/topic162.html">
+    </topic>
+    <topic label="12.1.5 Graphics Breakpoints" href="html/topic163.html">
+    </topic>
+    <topic label="12.1.6 Text Output Breakpoints" href="html/topic164.html">
+    </topic>
+    <topic label="12.1.7 Magic Instructions and Magic Breakpoints" href="html/topic165.html">
+    </topic>
+   </topic>
+   <topic label="12.2 Using GDB with Simics" href="html/topic166.html">
+    <topic label="12.2.1 Remote GDB and Shared Libraries" href="html/topic167.html">
+    </topic>
+    <topic label="12.2.2 Using GDB with Hindsight" href="html/topic168.html">
+    </topic>
+    <topic label="12.2.3 Compiling GDB" href="html/topic169.html">
+    </topic>
+   </topic>
+   <topic label="12.3 Symbolic Debugging Using Symtable" href="html/topic170.html">
+    <topic label="12.3.1 Symtables and Contexts" href="html/topic171.html">
+    </topic>
+    <topic label="12.3.2 Sample Session" href="html/topic172.html">
+    </topic>
+    <topic label="12.3.3 Source Code Stepping" href="html/topic173.html">
+    </topic>
+    <topic label="12.3.4 Symbolic Breakpoints" href="html/topic174.html">
+    </topic>
+    <topic label="12.3.5 Reading Debug Information from Binaries" href="html/topic175.html">
+    </topic>
+    <topic label="12.3.6 Loading Symbols from Alternate Sources" href="html/topic176.html">
+    </topic>
+    <topic label="12.3.7 Multiple Debugging Contexts" href="html/topic177.html">
+    </topic>
+    <topic label="12.3.8 Scripted Debugging" href="html/topic178.html">
+    </topic>
+   </topic>
+  </topic>
+  <topic label="13 Profiling Tools" href="html/topic179.html">
+   <topic label="13.1 Instruction Profiling" href="html/topic180.html">
+    <topic label="13.1.1 Virtual Instruction Profiling" href="html/topic181.html">
+    </topic>
+   </topic>
+   <topic label="13.2 Data Profiling" href="html/topic182.html">
+   </topic>
+   <topic label="13.3 Examining the Profile" href="html/topic183.html">
+   </topic>
+  </topic>
+ </topic>
+ <topic label="Part V - Advanced Simics Usage" href="html/topic184.html">
+  <topic label="14 Startup Options" href="html/topic185.html">
+   <topic label="14.1 Simulation Modes" href="html/topic186.html">
+    <topic label="14.1.1 Normal mode" href="html/topic187.html">
+    </topic>
+    <topic label="14.1.2 Memory Timing with -stall" href="html/topic188.html">
+    </topic>
+    <topic label="14.1.3 Micro Architectural Simulation with -ma" href="html/topic189.html">
+    </topic>
+   </topic>
+   <topic label="14.2 Common Options" href="html/topic190.html">
+   </topic>
+  </topic>
+  <topic label="15 The Command Line Interface" href="html/topic191.html">
+   <topic label="15.1 Invoking Commands" href="html/topic192.html">
+    <topic label="15.1.1 How are Arguments Resolved?" href="html/topic193.html">
+    </topic>
+    <topic label="15.1.2 Namespace Commands" href="html/topic194.html">
+    </topic>
+    <topic label="15.1.3 Expressions" href="html/topic195.html">
+    </topic>
+    <topic label="15.1.4 Interrupting Commands" href="html/topic196.html">
+    </topic>
+   </topic>
+   <topic label="15.2 Tab Completion" href="html/topic197.html">
+   </topic>
+   <topic label="15.3 Help System" href="html/topic198.html">
+   </topic>
+   <topic label="15.4 Simics's Search Path" href="html/topic199.html">
+   </topic>
+   <topic label="15.5 Using the Pipe Command" href="html/topic200.html">
+   </topic>
+  </topic>
+  <topic label="16 Memory Transactions" href="html/topic201.html">
+   <topic label="16.1 Observing Memory Transactions" href="html/topic202.html">
+   </topic>
+   <topic label="16.2 Stalling Memory Transactions" href="html/topic203.html">
+   </topic>
+   <topic label="16.3 Observing Instruction Fetches" href="html/topic204.html">
+   </topic>
+   <topic label="16.4 Simulator Translation Cache (STC)" href="html/topic205.html">
+   </topic>
+   <topic label="16.5 Summary of Simics Memory System" href="html/topic206.html">
+   </topic>
+  </topic>
+  <topic label="17 Understanding Simics Timing" href="html/topic207.html">
+   <topic label="17.1 Events" href="html/topic208.html">
+   </topic>
+   <topic label="17.2 Instruction Execution Timing" href="html/topic209.html">
+    <topic label="Simics in-order" href="html/topic210.html">
+    </topic>
+    <topic label="Stalling" href="html/topic211.html">
+    </topic>
+    <topic label="Simics MAI" href="html/topic212.html">
+    </topic>
+    <topic label="Choosing an Execution Mode" href="html/topic213.html">
+    </topic>
+    <topic label="Changing the Step Rate" href="html/topic214.html">
+    </topic>
+    <topic label="Suspending Time or Execution" href="html/topic215.html">
+    </topic>
+   </topic>
+   <topic label="17.3 Multiprocessor Simulation" href="html/topic216.html">
+   </topic>
+  </topic>
+  <topic label="18 Cache Simulation" href="html/topic217.html">
+   <topic label="18.1 Introduction to Cache Simulation with Simics" href="html/topic218.html">
+   </topic>
+   <topic label="18.2 Simulating a Simple Cache" href="html/topic219.html">
+   </topic>
+   <topic label="18.3 Example Machines" href="html/topic220.html">
+   </topic>
+   <topic label="18.4 A More Complex Cache System" href="html/topic221.html">
+   </topic>
+   <topic label="18.5 Workload Positioning and Cache Models" href="html/topic222.html">
+   </topic>
+   <topic label="18.6 Using g-cache" href="html/topic223.html">
+   </topic>
+   <topic label="18.7 Understanding g-cache Statistics" href="html/topic224.html">
+   </topic>
+   <topic label="18.8 Speeding up g-cache simulation" href="html/topic225.html">
+   </topic>
+   <topic label="18.9 Cache Miss Profiling" href="html/topic226.html">
+   </topic>
+   <topic label="18.10 Using g-cache with Several Processors" href="html/topic227.html">
+   </topic>
+   <topic label="18.11 g-cache Limitations" href="html/topic228.html">
+   </topic>
+  </topic>
+  <topic label="19 Memory Spaces" href="html/topic229.html">
+   <topic label="19.1 Memory Space Basics" href="html/topic230.html">
+   </topic>
+   <topic label="19.2 Memory Space Commands" href="html/topic231.html">
+   </topic>
+   <topic label="19.3 Memory Mapping Types" href="html/topic232.html">
+   </topic>
+   <topic label="19.4 Avoiding Circular Mappings" href="html/topic233.html">
+   </topic>
+  </topic>
+  <topic label="20 PCI Support in Simics" href="html/topic234.html">
+   <topic label="20.1 Introduction" href="html/topic235.html">
+   </topic>
+   <topic label="20.2 Configuration Space" href="html/topic236.html">
+   </topic>
+   <topic label="20.3 Memory and I/O Spaces" href="html/topic237.html">
+   </topic>
+   <topic label="20.4 PCI Interrupts" href="html/topic238.html">
+   </topic>
+   <topic label="20.5 Expansion ROM" href="html/topic239.html">
+   </topic>
+   <topic label="20.6 PCI Express" href="html/topic240.html">
+   </topic>
+   <topic label="20.7 Other PCI Features" href="html/topic241.html">
+    <topic label="20.7.1 Master Abort" href="html/topic242.html">
+    </topic>
+    <topic label="20.7.2 Target Abort" href="html/topic243.html">
+    </topic>
+    <topic label="20.7.3 Message Signaling Interrupt" href="html/topic244.html">
+    </topic>
+    <topic label="20.7.4 Special Cycles" href="html/topic245.html">
+    </topic>
+    <topic label="20.7.5 System Error (SERR#)" href="html/topic246.html">
+    </topic>
+    <topic label="20.7.6 Parity Error (PERR#)" href="html/topic247.html">
+    </topic>
+    <topic label="20.7.7 Interrupt Acknowledge" href="html/topic248.html">
+    </topic>
+    <topic label="20.7.8 VGA Palette Snooping" href="html/topic249.html">
+    </topic>
+   </topic>
+  </topic>
+  <topic label="21 Driving Context Changes" href="html/topic250.html">
+   <topic label="21.1 Switching Contexts Manually" href="html/topic251.html">
+   </topic>
+   <topic label="21.2 Process Trackers" href="html/topic252.html">
+   </topic>
+   <topic label="21.3 Switching Contexts Automatically" href="html/topic253.html">
+   </topic>
+  </topic>
+  <topic label="22 Understanding Hindsight" href="html/topic254.html">
+   <topic label="22.1 Command Overview" href="html/topic255.html">
+   </topic>
+   <topic label="22.2 Performance" href="html/topic256.html">
+   </topic>
+  </topic>
+ </topic>
+</toc>

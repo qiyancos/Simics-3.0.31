@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>SIM_instruction_squash()</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(82, true);
+</script>
+<a name="label401"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic52.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic54.html">Next</a></span></p>
+<h4 class="jdocu">SIM_instruction_squash()</h4 class="jdocu">
+
+<a name="label402"></a>
+<p>
+<dl class="jdocu_di">
+
+<p>
+<dt class="jdocu_descitem">NAME</dt><dd>
+<a name="label403"></a><b>SIM_instruction_squash</b> &#8212; rollback instructions</dd>
+
+<p>
+<dt class="jdocu_descitem">SYNOPSIS</dt><dd>
+<pre class="jdocu_small" style="color: black">instruction_error_t 
+SIM_instruction_squash(instruction_id_t ii);
+</pre></dd>
+
+<p>
+<dt class="jdocu_descitem">DESCRIPTION</dt><dd>
+This function is used to rollback the action taken by an instruction and its
+   children. This is needed for example when speculation has gone wrong and the
+   state of the CPU must be reset to a point that is consistent with program
+   order. This function will also call <b><i>SIM_instruction_end</i></b> for every
+   instruction squashed to deallocate the data structures for the instruction.
+<p>
+   If the hap Instruction_Squashed has been installed the associated
+   callback will be called for each instruction before it is
+   deallocated. This is useful for example if user data has been added
+   to the instruction.</dd>
+
+<p>
+<dt class="jdocu_descitem">EXCEPTIONS</dt><dd>
+<b>Index</b> Thrown if <i>ii</i> is illegal.</dd>
+<dt class="jdocu_descitem">RETURN VALUE</dt><dd>
+Returns Sim_IE_OK on success, Sim_IE_Not_Inserted if 
+                           the instruction is not inserted in the tree,
+                           Sim_IE_Sync_Instruction if there is a
+                           synchronous instruction in the tree that
+                           cannot be squashed, or
+                           Sim_IE_Retired_Instruction if there is a
+                           retired instruction in the tree.</dd>
+<dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic50.html#label393">SIM_instruction_rewind</a></dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic52.html">Previous</a> - <a class="jdocu" href="topic29.html">Up</a> - <a class="jdocu" href="topic54.html">Next</a></span></p>
+</body>
+</html>

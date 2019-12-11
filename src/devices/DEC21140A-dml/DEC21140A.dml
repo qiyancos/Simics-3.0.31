@@ -1,0 +1,480 @@
+/*
+  DEC21140A.dml
+
+  Copyright 2005-2007 Virtutech AB
+
+  The contents herein are Source Code which are a subset of Licensed
+  Software pursuant to the terms of the Virtutech Simics Software
+  License Agreement (the "Agreement"), and are being distributed under
+  the Agreement.  You should have received a copy of the Agreement with
+  this Licensed Software; if not, please contact Virtutech for a copy
+  of the Agreement prior to using this Licensed Software.
+
+  By using this Source Code, you agree to be bound by all of the terms
+  of the Agreement, and use of this Source Code is subject to the terms
+  the Agreement.
+
+  This Source Code and any derivatives thereof are provided on an "as
+  is" basis.  Virtutech makes no warranties with respect to the Source
+  Code or any derivatives thereof and disclaims all implied warranties,
+  including, without limitation, warranties of merchantability and
+  fitness for a particular purpose and non-infringement.
+*/
+dml 1.0;
+
+device DEC21140A_dml;
+parameter classname = "DEC21140A-dml";
+parameter documentation = "DEC21140A ethernet controller.";
+
+
+
+
+/////////////
+// Imports //
+/////////////
+
+// Standard imports
+import "utility.dml";
+import "io-memory.dml";
+
+// Device related import
+import "pci-device.dml";                     // Generic PCI device 
+import "ethernet.dml";                       // Ethernet common definitions
+import "ieee-802-3.dml";                     // Communications with PHY
+import "mii.dml";                            // MII management bus
+import "microwire.dml";                      // Serial EEPROM
+
+// Ethernet engine for DEC21140A
+import "DEC21140A-eth.dml";
+
+
+
+
+/////////////////////////////////
+// PCI configuration registers //
+/////////////////////////////////
+
+// Extend the existing pci_config register bank
+bank pci_config {
+
+    // List of base address registers used by the device
+    parameter base_address_registers = ["base_address_0", "base_address_1"];
+
+    // This device can perform PCI DMA accesses
+    parameter busmaster = true;
+
+    register vendor_id { parameter hard_reset_value = 0x1011; }
+    register device_id { parameter hard_reset_value = 0x0009; }
+    register status {
+        field fbb is (constant) { parameter value = 1; }
+        field ds is (constant) { parameter value = 1; }
+    }
+
+    register revision_id { parameter value = 0x21; }
+    register class_code { parameter value = 0x020000; }
+
+    register base_address_0 @ 0x10 is (io_base_address) {
+        parameter size_bits = 7;
+        parameter map_func = 0;
+    }
+    register base_address_1 @ 0x14 is (memory_base_address) {
+        parameter size_bits = 7;
+        parameter map_func = 0;
+    }
+    // Other base address registers are not used
+    register base_address_2 @ 0x18 is (no_base_address);
+    register base_address_3 @ 0x1C is (no_base_address);
+    register base_address_4 @ 0x20 is (no_base_address);
+    register base_address_5 @ 0x24 is (no_base_address);
+    
+    register subsystem_vendor_id {
+        parameter value = 0x0E11;
+    }
+    register subsystem_id {
+        parameter value = 0xB0BB;
+    }
+
+    // Set correct size, but we don't model it, so do not set it as enabled
+    register expansion_rom_base {
+        parameter size_bits = 18;
+    }
+
+    register interrupt_pin {
+        parameter hard_reset_value = 0x1;
+    }
+    register min_gnt {
+        parameter hard_reset_value = 0x14;
+    }
+    register max_lat {
+        parameter hard_reset_value = 0x28;
+    }
+
+    register cfdd size 4 @ 0x40 "Device and driver area" {
+        field dsu    [15:8]  is (read_write)    "Driver special user";
+        field snooze [30:30] is (unimplemented) "Snooze mode";
+        field sleep  [31:31] is (unimplemented) "Sleep mode";
+    }
+}
+
+method post_init() {
+    call $pci_config.update_all_mappings();
+}
+
+
+
+/////////
+// PHY //
+/////////
+
+connect phy {
+    parameter documentation = "Phy object";
+    parameter configuration = "required";
+    interface ieee_802_3_phy {
+        parameter required = true;
+    }
+}
+
+implement ieee_802_3_mac {
+
+    // Receive a frame from PHY
+    method receive_frame(int phy, dbuffer_t *buf, int crc_ok) 
+        -> (int result) { 
+        local int state;
+        log "info", 4, 0: "IEEE 802.3: Frame received";
+
+        call $get_rx_state() -> (state);
+        if (state == RX_WAITING) {
+            if (crc_ok == 0) {
+                log "info", 2, 0:
+                    "Dropping received frame with wrong CRC";
+            } else {
+                call $receive(buf, crc_ok);
+            }
+        } else {
+            log "info", 2, 0: 
+                "Dropping received frame since receive process is not running";
+        }
+        result = 0;
+    }
+
+    // Notification when bandwidth is available for next frame
+    method tx_bandwidth_available(int phy) {
+        call $transmit_more();
+    }
+
+    method link_status_changed(int phy, ieee_802_3_link_status_t status) {
+        log "info", 4, 0: "IEEE 802.3: Link status changed";
+    }
+}
+
+// MII management bus to allow software communication with the PHY
+connect mii_bus {
+    parameter documentation = "MII Management Bus";
+    parameter configuration = "required";
+    interface mii_management {
+        parameter required = true;
+    }
+}
+
+
+
+
+////////////
+// EEPROM //
+////////////
+
+connect serial_eeprom {
+    parameter documentation = "Serial EEPROM";
+    parameter configuration = "required";
+    interface microwire {
+        parameter required = true;
+    }
+}
+
+
+
+
+
+///////////////////////
+// CSR register bank //
+///////////////////////
+
+
+//
+// templates for different register fields
+//
+
+// write allowed only if TX process is stopped
+template rw_tx_stopped {
+    method write(value) {
+        if ($csr.csr5.ts != TX_STOPPED && value != $this)
+            log "spec_violation", 3, 0: 
+                "Writing 0x%x to %s.%s.%s field with running TX process", 
+                value, $bank.name, $reg.name, $this.name;
+        $this = value;
+    }
+}
+
+// write allowed only if RX process is stopped
+template rw_rx_stopped {
+    method write(value) {
+        if ($csr.csr5.ts != RX_STOPPED && value != $this)
+            log "spec_violation", 3, 0: 
+                "Writing 0x%x to %s.%s.%s field with running RX process", 
+                value, $bank.name, $reg.name, $this.name;
+        $this = value;
+    }
+}
+
+// write allowed only if RX and TX processes are stopped
+template rw_rx_tx_stopped {
+    method write(value) {
+        if (($csr.csr5.ts != TX_STOPPED || $csr.csr5.ts != TX_STOPPED)
+            && value != $this)
+            log "spec_violation", 3, 0: 
+                "Writing 0x%x to %s.%s.%s field with running TX or RX process", 
+                value, $bank.name, $reg.name, $this.name;
+        $this = value;
+    }
+}
+
+//
+// Register bank
+//
+
+bank csr {
+    parameter documentation = "Control and Status Register Mapping";
+    parameter function = 0;
+    parameter byte_order = "little-endian";
+    parameter register_size = 4;
+    parameter partial = true;
+
+    register csr0  @ 0x00 "Bus mode" {
+        field swr  [0:0]  "Software Reset" {
+            method write(value) {
+                if (value == 1)
+                    log "info", 2, 0: "Software reset";
+            }
+        }
+        field bar  [1:1]  "Bus Arbitration";
+        field dsl  [6:2]  "Descriptor Skip Length";
+        field ble  [7:7]  "Big/Little Endian";
+        field pbl [13:8]  "Programmable Burst Length";
+        field cal [15:14] "Cache Alignment";
+        field mbz [16:16] is (zeros)         "Must Be Zero";
+        field tap [19:17] is (unimplemented) "Transmit Automatic Polling";
+        field dbo [20:20] "Descriptor Byte Ordering Mode";
+        field rml [21:21] "Read Multiple";
+        field rs1 [31:22] is (ones)          "Reserved";
+    }
+
+    register csr1  @ 0x08 "Transmit Poll Demand" {
+        parameter hard_reset_value = 0xFFFFFFFF;
+        method after_write(mop) {
+            local int state;
+            call $get_tx_state() -> (state);
+            
+            // Start TX engine if it not active already
+            if (state != TX_WAITING)
+                call $transmit();
+        }
+    }
+
+    register csr2  @ 0x10 "Receive Poll Demand" {
+        parameter hard_reset_value = 0xFFFFFFFF;
+        method after_write(mop) {
+            // Put RX engine in waiting state
+            call $lower_interrupt(INT_RU);
+            call $set_rx_state(RX_WAITING);
+        }
+    }
+
+    register csr3  @ 0x18 "Receive List Base Address" {
+        method after_write(mop) {
+            log "info", 4, 0: "Got new receive list base address: 0x%x", $this;
+            $csr.current_rx_address = $this;
+        }
+    }
+
+    // Internal register to hold the current RX address
+    register current_rx_address;             
+    
+    register csr4  @ 0x20 "Transmit List Base Address" {
+        method after_write(mop) {
+            log "info", 4, 0: "Got new transmit list base address: 0x%x", $this;
+            $csr.current_tx_address = $this;
+        }
+    }
+
+    // Internal register to hold the current TX address
+    register current_tx_address;
+
+    register csr5  @ 0x28 "Status" {
+        field itr [13:0]  "Interrupt Status" {
+            method write(value) {
+                // write 1 clears
+                $this = $this & ~value;
+            }
+            method read() -> (value) {
+                // hide bits that are not enabled
+                value = $this & $csr.csr7.itr_mask;
+            }
+        }
+        field ais [15:15] "Abnormal Interrupt Summary" {
+            method write(value) {
+            }
+            method read() -> (value) {
+                value = $this & $csr.csr7.ais_mask;
+            }
+        }
+        field nis [16:16] "Normal Interurpt Summary" {
+            method write(value) {
+            }
+            method read() -> (value) {
+                value = $this & $csr.csr7.nis_mask;
+            }
+        }
+        field rs  [19:17] is (read_only)     "Receive Process State";
+        field ts  [22:20] is (read_only)     "Transmission Process State";
+        field eb  [25:23] is (read_only)     "Error Bits";
+        field rs1 [31:26] is (ones)          "Reserved";
+        
+        method after_write(mop) {
+            call $update_interrupts();
+        }
+    }
+
+    register csr6  @ 0x30 "Operation Mode" {
+        field hp   [0:0]  "Hash/Perfect Receive Filter Mode";
+        field sr   [1:1]  "Start/Stop Receive" {
+            method write(value) {
+                if (value == 1 && $this == 0) {
+                    log "info", 3, 0: "Receive process started";
+                    call $set_rx_state(RX_WAITING);
+                } else if (value == 0 && $this == 1) {
+                    log "info", 3, 0: "Receive process stopped";
+                    call $set_rx_state(RX_STOPPED);
+                }
+                $this = value;
+            }
+        }
+        field ho   [2:2]  "Hash-only Filtering Mode";
+        field pb   [3:3]  is (rw_rx_stopped)    "Pass Bad Frames";
+        field ivf  [4:4]  "Inverse Filtering";
+        field sb   [5:5]  is (rw_rx_tx_stopped) "Start/Stop Backoff Counter";
+        field pr   [6:6]  "Promiscuous Mode" {
+            parameter hard_reset_value = 1;
+        }
+        field pm   [7:7]  "Pass All Multicast";
+        field mbz  [8:8]  is (zeros)          "Must Be Zero";
+        field fd   [9:9]  is (rw_rx_tx_stopped) "Full-duplex Mode";
+        field om  [11:10] is (rw_rx_tx_stopped) "Operating Mode";
+        field fc  [12:12] is (rw_rx_tx_stopped) "Force Collision Mode";
+        field st  [13:13] "Start/Stop Transmit" {
+            method write(value) {
+                if ($this == 0 && value == 1) {
+                    log "info", 3, 0: "Transmit process started";
+                    call $transmit();
+                } else if ($this == 1 && value == 0) {
+                    local int state;
+                    call $get_tx_state() -> (state);
+
+                    log "info", 3, 0: "Transmit process stopped";
+                    if (state == TX_WAITING && $pending_frame != NULL) {
+                        dbuffer_free($pending_frame);
+                        $pending_frame = NULL;
+                    }
+                    call $set_tx_state(TX_STOPPED);
+                }
+                $this = value;
+            }
+        }
+        field tr  [15:14] is (rw_tx_stopped)    "Threshold Control Bits";
+        field mb2 [16:16] is (zeros)          "Must Be Zero";
+        field ca  [17:17] is (rw_rx_tx_stopped) "Capture Effect Enable";
+        field ps  [18:18] "Port Select";
+        field hbd [19:19] "Heartbeat Disable";
+        field imm [20:20] "Immediate Mode";
+        field sf  [21:21] is (rw_rx_tx_stopped) "Store and Forward";
+        field ttm [22:22] is (rw_rx_tx_stopped) "Transmit Threshold Mode";
+        field pcs [23:23] "PCS Function";
+        field scr [24:24] "Scrambler Mode";
+        field mbo [25:25] is (ones) "Must Be One";
+        field mb3 [28:26] "Must Be Zero";
+        field mb4 [29:29] is (ones) "Must Be One";
+        field ra  [30:30] "Receive All";
+        field sc  [31:31] "Special Capture Effect Enable";
+    }
+
+    register csr7  @ 0x38 "Interrupt enable" {
+        field itr_mask [13:0]  "Interrupt Status Mask";
+        field ais_mask [15:15] "Abnormal Interrupt Summary Mask";
+        field nis_mask [16:16] "Normal Interrupt Summary Mask";
+        method after_write(mop) {
+            call $update_interrupts();
+        }
+    }
+
+    register csr8  @ 0x40 "Missed frames and overflow counter" {
+        field mfc [15:0]  "Missed Frame Counter";
+        field mfo [16:16] "Missed Frame Overflow";
+        field oc  [30:17] "Overflow Counter";
+        field oco [31:31] "Overflow Counter Overflow";
+    }
+
+    // Only SROM communication is implemented
+    register csr9  @ 0x48 "Boot ROM, serial ROM and MII management" {
+        field data  [7:0]  "Boot ROM data or Serial ROM control" {
+            parameter hard_reset_value = 0xFF;
+            method read() -> (value) {
+                if ($sr == 1)
+                    $this[3] = $serial_eeprom.microwire.get_do($serial_eeprom);
+                value = $this;
+            }
+            // The write functionality is performed in after_write() to ensure
+            // that all the fields of the register are updated before actually
+            // performing the access., in particular the $sr field.
+        }
+        field res1  [9:8]  is (zeros) "Reserved";
+        field reg  [10:10] is (unimplemented) "External Register Select";
+        field sr   [11:11] "Serial ROM Select";
+        field br   [12:12] is (unimplemented) "Boot ROM Select";
+        field wr   [13:13] "Write Operation";
+        field rd   [14:14] "Read Operation";
+        field res2 [15:15] is (ones) "Reserved";
+        field mii  [19:16] "MII" {
+            parameter hard_reset_value = 0xF;
+            method read() -> (value) {
+                value = $this;
+            }
+            method write(value) {
+                $this = value;
+                // No need to delay that access since it doesn't depend on
+                // other fields in the register
+                $this[3] = $mii_bus.mii_management.serial_access(
+                    $mii_bus, 
+                    $this[1],                // MDO (data_in)
+                    $this[0]);               // MDC (new_clock)
+            }
+        }
+        field res3 [31:20] is (ones) "Reserved";
+
+        method after_write(mop) {
+            // Side-effects of the $data write
+            if ($sr == 1 && $wr == 1) {
+                // In order: Data In, Clock, Chip Select
+                $serial_eeprom.microwire.set_di($serial_eeprom, $data[2]); 
+                $serial_eeprom.microwire.set_sk($serial_eeprom, $data[1]); 
+                $serial_eeprom.microwire.set_cs($serial_eeprom, $data[0]);
+            }
+        }
+    }
+
+    register csr10 @ 0x50 is (unimplemented) "Boot ROM programming address";   
+    register csr11 @ 0x58 is (unimplemented) "General-purpose timer";
+    register csr12 @ 0x60 is (unimplemented) "General-purpose port";
+    register csr13 @ 0x68 is (reserved)      "Reserved";
+    register csr14 @ 0x70 is (reserved)      "Reserved";
+    register csr15 @ 0x78 is (unimplemented) "Watchdog timer";
+}
+

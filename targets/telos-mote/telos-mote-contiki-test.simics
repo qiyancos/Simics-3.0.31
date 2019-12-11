@@ -1,0 +1,8 @@
+#
+# Load contiki + application onto a mote
+#
+add-directory "%script%"
+$mote_binary = "images/contiki_simple_test.elf"
+
+run-command-file "%script%/telos-mote-with-serial-common.simics"
+

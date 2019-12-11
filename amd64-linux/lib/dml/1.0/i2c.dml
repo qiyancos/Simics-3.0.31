@@ -1,0 +1,44 @@
+// interrupt.dml
+//
+// This module contains types needed when using or implementing the
+// i2c interface
+
+dml 1.0;
+
+header %{
+#include <simics/devs/i2c.h>
+%}
+
+extern i2c_device_state_t I2C_idle;
+extern i2c_device_state_t I2C_master_transmit;
+extern i2c_device_state_t I2C_master_receive;
+extern i2c_device_state_t I2C_slave_transmit;
+extern i2c_device_state_t I2C_slave_receive;
+typedef int i2c_device_state_t;
+
+extern i2c_device_flag_t I2C_flag_exclusive;
+extern i2c_device_flag_t I2C_flag_shared;
+typedef int i2c_device_flag_t;
+   
+typedef struct {
+    int start(conf_object_t *i2c_bus, uint8 address);
+    int stop(conf_object_t *i2c_bus);
+    uint8 read_data(conf_object_t *i2c_bus);
+    void write_data(conf_object_t *i2c_bus, uint8 value);
+    int register_device(conf_object_t *i2c_bus, conf_object_t *device,
+                        uint8 address, uint8 mask, i2c_device_flag_t flags);
+    void unregister_device(conf_object_t *i2c_bus, conf_object_t *device,
+                           uint8 address, uint8 mask);
+} i2c_bus_interface_t;
+
+typedef struct {
+    int (*set_state)(conf_object_t *device, i2c_device_state_t state,
+                     uint8 address);
+    uint8 (*read_data)(conf_object_t *device);
+    void (*write_data)(conf_object_t *device, uint8 value);
+   
+} i2c_device_interface_t;
+
+constant I2C_BUS_INTERFACE = "i2c-bus";
+constant I2C_DEVICE_INTERFACE = "i2c-device";
+

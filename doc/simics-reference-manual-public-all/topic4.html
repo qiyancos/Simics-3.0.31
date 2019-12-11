@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Startup Flags</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(18, true);
+</script>
+<a name="label20"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="topic3.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;Startup Flags</h3 class="jdocu">
+<a name="label21"></a><h4 class="jdocu">-E, -expire &lt;time&gt; (advanced)</h4 class="jdocu">
+
+                  
+                  Check out licenses with an expire time, for off-line use.
+                  Valid formats are:
+                  <ul>
+                  <li>dd-mmm-yyyy[:hh:mm] &#8211; where:
+                  <dl><dt><b>dd</b></dt><dd>day number in month</dd><dt><b>mmm</b></dt><dd>abbreviated name of month</dd><dt><b>yyyy</b></dt><dd>year including century</dd><dt><b>hh</b></dt><dd>hour in 24-hour format</dd><dt><b>mm</b></dt><dd>minutes.</dd></dl>
+                  </li>
+                  <li>+&lt;num&gt;h &#8211; setting the license to expire
+                  &lt;num&gt; hours from now.</li>
+                  <li>+&lt;num&gt;d &#8211; setting the license to expire
+                  &lt;num&gt; days from now.</li>
+                  </ul>
+                  <a name="label22"></a><h4 class="jdocu">-L</h4 class="jdocu">
+
+          
+          Add a path to the directory list that Simics searches for modules.
+          <a name="label23"></a><h4 class="jdocu">-batch-mode (advanced)</h4 class="jdocu">
+
+          
+          Run in batch mode. This means that Simics will exit when all commands
+          and scripts given on the command line have executed, or as soon as an
+          error occurs.
+<p>
+          When an error has occurred, Simics will immediately exit with a
+          non-zero status. If all commands run to completion, Simics exits with
+          status 0, indicating success.
+<p>
+          Simics will not use the command history file in batch mode.
+          <a name="label24"></a><h4 class="jdocu">-c &lt;file&gt;</h4 class="jdocu">
+
+                           
+                           Load a configuration file. This is equivalent to
+                           issuing a <b>read-configuration</b> command
+                           after Simics has started.
+<p>
+                           If this flag is the last on the command line,
+                           <tt>-c</tt> may be omitted.
+<p>
+                           <a name="label25"></a><h4 class="jdocu">-central &lt;address[:port]&gt;</h4 class="jdocu">
+
+          
+<p>
+          Connect to Simics Central.  Simics Central may be running on another
+          host, and this argument to this flag is an IP address and an optional
+          port number where Simics Central is listening.  The port number
+          defaults to 1909 if omitted.
+<p>
+          If the local hosts' address is supplied, and the port number is left
+          out, Simics will try to connect to the default Unix file socket
+          (<tt>/tmp/simics-central</tt>).
+<p>
+          Also see the <tt>-central :&lt;file&gt;</tt> flag.
+          <a name="label26"></a><h4 class="jdocu">-central :&lt;file&gt;</h4 class="jdocu">
+
+          
+          Connect to Simics Central using a Unix file socket. This variant of
+          the <tt>-central</tt> flag lets you specify a socket file.
+          <a name="label27"></a><h4 class="jdocu">-central-time-out &lt;time&gt;</h4 class="jdocu">
+
+          
+          Simics will wait <i>time</i> seconds trying to connect to a central
+          server every second before giving up and starting without the central
+          connection.
+          <a name="label28"></a><h4 class="jdocu">-dstc (advanced)</h4 class="jdocu">
+
+                  
+                  Force the D-STC to be enabled. See the <tt>-no-stc</tt> flag
+                  for more information.
+                  <a name="label29"></a><h4 class="jdocu">-e &lt;command&gt;</h4 class="jdocu">
+
+                          
+                          Execute a CLI command. Equivalent of typing in the
+                          command at the command line prompt.
+                          <a name="label30"></a><h4 class="jdocu">-echo</h4 class="jdocu">
+
+                          
+                          Enable command echoing.  When echoing is enabled,
+                          Simics will echo all commands executed by startup
+                          scripts. Note that this only affects any startup
+                          scripts loaded after the <tt>-echo</tt> flag on the
+                          command line.
+                          <a name="label31"></a><h4 class="jdocu">-fast</h4 class="jdocu">
+
+          
+<p>
+          For backwards compatibility only. "Fast" mode is the default mode of
+          execution.
+          <a name="label32"></a><h4 class="jdocu">-h</h4 class="jdocu">
+
+                  
+                  Makes Simics print a brief help screen and exit.
+                  <a name="label33"></a><h4 class="jdocu">-istc (advanced)</h4 class="jdocu">
+
+                  
+                  Force the I-STC to be enabled. See the <tt>-no-stc</tt> flag
+                  for more information.
+                  <a name="label34"></a><h4 class="jdocu">-license</h4 class="jdocu">
+
+                  
+                  Print the Simics license text and exit.  This is the default
+                  license and is also included in the <tt>LICENSE</tt> file.
+                  <a name="label35"></a><h4 class="jdocu">-license-file &lt;file&gt; (advanced)</h4 class="jdocu">
+
+          
+          Specify the FLEXlm license file to use.  This will make Simics ignore
+          the <tt>VTECH_LICENSE_FILE</tt> and <tt>LM_LICENSE_FILE</tt>
+          environment variables. On Unix systems the
+          <tt>$HOME/.flexlmlc</tt> file is ignored, as well as the Registry
+          on Windows hosts. The <tt>$HOME/.flexlmrc</tt>, and the Registry
+          are not updated when Simics is started with this flag.
+          <a name="label36"></a><h4 class="jdocu">-log-file &lt;file&gt;</h4 class="jdocu">
+
+                  
+                  Use a different log file than the default
+                  <tt>.simics-log</tt>.
+                  <a name="label37"></a><h4 class="jdocu">-ma</h4 class="jdocu">
+
+          
+<p>
+          Start micro-architect version of Simics if available. For more
+          information about the micro-architect version, see the <em>Simics
+          User Guide</em>. If you use this option, you typically want to run
+          a micro-architect specific configuration and/or script as well.
+          <a name="label38"></a><h4 class="jdocu">-n</h4 class="jdocu">
+
+                  
+                  Do not run the commands from the
+                  <tt>startup-commands</tt> script files.
+                  <a name="label39"></a><h4 class="jdocu">-no-copyright (advanced)</h4 class="jdocu">
+
+                  
+                  Do not print out copyright notices when starting Simics. See
+                  also the <tt>-verbose</tt> and <tt>-quiet</tt> flags.
+                  <a name="label40"></a><h4 class="jdocu">-no-dstc (advanced)</h4 class="jdocu">
+
+                  
+                  Force the D-STC to be disabled. See the <tt>-no-stc</tt> flag
+                  for more information.
+                  <a name="label41"></a><h4 class="jdocu">-no-istc (advanced)</h4 class="jdocu">
+
+                  
+                  Force the I-STC to be disabled. See the <tt>-no-stc</tt> flag
+                  for more information.
+                  <a name="label42"></a><h4 class="jdocu">-no-log</h4 class="jdocu">
+
+          
+          Turns off logging to <tt>.simics-log</tt> (or any other file
+          specified by <tt>-log-file</tt>).
+          <a name="label43"></a><h4 class="jdocu">-no-stc (advanced)</h4 class="jdocu">
+
+                  
+<p>
+                  Disable the Simics internal caches for memory operations and
+                  instruction fetches (STC:s) that Simics uses to speed up the
+                  simulation.
+<p>
+                  Disabling the STC:s (this flag disables both the D-STC and
+                  the I-STC) can be useful for debugging plug-ins such as cache
+                  models, since it will ensure that all memory accesses are
+                  fully visible.
+<p>
+                  It is possible to selectively disable the data and
+                  instruction STC:s using the <tt>-no-dstc</tt> and
+                  <tt>-no-istc</tt> flags, respectively.  The STC:s are
+                  typically enabled by default, although in some versions of
+                  Simics they may be disabled. See also the <tt>-stc</tt> flag.
+                  <a name="label44"></a><h4 class="jdocu">-no-use-cygpath (advanced)</h4 class="jdocu">
+
+                  
+<p>
+                  Disable Cygwin path translation.  with this option set,
+                  Simics will not be able to load files specified with Cygwin
+                  syntax, or to follow symlinks created by Cygwin. Windows host
+                  only.
+                  <a name="label45"></a><h4 class="jdocu">-no-win</h4 class="jdocu">
+
+                  
+<p>
+                  Disable external windows.  This will prevent Simics from
+                  opening target console windows or any other external windows.
+<p>
+                  Disabling a target console only makes it invisible. It does
+                  not change its simulated functionality. Disabling it is
+                  useful when running in batch mode or when the target console
+                  isn't needed, since it doesn't require access to a graphical
+                  environment, and running with windows disabled is usually
+                  somewhat faster.
+<p>
+                  <a name="label46"></a><h4 class="jdocu">-obscure</h4 class="jdocu">
+
+                  
+                  Prints out a summary of advanced command-line flags and exit.
+                  <a name="label47"></a><h4 class="jdocu">-p &lt;file&gt;</h4 class="jdocu">
+
+                          
+                          Run code from a Python file.
+                          <a name="label48"></a><h4 class="jdocu">-product &lt;productname&gt; (advanced)</h4 class="jdocu">
+
+          
+          Specify the licensed product to use. The chosen product specifies
+          which models and capabilities you can use with Simics.
+          <a name="label49"></a><h4 class="jdocu">-q or -quiet</h4 class="jdocu">
+
+           
+           <p>
+           Make Simics less verbose. This makes Simics output less information,
+           which is useful for batch execution. The opposite effect can be
+           obtained with the <tt>-verbose</tt> flag. The quiet and verbose
+           flags turn off each other. If you want Simics to be really quiet you
+           can also give the <tt>-no-copyright</tt> flag.
+           <p>
+           Note that Simics is rather quiet by default, so this flag usually
+           doesn't do all that much.
+           <a name="label50"></a><h4 class="jdocu">-readme</h4 class="jdocu">
+
+                  
+                  Print the Simics <tt>README</tt>
+                  information and exit.
+                  <a name="label51"></a><h4 class="jdocu">-stall</h4 class="jdocu">
+
+          
+          Start the stall version of Simics if available. For more information
+          about this version and its limitations, see the <em>Simics User
+          Guide</em>.
+          <a name="label52"></a><h4 class="jdocu">-stc (advanced)</h4 class="jdocu">
+
+                  
+                  Force the I-STC and D-STC to be enabled (default). See the
+                  <tt>-no-stc</tt> flag for more information. The STC:s are
+                  typically enabled by default, although in some versions of
+                  Simics they may be disabled.
+                  <a name="label53"></a><h4 class="jdocu">-use-cygpath (advanced)</h4 class="jdocu">
+
+                  
+<p>
+                  Enable Cygwin path translation. This is the default, and
+                  enables Simics to understand Cygwin paths ("/cygdrive/c/",
+                  for example), and translate them into native Windows form
+                  (C:\).
+<p>
+                  The translation is done internally, and behaves similar to
+                  the Cygwin <tt>cygpath</tt> utility. See the documentation
+                  for the SIM_native_path() API call for further details.
+                  <a name="label54"></a><h4 class="jdocu">-v, -version, --version, -v-short</h4 class="jdocu">
+
+                  
+                  Print the Simics version number and exit. Other information
+                  printed include the compilers used and the compile-time
+                  options applied to this specific build. <tt>-v-short</tt>
+                  only prints out Simics version.
+                  <a name="label55"></a><h4 class="jdocu">-verbose</h4 class="jdocu">
+
+          
+          Make Simics more verbose. This makes Simics give ample details about
+          the execution. This is the opposite of the <tt>-quiet</tt> flag. The
+          quiet and verbose flags turn off each other. The default is somewhere
+          in the middle with a "reasonable" output level.
+<p>
+          Setting the verbose flag can be useful to figure out problems that
+          you may be having with Simics. Some friendly warnings are not printed
+          unless verbose is turned on.
+<p>
+          Note that there will be quite a bit of information printed, most of
+          which isn't usually needed.
+          <a name="label56"></a><h4 class="jdocu">-werror (advanced)</h4 class="jdocu">
+
+                  
+                  Treat many warnings in Simics as errors and exit.
+                  <a name="label57"></a><h4 class="jdocu">-workspace &lt;workspace&gt;</h4 class="jdocu">
+
+                  
+                  Specify the workspace directory to run Simics in.
+                  <a name="label58"></a><h4 class="jdocu">-x &lt;file&gt;</h4 class="jdocu">
+
+                          
+                          Run commands from a script file.  The script file is
+                          usually named with a <tt>.simics</tt> suffix.
+<p>
+                          If this flag is the last on the command line,
+                          <tt>-x</tt> may be omitted.
+                          <p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="topic3.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Parameters</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(8, true);
+</script>
+<a name="label53"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h3 class="jdocu">3.3&nbsp;&nbsp;&nbsp;Parameters</h3 class="jdocu">
+
+
+<a name="label54"></a>
+<a name="label55"></a>
+<p>
+Parameters are <em>compile-time, constant-valued</em> object members.
+They exist only during translation from DML to C; no storage is
+allocated for parameters, and they cannot be updated - only overridden.
+<p>
+No type declarations are necessary for parameters; all DML compile-time
+computations are dynamically type-checked. The possible types of values
+of a parameter are listed below.
+<p>
+Parameters are used to describe static properties of the objects, such
+as names, sizes, and offsets. There are a number of standard parameters
+that are always defined for every object, and for each object type there
+is a set of additional pre-defined parameters. Furthermore, the
+programmer can add any number of new parameters, or override the
+pre-defined ones.
+<p>
+<a name="label56"></a><h4 class="jdocu">3.3.1&nbsp;&nbsp;&nbsp;Parameter Types</h4 class="jdocu">
+
+
+<a name="label57"></a>
+<p>
+A parameter can be assigned a value of one of the following types:
+<p>
+<dl><dt><b>integer</b></dt><a name="label58"></a><dd>An arbitrarily-sized integer value.</dd><dt><b>float</b></dt><a name="label59"></a><dd>A floating-point value.</dd><dt><b>string</b></dt><a name="label60"></a><dd>A sequence of characters. String literals are written within double
+quotes. Strings can be split over several lines using the <tt>+</tt>
+operator; see Section <a class="jdocu" href="topic28.html#label243">4.12.10</a>.</dd><dt><b>bool</b></dt><a name="label61"></a><dd>One of the values <tt><a name="label62">true</a></tt> and
+<tt><a name="label63">false</a></tt>. These can only be used in tests and boolean
+expressions; they are not integer values.</dd><dt><b>list</b></dt><a name="label64"></a><dd>A list of arbitrary values. Lists are written as <tt>[x1, ...,
+xN]</tt>.</dd><dt><b>reference</b></dt><a name="label65"></a><dd>A reference to a DML object or method.</dd><dt><b>undefined</b></dt><a name="label66"></a><dd>The value <tt>undefined</tt> is a unique value which can only be
+used in the compile-time test <tt>defined </tt><i>x</i><tt></tt>. The result of
+the test is <tt>false</tt> if <tt></tt><i>x</i><tt></tt> has the value
+<tt>undefined</tt>, and <tt>true</tt> otherwise. The <tt>undefined</tt>
+value is used mainly as a default for parameters that are intended to be
+overridden. </dd></dl>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

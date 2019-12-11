@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Miscellaneous Notes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(64, true);
+</script>
+<a name="label372"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+<h2 class="jdocu">5&nbsp;&nbsp;&nbsp;Miscellaneous Notes</h2 class="jdocu">
+
+
+<a name="label373"></a><h3 class="jdocu">5.1&nbsp;&nbsp;&nbsp;Notes on Solaris for Fiesta</h3 class="jdocu">
+
+
+<p>
+<ul>
+<p>
+<li>
+For information about system administration of Solaris, see the
+<a class="jdocu" href="http://docs.sun.com" target="_top">http://docs.sun.com</a> web site.
+</li>
+<p>
+<li>Remember to boot with the <tt>-r</tt> flag after changing a machine
+configuration. Example:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.set-prom-env boot-command "boot disk1 -rv"</b>
+</pre>
+</li>
+<p>
+<li>
+Booting from a disk in a different location that it was setup for is not
+recommended. It is possible, but requires some knowledge of Solaris
+administration.
+</li>
+<p>
+<li>
+When using multiple Ethernet adapters in a Serengeti system, all will be
+assigned the same system-wide MAC address by Solaris. To avoid this, the OBP
+variable <tt>local-mac-address?</tt> can be set to <tt>true</tt>. Setting this
+variable from the Simics command-line is done using the following command:
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>system_cmp0.set-prom-env local-mac-address? true</b>
+</pre>
+</li>
+</ul>
+<p>
+<a name="label374"></a><h3 class="jdocu">5.2&nbsp;&nbsp;&nbsp;Multiple Network Devices</h3 class="jdocu">
+
+
+
+By default, only the first network device is connected to a simulated network
+when running with <tt>$create_network</tt> set to <tt>yes</tt>. To run with
+multiple network devices, the <b>&lt;device&gt;.connect</b> command should be
+used to connect each additional device to the Ethernet link. If several
+network devices have the same MAC address (default unless the
+<tt>local-mac-address?</tt>  OBP variable is set) they must be connected to
+different simulated links.
+
+<a name="label375"></a><h3 class="jdocu">5.3&nbsp;&nbsp;&nbsp;Changing the Processor Clock Frequency</h3 class="jdocu">
+
+
+<a name="label376"></a> 
+<a name="label377"></a>
+<a name="label378"></a>
+<p>
+The clock frequency of a simulated processor can be set arbitrarily in
+Simics.  This will not affect the actual speed of simulation, but it
+will affect the number of instructions that need to be executed for a
+certain amount of simulated time to pass.  If your execution only
+depends on executing a certain number of instructions, increasing the clock frequency will take
+the same amount of host time (but a shorter amount of target
+time). However, if there are time based delays of some kind in the simulation,
+these will take  longer to execute. 
+<p>
+At a simulated 1 MHz, one million target instructions will correspond to a
+simulated second (assuming the simple default timing of one cycle per
+instruction). At 100 MHz, on the other hand, it will take 100 million
+target instructions to complete a simulated second. So with a higher clock
+frequency, less simulated target time is going to pass for a certain
+period of host execution time.
+<p>
+If Simics is used to emulate an interactive system (especially one
+with a graphical user interface) it is a good idea to set the clock
+frequency quite low.  Keyboard and mouse inputs events are handled by
+periodic interrupts in most operating systems, using a higher clock
+frequency will result in longer delays between invocations of periodic
+interrupts.  Thus, the simulated system will feel slower in its user
+response, and update the mouse cursor position etc. less frequently.
+If this is a problem, the best technique for running experiments at a
+high clock frequency is to first complete the configuration of the
+machine using a low clock frequency.  Save all configuration changes
+to a disk diff (like when installing operating systems).  Then change
+the configuration to use a higher a clock frequency and reboot the
+target machine.
+<p>
+Note that for a lightly-loaded machine (for example, working at an
+interactive prompt on a serial console to an embedded Linux system),
+Simics will often execute quickly enough at the real target clock
+frequency that there is no need to artifically lower it.
+<p>
+ 
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic3.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic5.html">Next</a></span></p>
+</body>
+</html>

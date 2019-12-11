@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Driving Context Changes</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(251, true);
+</script>
+<a name="label557"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic110.html">Previous</a> - <a class="jdocu" href="topic66.html">Up</a> - <a class="jdocu" href="topic112.html">Next</a></span></p>
+<h3 class="jdocu">21&nbsp;&nbsp;&nbsp;Driving Context Changes</h3 class="jdocu">
+
+
+<a name="label558"></a>
+<a name="label559"></a>
+<p>
+As explained in section <a class="jdocu" href="topic61.html#label401">12.3.1</a>, each
+processor has a <em><a name="label560">current
+context</a></em><a name="label561"></a>, which represents the
+virtual address space currently visible to code running on the
+processor. Things such as virtual-address breakpoints and symbol
+information are properties of contexts, so when the current context of
+a processor is changed, those things change with it.
+<p>
+Chapter <a class="jdocu" href="topic61.html#label396">12.3</a> explains how this is used in practice.
+This chapter focuses on another issue: how to actually change the
+current context. <a name="label562"></a>
+<p>
+As a general guideline, you probably want a separate context for each
+userspace process and kernel that you are interested in (and a default
+context for everything you are not interested in). After all, one of
+the abstractions maintained by most operating systems is that each
+process has its own virtual address space, so if you, for example, set
+a virtual breakpoint at an address in one process, you probably do not
+want it to trigger in other processes.
+<p>
+The bad news is that since Simics does not need to know about the
+abstractions&#8212;such as processes&#8212;implemented by the
+operating system, it (quite correctly) does not try to. This is
+actually very good news most of the time, since Simics can then run
+any and all code without having to be modified, but in this case it is
+bad news: Simics knows nothing about processes on the simulated
+machine, and so cannot change contexts automatically. You will have to
+do that, and section <a class="jdocu" href="topic112.html#label565">21.1</a> explains
+how.
+<p>
+The good news is that Simics comes with add-on modules, <em>process
+trackers</em><a name="label563"></a>, that each understand a
+particular architecture/OS combination, and can help you tell which
+process is active when. They even come with source code, which is
+helpful if you want to write your own process tracker for some
+architecture/OS combination that does not yet have one. Process
+trackers are covered in section <a class="jdocu" href="topic113.html#label566">21.2</a>.
+<p>
+Simics also comes with a <b><a name="label564">context-switcher</a></b>
+module. It automates the task of listening to what the process tracker
+says and switching contexts accordingly. Section <a class="jdocu" href="topic114.html#label570">21.3</a> describes how to use it.
+<p>
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic112.html#label565" target="main">21.1&nbsp;&nbsp;&nbsp;Switching Contexts Manually</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic113.html#label566" target="main">21.2&nbsp;&nbsp;&nbsp;Process Trackers</a></p>
+
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic114.html#label570" target="main">21.3&nbsp;&nbsp;&nbsp;Switching Contexts Automatically</a></p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic110.html">Previous</a> - <a class="jdocu" href="topic66.html">Up</a> - <a class="jdocu" href="topic112.html">Next</a></span></p>
+</body>
+</html>

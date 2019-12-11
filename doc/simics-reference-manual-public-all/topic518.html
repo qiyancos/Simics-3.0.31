@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>pci_express</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2258, true);
+</script>
+<a name="label17808"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic517.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic519.html">Next</a></span></p>
+<h3 class="jdocu">pci_express</h3 class="jdocu">
+
+
+<a name="label17809"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic226.html#label8913">pcie-switch</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface can be implemented by any PCI Express device, switch or
+   endpoint. It is also implemented by the pci-bus, which will pass it on
+   to the other end; e.g. if the endpoint sends a message, the pci-bus will
+   pass it on to the bridge (downport), and if the downport sends it, it will
+   be broadcasted to all devices on the bus.
+<p>
+   <i>src</i> is the object sending the object. <i>type</i> is
+   one of:
+<p>
+   
+   
+<pre class="jdocu_small" style="color: black">typedef enum {
+        /* INTx emulation */
+        PCIE_Msg_Assert_INTA       = 0x20,
+        PCIE_Msg_Assert_INTB       = 0x21,
+        PCIE_Msg_Assert_INTC       = 0x22,
+        PCIE_Msg_Assert_INTD       = 0x23,
+        PCIE_Msg_Deassert_INTA     = 0x24,
+        PCIE_Msg_Deassert_INTB     = 0x25,
+        PCIE_Msg_Deassert_INTC     = 0x26,
+        PCIE_Msg_Deassert_INTD     = 0x27,
+
+        /* Power Management */
+        PCIE_PM_Active_State_Nak   = 0x14,
+        PCIE_PM_PME                = 0x18,
+        PCIE_PM_Turn_Off           = 0x19,
+        PCIE_PM_PME_TO_Ack         = 0x1B,
+
+        /* Error Messages */
+        PCIE_ERR_COR               = 0x30,
+        PCIE_ERR_NONFATAL          = 0x31,
+        PCIE_ERR_FATAL             = 0x33,
+
+        /* Locked Transaction */
+        PCIE_Locked_Transaction    = 0x00,
+
+        /* Slot Power Limit */
+        PCIE_Set_Slot_Power_Limit  = 0x90,
+
+        /* Hot Plug Messages */
+        PCIE_HP_Power_Indicator_On        = 0x45,
+        PCIE_HP_Power_Indicator_Blink     = 0x47,
+        PCIE_HP_Power_Indicator_Off       = 0x44,
+        PCIE_HP_Attention_Button_Pressed  = 0x48,
+        PCIE_HP_Attention_Indicator_On    = 0x41,
+        PCIE_HP_Attention_Indicator_Blink = 0x43,
+        PCIE_HP_Attention_Indicator_Off   = 0x40
+} pcie_message_type_t;</pre>
+
+<p>
+   The contents of <i>payload</i> depends on <i>type</i>.
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        int (*send_message)(conf_object_t *dst, conf_object_t *src,
+                            pcie_message_type_t type, byte_string_t payload);
+} pci_express_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic517.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic519.html">Next</a></span></p>
+</body>
+</html>

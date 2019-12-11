@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>DEC21140A-dml</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(124, true);
+</script>
+<a name="label247"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic51.html">Previous</a> - <a class="jdocu" href="topic49.html">Up</a> - <a class="jdocu" href="topic53.html">Next</a></span></p>
+<h3 class="jdocu">10.3&nbsp;&nbsp;&nbsp;DEC21140A-dml</h3 class="jdocu">
+
+
+<p>
+The DEC21140A is a PCI Ethernet card. As the AM79C960, it is obsolete today but
+it provides a good example of a PCI device written in DML.
+<p>
+Normally the module and device class would both have been named
+<b>DEC21140A</b>, but because Virtutech already had a DEC21140A
+device model written in C, the sample DML module and the device class are named
+<b>DEC21140A-dml</b>.
+<p>
+It may be good to have the documentation for the DEC21140A chip when looking at
+the sample code, so that you can compare the code to the specification. The
+documentation can be found on the Internet, for example by looking for
+<tt>ec-qn7nc-te.ps.gz</tt> with Google.
+<p>
+The source code for the sample device can be found in the directory
+<tt>[simics]/src/devices/DEC21140A-dml</tt>. If you want to modify the
+<b>DEC21140A-dml</b> module yourself, we recommend that you set up a
+user workspace and copy the source code there, as described in section <a class="jdocu" href="topic4.html#label20">3</a>.
+<p>
+<a name="label248"></a><h4 class="jdocu">10.3.1&nbsp;&nbsp;&nbsp;Running the DEC21140A model with Enterprise</h4 class="jdocu">
+
+
+<p>
+If your distribution contains the simulated machine <em>enterprise</em>, you
+can find the Simics script <tt>enterprise-DEC21140A-dml.simics</tt> in the
+directory <tt>[simics]/targets/x86-440bx</tt>. This file creates an
+enterprise machine using the <b>DEC21140A-dml</b> module instead of
+the default <b>AM79C360</b> module. The DEC21140A object is called
+<b>dec0</b>.
+<p>
+The script <tt>enterprise-DEC21140A-dml.simics</tt> configures
+automatically a network link (connected to the DEC device) and a service-node
+on the link.
+<p>
+Start the simulation, let the machine boot, and log in as the user
+<tt>root</tt>. No password is required. You need to load the right kernel
+module for the DEC device to be recognized:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>modprobe tulip</b>
+PCI: Setting latency timer of device 00:02.0 to 64
+[root@enterprise root]# 
+</pre>
+<p>
+Once the driver is loaded, the card will be automatically configured by the
+system. Wait a few seconds and issue an <tt>ifconfig</tt> command to check that
+the device <tt>eth0</tt> is configured:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>ifconfig</b>
+eth0      Link encap:Ethernet  HWaddr 10:10:10:10:10:30
+          inet addr:10.10.0.15  Bcast:10.10.0.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:78 dropped:0 overruns:0 frame:0
+          TX packets:4 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:168 (168.0 b)
+          Interrupt:10 Base address:0xd080
+
+lo        Link encap:Local Loopback
+[...]
+[root@enterprise root]# 
+</pre>
+<p>
+You can try to ping the service-node to check that networking is working:
+<p>
+<pre class="jdocu_small" style="color: black">
+[root@enterprise root]# <b>ping 10.10.0.1</b>
+PING 10.10.0.1 (10.10.0.1) from 10.10.0.15 : 56(84) bytes of data.
+64 bytes from 10.10.0.1: icmp_seq=1 ttl=31 time=0.286 ms
+64 bytes from 10.10.0.1: icmp_seq=2 ttl=31 time=0.095 ms
+64 bytes from 10.10.0.1: icmp_seq=3 ttl=31 time=0.095 ms
+64 bytes from 10.10.0.1: icmp_seq=4 ttl=31 time=0.095 ms
+64 bytes from 10.10.0.1: icmp_seq=5 ttl=31 time=0.094 ms
+64 bytes from 10.10.0.1: icmp_seq=6 ttl=31 time=0.095 ms
+[...]
+</pre>
+<p>
+
+<a name="label249"></a><h4 class="jdocu">10.3.2&nbsp;&nbsp;&nbsp;Running the DEC21140A model with Ebony</h4 class="jdocu">
+
+
+<p>
+If your distribution contains the simulated machine <em>ebony</em>, you can
+find the Simics script <tt>ebony-linux-dec21140a-dml.simics</tt> in the
+directory <tt>[simics]/targets/ebony</tt>. This file creates an ebony
+machine using the <b>DEC21140A-dml</b> module. The DEC21140A object
+is called <b>dec0</b>.
+<p>
+The script <tt>ebony-DEC21140A-dml.simics</tt> configures automatically a
+network link (connected to the DEC device) and a service-node on the link.
+<p>
+Start the simulation and let the machine boot. The network card will be
+configured automatically at the prompt. You can try to ping the service-node to
+check that networking is working:
+<p>
+<pre class="jdocu_small" style="color: black">
+# <b>ping 10.10.0.1</b>
+PING 10.10.0.1 (10.10.0.1): 56 data bytes
+64 bytes from 10.10.0.1: icmp_seq=0 ttl=31 time=0.0 ms
+64 bytes from 10.10.0.1: icmp_seq=1 ttl=31 time=0.0 ms
+64 bytes from 10.10.0.1: icmp_seq=2 ttl=31 time=0.0 ms
+64 bytes from 10.10.0.1: icmp_seq=3 ttl=31 time=0.0 ms
+</pre>
+<p>
+
+<a name="label250"></a><h4 class="jdocu">10.3.3&nbsp;&nbsp;&nbsp;Comments to the Code</h4 class="jdocu">
+
+
+<p>
+The source code of the DEC21140A module is quite heavily commented, so if you
+have the documentation for the DEC21140A chip you should hopefully be able to
+understand most of the code without too much problem.
+<p>
+The DEC21140A model is far from complete, it implements just enough
+functionality that the device model can be used with Linux.
+<p>
+Note that the source code has been divided into two files:
+<p>
+<dl><dt><b><tt>DEC21140A.dml</tt></b></dt><dd>This file contains the register bank
+definitions for the PCI configuration and the CSR registers.</dd><dt><b><tt>DEC21140A-eth.dml</tt></b></dt><dd>This file contains code to handle
+the network and Ethernet frames.</dd>.</dl>
+<p>
+The DEC21140A model is built around other models: the SROM is configured as a
+Microwire EEPROM; the MAC layer and communication with the Ethernet link are
+handled by the generic <b>mii-transceiver</b> and
+<b>mii-bus-management</b> modules. In each case, the DEC device
+communicates via the interfaces that these devices export.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic51.html">Previous</a> - <a class="jdocu" href="topic49.html">Up</a> - <a class="jdocu" href="topic53.html">Next</a></span></p>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Global Declarations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(44, true);
+</script>
+<a name="label139"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+<h3 class="jdocu">4.9&nbsp;&nbsp;&nbsp;Global Declarations</h3 class="jdocu">
+
+
+<a name="label140"></a>
+<p>
+The following sections describe the global declarations in DML. These
+can only occur on the top level of a DML program, i.e., not within an
+object or method. Unless otherwise noted, their scope is the entire
+program.
+<p>
+<a name="label141"></a><h4 class="jdocu">4.9.1&nbsp;&nbsp;&nbsp;Import Declarations</h4 class="jdocu">
+
+
+<a name="label142"></a>
+<a name="label143"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+import <i>filename</i>;
+</pre>
+<p>
+Imports the contents of the named file. <i>filename</i> must be a string
+literal, such as <tt>"utility.dml"</tt>. The <tt>-I</tt> option to the
+<tt>dmlc</tt> compiler can be used to specify directories to be searched
+for import files.
+<p>
+Note that imported files are parsed as separate units, and use their own
+language version and bit order declarations.
+<p>
+
+<a name="label144"></a><h4 class="jdocu">4.9.2&nbsp;&nbsp;&nbsp;Template Declarations</h4 class="jdocu">
+
+
+<a name="label145"></a>
+<a name="label146"></a>
+<a name="label147"></a>
+<a name="label148"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+template <i>name</i> <i>desc</i> { ... }
+</pre>
+<p>
+Defines a named <em>template</em> - a piece of code that can be reused
+in multiple locations. This is similar to a C preprocessor macro;
+however, unlike macros, the body cannot consist of arbitrary text, but
+must have the same form as an object declaration body. Also, DML
+templates do not take any arguments; instead, the generic DML parameter
+system is used for such purposes.
+<p>
+Templates are instantiated using <tt>is</tt> declarations, written as
+<pre class="jdocu_small" style="color: black">
+    is <i>name</i>;
+</pre>
+These can be used in any context where an object declaration may be
+written, and has the effect of expanding the body of the template at the
+point of the <tt>is</tt>. Note that the expansion is purely textual, so
+e.g., two templates which define methods with the same name cannot both
+be used in the same context.
+<p>
+As in an object declaration, unless the <tt></tt><i>desc</i><tt></tt> string is
+omitted, it is equivalent to defining the parameter <tt>desc</tt>, as in
+<pre class="jdocu_small" style="color: black">
+    template <i>name</i> {
+        parameter desc = <i>desc</i>;
+        ...
+    }
+</pre>
+Hence, the description does not pertain to the template in itself, but
+to any object which uses the template.
+<p>
+
+<a name="label149"></a><h4 class="jdocu">4.9.3&nbsp;&nbsp;&nbsp;Bitorder Declarations</h4 class="jdocu">
+
+
+<a name="label150"></a>
+<a name="label151"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+bitorder <i>name</i>;
+</pre>
+<p>
+Selects the default bit order to be used for interpreting bit-slicing
+expressions and bit field declarations in the file. <tt></tt><i>name</i><tt></tt>
+is one of the identifiers <tt>le</tt>, <tt>be16</tt>, <tt>be32</tt>, and
+<tt>be64</tt>, implying either little-endian order with arbitrary
+default width (<tt>le</tt>), or big-endian order with a fixed default
+width in bits (<tt>be...</tt>). Only the listed widths are allowed.
+<p>
+A <tt>bitorder</tt> declaration, if present, must follow immediately
+after the <tt>device</tt> declaration, preceding any other global
+declarations. The scope of the declaration is the whole of the file it
+occurs in. If no <tt>bitorder</tt> declaration is present in a file, the
+default bit order is <tt>le</tt> (little-endian). The bitorder does not
+extend to imported files; for example, if a file containing a
+declaration "<tt>bitorder be32;</tt>" imports a file with no bit order
+declaration, the latter file will still use the default <tt>le</tt>
+order.
+<p>
+Note that it is difficult to write general bit-manipulating methods for
+arbitrary-width data, if big-endian conventions are used. It is often a
+better idea to place such code in a separate file which uses
+little-endian order, and then import that file from a big-endian
+context.
+<p>
+
+<a name="label152"></a><h4 class="jdocu">4.9.4&nbsp;&nbsp;&nbsp;Constant Declarations</h4 class="jdocu">
+
+
+<a name="label153"></a>
+<a name="label154"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+constant <i>name</i> = <i>expr</i>;
+</pre>
+<p>
+Defines a named constant which can be used in C context.
+<tt></tt><i>expr</i><tt></tt> must be a constant-valued expression.
+
+<a name="label155"></a><h4 class="jdocu">4.9.5&nbsp;&nbsp;&nbsp;Loggroup Declarations</h4 class="jdocu">
+
+
+<a name="label156"></a>
+<a name="label157"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+loggroup <i>name</i>;
+</pre>
+<p>
+Defines a log group, for use in <tt>log</tt> statements. More generally,
+the identifier <tt></tt><i>name</i><tt></tt> is bound to an unsigned integer
+value that is a power of 2, and can be used anywhere in C context; this
+is similar to a <tt>constant</tt> declaration, but the value is
+allocated automatically so that all log groups are represented by
+distinct powers of 2 and can be combined with bitwise <em>or</em> (see
+Section <a class="jdocu" href="topic27.html#label196">4.11.7</a>).
+
+<a name="label158"></a><h4 class="jdocu">4.9.6&nbsp;&nbsp;&nbsp;Typedef Declarations</h4 class="jdocu">
+
+
+<a name="label159"></a>
+<a name="label160"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+typedef <i>declaration</i>;
+</pre>
+<p>
+Defines a name for a data type, as in C.
+
+<a name="label161"></a><h4 class="jdocu">4.9.7&nbsp;&nbsp;&nbsp;Struct Declarations</h4 class="jdocu">
+
+
+<a name="label162"></a>
+<a name="label163"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+struct <i>name</i> { <i>declarations</i> }
+</pre>
+<p>
+Declares a structure datatype with the given name; this is similar to a
+C <tt>struct</tt> declaration, but in DML, there is no separate
+namespace for structs. The effect is like that of writing "<tt>typedef
+struct { ... } </tt><i>name</i><tt></tt>;" in C, although in DML,
+<tt></tt><i>name</i><tt></tt> can also be used for recursive definitions within
+the struct, as in
+<pre class="jdocu_small" style="color: black">
+    struct my_struct {
+        my_struct *next;
+        ...
+    }
+</pre>
+
+<a name="label164"></a><h4 class="jdocu">4.9.8&nbsp;&nbsp;&nbsp;Extern Declarations</h4 class="jdocu">
+
+
+<a name="label165"></a>
+<a name="label166"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+extern <i>declaration</i>;
+</pre>
+<p>
+Declares an external identifier, similar to a C <tt>extern</tt>
+declaration; for example,
+<pre class="jdocu_small" style="color: black">
+    extern int;
+    extern char *motd;
+    extern double table[16];
+    extern conf_object_t *obj;
+    extern int foo(int x);
+    extern int printf(const char *format, ...);
+</pre>
+
+<a name="label167"></a><h4 class="jdocu">4.9.9&nbsp;&nbsp;&nbsp;Header Declarations</h4 class="jdocu">
+
+
+<a name="label168"></a>
+<a name="label169"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+header %{
+...
+%}
+</pre>
+<p>
+Specifies a section of C code which will be included verbatim in the
+generated C header file for the device. There must be no whitespace
+between the <tt>%</tt> and the corresponding brace in the <tt>%{</tt>
+and <tt>%}</tt> markers. The contents of the header section are not
+examined in any way by the <tt>dmlc</tt> compiler; declarations made
+in C code must also be specified separately in the DML code proper.
+<p>
+This feature should only be used to solve problems that cannot easily be
+handled directly in DML. It is most often used to make the generated
+code include particular C header files, as in:
+<pre class="jdocu_small" style="color: black">
+    header %{
+    #include "extra_defs.h"
+    %}
+</pre>
+ See also <tt>footer</tt> declarations, below.
+<p>
+
+<a name="label170"></a><h4 class="jdocu">4.9.10&nbsp;&nbsp;&nbsp;Footer Declarations</h4 class="jdocu">
+
+
+<a name="label171"></a>
+<a name="label172"></a>
+<p>
+<pre class="jdocu_small" style="color: black">
+footer %{
+...
+%}
+</pre>
+<p>
+Specifies a piece of C code which will be included verbatim at the end
+of the generated code for the device. There must be no whitespace
+between the <tt>%</tt> and the corresponding brace in the <tt>%{</tt>
+and <tt>%}</tt> markers. The contents of the footer section are not
+examined in any way by the <tt>dmlc</tt> compiler.
+<p>
+This feature should only be used to solve problems that cannot easily be
+handled directly in DML. See also <tt>header</tt> declarations, above.
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic24.html">Previous</a> - <a class="jdocu" href="topic16.html">Up</a> - <a class="jdocu" href="topic26.html">Next</a></span></p>
+</body>
+</html>

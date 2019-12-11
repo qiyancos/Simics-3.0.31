@@ -1,0 +1,340 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>ultrasparc-iii</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2112, true);
+</script>
+<a name="label15397"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic453.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic455.html">Next</a></span></p>
+<h3 class="jdocu">ultrasparc-iii</h3 class="jdocu">
+
+
+<a name="label15398"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Provided by</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic14.html#label2908">sparc-u3</a>, <a class="jdocu" href="topic14.html#label2910">sparc-u3-ma</a>, <a class="jdocu" href="topic14.html#label2912">sparc-u3-turbo</a></dd>
+
+
+<dt class="jdocu_di"><b>Class Hierarchy</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic48.html#label4590">conf-object</a> &#8594; <a class="jdocu" href="topic150.html#label7612">log-object</a> &#8594; <b>ultrasparc-iii</b></dd>
+
+
+<dt class="jdocu_di"><b>Interfaces Implemented</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17766">log_object</a>, <a class="jdocu" href="topic534.html#label17963">sparc_u3</a>, <a class="jdocu" href="topic535.html#label17966">sparc_v9</a>, <a class="jdocu" href="topic532.html#label17952">sparc_interrupt</a>, <a class="jdocu" href="topic498.html#label17737">exception</a>, <a class="jdocu" href="topic503.html#label17750">int_register</a>, <a class="jdocu" href="topic523.html#label17819">processor</a>, <a class="jdocu" href="topic497.html#label17731">event_poster</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+
+The <b>ultrasparc-iii</b> class implements an UltraSPARC III processor.
+
+</dd>
+
+</dl>
+<a name="label15399"></a><h4 class="jdocu">Attributes</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic48.html#label4590">conf-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic48.html#label4593">attributes</a></i>, <i><a class="jdocu" href="topic48.html#label4594">classname</a></i>, <i><a class="jdocu" href="topic48.html#label4595">component</a></i>, <i><a class="jdocu" href="topic48.html#label4596">iface</a></i>, <i><a class="jdocu" href="topic48.html#label4597">name</a></i>, <i><a class="jdocu" href="topic48.html#label4598">object_id</a></i>, <i><a class="jdocu" href="topic48.html#label4599">queue</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attributes inherited from class <a class="jdocu" href="topic150.html#label7612">log-object</a></b></dt><dd class="jdocu_di">
+<i><a class="jdocu" href="topic150.html#label7615">access_count</a></i>, <i><a class="jdocu" href="topic150.html#label7616">log_buffer</a></i>, <i><a class="jdocu" href="topic150.html#label7617">log_buffer_last</a></i>, <i><a class="jdocu" href="topic150.html#label7618">log_buffer_size</a></i>, <i><a class="jdocu" href="topic150.html#label7619">log_group_mask</a></i>, <i><a class="jdocu" href="topic150.html#label7620">log_groups</a></i>, <i><a class="jdocu" href="topic150.html#label7621">log_level</a></i>, <i><a class="jdocu" href="topic150.html#label7622">log_type_mask</a></i></dd>
+
+
+<dt class="jdocu_di"><b>Attribute List</b></dt><dd class="jdocu_di">
+<dl><dt><b><i>address_width</i></b></dt><a name="label15400"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+(<i>phys-bits</i>, <i>virt-bits</i>) Number of bits in physical and virtual addresses.</dd></dl>
+<dl><dt><b><i>afar_priority</i></b></dt><a name="label15401"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[ii]</b>.
+<p>
+<i>(priority, bit)</i> The number of the owning AFSR bit of the AFAR register, and its priority level.</dd></dl>
+<dl><dt><b><i>afsr_e_synd_priority</i></b></dt><a name="label15402"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[ii]</b>.
+<p>
+<i>(priority, bit)</i> The number of the owning AFSR bit of the AFSR.E_SYND register, and its priority level.</dd></dl>
+<dl><dt><b><i>afsr_m_synd_priority</i></b></dt><a name="label15403"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[ii]</b>.
+<p>
+<i>(priority, bit)</i> The number of the owning AFSR bit of the AFSR.M_SYND register field, and its priority level.</dd></dl>
+<dl><dt><b><i>aprof_views</i></b></dt><a name="label15404"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[[o,i]*]</b>.
+<p>
+((<i>address profiler</i>, <i>view</i>)*) Address profiler views selected for this processor. Affects only the display of profiling information, and has nothing to do with collecting it.
+<p>
+This attribute should contain a list of lists: one list for each address profiler view you want to select (in the order they are to appear), each containing first the address profiler object, then the index of the desired view.</dd></dl>
+<dl><dt><b><i>architecture</i></b></dt><a name="label15405"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Implemented architecture (sparc-v9)</dd></dl>
+<dl><dt><b><i>asi_names</i></b></dt><a name="label15406"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[s*]</b>; <b>integer</b> indexed;  indexed type: <b>i|[ii]</b>.
+<p>
+List of all ASI names</dd></dl>
+<dl><dt><b><i>auto_speculate_cwp</i></b></dt><a name="label15407"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+If set to TRUE, Simics will speculate on the value of the CWP register by inspecting save, restore, and return instructions in MAI mode.</dd></dl>
+<dl><dt><b><i>big_endian</i></b></dt><a name="label15408"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>b</b>.
+<p>
+This attribute is TRUE if the processor uses big-endian byte order and FALSE if it uses little-endian.</dd></dl>
+<dl><dt><b><i>branch_prof_support</i></b></dt><a name="label15409"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>b</b>.
+<p>
+True if this processor supports branch profiling in <tt>-stall</tt> mode, false otherwise.</dd></dl>
+<dl><dt><b><i>branch_recorders</i></b></dt><a name="label15410"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[o*]</b>.
+<p>
+Branch recorders attached to this processor.</dd></dl>
+<dl><dt><b><i>break_on_error_state</i></b></dt><a name="label15411"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+Break the simulation if a processor enters error_state</dd></dl>
+<dl><dt><b><i>committed_instructions</i></b></dt><a name="label15412"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Number of committed instructions for an out of order target.Same as step count for an in-order Simics.</dd></dl>
+<dl><dt><b><i>control_registers</i></b></dt><a name="label15413"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[si]*]</b>; <b>integer</b> or <b>string</b> indexed;  indexed type: <b>Integer</b>.
+<p>
+List of all control registers. The attribute supports both integer and string indexed.</dd></dl>
+<dl><dt><b><i>cpu_group</i></b></dt><a name="label15414"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The group that this processor belongs to. A cpu group is a collection if cpus that may share memory and/or send interrupts between them. The group must implement the "cpu_group"interface and the sparc-irq-businterface.</dd></dl>
+<dl><dt><b><i>current_context</i></b></dt><a name="label15415"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Current context object.</dd></dl>
+<dl><dt><b><i>current_globals</i></b></dt><a name="label15416"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Number of the current set of global registers.</dd></dl>
+<dl><dt><b><i>cycle_fractions</i></b></dt><a name="label15417"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Modeling parameter related to processor scheduling.</dd></dl>
+<dl><dt><b><i>cycles</i></b></dt><a name="label15418"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Time measured in cycles from machine start.</dd></dl>
+<dl><dt><b><i>dbg_compile_block</i></b></dt><a name="label15419"></a><dd><b>Pseudo</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+Force compile of block.</dd></dl>
+<dl><dt><b><i>do_allocate_target_registers</i></b></dt><a name="label15420"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Target register allocation enable.</dd></dl>
+<dl><dt><b><i>do_reissue</i></b></dt><a name="label15421"></a><dd><b>Session</b> attribute; <b>write-only</b> access; type: <b>Integer</b>.
+<p>
+Obsolete attribute that was used to keep information about the current memory transaction if is_stalling is set.</dd></dl>
+<dl><dt><b><i>enabled_flag</i></b></dt><a name="label15422"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+TRUE if the processor is enabled. If FALSE, it will see time (cycles) pass but not execute steps.</dd></dl>
+<dl><dt><b><i>event_desc</i></b></dt><a name="label15423"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; ; <b>integer</b> indexed;  indexed type: <b>[[o|n,s,i]*]</b>.
+<p>
+ ((<i>object</i>, <i>description</i>, <i>time</i>)*). All events in queue with a human-readable description. The attribute is indexed by queue (Sim_Queue_Step/Time).</dd></dl>
+<dl><dt><b><i>extra_irq_enable</i></b></dt><a name="label15424"></a><dd><b>Pseudo</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+The value if this attribute is used as a second interrupt enable flag for the processor. For interrupts to be enabled, the pstate.ie must be 1 and extra_irq_enable must be set to .TRUE. The default value is TRUE.</dd></dl>
+<dl><dt><b><i>fp_registers</i></b></dt><a name="label15425"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[i{32}]</b>.
+<p>
+List of all floating point registers.</dd></dl>
+<dl><dt><b><i>freq_mhz</i></b></dt><a name="label15426"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>i|f</b>.
+<p>
+Processor clock frequency in MHz.</dd></dl>
+<dl><dt><b><i>global_registers</i></b></dt><a name="label15427"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{8}]{4}]</b>.
+<p>
+List of all global registers.</dd></dl>
+<dl><dt><b><i>global_set_names</i></b></dt><a name="label15428"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[ssss]</b>.
+<p>
+Names of the four sets with global registers.</dd></dl>
+<dl><dt><b><i>impl_dep_125_no_clear</i></b></dt><a name="label15429"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+If TRUE, the upper 32 bits of PC will not be cleared (even if pstate.am is 1) on register writes caused by 'call' 'jmpl', 'rdpc' and traps.</dd></dl>
+<dl><dt><b><i>instruction_fetch_line_size</i></b></dt><a name="label15430"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Instruction fetch line size for this processor.</dd></dl>
+<dl><dt><b><i>instruction_fetch_mode</i></b></dt><a name="label15431"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+Instruction fetch mode</dd></dl>
+<dl><dt><b><i>is_stalling</i></b></dt><a name="label15432"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+TRUE if the processor is currently stalling by request of a timing-model.</dd></dl>
+<dl><dt><b><i>lock_granularity</i></b></dt><a name="label15433"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Lock granularity of atomic instructions</dd></dl>
+<dl><dt><b><i>lsq_enabled</i></b></dt><a name="label15434"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+When non-zero, the internal load/store queue is enabled. Only applicable if ooo-mode is "micro-architecture"</dd></dl>
+<dl><dt><b><i>mai_debug</i></b></dt><a name="label15435"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+(internal) Set debug file for MAI</dd></dl>
+<dl><dt><b><i>max_trap_levels</i></b></dt><a name="label15436"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The number of trap levels.</dd></dl>
+<dl><dt><b><i>memory_profilers</i></b></dt><a name="label15437"></a><dd><b>Session</b> attribute; <b>read/write</b> access; type: <b>[o|n*]</b>; <b>integer</b> indexed;  indexed type: <b>Object or Nil</b>.
+<p>
+Memory read/write profilers.</dd></dl>
+<dl><dt><b><i>memory_profiling_granularity_log2</i></b></dt><a name="label15438"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+Base 2 logarithm of memory profiling granularity.</dd></dl>
+<dl><dt><b><i>min_cacheline_size</i></b></dt><a name="label15439"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The minimum size (in bytes) of a cache line that can be represented by Simics (when connecting a cache memhier).</dd></dl>
+<dl><dt><b><i>mmu</i></b></dt><a name="label15440"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+The associated MMU object, implementing the 'mmu' interface.</dd></dl>
+<dl><dt><b><i>mode_counters</i></b></dt><a name="label15441"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[[sii]*]</b>.
+<p>
+((<i>name</i>, <i>user-value</i>, <i>supervisor-value</i>), ...) List of per-mode counters.</dd></dl>
+<dl><dt><b><i>no_unpriv_nucleus_ifetch</i></b></dt><a name="label15442"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>b</b>.
+<p>
+If set, unprivileged instruction fetches are not allowed from nucleus ASI.</dd></dl>
+<dl><dt><b><i>num_windows</i></b></dt><a name="label15443"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number of register windows.</dd></dl>
+<dl><dt><b><i>ooo_mode</i></b></dt><a name="label15444"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+"in-order" or "micro-architecture".</dd></dl>
+<dl><dt><b><i>pending_exception</i></b></dt><a name="label15445"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The exception number of any pending exception.</dd></dl>
+<dl><dt><b><i>pending_interrupt</i></b></dt><a name="label15446"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Set to 0x60 (Interrupt_Vector) if an external interrupt is pending. 1 - 15 for soft interrupts.</dd></dl>
+<dl><dt><b><i>pending_trap</i></b></dt><a name="label15447"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The exception number of any pending asynchronous trap.</dd></dl>
+<dl><dt><b><i>physical_io</i></b></dt><a name="label15448"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+I/O space. Must implement both the memory-space and the breakpoint interface.</dd></dl>
+<dl><dt><b><i>physical_memory</i></b></dt><a name="label15449"></a><dd><b>Required</b> attribute; <b>read/write</b> access; type: <b>Object</b>.
+<p>
+Physical memory space. Must implement both the memory-space and the breakpoint interface.</dd></dl>
+<dl><dt><b><i>processor_number</i></b></dt><a name="label15450"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Simics internal processor number for this CPU. Each processor must have a unique processor number. This attribute can only be set as part of an initial configuration.</dd></dl>
+<dl><dt><b><i>pstate_mask</i></b></dt><a name="label15451"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Register pstate bit mask.</dd></dl>
+<dl><dt><b><i>reorder_buffer_pop_count</i></b></dt><a name="label15452"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>Integer</b>.
+<p>
+The number of instruction currently in the reorder buffer. Only applicable if the target supports out of order  execution.</dd></dl>
+<dl><dt><b><i>reorder_buffer_size</i></b></dt><a name="label15453"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The size of the reorder buffer. Only applicable if the target supports out of order execution.</dd></dl>
+<dl><dt><b><i>rstv_address</i></b></dt><a name="label15454"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The RED_state trap vector base address</dd></dl>
+<dl><dt><b><i>simicsfs</i></b></dt><a name="label15455"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Object or Nil</b>.
+<p>
+Simicsfs object used to access the host file-system. If set to non NIL, ASR 31 is used by the simicsfs driver to access the simicsfs device.</dd></dl>
+<dl><dt><b><i>stall_time</i></b></dt><a name="label15456"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+The number of cycles the processor will stall</dd></dl>
+<dl><dt><b><i>stalling_info</i></b></dt><a name="label15457"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]</b>.
+<p>
+If is_stalling is set, this contains information about the current memory operation.</dd></dl>
+<dl><dt><b><i>step_per_cycle_mode</i></b></dt><a name="label15458"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>String</b>.
+<p>
+"constant" indicates a constant finite step/cycle factor; "infinite" means that steps are run without advancing time.</dd></dl>
+<dl><dt><b><i>step_queue</i></b></dt><a name="label15459"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[o|n,a,s,i]*]</b>.
+<p>
+((<i>object</i>, <i>value</i>, <i>slot</i>, <i>step</i>)*). Pending step queue events. <i>object</i> must implement the event_poster interface.</dd></dl>
+<dl><dt><b><i>step_rate</i></b></dt><a name="label15460"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[iii]</b>.
+<p>
+(<i>q</i>, <i>p</i>, <i>r</i>) where <i>q</i>/<i>p</i> is the step per cycle rate, <i>p</i> is a power of 2 and <i>r</i> indicates how much of a cycle that the current step has  consumed.</dd></dl>
+<dl><dt><b><i>steps</i></b></dt><a name="label15461"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Integer</b>.
+<p>
+Number steps executed since machine start.</dd></dl>
+<dl><dt><b><i>system_tick_frequency</i></b></dt><a name="label15462"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>Float</b>.
+<p>
+The frequency of the system tick counter in MHz, default is 12.5</dd></dl>
+<dl><dt><b><i>time_queue</i></b></dt><a name="label15463"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[o|n,a,s,i]*]</b>.
+<p>
+((<i>object</i>, <i>value</i>, <i>slot</i>, <i>cycle</i>)*). Pending time queue events. <i>object</i> must implement the event_poster interface.</dd></dl>
+<dl><dt><b><i>trap_times</i></b></dt><a name="label15464"></a><dd><b>Pseudo</b> attribute; <b>read-only</b> access; type: <b>[i*]</b>.
+<p>
+List of the time in cycles when a trap has occurred for each trap-level.</dd></dl>
+<dl><dt><b><i>turbo_alloc_memory</i></b></dt><a name="label15465"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Force allocation of memory.</dd></dl>
+<dl><dt><b><i>turbo_block_info</i></b></dt><a name="label15466"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Block stats.</dd></dl>
+<dl><dt><b><i>turbo_blocks</i></b></dt><a name="label15467"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>[[iiiii]*]</b>.
+<p>
+Compiled blocks.</dd></dl>
+<dl><dt><b><i>turbo_code_area</i></b></dt><a name="label15468"></a><dd><b>Session</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Code areas.</dd></dl>
+<dl><dt><b><i>turbo_debug_level</i></b></dt><a name="label15469"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Turbo engine debug level.</dd></dl>
+<dl><dt><b><i>turbo_execution_mode</i></b></dt><a name="label15470"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Turbo enable.</dd></dl>
+<dl><dt><b><i>turbo_exhaust_current_block</i></b></dt><a name="label15471"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+Allocate all code space in the current block.</dd></dl>
+<dl><dt><b><i>turbo_global_vars</i></b></dt><a name="label15472"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Global symbols.</dd></dl>
+<dl><dt><b><i>turbo_heap_start</i></b></dt><a name="label15473"></a><dd><b>Session</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Start of heap.</dd></dl>
+<dl><dt><b><i>turbo_link_targets</i></b></dt><a name="label15474"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Link targets.</dd></dl>
+<dl><dt><b><i>turbo_max_compiled_blocks</i></b></dt><a name="label15475"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Max number of blocks.</dd></dl>
+<dl><dt><b><i>turbo_max_trace_size</i></b></dt><a name="label15476"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Max translation unit size.</dd></dl>
+<dl><dt><b><i>turbo_processor_offsets</i></b></dt><a name="label15477"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Processor offsets.</dd></dl>
+<dl><dt><b><i>turbo_register_offsets</i></b></dt><a name="label15478"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read-only</b> access; type: <b>unknown type</b>.
+<p>
+Register offsets.</dd></dl>
+<dl><dt><b><i>turbo_stat</i></b></dt><a name="label15479"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>; <b>string</b> indexed;  indexed type: <b>unknown type</b>.
+<p>
+Stats.</dd></dl>
+<dl><dt><b><i>turbo_stats</i></b></dt><a name="label15480"></a><dd><b>Pseudo</b> <b>class</b> attribute; <b>write-only</b> access; type: <b>unknown type</b>.
+<p>
+When set to one, print stats.</dd></dl>
+<dl><dt><b><i>turbo_threshold</i></b></dt><a name="label15481"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Translation threshold.</dd></dl>
+<dl><dt><b><i>turbo_use_direct_sp</i></b></dt><a name="label15482"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Direct stack pointer enable.</dd></dl>
+<dl><dt><b><i>turbo_use_dstc_direct_lookup</i></b></dt><a name="label15483"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Direct DSTC lookup enable.</dd></dl>
+<dl><dt><b><i>turbo_use_off_page_chaining</i></b></dt><a name="label15484"></a><dd><b>Session</b> <b>class</b> attribute; <b>read/write</b> access; type: <b>unknown type</b>.
+<p>
+Off page chaining enable.</dd></dl>
+<dl><dt><b><i>windowed_registers</i></b></dt><a name="label15485"></a><dd><b>Optional</b> attribute; <b>read/write</b> access; type: <b>[[i{16}]*]</b>.
+<p>
+List of all window registers.</dd></dl>
+</dd>
+
+</dl>
+
+<a name="label15486"></a><h4 class="jdocu">Command List</h4 class="jdocu">
+
+
+<dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic508.html#label17766">log_object</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic508.html#label17770">log</a>, <a class="jdocu" href="topic508.html#label17772">log-group</a>, <a class="jdocu" href="topic508.html#label17774">log-level</a>, <a class="jdocu" href="topic508.html#label17776">log-size</a>, <a class="jdocu" href="topic508.html#label17778">log-type</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic535.html#label17966">sparc_v9</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic535.html#label17970">list-asis</a>, <a class="jdocu" href="topic535.html#label17972">pregs-fpu</a></dd>
+
+
+<dt class="jdocu_di"><b>Commands defined by interface <a class="jdocu" href="topic523.html#label17819">processor</a></b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic523.html#label17828">add-memory-profiler</a>, <a class="jdocu" href="topic523.html#label17830">aprof-views</a>, <a class="jdocu" href="topic523.html#label17832">attach-branch-recorder</a>, <a class="jdocu" href="topic523.html#label17834">break-cr</a>, <a class="jdocu" href="topic523.html#label17836">cycle-break</a>, <a class="jdocu" href="topic523.html#label17839">cycle-break-absolute</a>, <a class="jdocu" href="topic523.html#label17842">detach-branch-recorder</a>, <a class="jdocu" href="topic523.html#label17844">disable</a>, <a class="jdocu" href="topic523.html#label17846">disassemble</a>, <a class="jdocu" href="topic523.html#label17849">down</a>, <a class="jdocu" href="topic523.html#label17851">enable</a>, <a class="jdocu" href="topic523.html#label17853">frame</a>, <a class="jdocu" href="topic523.html#label17856">info</a>, <a class="jdocu" href="topic523.html#label17858">instruction-fetch-mode</a>, <a class="jdocu" href="topic523.html#label17861">io-read</a>, <a class="jdocu" href="topic523.html#label17863">io-write</a>, <a class="jdocu" href="topic523.html#label17865">list</a>, <a class="jdocu" href="topic523.html#label17867">list-memory-profilers</a>, <a class="jdocu" href="topic523.html#label17869">load-binary</a>, <a class="jdocu" href="topic523.html#label17871">logical-to-physical</a>, <a class="jdocu" href="topic523.html#label17874">pos</a>, <a class="jdocu" href="topic523.html#label17876">pregs</a>, <a class="jdocu" href="topic523.html#label17878">pregs-hyper</a>, <a class="jdocu" href="topic523.html#label17880">print-statistics</a>, <a class="jdocu" href="topic523.html#label17882">print-time</a>, <a class="jdocu" href="topic523.html#label17885">psym</a>, <a class="jdocu" href="topic523.html#label17887">read</a>, <a class="jdocu" href="topic523.html#label17889">read-reg</a>, <a class="jdocu" href="topic523.html#label17891">register-number</a>, <a class="jdocu" href="topic523.html#label17893">remove-memory-profiler</a>, <a class="jdocu" href="topic523.html#label17895">set-context</a>, <a class="jdocu" href="topic523.html#label17897">set-pc</a>, <a class="jdocu" href="topic523.html#label17899">stack-trace</a>, <a class="jdocu" href="topic523.html#label17903">start-instruction-profiling</a>, <a class="jdocu" href="topic523.html#label17905">step-break</a>, <a class="jdocu" href="topic523.html#label17909">step-break-absolute</a>, <a class="jdocu" href="topic523.html#label17913">sum</a>, <a class="jdocu" href="topic523.html#label17915">symval</a>, <a class="jdocu" href="topic523.html#label17918">trace-cr</a>, <a class="jdocu" href="topic523.html#label17920">unbreak-cr</a>, <a class="jdocu" href="topic523.html#label17922">untrace-cr</a>, <a class="jdocu" href="topic523.html#label17924">up</a>, <a class="jdocu" href="topic523.html#label17926">wait-for-cycle</a>, <a class="jdocu" href="topic523.html#label17928">wait-for-step</a>, <a class="jdocu" href="topic523.html#label17930">write</a>, <a class="jdocu" href="topic523.html#label17932">write-reg</a>, <a class="jdocu" href="topic523.html#label17934">x</a></dd>
+
+</dl>
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic453.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic455.html">Next</a></span></p>
+</body>
+</html>

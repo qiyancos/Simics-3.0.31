@@ -1,0 +1,18 @@
+// interrupt.dml
+//
+// This module contains types needed when using or implementing the
+// interfaces simple_interrupt and/or trigger
+dml 1.0;
+
+header %{
+#include <simics/devs/interrupt.h>
+%}
+
+typedef struct {
+    void trigger(conf_object_t *obj, int param);
+} trigger_interface_t;
+
+typedef struct {
+    void interrupt(conf_object_t *obj, int irq);
+    void interrupt_clear(conf_object_t *obj, int irq);
+} simple_interrupt_interface_t;

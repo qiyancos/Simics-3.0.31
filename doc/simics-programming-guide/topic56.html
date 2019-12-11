@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Writing a PCI Device in C/C++</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(140, true);
+</script>
+<a name="label263"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic55.html">Previous</a> - <a class="jdocu" href="topic53.html">Up</a> - <a class="jdocu" href="topic57.html">Next</a></span></p>
+<h3 class="jdocu">11.3&nbsp;&nbsp;&nbsp;Writing a PCI Device in C/C++</h3 class="jdocu">
+
+
+<p>
+<a name="label264"></a><h4 class="jdocu">11.3.1&nbsp;&nbsp;&nbsp;API and Interfaces</h4 class="jdocu">
+
+
+The following APIs and interfaces can be used when writing PCI devices
+in Simics.
+<p>
+<dl><dt><b>PCI Device API</b></dt><dd>Used for PCI devices, and optionally for host-to-PCI bridges.
+</dd><dt><b>Simics API</b></dt><dd>Since it is used for all Simics modules, it also applies to PCI
+devices.
+</dd><dt><b>PCI_BUS_INTERFACE</b></dt><dd>
+Implemented by the <b>pci-bus</b> module in Simics. This interface shouldn't be
+used directly by PCI devices. The PCI Device API should be used instead.
+PCI bridges can use this interface to configure the <b>pci-bus</b>.
+</dd><dt><b>PCI_DEVICE_INTERFACE</b></dt><dd>
+Simics internal interface that shouldn't be used directly. May change
+without notice. Developers should use the PCI Device API instead.
+</dd><dt><b>PCI_BRIDGE_INTERFACE</b></dt><dd>
+This is a dummy interface currently implemented by all PCI bridges.
+It will probably be removed in a future Simics version.
+</dd><dt><b>PCI_INTERRUPT_INTERFACE</b></dt><dd>
+This interface should only be implemented by PCI devices that handle
+interrupts, i.e.,  when a device other than the bridge handles PCI
+interrupts on the PCI bus.
+</dd></dl>
+<p>
+
+<a name="label265"></a><h4 class="jdocu">11.3.2&nbsp;&nbsp;&nbsp;PCI Device Setup</h4 class="jdocu">
+
+
+When creating a PCI device using the <i>PCI Device API</i>, some common
+initialization must be done. First, typically in the <b><i>init_local</i></b>
+function of the module, the PCI device-specific attributes must be
+registered. This is done by calling <b><i>PCI_register_device_attributes</i></b>.
+<p>
+Then, when the object is created, the generic part of the PCI device must
+initialized. The <b><i>PCI_device_init</i></b> function is used for this, and
+is called from the device's <b><i>new_instance</i></b> function. It takes several
+function pointers as arguments. These functions are used to override the
+generic PCI device behavior. Most of them are optional, but some must be
+implemented by the new device.
+<p>
+Once the generic part is initialized, the configuration registers should
+be setup. Several configuration registers are device specific and have be
+assigned their values here. Example:
+<pre class="jdocu_small" style="color: black">
+PCI_write_config_register(&amp;bcm_ptr-&gt;pci, PCI_VENDOR_ID,   0x12ae);
+PCI_write_config_register(&amp;bcm_ptr-&gt;pci, PCI_DEVICE_ID,   0x1647);
+PCI_write_config_register(&amp;bcm_ptr-&gt;pci, PCI_STATUS,      0x02b0);
+PCI_write_config_register(&amp;bcm_ptr-&gt;pci, PCI_REVISION_ID, 0x00);
+PCI_write_config_register(&amp;bcm_ptr-&gt;pci, PCI_CLASS_CODE,  0x020000);
+PCI_write_config_register(&amp;bcm_ptr-&gt;pci, PCI_HEADER_TYPE, 0x00);
+...
+</pre>
+<p>
+
+<a name="label266"></a><h4 class="jdocu">11.3.3&nbsp;&nbsp;&nbsp;PCI Device Mappings and BARs</h4 class="jdocu">
+
+
+Among the configuration registers there are some base address registers
+(BARs) that specify the memory and I/O mappings that the device supports.
+The software uses the BARs to figure out how large the mappings are,
+where they can be placed in memory, and also to actually map the device
+in the corresponding memory spaces.
+<p>
+The PCI Device API has two functions that can be called from
+<b><i>new_instance</i></b> to tell the generic PCI code to handle accesses to
+a BAR. <b><i>PCI_handle_mapping32</i></b> and <b><i>PCI_handle_mapping64</i></b>
+are used for 32 and 64-bit mappings respectively. Note that 64-bit mappings
+use two base address registers.
+<p>
+There are also PCI Device API functions to modify the mappings for the
+device at runtime. This is usually not needed, but there are PCI devices
+that allow software to modify the mappings in more ways than with BARs,
+and in this case the functions in question are useful:
+<b><i>PCI_set_map_base</i></b>,  <b><i>PCI_get_map_base</i></b>,
+<b><i>PCI_set_map_size</i></b>, <b><i>PCI_get_map_base</i></b>,
+<b><i>PCI_set_map_enable</i></b>, <b><i>PCI_get_map_enable</i></b>,
+<b><i>PCI_set_map_offset</i></b> and <b><i>PCI_get_map_offset</i></b>.
+<p>
+
+<a name="label267"></a><h4 class="jdocu">11.3.4&nbsp;&nbsp;&nbsp;Accessing Memory</h4 class="jdocu">
+
+
+<p>
+There are several functions in the PCI Device API that can be used to
+access the configuration, memory and I/O spaces. Calling them is equivalent
+to issuing PCI bus transactions in a real system. This should only be
+done by master capable devices.
+<p>
+<b><i>PCI_data_from_memory</i></b> and <b><i>PCI_data_to_memory</i></b> access
+raw data from a specified memory space. No endian conversion is performed.
+These functions are often used for DMA block transactions.
+<p>
+<b><i>PCI_value_from_memory</i></b> and <b><i>PCI_value_to_memory</i></b>
+use a value in host-endian order, and performs byte-swapping if needed.
+This is for example useful when the device reads data from memory that
+it should interpret.
+<p>
+
+<a name="label268"></a><h4 class="jdocu">11.3.5&nbsp;&nbsp;&nbsp;Interrupts</h4 class="jdocu">
+
+
+The functions <b><i>PCI_raise_interrupt</i></b> and <b><i>PCI_lower_interrupt</i></b>
+changes the output value of the interrupt pin used by the device. The interrupt
+pin is specified in the INTERRUPT_PIN configuration register.
+<p>
+If the interrupt pin is already asserted, a call to
+<b><i>PCI_raise_interrupt</i></b> has no effect, and similar for
+<b><i>PCI_lower_interrupt</i></b> when the interrupt pin already is lowered. This
+is important to be able to model level triggered interrupts, where the
+interrupt target can count the raise and lower calls from different devices to
+determine the actual interrupt signal level.
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic55.html">Previous</a> - <a class="jdocu" href="topic53.html">Up</a> - <a class="jdocu" href="topic57.html">Next</a></span></p>
+</body>
+</html>

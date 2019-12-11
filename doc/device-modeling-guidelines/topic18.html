@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Transform Events into Functions of Time</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(32, true);
+</script>
+<a name="label57"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+<h3 class="jdocu">7.3&nbsp;&nbsp;&nbsp;Transform Events into Functions of Time</h3 class="jdocu">
+
+
+<p>
+   Continuous events or events that occur regularly should be avoided.
+   Instead, their effects should be computed (based on the elapsed CPU
+   time) when they become visible.  The archetypal example of this
+   is a cycle <a name="label58">counter</a>: instead of invoking the model to update
+   the value on every cycle, the model should compute the value on
+   demand whenever the counter is read.  If the value is read every N
+   cycles, this replaces N increments with one subtraction.  If the
+   value is never read, no computation is performed at all.
+<p>
+   This principle is valid even if the computation takes as much or
+   more time than the sum of the individual updates: if the value is
+   never needed, it will never be computed, and even if it is, it is
+   usually more effective to optimize the model by reducing the number
+   of invocations than by reducing the time spent in each invocation.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic17.html">Previous</a> - <a class="jdocu" href="topic15.html">Up</a> - <a class="jdocu" href="topic19.html">Next</a></span></p>
+</body>
+</html>

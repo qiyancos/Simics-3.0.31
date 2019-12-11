@@ -1,0 +1,298 @@
+Release Notes for the DML Toolkit package
+-----------------------------------------
+
+The dmlc compiler currently handles versions 0.9 and 1.0 of the DML
+device modeling language. For information about different versions of
+the language and compiler, see the appendix "DML Language Changes" in
+the DML Reference Manual.
+
+Build 1400
+==========
+
+ * Handle variable width specifiers in log statements. (bug #8618)
+
+
+Build 1389
+==========
+
+ * The --html flag was restored.
+
+
+Build 1384
+==========
+
+ * Fixed so that $qname can be used when calling functions. (bug #8041)
+
+ * New error message (ECAST) for bad casts that went undetected. (bug #8059)
+
+
+Build 1382
+==========
+
+ * Fixed the type of divisions between an integer and a floating-point value.
+   (bug #6853)
+
+ * Fixed pointer arithmetic. (bug #7497)
+
+ * Fixed syntactical problems with 'after' calls. (bug #6657)
+
+ * Fixed checkpoint unpredictability when 'after' calls with conflicting names
+   are used. (bug #8034)
+
+
+Build 1381
+==========
+
+ * Fixed an internal compiler error when using parameters from
+   anonymous banks. (bug #7809)
+
+
+Build 1374
+==========
+
+ * Fixed a bug that caused dmlc to generate files in the source directory if a
+   full path name to the source file was given. (bug #7652)
+
+
+Build 1367
+==========
+
+ * Changed "data" objects so that they can never be used as hierarchical
+   objects with parameters.  Previously they were assigned standard parameters
+   "dev", "this", and "parent", which could conflict with struct member names.
+   (bug #7070)
+
+
+Build 1365
+==========
+
+ * Floating point constant such as 1E6 now work. (bug #5522)
+
+ * Negation of floating point values didn't work. (bug #6999)
+
+ * Some minor bugs in the compiler were fixed.
+   (bug #6928, #6987)
+
+
+Build 1352
+==========
+
+ * Some minor bugs in the compiler were fixed.
+   (bug #6174, #6227, #6283, #6378, #6398, #6409)
+
+
+Build 1346
+==========
+
+ * An attribute can now be written inside a group, which can be used as a way
+   of creating multidimensional arrays. (bug #5989)
+
+
+Build 1342
+==========
+
+ * Updated documentation of 'byte_order' parameter. (bug #5933)
+
+ * Function calls to C functions were not type checked properly previously.
+   This release fixes this, but it should be noted that some code might need to
+   be updated if it contains type errors that have gone undetected. (bug #5408)
+
+ * Improved error checking.
+
+
+Build 1341
+==========
+
+ * Fixed a bug that sometimes cause accesses to misinterpreted as accesses to a
+   register array with an enourmous index, causing a simulator crash.
+   (bug #5878)
+
+ * It is now possible to declare an C function as taking a variable number of
+   arguments in an 'extern' declarations.  This can reduce the number of
+   compilation warnings. When doing this, the DML compiler can't do any type
+   checking on function arguments, and some care need to be taken not to
+   e.g. pass 64-bit values to functions expecting 32-bit values. (bug #3007)
+
+ * Previous versions of dmlc didn't properly check the types of expressions in
+   assignments.  This has now been fixed, which means that it could detect
+   problems in existing code that went undetected before.
+
+
+Build 1340
+==========
+
+ * Fixed another compilation time problem when two large register arrays were
+   located close together. (bug #5857)
+
+
+Build 1339
+==========
+
+ * Fixed a bug so that <<= and >>= work as intended. (bug #5803)
+
+ * Reduced compilation times when using large register arrays.
+
+ * Made it possible to create persistent attributes by setting the 'persistent'
+   parameter to true
+
+
+Build 1336
+==========
+
+ * Fixed a bug that caused bad handling of switch statements where the switch
+   expression was a constant. (bug #5698)
+ 
+
+Build 1335
+==========
+
+ * The Emacs DML mode has been improved to provide proper syntax highlighting
+   for DML.
+
+ * DML PCI common code has been made more flexible by setting many functions
+   are default so they can be overriden
+
+
+Build 1334
+==========
+
+ * A serious bug in the minus arithmetic operator has been fixed.  Expressions
+   that followed the patterns (x * C1 - C2), (C1 * x - C2), where C1 and C2 are
+   arbitrary constants were sometimes miscalculated. The same problem existed
+   for expressions where the multiplication was replaced another arithmetic
+   operator other than addition. (bug #5627)
+
+ * A parameter called "log_group" has been added to device, bank, group, and
+   register objects.  If set, affected register accesses will be logged using
+   this log group in addition to the Register_Read or Register_Write log
+   groups.
+
+ * A bug that made dmlc crash if a variable was used when inlining another
+   method several times has been fixed. (bug #5639)
+
+
+Build 1332
+==========
+
+ * Post increment and decrement operators have been fixed. (bug #5553)
+
+ * Declaration an attribute with parameter allocate_type = "string"
+   now works.  (bug #5562)
+
+ * If an argument expression sent to an inlined method had side effects, the
+   side effects were sometimes not executed if the inlined method didn't use
+   the value.  This has been fixed (bug #5582)
+
+Build 1331
+==========
+
+ * rom interface definition added to standard Simics import files.
+
+ * PCI support: documentation on how to write PCI devices in DML is now
+   available in the Programming Guide.
+
+ * PCI support: PCI BAR mapping customization was extended. Refer to the
+   Programming Guide for more information.
+
+
+Build 1330
+==========
+
+ * PCI support: PCI BAR mappings can be customized at mapping time by
+   overriding the new customize_mapping() function in each BAR.
+
+
+Build 1329
+==========
+
+ * A bug that prevented the 'after (..) call ..;' statement to work was
+   fixed. (bug #5480)
+
+ * Some error handling bugs were fixed that made dmlc unable to detect
+   or properly report some error situations.
+
+
+Build 1327
+==========
+
+ * A bug that made it impossible to compare two boolean variables has been
+   fixed.  At the same time, this fix also made the compiler catch illegal
+   compares of booleans with integers. (bug #4900)
+
+ * Fixed a problem with the grammar that made it possible to declare local
+   variables and function parameters without a type.  Note that when declaring
+   external C functions with an empty parameter list, you should not write
+   (void). (bug #2722)
+
+ * Fixed a bug that made the compiler lose function calls made in the
+   initializer of local method variables if the variable wasn't used in the
+   method. (bug #5425)
+
+
+Build 1326
+==========
+
+ * A problem that made it hard to extract the object name of an objected
+   pointed to by a 'connect' has been fixed.  Another effect of this bug was
+   that some errors where '->' was used instead of '.' went undetected.  The
+   DEC21140A-dml sample code contained one such error and has been
+   updated. (bug #4690)
+
+
+Build 1322
+==========
+
+ * The DML tutorial has been updated.
+
+ * A bug that caused bad code to be generated in some cases when && or
+   || were used has been fixed. (bug #5269)
+
+
+Build 1321
+==========
+
+ * Attributes can now be declared as arrays.
+
+
+Build 1318
+==========
+
+ * Standard register templates (in utility.dml) have been changed to be less
+   verbose unless absolutely necessary, and adapted to work better with field.
+
+
+Build 1317
+==========
+
+ * A bug that prevented the 'get' and 'set' methods in banks from working
+   properly were fixed. (bug #4981)
+
+ * This release contains a rewrite of some of the internals of the DML
+   compiler.  This significantly reduces the compile time of some complex
+   models.  It also removes some limitations that caused problems when using
+   arrays of registers or connections. (bug #1973, bug #2967, bug #5021,
+   bug #5023)
+
+ * The 'ERANGE' error message has been removed. 
+
+
+Build 1315
+==========
+
+ * PCI device code has been added to the standard library files. The
+   DEC21140A-dml device is provided as an example (refer to the Simics
+   Programming Guide for more details).
+
+
+Build 1314
+==========
+
+ * A bug that prevented function type typedefs from working properly was
+   fixed. (bug #4934)
+
+
+Build 1313
+==========
+
+ * A bug that caused bad C code to be generated when using 'switch'
+   was fixed. (bug #4766, bug #4788)

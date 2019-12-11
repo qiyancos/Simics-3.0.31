@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>A Simple Device</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(7, true);
+</script>
+<a name="label10"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h3 class="jdocu">2.1&nbsp;&nbsp;&nbsp;A Simple Device</h3 class="jdocu">
+
+
+<p>
+The following DML program is an example of a "smallest device that does
+anything interesting":
+<pre class="jdocu_small" style="color: black">
+  // A very simple device
+  dml 1.0;
+  device simple_device;
+  import "io-memory.dml";
+
+  bank b {
+      parameter function = 0;
+      register r0 size 4 @0x0000 {
+          method read() -&gt; (result) {
+              log "info": "Hello, bus!";
+              result = 42;
+          }
+      }
+  }
+</pre>
+This models a memory-mapped device with a single 32-bit (4-byte)
+register at offset 0, which upon a read access will return the value 42
+as the result of the operation, and as a side effect print a log message
+with the text "Hello, bus!" to the Simics console.
+<p>
+To compile this program, you first need to set up a Simics workspace,
+using the <tt>workspace-setup</tt> script (see the <em>Simics
+Programming Guide</em> for details). In order to create DML skeleton
+files for your new device, you need to pass the flag
+<tt>--device=</tt><i>modulename</i><tt></tt> to the script, as follows:
+<pre class="jdocu_small" style="color: black">
+  $ <b>[simics]/bin/workspace-setup --dml=simple_device [home]/workspace</b>
+</pre>
+(If your workspace directory already exists and you just want to add a
+new module, you also need to specify the <tt>--force</tt> flag.) On
+Microsoft Windows, using Cygwin, you should use the script called
+<tt>[simics]/bin/workspace-setup.bat</tt> instead; also, make sure
+you have the default packages of the Cygwin "devel" category installed,
+as well as a working MinGW installation, <em>before</em> you try to set
+up the workspace; see Section <a class="jdocu" href="topic2.html#label6">1.2</a> for details.
+<p>
+You will now have a directory <tt>[home]/workspace</tt> containing
+(among other things) a GNU Makefile and a subdirectory named
+<tt>modules</tt>, which is where your modules are located. Open the
+generated skeleton file
+<tt>[home]/workspace/modules/simple_device/simple_device.dml</tt> in your
+favorite text editor, and modify its contents to look like the above
+program. (The main DML source file name should be the module name plus
+the extension <tt>.dml</tt>. Although they are usually the same, the
+module name does not have to be the same as the device name; a module
+could potentially contain more than one device.)
+<p>
+Now, go to the <tt>[home]/workspace</tt> directory and run GNU
+<tt>make</tt> (possibly named <tt>gmake</tt>, depending on your system).
+By default, this builds all your modules.
+<pre class="jdocu_small" style="color: black">
+  $ <b>cd <i>[home]</i>/workspace</b>
+  $ <b>./simics targets/vacuum/vacuum.simics</b>
+</pre>
+<p>
+When Simics has started, you should be prompted with
+"<tt>simics&gt;</tt>".  Congratulations, you now have a loadable
+Simics module! You can exit Simics by typing the <b>quit</b>
+command, or <b>q</b> for short.
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>q</b>
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

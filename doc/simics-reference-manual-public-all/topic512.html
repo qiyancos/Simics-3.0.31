@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>mips</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2251, true);
+</script>
+<a name="label17787"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic511.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic513.html">Next</a></span></p>
+<h3 class="jdocu">mips</h3 class="jdocu">
+
+
+<a name="label17788"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic168.html#label7886">mips-4kc</a>, <a class="jdocu" href="topic169.html#label7982">mips-5kc</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface is implemented by MIPS processors to provide various
+   functionality that is specific for this class of processors.
+<p>
+   There are currently no MIPS-specific functions.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct mips_interface {
+        int dummy;
+} mips_interface_t;
+
+#define MIPS_INTERFACE "mips"
+</pre>
+<p>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17790">info</a></td><td class="jdocu_noborder">print information about the device</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17792">pregs-fpu</a></td><td class="jdocu_noborder">print the floating point registers</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17794">print-tlb</a></td><td class="jdocu_noborder">print TLB contents</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17796">status</a></td><td class="jdocu_noborder">print status of the device</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17789"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17790"></a><a name="label17791"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mips&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mips&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the device.</dd>
+
+</dl>
+
+
+
+<a name="label17792"></a><a name="label17793"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mips&gt;.pregs-fpu</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mips&gt;.pregs-fpu</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the contents of the floating point registers.</dd>
+
+</dl>
+
+
+
+<a name="label17794"></a><a name="label17795"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mips&gt;.print-tlb</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mips&gt;.print-tlb</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the contents of the TLB of the processor.</dd>
+
+</dl>
+
+
+
+<a name="label17796"></a><a name="label17797"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;mips&gt;.status</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;mips&gt;.status</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the current status of the device.</dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic511.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic513.html">Next</a></span></p>
+</body>
+</html>

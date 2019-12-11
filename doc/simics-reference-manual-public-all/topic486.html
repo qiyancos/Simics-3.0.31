@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>a20</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2221, true);
+</script>
+<a name="label17679"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic485.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic487.html">Next</a></span></p>
+<h3 class="jdocu">a20</h3 class="jdocu">
+
+
+<a name="label17680"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic468.html#label16229">x86-486sx</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a>, <a class="jdocu" href="topic475.html#label16876">x86-p2</a>, <a class="jdocu" href="topic476.html#label17148">x86-p4</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   This interface is used between the A20 line handling device
+   (typically the keyboard controller) and the x86 processor.
+   
+<pre class="jdocu_small" style="color: black">typedef struct {
+        void (*set_a20_line)(conf_object_t *NOTNULL, int);
+        int (*get_a20_line)(conf_object_t *NOTNULL);
+} a20_interface_t;</pre>
+
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic485.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic487.html">Next</a></span></p>
+</body>
+</html>

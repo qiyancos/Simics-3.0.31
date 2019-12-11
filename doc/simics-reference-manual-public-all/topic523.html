@@ -1,0 +1,1329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>processor</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2263, true);
+</script>
+<a name="label17819"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic522.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic524.html">Next</a></span></p>
+<h3 class="jdocu">processor</h3 class="jdocu">
+
+
+<a name="label17820"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic18.html#label3033">alpha-ev5</a>, <a class="jdocu" href="topic28.html#label3410">armv5te</a>, <a class="jdocu" href="topic46.html#label4554">clock</a>, <a class="jdocu" href="topic123.html#label6794">ia64-itanium</a>, <a class="jdocu" href="topic124.html#label6853">ia64-itanium2</a>, <a class="jdocu" href="topic141.html#label7428">leon2</a>, <a class="jdocu" href="topic168.html#label7886">mips-4kc</a>, <a class="jdocu" href="topic169.html#label7982">mips-5kc</a>, <a class="jdocu" href="topic171.html#label8101">msp430</a>, <a class="jdocu" href="topic254.html#label9330">ppc405gp</a>, <a class="jdocu" href="topic264.html#label9716">ppc440gp</a>, <a class="jdocu" href="topic278.html#label10365">ppc440gx</a>, <a class="jdocu" href="topic297.html#label11100">ppc603e</a>, <a class="jdocu" href="topic299.html#label11254">ppc7400</a>, <a class="jdocu" href="topic300.html#label11410">ppc7447</a>, <a class="jdocu" href="topic301.html#label11589">ppc7450</a>, <a class="jdocu" href="topic302.html#label11750">ppc7457</a>, <a class="jdocu" href="topic303.html#label11936">ppc750</a>, <a class="jdocu" href="topic304.html#label12083">ppc750fx</a>, <a class="jdocu" href="topic305.html#label12247">ppc750gx</a>, <a class="jdocu" href="topic307.html#label12425">ppc970fx</a>, <a class="jdocu" href="topic453.html#label15309">ultrasparc-ii</a>, <a class="jdocu" href="topic454.html#label15397">ultrasparc-iii</a>, <a class="jdocu" href="topic455.html#label15487">ultrasparc-iii-i</a>, <a class="jdocu" href="topic456.html#label15577">ultrasparc-iii-plus</a>, <a class="jdocu" href="topic457.html#label15667">ultrasparc-iv</a>, <a class="jdocu" href="topic458.html#label15757">ultrasparc-iv-plus</a>, <a class="jdocu" href="topic459.html#label15847">ultrasparc-t1</a>, <a class="jdocu" href="topic468.html#label16229">x86-486sx</a>, <a class="jdocu" href="topic472.html#label16493">x86-hammer</a>, <a class="jdocu" href="topic475.html#label16876">x86-p2</a>, <a class="jdocu" href="topic476.html#label17148">x86-p4</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   Interface for accessing processor functionality.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef struct {
+        logical_address_t (*get_program_counter)(conf_object_t *NOTNULL cpu);
+        void (*set_program_counter)(conf_object_t *NOTNULL cpu,
+                                    logical_address_t pc);
+        int (*get_privilege_level)(conf_object_t *NOTNULL cpu);
+        tuple_int_string_t *(*disassemble)(conf_object_t *NOTNULL cpu,
+                                           generic_address_t address,
+                                           int type);
+        tuple_int_string_t (*disassemble_buf)(
+                conf_object_t *NOTNULL cpu, generic_address_t address,
+                byte_string_t opcode);
+        struct instr_info *(*instruction_info)(conf_object_t *NOTNULL cpu,
+                                               generic_address_t address,
+                                               int type);
+        void (*reset)(conf_object_t *NOTNULL cpu, int hard_reset);
+        processor_t *(*simcore)(processor_t *NOTNULL);
+        void (*pre_simcore)(processor_t *NOTNULL);
+        void (*post_simcore)(processor_t *NOTNULL);
+        processor_t *(*in_order_simcore)(processor_t *NOTNULL);
+        processor_t *(*step_queue_simcore)(processor_t *NOTNULL);
+        processor_t *(*mai_simcore)(processor_t *NOTNULL);
+        int (*dump_sr_stat)(const char *NOTNULL filename);
+        void (*print_instruction_queue)(conf_object_t *NOTNULL cpu,
+                                        int verbose);
+        void (*dbg_print_pistc)(conf_object_t *NOTNULL cpu, int table);
+        int (*stc_load)(conf_object_t *cpu, logical_address_t laddr,
+                        uint8 *value, int size);
+        int (*stc_store)(conf_object_t *cpu, logical_address_t laddr,
+                         uint8 *value, int size);
+        attr_value_t (*disassemble_range)(processor_t *NOTNULL cpu,
+                                          logical_address_t start,
+                                          int nlines, int back,
+                                          disass_flags_t flags);
+} processor_interface_t;
+
+#define PROCESSOR_INTERFACE "processor"
+</pre>
+<p>
+
+   The functions correspond to the API functions
+   <b><i>SIM_get_program_counter</i></b>,
+   <b><i>SIM_set_program_counter</i></b>,
+   <b><i>SIM_processor_privilege_level</i></b>, and
+   <b><i>SIM_disassemble</i></b>.  See the documentation for
+   those functions for more complete documentation.
+<p>
+   The function <b><i>instruction_info</i></b> can take either a physical address
+   (type = 0) or a logical address (type = 1). It returns a filled
+   <tt>instr_info_t</tt> structure. Only the SPARCv9 and the x86
+   architectures provides
+   a list of register dependencies as an array of <tt>reg_info_t</tt>.
+<p>
+   <a name="label17821"></a>
+<pre class="jdocu_small" style="color: black">struct instr_info {
+        instr_type_t   type;           /* ORed representation of 
+                                          instr_type_t */
+        logical_address_t return_pc;   /* (SPARC only) Return program counter
+                                          (defined iff It_Call is true) */
+        int            delay_slots;    /* (SPARC only) Delay slots for instruction
+                                          (defined iff It_Return) */
+        int            length;         /* Instruction length in bytes */
+        const char    *name;           /* (SPARC and x86) instruction name */
+
+        instr_info_dep_t *dependencies;
+};</pre>
+<a name="label17822"></a>
+<pre class="jdocu_small" style="color: black">typedef struct instr_info instr_info_t;</pre>
+
+   <a name="label17823"></a>
+<pre class="jdocu_small" style="color: black">struct instr_info_dep {
+        int number_of_regs;
+        reg_info_t regs[MAX_REG_INFO_REGS];
+};</pre>
+<a name="label17824"></a>
+<pre class="jdocu_small" style="color: black">typedef struct instr_info_dep instr_info_dep_t;</pre>
+
+   <a name="label17825"></a>
+<pre class="jdocu_small" style="color: black">struct reg_info {
+        register_type_t type;   /* register type */
+        register_id_t id;       /* register id */
+        unsigned input:1;       /* used as input */
+        unsigned output:1;      /* used as output */
+};</pre>
+<a name="label17826"></a>
+<pre class="jdocu_small" style="color: black">typedef struct reg_info reg_info_t;</pre>
+
+<p>
+   <dt class="jdocu_descitem">SEE ALSO</dt><dd>
+<a class="jdocu" href="topic8.html#label734">SIM_get_program_counter</a>, <a class="jdocu" href="topic8.html#label747">
+   SIM_processor_privilege_level</a>
+   
+</dd>
+
+
+<dt class="jdocu_di"><b>Command List</b></dt><dd class="jdocu_di">
+<table>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17828">add-memory-profiler</a></td><td class="jdocu_noborder">add a memory profiler to the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17830">aprof-views</a></td><td class="jdocu_noborder">manipulate list of selected address profiling views</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17832">attach-branch-recorder</a></td><td class="jdocu_noborder">attach a branch recorder to a processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17834">break-cr</a></td><td class="jdocu_noborder">break on control register updates</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17836">cycle-break</a></td><td class="jdocu_noborder">set cycle breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17839">cycle-break-absolute</a></td><td class="jdocu_noborder">set absolute cycle breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17842">detach-branch-recorder</a></td><td class="jdocu_noborder">detach a branch recorder from a processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17844">disable</a></td><td class="jdocu_noborder">switch processor off</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17846">disassemble</a></td><td class="jdocu_noborder">disassemble instructions</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17849">down</a></td><td class="jdocu_noborder">go down N stack frames</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17851">enable</a></td><td class="jdocu_noborder">switch processor on</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17853">frame</a></td><td class="jdocu_noborder">change current stack frame</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17856">info</a></td><td class="jdocu_noborder">print information about the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17858">instruction-fetch-mode</a></td><td class="jdocu_noborder">set or get current mode for instruction fetching</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17861">io-read</a></td><td class="jdocu_noborder">perform an I/O read inquiry coming from the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17863">io-write</a></td><td class="jdocu_noborder">perform an I/O  write inquiry coming from the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17865">list</a></td><td class="jdocu_noborder">list source and/or disassemble</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17867">list-memory-profilers</a></td><td class="jdocu_noborder">list memory profilers connected to the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17869">load-binary</a></td><td class="jdocu_noborder">load binary (executable) file into memory</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17871">logical-to-physical</a></td><td class="jdocu_noborder">translate logical address to physical</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17874">pos</a></td><td class="jdocu_noborder">address of line or function</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17876">pregs</a></td><td class="jdocu_noborder">print cpu registers</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17878">pregs-hyper</a></td><td class="jdocu_noborder">print hypervisor registers</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17880">print-statistics</a></td><td class="jdocu_noborder">print various statistics</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17882">print-time</a></td><td class="jdocu_noborder">print number of steps and cycles executed</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17885">psym</a></td><td class="jdocu_noborder">print value of symbolic expression</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17887">read</a></td><td class="jdocu_noborder">perform a read inquiry coming from the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17889">read-reg</a></td><td class="jdocu_noborder">read a register</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17891">register-number</a></td><td class="jdocu_noborder">get the number of a processor register</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17893">remove-memory-profiler</a></td><td class="jdocu_noborder">remove a memory profiler from the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17895">set-context</a></td><td class="jdocu_noborder">set the current context of a CPU</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17897">set-pc</a></td><td class="jdocu_noborder">set the program counter</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17899">stack-trace</a></td><td class="jdocu_noborder">display stack trace</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17903">start-instruction-profiling</a></td><td class="jdocu_noborder">get started with instruction profiling</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17905">step-break</a></td><td class="jdocu_noborder">set time breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17909">step-break-absolute</a></td><td class="jdocu_noborder">set absolute time breakpoint</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17913">sum</a></td><td class="jdocu_noborder"><i>deprecated</i> &#8212; sum a memory range</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17915">symval</a></td><td class="jdocu_noborder">evaluate symbolic expression</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17918">trace-cr</a></td><td class="jdocu_noborder">trace control register updates</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17920">unbreak-cr</a></td><td class="jdocu_noborder">break on control register updates</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17922">untrace-cr</a></td><td class="jdocu_noborder">trace control register updates</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17924">up</a></td><td class="jdocu_noborder">go up N stack frames</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17926">wait-for-cycle</a></td><td class="jdocu_noborder">wait until reaching cycle</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17928">wait-for-step</a></td><td class="jdocu_noborder">wait until reaching step</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17930">write</a></td><td class="jdocu_noborder">perform a write inquiry coming from the processor</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17932">write-reg</a></td><td class="jdocu_noborder">write to register</td></tr>
+<tr><td class="jdocu_noborder"><a class="jdocu" href="#label17934">x</a></td><td class="jdocu_noborder">examine raw memory contents</td></tr>
+</table>
+</dd>
+
+</dl>
+<a name="label17827"></a><h4 class="jdocu">Command Descriptions</h4 class="jdocu">
+
+
+
+
+<a name="label17828"></a><a name="label17829"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.add-memory-profiler</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.add-memory-profiler</b> <i>"type"</i> [<i>profiler</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Add a data profiler to the specified processor that will record either
+reads or writes to memory (indexed on physical address) depending on
+whether the <tt>type</tt> argument is 'read' or 'write'. An existing
+data profiler may be specified with the <tt>profiler</tt> argument;
+otherwise, a new data profiler will be created.</dd>
+
+</dl>
+
+
+
+<a name="label17830"></a><a name="label17831"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.aprof-views</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.aprof-views</b> [<i>add</i>] [<i>remove</i>] [<i>view</i>] [-clear] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Manipulate the processor attribute <tt>aprof-views</tt>, which
+determines which address profiler views are displayed alongside
+disassembled code.
+<p>
+The <i>add</i> and <i>view</i> arguments select an address profiler
+view to add to the list. Alternatively, the <i>remove</i> and
+<i>view</i> arguments specify an address profiler view to remove from
+the list. <i>view</i> defaults to 0 if not specified.
+<p>
+If called with the <tt>-clear</tt> flag, remove all address profiler
+views from the list.
+<p>
+If called without arguments, print a detailed list of the currently
+selected address profiler views for the processor.</dd>
+
+</dl>
+
+
+
+<a name="label17832"></a><a name="label17833"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.attach-branch-recorder</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.attach-branch-recorder</b> <i>branch_recorder</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Attach the branch recorder <i>branch_recorder</i> to the processor, so
+that it will record its branches. Note that once you have attached a
+branch recorder to a processor, it adapts to that processor type and
+you cannot attach it to other processors of different types.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label17842">&lt;processor&gt;.detach-branch-recorder</a></dd>
+
+</dl>
+
+
+
+<a name="label17834"></a><a name="label17835"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.break-cr</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.break-cr</b> (<i>"register"</i>|-all|-list) <br><b>&lt;processor&gt;.unbreak-cr</b> (<i>"register"</i>|-all|-list) <br><b>break-cr</b> (<i>"register"</i>|-all|-list) <br><b>unbreak-cr</b> (<i>"register"</i>|-all|-list) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables and disables breaking simulation on control register updates.
+When this is enabled, every time the specified control register is
+updated during simulation a message is printed.  The message will name
+the register being updated, and the new value.  The new value will be
+printed even if it is identical to the previous value.
+<p>
+The <i>reg-name</i> parameter specifies which control register should
+be traced.  The available control registers depends on the simulated
+target.
+<p>
+Instead of a register name, the <tt>-all</tt> flag may be given.  This
+will enable or disable tracing of all control register.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2426">trace-cr</a>, <a class="jdocu" href="topic491.html#label17715">&lt;breakpoint&gt;.break</a></dd>
+
+</dl>
+
+
+
+<a name="label17836"></a><a name="label17837"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.cycle-break</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17838"></a>&lt;processor&gt;.cb</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.cycle-break</b> <i>cycles</i> <br><b>cycle-break</b> [<i>cpu-name</i>] <i>cycles</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Sets a breakpoint so that the CPU will stop after running <i>cycles</i>
+number of cycles from the time the command was issued. If the CPU is not
+specified the selected frontend processor will be used (see <b>pselect</b>).
+<p>
+To list all breakpoints set use the command <b>list-breakpoints</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1826">cycle-break-absolute</a>, <a class="jdocu" href="topic13.html#label2391">step-break</a>, <a class="jdocu" href="topic13.html#label2395">step-break-absolute</a>, <a class="jdocu" href="topic13.html#label1979">list-breakpoints</a></dd>
+
+</dl>
+
+
+
+<a name="label17839"></a><a name="label17840"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.cycle-break-absolute</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17841"></a>&lt;processor&gt;.cba</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.cycle-break-absolute</b> <i>cycles</i> <br><b>cycle-break-absolute</b> [<i>cpu-name</i>] <i>cycles</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set a breakpoint so that the selected CPU will stop after its cycle counter has
+reached the <i>cycles</i> value. If the CPU is not specified the selected
+frontend processor will be used (see <b>pselect</b>).
+<p>
+To list all breakpoints set use the command <b>list-breakpoints</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1823">cycle-break</a>, <a class="jdocu" href="topic13.html#label2391">step-break</a>, <a class="jdocu" href="topic13.html#label2395">step-break-absolute</a>, <a class="jdocu" href="topic13.html#label1979">list-breakpoints</a></dd>
+
+</dl>
+
+
+
+<a name="label17842"></a><a name="label17843"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.detach-branch-recorder</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.detach-branch-recorder</b> <i>branch_recorder</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Detach the branch recorder <i>branch_recorder</i> from the processor.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="#label17832">&lt;processor&gt;.attach-branch-recorder</a></dd>
+
+</dl>
+
+
+
+<a name="label17844"></a><a name="label17845"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.disable</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.disable</b><br><b>&lt;processor&gt;.enable</b><br><b>pdisable</b> [(<i>cpu-name</i>|-all)] <br><b>penable</b> [(<i>cpu-name</i>|-all)] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables a processor. If no processor is specified, the current processor will
+be enabled. If the flag <i>-all</i> is passed, all processors will be
+enabled.
+<p>
+<b>pdisable</b> takes processor as parameter. If no processor is
+given, it will list all enabled processors. The method variant can also be used
+to disable a processor. A disabled processor is simply stalled for an infinite
+amount of time. Make sure that you always have at least one enabled processor.</dd>
+
+</dl>
+
+
+
+<a name="label17846"></a><a name="label17847"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.disassemble</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17848"></a>&lt;processor&gt;.da</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.disassemble</b> [<i>address</i>] [<i>count</i>] <br><b>disassemble</b> [<i>cpu-name</i>] [<i>address</i>] [<i>count</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Disassembles <i>count</i> instructions starting at
+<i>address</i> for processor <i>cpu-name</i>. If the processor
+is not given the current frontend processor will be used. The method
+variant can also be used to select a processor; e.g.,
+<b>cpu0.disassemble</b>.
+<p>
+On some architectures, <i>address</i> must be word aligned. A
+physical address is given by prefixing the address with <b>p:</b>
+(e.g., <b>p:0xf000</b>). With no prefix, a virtual address will be
+assumed. If the address is omitted the current program counter will be
+used. <i>count</i> defaults to 1 instruction.
+<p>
+Global disassembly settings, such as whether to print the raw opcodes,
+can be set by the <b>disassemble-settings</b> command.
+<p>
+This command will also include various profiling statistics for the
+address of each instruction, one column for each profiler view listed
+in the processor attribute <tt>aprof-views</tt>. For descriptions of
+the columns, use the <b>&lt;processor&gt;.aprof-views</b> command.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2489">x</a>, <a class="jdocu" href="topic13.html#label1853">disassemble-settings</a>, <a class="jdocu" href="#label17830">&lt;processor&gt;.aprof-views</a></dd>
+
+</dl>
+
+
+
+<a name="label17849"></a><a name="label17850"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.down</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.down</b> [<i>N</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Moves <i>N</i> frames down the stack (towards the innermost frame).
+<i>N</i> defaults to one.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1887">frame</a>, <a class="jdocu" href="topic13.html#label2465">up</a>, <a class="jdocu" href="topic13.html#label2371">stack-trace</a></dd>
+
+</dl>
+
+
+
+<a name="label17851"></a><a name="label17852"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.enable</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.enable</b><br><b>&lt;processor&gt;.disable</b><br><b>pdisable</b> [(<i>cpu-name</i>|-all)] <br><b>penable</b> [(<i>cpu-name</i>|-all)] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables a processor. If no processor is specified, the current processor will
+be enabled. If the flag <i>-all</i> is passed, all processors will be
+enabled.
+<p>
+<b>pdisable</b> takes processor as parameter. If no processor is
+given, it will list all enabled processors. The method variant can also be used
+to disable a processor. A disabled processor is simply stalled for an infinite
+amount of time. Make sure that you always have at least one enabled processor.</dd>
+
+</dl>
+
+
+
+<a name="label17853"></a><a name="label17854"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.frame</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17855"></a>&lt;processor&gt;.f</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.frame</b> [<i>frame-number</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Changes current stack frame to <i>frame-number</i>, or displays the current
+frame.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2371">stack-trace</a>, <a class="jdocu" href="topic13.html#label2254">psym</a>, <a class="jdocu" href="topic13.html#label2465">up</a>, <a class="jdocu" href="topic13.html#label1863">down</a></dd>
+
+</dl>
+
+
+
+<a name="label17856"></a><a name="label17857"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.info</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.info</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Print detailed information about the configuration of the processor.</dd>
+
+</dl>
+
+
+
+<a name="label17858"></a><a name="label17859"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.instruction-fetch-mode</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17860"></a>&lt;processor&gt;.ifm</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.instruction-fetch-mode</b> [<i>"mode"</i>] <br><b>instruction-fetch-mode</b> [<i>"mode"</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command selects how instruction fetches are sent for the memory hierarchy
+during simulation. If set to <i>no-instruction-fetch</i>, the memory hierarchy
+won't receive any instruction fetch. If set to
+<i>instruction-cache-access-trace</i>, the memory hierarchy will receive one
+(and only one) instruction fetch every time a new cache line is accessed. The
+size of this cache line is defined by the attribute
+<i>instruction-fetch-line-size</i> in the processor object. If set to
+<i>instruction-fetch-trace</i>, all instruction fetches will be visible. Note
+that on x86 target, <i>instruction-cache-trace-access</i> is not available. On
+some other, <i>instruction-fetch-trace</i> is actually
+<i>instruction-cache-trace-access</i> with a line size equal to the instruction
+size (sparc-v9). Using this command without argument will print out the current
+mode.</dd>
+
+</dl>
+
+
+
+<a name="label17861"></a><a name="label17862"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.io-read</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.io-read</b> <i>address</i> <i>size</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Perform an I/O read inquiry coming from the processor.
+            Size must be 1,2,4 or 8.</dd>
+
+</dl>
+
+
+
+<a name="label17863"></a><a name="label17864"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.io-write</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.io-write</b> <i>address</i> <i>value</i> <i>size</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Perform an I/O write inquiry coming from the processor.
+            Size must be 1,2,4 or 8.</dd>
+
+</dl>
+
+
+
+<a name="label17865"></a><a name="label17866"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.list</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.list</b> [(-s|-d)] (<i>address</i>|<i>"location"</i>) [<i>maxlines</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+List the source code corresponding to a given address, function or line.
+The location can be specified as
+<p>
+<i>line</i> or <i>file</i><tt>:</tt><i>line</i> --- list from given line
+<p>
+<i>function</i> or <i>file</i><tt>:</tt><i>function</i> --- list that function
+<p>
+<i>address</i> --- list from that address
+<p>
+At most <i>maxlines</i> lines of source or asm are printed.
+<tt>-s</tt> produces source intermixed with disassembly, and <tt>-d</tt>
+only disassembles.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1850">disassemble</a>, <a class="jdocu" href="topic13.html#label2475">whereis</a>, <a class="jdocu" href="topic13.html#label2203">pos</a>, <a class="jdocu" href="topic13.html#label2417">symval</a></dd>
+
+</dl>
+
+
+
+<a name="label17867"></a><a name="label17868"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.list-memory-profilers</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.list-memory-profilers</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+List all memory profilers connected to the processor, and what kind of
+data they are collecting.</dd>
+
+</dl>
+
+
+
+<a name="label17869"></a><a name="label17870"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.load-binary</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.load-binary</b> <i>filename</i> [<i>offset</i>] [-v] [-pa] <br><b>&lt;memory-space&gt;.load-binary</b> <i>filename</i> [<i>offset</i>] [-v] [-pa] <br><b>load-binary</b> <i>filename</i> [<i>offset</i>] [-v] [-pa] [-l] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Load a binary (executable) file into the given physical or virtual memory
+space. The supported formats are ELF, Motorola S-Record, PE32 and PE32+.
+If an offset is supplied, it will be added to the load
+address taked from the file.
+<p>
+By default the virtual load address from the file is used, but the
+physical address can be used instead by specifying the
+<i>-pa</i> flag.
+<p>
+The <i>-v</i> flag turns on verbose mode, printing information
+about the loaded file.
+<p>
+When used as a global command, it will use the currently selected
+processor to find the memory space to load the binary into.  If the
+<i>-l</i> flag is given, it will load it into the virtual
+memory space, otherwise it will use the physical memory space.
+<p>
+When using the namespace command on a <b>processor</b> object,
+it will load the binary into the virtual memory space of that
+processor.
+<p>
+When using the namespace command on a <b>memory-space</b>
+object, it will load the binary directly into that memory space.
+<p>
+The return value is the address of the execution
+entry point. This value is typically used in a call to
+<b>set-pc</b>.
+<p>
+<b>load-binary</b> uses Simics's Search Path and path markers (%simics%,
+%script%) to find the file to load. Refer to Simics User Guide (CLI chapter)
+for more information on how Simics's Search Path is used to locate files.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1485">add-directory</a></dd>
+
+</dl>
+
+
+
+<a name="label17871"></a><a name="label17872"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.logical-to-physical</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17873"></a>&lt;processor&gt;.l2p</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.logical-to-physical</b> <i>address</i> <br><b>logical-to-physical</b> [<i>cpu-name</i>] <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Translate the given logical <i>address</i> to a physical one. The
+operation is performed as read from processor <i>cpu-name</i>. On x86
+a logical address can be given on the form
+&lt;segment register&gt;:&lt;offset&gt;
+or l:&lt;linear address&gt;. If no prefix is given ds:&lt;offset&gt; will be
+assumed. If the CPU is omitted the current CPU will be used. No
+side-effects will occur, i.e. if the translation is not in the
+TLB. The method variant of this command can also be used.</dd>
+
+</dl>
+
+
+
+<a name="label17874"></a><a name="label17875"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.pos</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.pos</b> (<i>line</i>|<i>"function"</i>) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Finds the address of a source line or a function in a given file
+(e.g., <tt>myfile.c:4711</tt> or <tt>myfile.c:myfunction</tt>). If
+only a line number is specified, the command looks at the current
+value of the program counter to determine the current file. (If this
+command is called from the symtable namespace, no current file is
+defined.) It may be necessary to put the argument inside double quotes
+for it to be parsed correctly.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2371">stack-trace</a>, <a class="jdocu" href="topic13.html#label2254">psym</a>, <a class="jdocu" href="topic13.html#label2417">symval</a></dd>
+
+</dl>
+
+
+
+<a name="label17876"></a><a name="label17877"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.pregs</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.pregs</b> [-all] <br><b>pregs</b> [<i>cpu-name</i>] [-all] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the current integer register file of the processor
+<i>cpu_name</i>. If no CPU is specified, the current CPU will be
+selected. The -all flag causes additional registers, such as control
+registers and floating point registers to be printed.</dd>
+
+</dl>
+
+
+
+<a name="label17878"></a><a name="label17879"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.pregs-hyper</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.pregs-hyper</b> [-all] <br><b>pregs-hyper</b> [<i>"cpu-name"</i>] [-all] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the UltraSPARC T1 specific hypervisor registers for cpu
+<i>cpu-name</i>. <i>-all</i> will provide a complete listing. If no CPU is
+specified, the currently selected frontend processor will be used.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2207">pregs</a>, <a class="jdocu" href="topic13.html#label2209">pregs-all</a></dd>
+
+</dl>
+
+
+
+<a name="label17880"></a><a name="label17881"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.print-statistics</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.print-statistics</b><br><b>print-statistics</b> [(<i>cpu-name</i>|-all)] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints various statistics from the simulation. The <b>print-statistics</b>
+command prints statistics for the currently selected CPU if no argument
+is given and for all CPUs if the -all flag given.
+Any statistics that have been compiled into the
+simulator are printed, as well as user-defined per-mode counters.</dd>
+
+</dl>
+
+
+
+<a name="label17882"></a><a name="label17883"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.print-time</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17884"></a>&lt;processor&gt;.ptime</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.print-time</b> [-s] [-c] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Prints the number of steps and cycles that a processor has executed.
+The cycle count is also displayed as simulated time in seconds.
+<p>
+If called from a processor namespace (e.g., <i>cpu0</i><tt>.print-time</tt>),
+the time for that processor is printed. Otherwise, the time for the
+current processor is printed, or, if the <i>-all</i> flag is
+given, the time for all processors.
+<p>
+if the <i>-c</i> flag used, the cycle count for the processor is returned
+and nothing is printed. The <i>-s</i> flag is similar and returns the
+step count.
+<p>
+A step is a completed instruction or an exception. An instruction that
+fails to complete because of an exception will count as a single step,
+including the exception.</dd>
+
+</dl>
+
+
+
+<a name="label17885"></a><a name="label17886"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.psym</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.psym</b> <i>"expression"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Evaluates <i>expression</i> in the current stack frame, and prints the result
+in a human-readable form. The only C operators allowed are casts, indirection,
+member selection, and <tt>sizeof</tt> (thus no arithmetic). You may need to
+surround the <i>expression</i> by double quotes if it contains certain
+meta-characters.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2371">stack-trace</a>, <a class="jdocu" href="topic13.html#label1887">frame</a>, <a class="jdocu" href="topic13.html#label2417">symval</a></dd>
+
+</dl>
+
+
+
+<a name="label17887"></a><a name="label17888"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.read</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.read</b> <i>address</i> <i>size</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Perform a read inquiry coming from the processor.
+            Size must be 1,2,4 or 8. On processors that request it,
+            the address must be aligned to the size.</dd>
+
+</dl>
+
+
+
+<a name="label17889"></a><a name="label17890"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.read-reg</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.read-reg</b> <i>"reg-name"</i> <br><b>read-reg</b> [<i>cpu-name</i>] <i>"reg-name"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command reads a CPU register. For example, to read the
+<tt>eax</tt> register in an x86 processor called <b>cpu0</b>,
+write <b>read-reg cpu0 eax</b>. You can also use the method
+variant: <b>cpu0.read-reg eax</b>, or the more convenient variant
+<b>%eax</b> that reads a register from the selected frontend CPU.
+<p>
+If no <i>cpu-name</i> is supplied, the current frontend
+processor is used.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1445">%</a>, <a class="jdocu" href="topic13.html#label2487">write-reg</a>, <a class="jdocu" href="topic13.html#label2207">pregs</a>, <a class="jdocu" href="topic13.html#label2249">pselect</a></dd>
+
+</dl>
+
+
+
+<a name="label17891"></a><a name="label17892"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.register-number</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.register-number</b> <i>"reg-name"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Returns the register number for a named processor register.
+The register number is used as hap indexing for example.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1445">%</a>, <a class="jdocu" href="topic13.html#label2274">read-reg</a></dd>
+
+</dl>
+
+
+
+<a name="label17893"></a><a name="label17894"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.remove-memory-profiler</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.remove-memory-profiler</b> <i>"type"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Remove any memory profiler of the specified <tt>type</tt> ('read' or
+'write') currently attached to the processor.</dd>
+
+</dl>
+
+
+
+<a name="label17895"></a><a name="label17896"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.set-context</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.set-context</b> <i>"context"</i> <br><b>set-context</b> <i>"context"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Sets the current context of the processor <i>cpu</i> (or the selected
+cpu) to <i>context</i>. If the context does not exist, it is created.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2059">new-context</a>, <a class="jdocu" href="topic50.html#label4669">&lt;context&gt;.symtable</a></dd>
+
+</dl>
+
+
+
+<a name="label17897"></a><a name="label17898"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.set-pc</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.set-pc</b> <i>address</i> <br><b>set-pc</b> <i>address</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set program counter (instruction pointer) of the CPU (defaults to
+the current frontend processor) to <i>address</i>.</dd>
+
+</dl>
+
+
+
+<a name="label17899"></a><a name="label17900"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.stack-trace</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17901"></a><a name="label17902"></a>&lt;processor&gt;.bt, &lt;processor&gt;.where</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.stack-trace</b> [<i>maxdepth</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Displays a stack trace in the current context of the specified
+processor, or the current processor if none was specified. At most
+<i>maxdepth</i> frames are shown, 64 by default.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1887">frame</a></dd>
+
+</dl>
+
+
+
+<a name="label17903"></a><a name="label17904"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.start-instruction-profiling</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.start-instruction-profiling</b></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command gets you started with instruction profiling quickly by
+creating a branch recorder for you and attaching it to the processor.
+If you want more control, use other profiling commands instead.
+<p>
+It creates a branch recorder and attaches it to the processor, just as
+if you had typed
+<p>
+<tt>new-branch-recorder</tt> <i>branch_recorder</i> <tt>physical</tt>
+<p>
+<i>cpu</i><tt>.attach-branch-recorder</tt> <i>branch_recorder</i>
+<p>
+The branch recorder will (as the name implies) record branches taken
+by the processor (by physical addresses); various useful numbers can
+be computed from them. You can for example display execution count
+statistics by typing
+<p>
+<i>branch_recorder</i><tt>.address-profile-data</tt>
+<p>
+(but you will not see anything interesting until you have let the
+processor run a few instructions).</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2055">new-branch-recorder</a>, <a class="jdocu" href="#label17832">&lt;processor&gt;.attach-branch-recorder</a>, <a class="jdocu" href="topic487.html#label17684">&lt;address_profiler&gt;.address-profile-data</a></dd>
+
+</dl>
+
+
+
+<a name="label17905"></a><a name="label17906"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.step-break</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17907"></a><a name="label17908"></a>&lt;processor&gt;.sb, &lt;processor&gt;.sim-break</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.step-break</b> <i>instructions</i> <br><b>step-break</b> [<i>cpu-name</i>] <i>instructions</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Sets a breakpoint so that the CPU will stop after executing <i>instructions</i>
+number of steps from the time the command was issued. If the CPU is not
+specified the selected frontend processor will be used (see <b>pselect</b>).
+<p>
+To list all breakpoints set use the command <b>list-breakpoints</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2395">step-break-absolute</a>, <a class="jdocu" href="topic13.html#label1823">cycle-break</a>, <a class="jdocu" href="topic13.html#label1826">cycle-break-absolute</a>, <a class="jdocu" href="topic13.html#label1979">list-breakpoints</a></dd>
+
+</dl>
+
+
+
+<a name="label17909"></a><a name="label17910"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.step-break-absolute</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17911"></a><a name="label17912"></a>&lt;processor&gt;.sba, &lt;processor&gt;.sim-break-absolute</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.step-break-absolute</b> <i>instructions</i> <br><b>step-break-absolute</b> [<i>cpu-name</i>] <i>instructions</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Set a breakpoint so that the selected CPU will stop after its step counter has
+reached the <i>instructions</i> value. If the CPU is not specified the selected
+frontend processor will be used (see <b>pselect</b>).
+<p>
+To list all breakpoints set use the command <b>list-breakpoints</b>.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2395">step-break-absolute</a>, <a class="jdocu" href="topic13.html#label1823">cycle-break</a>, <a class="jdocu" href="topic13.html#label1826">cycle-break-absolute</a>, <a class="jdocu" href="topic13.html#label1979">list-breakpoints</a></dd>
+
+</dl>
+
+
+
+<a name="label17913"></a><a name="label17914"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.sum &#8212; <i>deprecated</i></b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.sum</b> <i>address</i> <i>size</i> [-w8] [-w16] [-w32] <br><b>sum</b> [<i>cpu-name</i>] <i>address</i> <i>size</i> [-w8] [-w16] [-w32] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+This command is deprecated, use <a class="jdocu" href="topic13.html#label2260">python</a> instead.
+<p>
+Sum a memory range. The width of the running sum is specified with the
+<i>-w8</i> (default), <i>-w16</i>, or <i>-w32</i> flag, standing
+for 8, 16, and 32 bits respectively.</dd>
+
+</dl>
+
+
+
+<a name="label17915"></a><a name="label17916"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.symval</b></dt>
+
+
+<dt class="jdocu_di"><b>Alias</b></dt><dd class="jdocu_di">
+<a name="label17917"></a>&lt;processor&gt;.sym</dd>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.symval</b> <i>"expression"</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Evaluates <i>expression</i> in the current stack frame. The only C operators
+allowed are casts, indirection, member selection, and <tt>sizeof</tt> (thus no
+arithmetic). You may need to surround the <i>expression</i> by double quotes if
+it contains certain meta-characters. In contrast to <b>psym</b>, the result is
+returned as an unadorned value that can be used in CLI expressions.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2371">stack-trace</a>, <a class="jdocu" href="topic13.html#label1887">frame</a>, <a class="jdocu" href="topic13.html#label2254">psym</a></dd>
+
+</dl>
+
+
+
+<a name="label17918"></a><a name="label17919"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.trace-cr</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.trace-cr</b> (<i>"register"</i>|-all|-list) <br><b>&lt;processor&gt;.untrace-cr</b> (<i>"register"</i>|-all|-list) <br><b>trace-cr</b> (<i>"register"</i>|-all|-list) <br><b>untrace-cr</b> (<i>"register"</i>|-all|-list) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables and disables tracing of control register updates.  When this
+is enabled, every time the specified control register is updated
+during simulation a message is printed.  The message will name the
+register being updated, and the new value.  The new value will be
+printed even if it is identical to the previous value.
+<p>
+The <i>reg-name</i> parameter specifies which control register should
+be traced.  The available control registers depends on the simulated
+target.
+<p>
+Instead of a register name, the <tt>-all</tt> flag may be given.  This
+will enable or disable tracing of all control register.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1501">break-cr</a></dd>
+
+</dl>
+
+
+
+<a name="label17920"></a><a name="label17921"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.unbreak-cr</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.unbreak-cr</b> (<i>"register"</i>|-all|-list) <br><b>&lt;processor&gt;.break-cr</b> (<i>"register"</i>|-all|-list) <br><b>break-cr</b> (<i>"register"</i>|-all|-list) <br><b>unbreak-cr</b> (<i>"register"</i>|-all|-list) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables and disables breaking simulation on control register updates.
+When this is enabled, every time the specified control register is
+updated during simulation a message is printed.  The message will name
+the register being updated, and the new value.  The new value will be
+printed even if it is identical to the previous value.
+<p>
+The <i>reg-name</i> parameter specifies which control register should
+be traced.  The available control registers depends on the simulated
+target.
+<p>
+Instead of a register name, the <tt>-all</tt> flag may be given.  This
+will enable or disable tracing of all control register.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2426">trace-cr</a>, <a class="jdocu" href="topic491.html#label17715">&lt;breakpoint&gt;.break</a></dd>
+
+</dl>
+
+
+
+<a name="label17922"></a><a name="label17923"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.untrace-cr</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.untrace-cr</b> (<i>"register"</i>|-all|-list) <br><b>&lt;processor&gt;.trace-cr</b> (<i>"register"</i>|-all|-list) <br><b>trace-cr</b> (<i>"register"</i>|-all|-list) <br><b>untrace-cr</b> (<i>"register"</i>|-all|-list) </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Enables and disables tracing of control register updates.  When this
+is enabled, every time the specified control register is updated
+during simulation a message is printed.  The message will name the
+register being updated, and the new value.  The new value will be
+printed even if it is identical to the previous value.
+<p>
+The <i>reg-name</i> parameter specifies which control register should
+be traced.  The available control registers depends on the simulated
+target.
+<p>
+Instead of a register name, the <tt>-all</tt> flag may be given.  This
+will enable or disable tracing of all control register.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1501">break-cr</a></dd>
+
+</dl>
+
+
+
+<a name="label17924"></a><a name="label17925"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.up</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.up</b> [<i>N</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Moves <i>N</i> frames up the stack (towards the outermost frame).
+<i>N</i> defaults to one.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1887">frame</a>, <a class="jdocu" href="topic13.html#label1863">down</a>, <a class="jdocu" href="topic13.html#label2371">stack-trace</a></dd>
+
+</dl>
+
+
+
+<a name="label17926"></a><a name="label17927"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.wait-for-cycle</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.wait-for-cycle</b> <i>cycle</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Postpones execution of a script branch until the processor reaches the
+specified cycle in the simulation.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2330">script-branch</a>, <a class="jdocu" href="topic13.html#label2473">wait-for-variable</a>, <a class="jdocu" href="topic13.html#label2471">wait-for-hap</a>, <a class="jdocu" href="topic446.html#label15242">&lt;text-console&gt;.wait-for-string</a>, <a class="jdocu" href="#label17928">&lt;processor&gt;.wait-for-step</a></dd>
+
+</dl>
+
+
+
+<a name="label17928"></a><a name="label17929"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.wait-for-step</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.wait-for-step</b> <i>step</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Postpones execution of a script branch until the processor reaches the
+specified step in the simulation.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label2330">script-branch</a>, <a class="jdocu" href="topic13.html#label2473">wait-for-variable</a>, <a class="jdocu" href="topic13.html#label2471">wait-for-hap</a>, <a class="jdocu" href="topic446.html#label15242">&lt;text-console&gt;.wait-for-string</a>, <a class="jdocu" href="#label17926">&lt;processor&gt;.wait-for-cycle</a></dd>
+
+</dl>
+
+
+
+<a name="label17930"></a><a name="label17931"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.write</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.write</b> <i>address</i> <i>value</i> <i>size</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Perform a write inquiry coming from the processor.
+            Size must be 1,2,4 or 8. On processors that request it,
+            the address must be aligned to the size.</dd>
+
+</dl>
+
+
+
+<a name="label17932"></a><a name="label17933"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.write-reg</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.write-reg</b> <i>"reg-name"</i> <i>value</i> <br><b>write-reg</b> [<i>cpu-name</i>] <i>"reg-name"</i> <i>value</i> </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Use this command to set the value of a CPU register. For example, to
+set the <tt>eax</tt> register on the x86 processor <b>cpu0</b> to
+3, write <b>write-reg cpu0 eax 3</b>. You can also use the method
+variant: <b>cpu0.write-reg eax 3</b>.
+<p>
+This function may or may not have the correct side-effects, depending
+on target and register. If no <i>cpu-name</i> is given, the
+current frontend processor is used.</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1445">%</a>, <a class="jdocu" href="topic13.html#label2274">read-reg</a>, <a class="jdocu" href="topic13.html#label2207">pregs</a>, <a class="jdocu" href="topic13.html#label2249">pselect</a></dd>
+
+</dl>
+
+
+
+<a name="label17934"></a><a name="label17935"></a><dl class="jdocu_di">
+
+<dt class="jdocu_di_name">
+<b>&lt;processor&gt;.x</b></dt>
+
+<dt class="jdocu_di_synopsis">Synopsis</dt><dd class="jdocu_di_synopsis">
+<b>&lt;processor&gt;.x</b> <i>address</i> [<i>size</i>] <br><b>&lt;memory-space&gt;.x</b> <i>address</i> [<i>size</i>] <br><b>x</b> [<i>cpu-name</i>] <i>address</i> [<i>size</i>] </dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+Display the contents of a memory space starting at <i>address</i>. Either
+the memory space is explicitly specified as in
+<b>&lt;memory-space&gt;.x</b> or the CPU connected to the memory space can be
+specified; e.g., <b>&lt;processor&gt;.x</b>. By itself, <b>x</b> operates
+on the memory connected to the current frontend processor.
+<p>
+If the memory is accessed via a CPU, the type of <i>address</i> is
+specified by a prefix. For physical addresses use
+<b>p:<i>address</i></b>; for virtual addresses,
+<b>v:<i>address</i></b> on non-x86 targets. On x86, use
+<b><i>segment-register</i>:<i>offset</i></b> or
+<b>l:<i>address</i></b> for x86 linear addresses.
+<p>
+If no prefix is given it will be interpreted as a virtual address. On x86 the
+default is <b>ds:<i>address</i></b> (data segment addressing).
+<p>
+The <i>size</i> argument specifies the number of bytes to examine. When
+examining virtual memory, only addresses which can be found in the TLB or
+hardware page tables (if any) are shown. Unmapped addresses are shown
+as "<tt>--</tt>", undefined physical addresses as "<tt>**</tt>".</dd>
+
+
+<dt class="jdocu_di"><b>See Also</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic13.html#label1850">disassemble</a>, <a class="jdocu" href="topic13.html#label1894">get</a>, <a class="jdocu" href="topic13.html#label2334">set</a></dd>
+
+</dl>
+
+
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic522.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic524.html">Next</a></span></p>
+</body>
+</html>

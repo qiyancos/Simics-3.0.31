@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Adding modules to a workspace</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(23, true);
+</script>
+<a name="label49"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+<h3 class="jdocu">3.3&nbsp;&nbsp;&nbsp;Adding modules to a workspace</h3 class="jdocu">
+
+
+<a name="label50"></a>
+<a name="label51"></a>
+<p>
+The <tt>modules</tt> subdirectory contains source code for modules, one
+module per directory entry.
+<p>
+<a name="label52"></a><h4 class="jdocu">3.3.1&nbsp;&nbsp;&nbsp;Creating a new DML module</h4 class="jdocu">
+
+
+<a name="label53"></a>
+<p>
+To add a DML module to a workspace, specify the <i>--device</i> option.
+ <p>
+<pre class="jdocu_small" style="color: black">
+$ <b>cd $HOME/my-simics-workspace</b>
+$ <b>[simics]/bin/workspace-setup --device mydevice</b>
+</pre>
+<p>
+This will create some skeleton code under the <tt>modules/</tt>
+directory.
+<p>
+After adding a module, you can build it using the top-level makefile:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>gmake</b>
+</pre>
+<p>
+To emphasize that the makefile require GNU Make, it is called
+<tt>GNUmakefile</tt>. The sub-makefiles in the module directories
+are named <tt>Makefile</tt>.
+<p>
+When running make, command lines will not be printed by default. To see the
+commands, pass <tt>VERBOSE=yes</tt> to make:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>gmake VERBOSE=yes</b>
+</pre>
+<p>
+<a name="label54"></a><h4 class="jdocu">3.3.2&nbsp;&nbsp;&nbsp;Creating a new C module</h4 class="jdocu">
+
+
+<a name="label55"></a>
+<p>
+An example module written in C can be added in the same way as
+DML modules, but using the <i>--c-device</i> option.
+ <p>
+<pre class="jdocu_small" style="color: black">
+$ <b>cd $HOME/my-simics-workspace</b>
+$ <b>[simics]/bin/workspace-setup --c-device my_c_device</b>
+</pre>
+<p>
+<a name="label56"></a><h4 class="jdocu">3.3.3&nbsp;&nbsp;&nbsp;Adding an Existing Module</h4 class="jdocu">
+
+
+<a name="label57"></a>
+<p>
+The top-level makefile will automatically attempt to build all modules
+under the <tt>modules/</tt> directory.
+If you have a module somewhere else, you may put a symlink there:
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>ln -s $HOME/mydevice ./my-workspace/modules/</b>
+</pre>
+<p>
+You may need to adapt the Makefile for the workspace-based build environment.
+Use a generated skeleton Makefile as a template for your rewrite.
+<p>
+A module to which the source is distributed with Simics, can be copied
+into the workspace by using <i>--copy-module</i>.
+<p>
+<pre class="jdocu_small" style="color: black">
+$ <b>cd $HOME/my-simics-workspace</b>
+$ <b>[simics]/bin/workspace-setup --copy-module gdb-remote</b>
+</pre>
+<p>
+
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic6.html">Previous</a> - <a class="jdocu" href="topic4.html">Up</a> - <a class="jdocu" href="topic8.html">Next</a></span></p>
+</body>
+</html>

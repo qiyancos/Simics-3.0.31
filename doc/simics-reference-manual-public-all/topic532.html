@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>sparc_interrupt</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(2273, true);
+</script>
+<a name="label17952"></a><p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic531.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic533.html">Next</a></span></p>
+<h3 class="jdocu">sparc_interrupt</h3 class="jdocu">
+
+
+<a name="label17953"></a><dl class="jdocu_di">
+
+
+<dt class="jdocu_di"><b>Implemented By</b></dt><dd class="jdocu_di">
+<a class="jdocu" href="topic453.html#label15309">ultrasparc-ii</a>, <a class="jdocu" href="topic454.html#label15397">ultrasparc-iii</a>, <a class="jdocu" href="topic455.html#label15487">ultrasparc-iii-i</a>, <a class="jdocu" href="topic456.html#label15577">ultrasparc-iii-plus</a>, <a class="jdocu" href="topic457.html#label15667">ultrasparc-iv</a>, <a class="jdocu" href="topic458.html#label15757">ultrasparc-iv-plus</a>, <a class="jdocu" href="topic459.html#label15847">ultrasparc-t1</a></dd>
+
+<dt class="jdocu_di_description">Description</dt><dd class="jdocu_di_description">
+
+   <a name="label17954"></a>
+   <a name="label17955"></a>
+   <a name="label17956"></a>
+<p>
+   Interrupt a Sparc Processor.
+ <p>
+   This interface is implemented by sparc processors to be able to
+   receive interrupts or asynchronous traps. The arguments to the
+   <b><i>interrupt_cpu</i></b> the cpu to interrupt (<i>cpu</i>),
+   a pointer to the sending object (<i>obj</i>), the mid of
+   the sending object (<i>source_mid</i>), the mid of the
+   target object (<i>target_mid</i>), and a callback function
+   that will be called when it is determined if the CPU can receive the
+   interrupt (<i>irq_ack_cb</i>). There is also a data pointer
+   (<i>data</i>), pointing to an array of 64-bit integers, and
+   a user pointer (<i>callback_data</i>) that is returned by
+   the ack callback to the caller. In the callback, the result is
+   returned as the argument <i>ack</i>, which is either 0 for
+   ACK or 1 for NACK.
+<p>
+   The <b><i>trap_cpu</i></b> function can be used for disrupting and
+   deferred traps. The trap will be inserted after the current
+   executing instruction. If Simics is run in out of order execution
+   mode, the trap will occur when all instructions in the reorder
+   buffer have completed.
+<p>
+   Precise traps can be injected by instructions accessing
+   memory. This is done by setting the <i>exception</i> field of a
+   <tt>generic_transaction_t</tt> in the <b><i>operate</i></b>
+   function of a timing model interface. It is thus necessary to
+   create a timing model object to be able to inject precise traps.
+<p>
+   <pre class="jdocu_small" style="color: black">typedef void (*interrupt_ack_t)(conf_object_t *obj, 
+                                conf_object_t *cpu,
+                                int cpu_mid,
+                                int ack, 
+                                lang_void *usr);
+
+typedef void (*interrupt_cpu_t)(conf_object_t *cpu, 
+                                conf_object_t *obj,
+                                int source_mid,
+                                int target_mid,
+                                interrupt_ack_t irq_ack_cb, 
+                                uint64 *data, 
+                                lang_void *usr,
+                                int dummy1, int dummy2);
+
+typedef void (*trap_cpu_t)(conf_object_t *cpu,
+                           exception_type_t trap_vector);
+
+typedef struct sparc_interrupt_interface {
+        interrupt_cpu_t interrupt_cpu;
+        trap_cpu_t trap_cpu;
+} sparc_interrupt_interface_t;
+
+#define SPARC_INTERRUPT_INTERFACE "sparc-interrupt"
+</pre>
+<p>
+   
+</dd>
+
+</dl>
+<p class="jdocu_navbarp"><span class="jdocu_navbar">VIRTUTECH CONFIDENTIAL&nbsp;&nbsp;&nbsp;&nbsp;<a class="jdocu" href="topic531.html">Previous</a> - <a class="jdocu" href="topic485.html">Up</a> - <a class="jdocu" href="topic533.html">Next</a></span></p>
+</body>
+</html>

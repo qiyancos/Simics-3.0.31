@@ -1,0 +1,41 @@
+
+###
+
+run-command-file "%script%/ia64-460gx-system.include"
+
+instantiate-components
+
+run-command-file "%script%/vasa-setup.include"
+
+@def patch_vga(vga):
+    from cli import iff
+    file = iff(vga.classname == 'vga', 'vgamem.raw', 'ragexl.raw')
+    filename = SIM_lookup_file(file)
+    if not filename:
+	SIM_command_has_problem()
+	raise "Can't find %s" % file
+    f = open(filename, "rb")
+    vga.vga_memory = tuple([ord(x) for x in f.read(0x40000)])
+    vga.gfx_regs = [0, 0, 0, 0, 0, 16, 14, 2, 255]
+    vga.pel_pal = ([
+        [0, 0, 0], [0, 0, 42], [0, 42, 0], [0, 42, 42], [42, 0, 0],
+        [42, 0, 42], [42, 42, 0], [42, 42, 42], [0, 0, 21], [0, 0, 63],
+        [0, 42, 21], [0, 42, 63], [42, 0, 21], [42, 0, 63], [42, 42, 21],
+        [42, 42, 63], [0, 21, 0], [0, 21, 42], [0, 63, 0], [0, 63, 42],
+        [42, 21, 0], [42, 21, 42], [42, 63, 0], [42, 63, 42], [0, 21, 21],
+        [0, 21, 63], [0, 63, 21], [0, 63, 63], [42, 21, 21], [42, 21, 63],
+        [42, 63, 21], [42, 63, 63], [21, 0, 0], [21, 0, 42], [21, 42, 0],
+        [21, 42, 42], [63, 0, 0], [63, 0, 42], [63, 42, 0], [63, 42, 42],
+        [21, 0, 21], [21, 0, 63], [21, 42, 21], [21, 42, 63], [63, 0, 21],
+        [63, 0, 63], [63, 42, 21], [63, 42, 63], [21, 21, 0], [21, 21, 42],
+        [21, 63, 0], [21, 63, 42], [63, 21, 0], [63, 21, 42], [63, 63, 0],
+        [63, 63, 42], [21, 21, 21], [21, 21, 63], [21, 63, 21], [21, 63, 63],
+        [63, 21, 21], [63, 21, 63], [63, 63, 21], [63, 63, 63]]
+        + [[0, 0, 0]] * 192)
+    # Needed for ragexl to work
+    vga.attrib_regs = [0, 1, 2, 3, 4, 5, 20, 7,
+                       56, 57, 58, 59, 60, 61, 62, 63,
+                       12, 0, 15, 8, 0]
+    # Some more regs, or complete mapping at 0xa0000 is needed for ragexl...
+
+@patch_vga(sim.objects[simenv.vga].object_list['vga'])

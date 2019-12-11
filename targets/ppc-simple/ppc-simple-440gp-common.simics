@@ -1,0 +1,13 @@
+$cpu_class = "ppc440gp"
+
+run-command-file "%script%/ppc-simple-common.simics"
+
+# Fix TLB so that:
+#   Bottom 256MB are accessible
+#   The top 16 MB are accessible -- where UART is mapped
+#
+@tlb = conf.cpu0.utlb
+@tlb[0] = [0x29000,0x0000,0x003f]   # bottom 256 MB as RAM
+@tlb[1] = [0xFF00027000L,0xFF000000,0x0d3f]   # top 16 MB as devices
+@conf.cpu0.utlb=tlb
+

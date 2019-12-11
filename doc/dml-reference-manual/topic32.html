@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Known Limitations</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(103, true);
+</script>
+<a name="label488"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+<h2 class="jdocu">Appendix A -&nbsp;&nbsp;&nbsp;Known Limitations</h2 class="jdocu">
+
+
+<p>
+The following are known limitations of the <tt>dmlc</tt> compiler at
+the time of this writing:
+<p>
+<dl><dt><b>Arrays and Simics configuration attributes</b></dt><dd>Simics configuration attributes are generated for each
+    <tt>register</tt>, <tt>attribute</tt>, and <tt>connect</tt> object
+    in DML.  When the object is declared as an array, as in:
+<pre class="jdocu_small" style="color: black">
+    bank b {
+        register r[8] ...;
+    }</pre>
+    the corresponding attribute (<i>b_r</i>) of the device is
+    defined to be a <em>list</em> attribute.  In Python, reading such
+    an attribute will yield a Python list.
+<p>
+    However, since the attributes will not be implemented as
+    <em>indexable</em>, manipulation of that list will not propagate
+    back into the device, so e.g. writing
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>@conf.b_r[2] = 17</b></pre>
+    will have the same effect as the following:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>@a = conf.dev.b_r</b>
+  simics&gt; <b>@print a</b>
+  [0, 0, 0, 0, 0, 0, 0, 0]
+  simics&gt; <b>@a[2] = 17</b>
+  simics&gt; <b>@print a</b>
+  [0, 0, 17, 0, 0, 0, 0, 0]
+  simics&gt; <b>@print conf.dev.b_r</b>
+  [0, 0, 0, 0, 0, 0, 0, 0]</pre>
+    in other words, modifying the Python list representation does
+    not change the object that produced the list.
+<p>
+    To update one element in the attribute, you need to read the list,
+    modify it, and then write back the whole list to the attribute:
+<pre class="jdocu_small" style="color: black">
+  simics&gt; <b>@a = conf.dev.b_r</b>
+  simics&gt; <b>@a[2] = 17</b>
+  simics&gt; <b>@conf.dev.b_r = a</b>
+</pre>
+</dd></dl>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic31.html">Previous</a> - <a class="jdocu" href="main.html">Up</a> - <a class="jdocu" href="topic33.html">Next</a></span></p>
+</body>
+</html>

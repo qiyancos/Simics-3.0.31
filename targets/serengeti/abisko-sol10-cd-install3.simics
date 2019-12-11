@@ -1,0 +1,38 @@
+# we don't want automatic login
+$do_login = "no"
+
+$create_network = "yes"
+$disk_size = 8513945600
+$os = "none"
+
+run-command-file "%script%/abisko-common.simics"
+
+load-persistent-state abisko-sol10-p2.state
+
+@image = sim.objects[simenv.scsi_disk].object_list['sd_image']
+@image.files = [["abisko-sol10-install.disk", "rw", 0, simenv.disk_size]]
+
+echo "Capturing output to 'abisko-install-log.txt'"
+$con = ($console.get-component-object con)
+$con.capture-start "abisko-install-log.txt"
+
+run-command-file "%script%/../common/solaris10-install.include"
+
+script-branch {
+    $solaris10_phase3 = 1 # trigger script
+    $con.wait-for-string "ok "
+    stop "Installation complete"
+    $system.set-prom-env auto-boot? true
+    save-persistent-state abisko-sol10.state
+}
+
+echo "Start at : " + `time.ctime(time.time())`
+run
+echo "Ready at : " + `time.ctime(time.time())`
+
+echo ""
+echo "Installation finished!"
+echo ""
+echo "Now exit Simics and use the abisko-common.simics script to start the "
+echo "machine. Make sure that the $os variable is set to solaris10."
+echo ""

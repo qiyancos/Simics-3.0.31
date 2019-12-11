@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Haps</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(42, true);
+</script>
+<a name="label91"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic16.html">Next</a></span></p>
+<h3 class="jdocu">4.6&nbsp;&nbsp;&nbsp;Haps</h3 class="jdocu">
+
+
+<p>
+A module may also want to react to certain Simics events. This may both be
+events related to the simulated machine, like processor exceptions or control
+register writes, and other kinds of events, like Simics stopping the simulation
+and returning to the command line. In Simics such events are referred to as
+<em>haps</em>. To react to a hap a module can register a callback function to
+the hap. This callback function will then be called every time the hap
+occurs. Again, a complete list of all haps, descriptions of what parameters the
+callback functions should take and all functions used to register callbacks and
+manipulate haps can be found in the <em>Simics Reference Manual</em>.
+<p>
+DML has no built-in features for hap, so you should refer to the C/C++ and
+Python explanation in section <a class="jdocu" href="topic32.html#label171">6.8</a>.
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic14.html">Previous</a> - <a class="jdocu" href="topic9.html">Up</a> - <a class="jdocu" href="topic16.html">Next</a></span></p>
+</body>
+</html>

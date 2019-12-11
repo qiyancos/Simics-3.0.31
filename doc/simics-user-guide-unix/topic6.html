@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(20, true);
+</script>
+<a name="label49"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+<h3 class="jdocu">3&nbsp;&nbsp;&nbsp;Introduction</h3 class="jdocu">
+
+    
+<p>
+    Simics is an <i>efficient, instrumented, system level instruction
+    set simulator</i>.
+<p>
+    <ul>
+    <li>Whereas an <i>emulator</i> is focused on executing a program
+    as quickly and accurately as possible, a <b>simulator</b>, in
+    addition, is designed from the ground up to gather information on
+    the execution and in general be a flexible tool. Simics is
+    not a monolithic program, it is a complete platform on which 
+    simulation-based tools can be built.</li>
+<p>
+    <li><b>efficient</b> means that Simics is designed to run
+    simulations very fast. Often, a Simics simulation will run as fast
+    as the real hardware, or even faster. In fact, in its class of
+    tools, Simics is the fastest simulator ever implemented.</li>
+<p>
+    <li><b>instrumented</b> means that Simics was designed not to run
+    just the target system programs, but to gather a great deal of
+    information during runtime. Many simulators are simply fast
+    emulators with instrumentation added as an afterthought, making
+    the tool slow down considerably when running with high
+    levels of information-gathering enabled. 
+<p>
+    Simics, by contrast, is specifically designed to achieve
+    good performance even with a high level of instrumentation and
+    very large workloads. Simics provides a variety of
+    statistics in its default configuration and allows
+    various add-ons to be developed by power users and plugged into
+    the simulator.</li>
+<p>
+    <li>Simics is <b>system level</b>, meaning that it models a target
+    computer at the level that an operating system acts. Thus, Simics
+    models the binary interfaces to buses, interrupt controllers,
+    disks, video memory, etc. This means that Simics can run
+    anything that the target system can, i.e.,
+    arbitrary workloads. Simics can boot unmodified operating system
+    kernels from raw disk dumps.</li>
+<p>
+    <li><b>instruction set simulator</b> means that Simics models the
+    target system at the level of individual instructions, executing
+    them one at a time. This is the lowest level of the hardware that
+    software has ready access to. Simulating at this level allows
+    Simics to be <i>system level</i>, yet still permits an
+    <i>efficient</i> design.</li>
+<p>
+    </ul>
+<p>
+    Simics fully virtualizes the target computer, allowing simulation
+    of multiprocessor systems as well as a cluster of independent
+    systems, and even networks,
+    regardless of the simulator host type. The virtualization also
+    allows Simics to be <i>cross platform</i>. For instance, Simics/SunFire can
+    run on a Linux/x86 system, thus simulating a 64-bit big-endian system on
+    a 32-bit little endian host.
+<p>
+    The end uses for Simics include program analysis, computer
+    architecture research, and kernel debugging.  The analysis support
+    includes code profiling and memory hierarchy simulation (i.e., cache
+    hierarchies). Debugging support includes a wide variety of
+    breakpoint types. The support for system-level simulation allows
+    operating system code to be developed and analyzed.
+<p>
+    <p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic7.html#label50" target="main">3.1&nbsp;&nbsp;&nbsp;Hosts and Targets</a></p>
+
+    <p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic8.html#label51" target="main">3.2&nbsp;&nbsp;&nbsp;Host Recommendations</a></p>
+
+    <p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic9.html#label56" target="main">3.3&nbsp;&nbsp;&nbsp;Simics Targets</a></p>
+
+    <p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic10.html#label68" target="main">3.4&nbsp;&nbsp;&nbsp;Simics Version Number</a></p>
+<p class="jdocu_ph4 class="jdocu""><a class="jdocu" href="topic11.html#label69" target="main">3.5&nbsp;&nbsp;&nbsp;Simics Compatibility</a></p>
+
+    <p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic5.html">Previous</a> - <a class="jdocu" href="topic5.html">Up</a> - <a class="jdocu" href="topic7.html">Next</a></span></p>
+</body>
+</html>

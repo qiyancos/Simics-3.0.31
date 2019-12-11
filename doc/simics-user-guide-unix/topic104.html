@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <title>Introduction</title>
+  <style>@import url(style.css);</style>
+</head>
+
+<body class="jdocu_main">
+<script type="text/javascript">
+parent.frames['toc'].d.openTo(236, true);
+</script>
+<a name="label541"></a><p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic103.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic105.html">Next</a></span></p>
+<h4 class="jdocu">20.1&nbsp;&nbsp;&nbsp;Introduction</h4 class="jdocu">
+
+
+<p>
+Simics models a PCI bus using several objects of various kinds:
+<p>
+<ul>
+<p>
+<li>A <b>pci-bus</b> object that models the bus to which PCI devices
+are connected, keeping track of which device is in which slot.</li>
+<p>
+<li>Three <b>memory-space</b> objects that model the three different
+access types to the PCI bus: one for configuration accesses, one for I/O
+accesses and one for memory accesses.</li>
+<p>
+<li>An object acting as a bridge, linking the PCI bus to the rest of the
+system. This can be a host-to-PCI bridge (like a Northbridge chipset) or a
+PCI-to-PCI bridge (linking the PCI bus to a parent PCI bus).</li>
+<p>
+<li>A number of PCI devices connected to the PCI bus object. Note that in
+Simics, each function of a multi-function PCI device must be represented by a
+separate object.</li>
+<p>
+</ul>
+<p>
+Let us look at a more concrete example from the simulated
+<i>Ebony</i> board:
+<p>
+<pre class="jdocu_small" style="color: black">
+OBJECT pcibus0 TYPE pci-bus {
+        conf_space: pciconf0
+        memory_space: pcimem0
+        io_space: pciio0
+        bridge: pci0
+        interrupt: (pci0)
+        pci_devices: ((0, 0, pci0, 1), (3, 0, dec0, 1))
+}
+OBJECT pciconf0 TYPE memory-space {
+}
+OBJECT pciio0 TYPE memory-space {
+}
+OBJECT pcimem0 TYPE memory-space {
+}
+OBJECT pci0 TYPE ppc440gp-pci {
+        pci_bus: pcibus0
+        ...
+}
+OBJECT dec0 TYPE DEC21140A-dml {
+        pci_bus: pcibus0
+        ...
+}
+</pre>
+<p>
+<ul>
+<p>
+<li>The <b>pcibus0</b> object represents the PCI bus. The
+<i>pci-devices</i> attribute shows that two PCI devices are connected:
+<b>pci0</b> is the bridge (presented below), inserted as function 0 in slot
+0; <b>dec0</b> is a DEC21140A network card inserted as function 0 in slot
+3.</li>
+<p>
+<li>The three memory-spaces are <b>pciconf0</b> for configuration,
+<b>pciio0</b> for I/O and <b>pcimem0</b> for memory. Note that these
+memory-spaces are <em>empty</em>. The configuration memory-space will be filled
+in automatically as devices are connected to the PCI slots. The other two
+spaces will be filled in when software enables different base address registers
+in the PCI devices. In most cases, these spaces need never be manipulated
+manually.</li>
+<p>
+<li>The <b>pci0</b> object is a host-to-PCI bridge present in the 440GP
+chipset. It creates a bridge between the PPC 440GP processor and the PCI
+devices.</li>
+<p>
+<li>The <b>dec0</b> PCI device is connected to the PCI bus in slot 3,
+function 0.</li>
+<p>
+</ul>
+<p>
+Once the configuration presented above is loaded into Simics, a number of
+parameters will be configured automatically. Let us look at the result of this
+automatic configuration. The PCI bus object now reports the devices that are
+connected:
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>pcibus0.info</b>
+Information about pcibus0 [class pci-bus]
+=========================================
+
+                 Bridge device : pci0
+             Interrupt devices : pci0
+                PCI Bus Number : 0x0
+
+                  Config space : pciconf0
+                      IO space : pciio0
+                  Memory space : pcimem0
+
+Connected devices:
+             Slot 0 function 0 : pci0
+             Slot 3 function 0 : dec0
+</pre>
+<p>
+The configuration memory-space has been automatically configured to include the
+configuration registers defined by the devices connected on the bus. The exact
+addresses where the configuration registers are mapped are determined using the
+PCI configuration address described in the next section.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>pciconf0.map</b>
+base               object               fn offs               length
+0x0000000000000000 pci0                 255 0x0                0x100
+0x0000000000001800 dec0                 255 0x0                0x100
+</pre>
+<p>
+The PCI I/O and memory spaces are empty since no base address registers have
+been configured yet. The bridge, however, catches all unmapped accesses in the
+PCI memory space to redirect them towards the main memory. This enables PCI
+devices to perform DMA accesses to and from other PCI devices or main memory.
+<p>
+<pre class="jdocu_small" style="color: black">
+simics&gt; <b>pciio0.map</b>
+base               object               fn offs               length
+simics&gt; <b>pcimem0.map</b>
+base               object               fn offs               length
+- default -        pci0                  5 0x0                -
+            target -&gt; plb
+</pre>
+<p>
+<p class="jdocu_navbarp"><span class="jdocu_navbar"><a class="jdocu" href="topic103.html">Previous</a> - <a class="jdocu" href="topic103.html">Up</a> - <a class="jdocu" href="topic105.html">Next</a></span></p>
+</body>
+</html>
