@@ -1,0 +1,126 @@
+#                                                              -*- makefile -*-
+# Copyright (c) 1998-2004 Virtutech AB, All Rights Reserved
+#
+# Makefile for devices and extensions
+
+#
+#  NOTE: This file is typically linked, so edit with care
+# (You should not have to edit this file!)
+#
+
+# HOST_DIR is the absolute path of the build directory. We should only use
+# it to get the host-config, and then use BUILD_DIR instead. (this avoids
+# path problems when doing rsh)
+HOST_DIR:=$(shell dirname `pwd`)
+include $(HOST_DIR)/config/host-config
+
+# TODO: export instead of setting these on the command line
+MAKE_OPTIONS := TARGET_DIR=$(shell pwd) HOST_DIR=$(BUILD_DIR) HOST_TYPE=$(HOST_TYPE)
+
+SUPPORT_TARGETS=clean list clobber
+
+#################
+
+default: SHELL=$(BASH)
+
+default: help
+	@echo ;								\
+	echo "Please enter make target:" ;				\
+	export PS3="target ? " ;					\
+	select tgt in $(GROUPS) $(SUPPORT_TARGETS); do			\
+	  $(MAKE) --no-print-directory $$tgt ;				\
+	  break ;							\
+	done
+
+help:
+	@echo
+	@echo "This is the lib/ subdirectory. From here you can do the following:"
+	@echo
+	@echo "- Build a specific module:              make <module-name>"
+	@echo "- Build a group of modules:             make <group-name>"
+	@echo "- List all modules and groups:          make list"
+	@echo "- List modules in a groups:             make list-<group>"
+	@echo "- Clean generated build files:          make clean"
+	@echo "- Clean a specific group/module:        make clean-<group/module>"
+	@echo "- Clean everything except the Makefile: make clobber"
+	@echo "- Show this help:                       make help"
+	@echo
+	@echo "Options:"
+	@echo "  TGT=<sub-target>    - Build sub-target in target Makefile"
+	@echo "  FLG=<make flags>    - flags to make for the target"
+
+#################
+
+MODULE_DIRS:=$(wildcard $(SIMICS_BASE)/src/devices)
+MODULE_DIRS+=$(wildcard $(SIMICS_BASE)/src/extensions)
+MODULE_DIRS+=$(wildcard $(SIMICS_BASE)/src/cpu)
+MODULE_DIRS+=$(wildcard $(SIMICS_BASE)/master-install/src/devices)
+MODULE_DIRS+=$(wildcard $(SIMICS_BASE)/master-install/src/extensions)
+MODULE_DIRS+=$(wildcard $(SIMICS_BASE)/master-install/src/cpu)
+
+ifneq ($(wildcard $(SIMICS_BASE)/config/modules.list),)
+# this is only used internally at virtutech
+MODULE_LIST:=$(SIMICS_BASE)/config/modules.list
+else
+# file in distributions
+MODULE_LIST:=$(SIMICS_BASE)/config/modules.list-local
+endif
+
+modules.cache: $(MODULE_LIST) $(SIMICS_BASE)/scripts/module-list.py
+	@echo "Generating: $(FILE_COLOR)$@$(NO_COLOR)"
+	@if [ "x$(PYTHON)" = "x" ] ; then							\
+		echo "Python was not configured properly. Please check the configure scripts" ;	\
+                exit 1 ;									\
+	else											\
+		$(PYTHON) $(SIMICS_BASE)/scripts/module-list.py	-m				\
+			--host=$(HOST_TYPE).$(CC_TYPE)						\
+			--module-list=$(MODULE_LIST) $(MODULE_DIRS);				\
+	fi
+
+-include modules.cache
+GROUPS:=$(LIB_GROUPS)
+MODULES:=$(LIB_MODULES)
+
+#################
+
+clean:
+	@rm -f modules.cache targets.cache ;				\
+	if [ -d ../obj/modules ] ; then					\
+		cd ../obj/modules ;					\
+		moddirs=`ls` ;   					\
+		for tgt in $$moddirs _dummy; do				\
+			for dir in $$tgt* ; do				\
+				if [ -d $$dir ]; then			\
+					echo "Removing: $$dir" ;	\
+					rm -rf $$dir ;			\
+				fi ;					\
+			done ;						\
+		done ;							\
+	fi
+
+clobber: clean
+ifeq ($(SIMICS_DISTRIB),no)
+	@rm -f *.a *.la *.dll *.so *.pdb *.lib *.o *.py *.pyc
+	@rm -rf python* 
+else
+	@true
+endif
+
+list:
+	@echo ;						\
+	echo "Groups:" ;				\
+	echo ;						\
+	echo $(GROUPS) | tr ' ' '\012' | $(COLUMN) ;	\
+	echo ;						\
+	echo "Modules:" ;				\
+	echo ;						\
+	echo $(MODULES) | tr ' ' '\012' | $(COLUMN) ;	\
+	echo
+
+ifeq ($(SIMICS_DISTRIB),no)
+long-list:
+	@$(PYTHON) $(SIMICS_BASE)/scripts/module-info.py long $(SIMICS_BASE)
+endif
+
+%.$(SO_SFX): %
+	@
