@@ -3,7 +3,7 @@ if not defined freq_mhz      {$freq_mhz      = 75}
 if not defined mac_address   {$mac_address   = "10:10:10:10:10:24"}
 if not defined disk_size     {$disk_size     = 2128486400}
 if not defined rtc_time      {$rtc_time      = "2002-06-02 17:00:00 UTC"}
-if not defined num_cpus      {$num_cpus      = 1}
+if not defined num_cpus      {$num_cpus      = 8}
 if not defined megs_per_cpu  {$megs_per_cpu  = 256}
 if not defined cpu_class     {$cpu_class     = "ultrasparc-iii-plus"}
 

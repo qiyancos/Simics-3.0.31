@@ -3,7 +3,7 @@ $do_login = "no"
 
 # path to CD-ROM, use default if none given by user setup variables.
 if not defined cdrom_path {
-    $cdrom_path = "sol-9-u7-sparc-v2.iso"
+    $cdrom_path = "/home/lishuoke/simics/system_images/sol-9-u7-sparc-v2.iso"
 }
 
 if not `SIM_lookup_file(simenv.cdrom_path)` {

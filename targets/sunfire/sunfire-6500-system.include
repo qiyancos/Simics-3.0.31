@@ -3,8 +3,8 @@ if not defined freq_mhz      {$freq_mhz      = 168}
 if not defined mac_address   {$mac_address   = "10:10:10:10:10:12"}
 if not defined disk_size     {$disk_size     = 2128486400}
 if not defined rtc_time      {$rtc_time      = "2002-06-02 13:00:00 UTC"}
-if not defined num_cpus      {$num_cpus      = 1}
-if not defined memory_megs   {$memory_megs   = 256}
+if not defined num_cpus      {$num_cpus      = 8}
+if not defined memory_megs   {$memory_megs   = 2048}
 if not defined save_slot2    {$save_slot2    = "no"}
 
 ###
